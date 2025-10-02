@@ -483,10 +483,11 @@ const CitizenshipDetail = () => {
 
               <Button 
                 size="lg"
+                variant="outline"
                 onClick={() => setShowCryptoEscrow(true)}
               >
                 <Coins className="h-4 w-4 mr-2" />
-                Pay with Crypto Escrow
+                Pay with Crypto Escrow (+1.5% fee)
               </Button>
 
               <EscrowForm
@@ -499,15 +500,19 @@ const CitizenshipDetail = () => {
 
               <Button 
                 size="lg"
+                variant="outline"
                 onClick={generateBrochure}
               >
                 <Download className="h-4 w-4 mr-2" />
                 Download Brochure
               </Button>
-              <Button size="lg" asChild>
+              <Button size="lg" variant="outline" asChild>
                 <a href="mailto:citizenship@secureprintlabs.com">Contact Advisor</a>
               </Button>
             </div>
+            <p className="text-sm text-muted-foreground mt-4">
+              Choose standard ordering or crypto escrow with buyer protection. Escrow adds a 1.5% fee for secure fund holding until delivery.
+            </p>
           </div>
         </div>
       </section>

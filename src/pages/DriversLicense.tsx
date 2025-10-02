@@ -150,7 +150,7 @@ const DriversLicense = () => {
                   </div>
                 </CardContent>
                 
-                <CardFooter className="pt-4 border-t border-border/50">
+                <CardFooter className="pt-4 border-t border-border/50 flex-col gap-3">
                   <Button 
                     className="w-full group relative overflow-hidden"
                     onClick={() => handleOrderClick(license)}
@@ -158,6 +158,9 @@ const DriversLicense = () => {
                     <span className="relative z-10">Order Now</span>
                     <div className="absolute inset-0 bg-gradient-to-r from-primary-glow to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </Button>
+                  <p className="text-xs text-center text-muted-foreground">
+                    Pay with crypto escrow (+1.5% fee) for buyer protection
+                  </p>
                 </CardFooter>
               </Card>
             ))}

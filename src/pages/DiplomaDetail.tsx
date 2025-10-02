@@ -246,10 +246,11 @@ const DiplomaDetail = () => {
 
               <Button 
                 size="lg"
+                variant="outline"
                 onClick={() => setShowCryptoEscrow(true)}
               >
                 <Coins className="h-4 w-4 mr-2" />
-                Pay with Crypto Escrow
+                Pay with Crypto Escrow (+1.5% fee)
               </Button>
 
               <EscrowForm
@@ -262,12 +263,16 @@ const DiplomaDetail = () => {
 
               <Button 
                 size="lg"
+                variant="outline"
                 onClick={() => window.location.href = "mailto:support@secureprintlabs.com"}
               >
                 <Mail className="h-4 w-4 mr-2" />
                 Contact Support
               </Button>
             </div>
+            <p className="text-sm text-muted-foreground mt-4">
+              Choose standard ordering or crypto escrow with buyer protection. Escrow adds a 1.5% fee for secure fund holding until delivery.
+            </p>
           </div>
         </div>
       </section>

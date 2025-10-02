@@ -205,8 +205,11 @@ const CertificationDetail = () => {
                     onClick={() => setShowCryptoEscrow(true)}
                   >
                     <Bitcoin className="w-4 h-4 mr-2" />
-                    Pay with Crypto Escrow
+                    Pay with Crypto Escrow (+1.5% fee)
                   </Button>
+                  <p className="text-xs text-center text-muted-foreground pt-2">
+                    Crypto escrow provides buyer protection with secure fund holding until delivery confirmation
+                  </p>
                 </div>
               </CardContent>
             </Card>
