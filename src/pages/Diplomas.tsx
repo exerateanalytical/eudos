@@ -136,6 +136,35 @@ const universities = [
   { id: 123, name: "Ryerson University", location: "Toronto, ON, Canada", ranking: 23, price: "$9,000", country: "Canada" },
   { id: 124, name: "University of New Brunswick", location: "Fredericton, NB, Canada", ranking: 24, price: "$9,000", country: "Canada" },
   { id: 125, name: "University of Windsor", location: "Windsor, ON, Canada", ranking: 25, price: "$8,500", country: "Canada" },
+  
+  // Additional American Universities (not in original top 100)
+  { id: 126, name: "University of Rochester", location: "Rochester, NY", ranking: 44, price: "$12,000" },
+  { id: 127, name: "Case Western Reserve University", location: "Cleveland, OH", ranking: 45, price: "$11,000" },
+  { id: 128, name: "Stony Brook University", location: "Stony Brook, NY", ranking: 53, price: "$9,500" },
+  { id: 129, name: "University of California--Santa Cruz", location: "Santa Cruz, CA", ranking: 55, price: "$10,000" },
+  { id: 130, name: "Lehigh University", location: "Bethlehem, PA", ranking: 56, price: "$10,000" },
+  { id: 131, name: "Worcester Polytechnic Institute (WPI)", location: "Worcester, MA", ranking: 58, price: "$10,000" },
+  { id: 132, name: "Rensselaer Polytechnic Institute (RPI)", location: "Troy, NY", ranking: 59, price: "$10,000" },
+  { id: 133, name: "Brandeis University", location: "Waltham, MA", ranking: 60, price: "$10,000" },
+  { id: 134, name: "Colorado School of Mines", location: "Golden, CO", ranking: 61, price: "$9,500" },
+  { id: 135, name: "Oklahoma State University", location: "Stillwater, OK", ranking: 62, price: "$8,500" },
+  { id: 136, name: "Miami University", location: "Oxford, OH", ranking: 64, price: "$9,000" },
+  { id: 137, name: "University at Buffalo--SUNY", location: "Buffalo, NY", ranking: 66, price: "$9,000" },
+  { id: 138, name: "Fordham University", location: "New York, NY", ranking: 70, price: "$10,000" },
+  { id: 139, name: "University of Cincinnati", location: "Cincinnati, OH", ranking: 71, price: "$9,000" },
+  { id: 140, name: "Baylor University", location: "Waco, TX", ranking: 72, price: "$9,000" },
+  { id: 141, name: "George Washington University", location: "Washington, DC", ranking: 73, price: "$10,000" },
+  { id: 142, name: "American University", location: "Washington, DC", ranking: 74, price: "$9,500" },
+  { id: 143, name: "Southern Methodist University (SMU)", location: "Dallas, TX", ranking: 76, price: "$9,500" },
+  { id: 144, name: "Temple University", location: "Philadelphia, PA", ranking: 77, price: "$9,000" },
+  { id: 145, name: "Oregon State University", location: "Corvallis, OR", ranking: 80, price: "$8,500" },
+  { id: 146, name: "University of South Florida", location: "Tampa, FL", ranking: 88, price: "$8,500" },
+  { id: 147, name: "Hofstra University", location: "Hempstead, NY", ranking: 93, price: "$9,000" },
+  { id: 148, name: "St. Louis University", location: "St. Louis, MO", ranking: 95, price: "$9,000" },
+  { id: 149, name: "University of Richmond", location: "Richmond, VA", ranking: 96, price: "$9,500" },
+  { id: 150, name: "Binghamton University--SUNY", location: "Binghamton, NY", ranking: 97, price: "$9,000" },
+  { id: 151, name: "Northern Illinois University", location: "DeKalb, IL", ranking: 99, price: "$8,000" },
+  { id: 152, name: "Clark University", location: "Worcester, MA", ranking: 100, price: "$9,000" },
 ];
 
 const Diplomas = () => {
@@ -162,10 +191,11 @@ const Diplomas = () => {
               <span className="text-sm font-medium text-primary">Premium Diplomas</span>
             </div>
             <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-              Top 100 American & Top 25 Canadian Universities
+              150+ Top Universities
             </h1>
             <p className="text-lg text-muted-foreground mb-8">
               Premium authentic university diplomas from America's and Canada's most prestigious institutions. 
+              Over 150 universities including top American research universities and Canada's leading institutions. 
               Complete package with transcript, thesis, student ID, and database registration. Fast 2-week delivery worldwide.
             </p>
             <div className="flex gap-4 justify-center flex-wrap">
