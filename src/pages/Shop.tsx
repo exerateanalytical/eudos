@@ -414,6 +414,28 @@ const Shop = () => {
 
           {/* Products Grid */}
           <div className="lg:col-span-3">
+            {/* Advanced Security Features - Moved above products */}
+            <div className="mb-8 md:mb-12">
+              <h2 className="text-xl md:text-2xl font-bold text-center mb-6 md:mb-8">Advanced Security Features</h2>
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-9 gap-2 md:gap-4">
+                {securityIcons.map((item, index) => {
+                  const Icon = item.icon;
+                  return (
+                    <div
+                      key={index}
+                      className="flex flex-col items-center gap-1.5 md:gap-2 p-2 md:p-4 rounded-lg border border-border hover:border-primary/50 transition-all hover:shadow-lg animate-scale-in"
+                      style={{ animationDelay: `${index * 0.05}s` }}
+                    >
+                      <div className="p-2 md:p-3 rounded-full bg-primary/10">
+                        <Icon className="h-4 w-4 md:h-6 md:w-6 text-primary" />
+                      </div>
+                      <span className="text-[10px] md:text-xs font-medium text-center leading-tight">{item.label}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
             {/* Results Count */}
             <div className="mb-6">
               <p className="text-muted-foreground">
@@ -491,27 +513,6 @@ const Shop = () => {
               </Card>
             )}
 
-            {/* Security Features Overview */}
-            <div className="mb-8 md:mb-12">
-              <h2 className="text-xl md:text-2xl font-bold text-center mb-6 md:mb-8">Advanced Security Features</h2>
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-9 gap-2 md:gap-4">
-                {securityIcons.map((item, index) => {
-                  const Icon = item.icon;
-                  return (
-                    <div
-                      key={index}
-                      className="flex flex-col items-center gap-1.5 md:gap-2 p-2 md:p-4 rounded-lg border border-border hover:border-primary/50 transition-all hover:shadow-lg animate-scale-in"
-                      style={{ animationDelay: `${index * 0.05}s` }}
-                    >
-                      <div className="p-2 md:p-3 rounded-full bg-primary/10">
-                        <Icon className="h-4 w-4 md:h-6 md:w-6 text-primary" />
-                      </div>
-                      <span className="text-[10px] md:text-xs font-medium text-center leading-tight">{item.label}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
 
             {/* Call to Action */}
             <Card className="bg-gradient-to-br from-primary/10 to-primary-glow/10 border-primary/20">
