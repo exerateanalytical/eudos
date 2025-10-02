@@ -382,6 +382,92 @@ const DiplomaDetail = () => {
           </Tabs>
         </div>
       </section>
+
+      {/* Why Choose Us Section */}
+      <section className="py-16 px-4 bg-muted/30">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Us</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Your trusted partner for premium educational credentials
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            <Card className="border-primary/20">
+              <CardContent className="pt-6">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <Shield className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Authentic Materials</h3>
+                <p className="text-muted-foreground">
+                  Premium parchment paper, embossed seals, holographic security features, and watermarks identical to genuine university documents. Every detail matches official specifications.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-primary/20">
+              <CardContent className="pt-6">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <Database className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Database Registration</h3>
+                <p className="text-muted-foreground">
+                  Complete student profile registered in university alumni databases, enabling verification through official channels. Your credentials can be confirmed by employers and institutions.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-primary/20">
+              <CardContent className="pt-6">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <FileText className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Complete Package</h3>
+                <p className="text-muted-foreground">
+                  Six essential documents including diploma, transcript, thesis, student ID, verification letter, and database registration. Everything you need in one comprehensive package.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-primary/20">
+              <CardContent className="pt-6">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <GraduationCap className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Custom Tailored</h3>
+                <p className="text-muted-foreground">
+                  Fully customizable degree type, major, GPA, honors, graduation date, and thesis topic. Professional academic writers create content specifically for your field of study.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-primary/20">
+              <CardContent className="pt-6">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <Clock className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Two Week Delivery</h3>
+                <p className="text-muted-foreground">
+                  Fast turnaround with complete package delivered in exactly 2 weeks via secure international courier with tracking and insurance. Rush options available.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-primary/20">
+              <CardContent className="pt-6">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <CheckCircle className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Quality Assured</h3>
+                <p className="text-muted-foreground">
+                  Rigorous quality control ensures every document meets exact university standards. Money-back guarantee if not completely satisfied with the final product.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

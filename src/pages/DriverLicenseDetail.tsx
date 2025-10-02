@@ -85,7 +85,7 @@ const DriverLicenseDetail = () => {
     title: `${country} Driver's License`,
     price: "$800",
     processingTime: "5-7 business days",
-    description: `Secure ${country} driver's license with biometric data, ghost image technology, and tamper-proof features. Includes all modern security elements required for official identification.`,
+    description: `Obtain your premium ${country} driver's license featuring cutting-edge security technology and authentic government-specification materials. Each license is meticulously manufactured using advanced polycarbonate card stock with integrated security features including biometric photo integration, ghost image technology, precision microtext printing, and sophisticated UV-reactive ink patterns. Our high-security licenses incorporate laser engraving for permanent data protection, dual-technology barcode and magnetic stripe encoding, and multi-layered holographic overlays that shimmer with official emblems and patterns. Designed with tamper-evident construction, any attempt at alteration immediately becomes visible, protecting your identity and credentials. We employ the exact same production standards and security protocols used by official government facilities, ensuring your license passes all authentication checks and verification systems. The polycarbonate material provides exceptional durability, resisting wear and environmental factors while maintaining a pristine appearance for years. Our streamlined process delivers your license in just 5-7 business days with secure express shipping worldwide. Each license undergoes rigorous quality control inspection to verify all security features function perfectly and all personalized data is accurate. Whether you need official identification for daily use, vehicle operation, or legal requirements, our ${country} driver's license provides the authenticity and reliability you demand. Join our global community of satisfied customers who trust us for premium identification solutions.`,
     
     features: [
       "Biometric photo & fingerprint",
@@ -382,6 +382,92 @@ const DriverLicenseDetail = () => {
               </Card>
             </TabsContent>
           </Tabs>
+        </div>
+      </section>
+
+      {/* Why Choose Us Section */}
+      <section className="py-16 px-4 bg-muted/30">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Us</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              The premier choice for high-security identification documents worldwide
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            <Card className="border-primary/20">
+              <CardContent className="pt-6">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <Shield className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Premium Materials</h3>
+                <p className="text-muted-foreground">
+                  Manufactured with genuine polycarbonate card stock and advanced security features identical to government-issued licenses. Every element meets or exceeds official specifications for durability and authenticity.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-primary/20">
+              <CardContent className="pt-6">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <CheckCircle className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Advanced Security</h3>
+                <p className="text-muted-foreground">
+                  Integrated biometric technology, ghost images, UV patterns, microtext, and holographic overlays ensure your license withstands scrutiny from all verification systems and detection equipment.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-primary/20">
+              <CardContent className="pt-6">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <Clock className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Rapid Processing</h3>
+                <p className="text-muted-foreground">
+                  Your license is ready in just 5-7 business days with priority manufacturing and express worldwide shipping. Track your order every step of the way from production to your doorstep.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-primary/20">
+              <CardContent className="pt-6">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <Coins className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Secure Payment</h3>
+                <p className="text-muted-foreground">
+                  Multiple payment options including cryptocurrency escrow service providing ultimate buyer protection. Your payment is secured until you receive and verify your license meets all specifications.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-primary/20">
+              <CardContent className="pt-6">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <Mail className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Professional Support</h3>
+                <p className="text-muted-foreground">
+                  Our experienced team provides personalized assistance throughout your order. Available 24/7 via email, chat, or phone to answer questions and ensure a smooth, hassle-free experience.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-primary/20">
+              <CardContent className="pt-6">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <CreditCard className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Error-Free Guarantee</h3>
+                <p className="text-muted-foreground">
+                  Comprehensive quality inspection before delivery ensures accuracy. We provide free corrections for any manufacturing defects within 30 days, guaranteeing your complete satisfaction.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </section>
 

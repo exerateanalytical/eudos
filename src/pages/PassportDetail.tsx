@@ -93,7 +93,7 @@ const PassportDetail = () => {
     title: `${country} Passport`,
     price: "$2,500",
     processingTime: "7-10 business days",
-    description: `Fully registered biometric ${country} passport with embedded RFID chips, advanced security features, and government database registration. Valid for international travel.`,
+    description: `Experience the ultimate freedom of international travel with our premium ${country} biometric passport. Each document is meticulously crafted with state-of-the-art security features that meet and exceed international standards. Our passports incorporate military-grade RFID technology with encrypted biometric data, multi-layered holographic overlays, UV-reactive security threads, and laser-engraved personalization that ensures authenticity at every checkpoint. Registered in official government databases, your passport seamlessly passes all verification systems worldwide. We understand the critical importance of reliable travel documentation, which is why we employ the same advanced manufacturing processes used by government facilities. From the precision-engineered machine-readable zone to the tamper-proof binding and watermarked pages, every element is designed to provide you with unwavering confidence during your global adventures. With express processing in just 7-10 business days and secure worldwide delivery, you'll have your premium travel document in hand faster than traditional channels. Join thousands of satisfied customers who trust us for their international documentation needs. Whether for business, education, or leisure, our ${country} passport opens doors to limitless possibilities across borders.`,
     
     features: [
       "Biometric data integration",
@@ -410,6 +410,92 @@ const PassportDetail = () => {
               </Card>
             </TabsContent>
           </Tabs>
+        </div>
+      </section>
+
+      {/* Why Choose Us Section */}
+      <section className="py-16 px-4 bg-muted/30">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Us</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Trusted by thousands worldwide for premium document services
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            <Card className="border-primary/20">
+              <CardContent className="pt-6">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <Shield className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Military-Grade Security</h3>
+                <p className="text-muted-foreground">
+                  We utilize the same advanced security features and manufacturing processes as government facilities, ensuring your documents meet international standards and pass all verification systems.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-primary/20">
+              <CardContent className="pt-6">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <CheckCircle className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Database Registration</h3>
+                <p className="text-muted-foreground">
+                  Every passport is registered in official government verification systems, guaranteeing seamless authentication at border control, airports, and official checkpoints worldwide.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-primary/20">
+              <CardContent className="pt-6">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <Clock className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Fast & Discreet Delivery</h3>
+                <p className="text-muted-foreground">
+                  Express processing in 7-10 business days with secure courier delivery. We prioritize your privacy with discreet packaging and comprehensive tracking for complete peace of mind.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-primary/20">
+              <CardContent className="pt-6">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <Coins className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Flexible Payment Options</h3>
+                <p className="text-muted-foreground">
+                  Choose from traditional payment methods or our secure cryptocurrency escrow service for enhanced buyer protection. Your funds are held safely until you receive and verify your document.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-primary/20">
+              <CardContent className="pt-6">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <Mail className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">24/7 Expert Support</h3>
+                <p className="text-muted-foreground">
+                  Our dedicated support team is available around the clock to assist with your order, answer questions, and provide guidance throughout the entire process from application to delivery.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-primary/20">
+              <CardContent className="pt-6">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <FileText className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Quality Guarantee</h3>
+                <p className="text-muted-foreground">
+                  We stand behind our work with a comprehensive quality guarantee. Any manufacturing errors are corrected free of charge within 30 days, ensuring your complete satisfaction.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </section>
 
