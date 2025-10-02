@@ -42,11 +42,11 @@ export const ReviewsList = ({ productType, productId, refreshTrigger }: ReviewsL
             .from("profiles")
             .select("full_name")
             .eq("id", review.user_id)
-            .single();
+            .maybeSingle();
           
           return {
             ...review,
-            profiles: profileData,
+            profiles: profileData || { full_name: "Anonymous User" },
           };
         })
       );
@@ -74,11 +74,11 @@ export const ReviewsList = ({ productType, productId, refreshTrigger }: ReviewsL
               .from("profiles")
               .select("full_name")
               .eq("id", reply.user_id)
-              .single();
+              .maybeSingle();
             
             return {
               ...reply,
-              profiles: profileData,
+              profiles: profileData || { full_name: "Anonymous User" },
             };
           })
         );
