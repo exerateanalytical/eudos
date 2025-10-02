@@ -178,18 +178,21 @@ const Index = () => {
             <button onClick={() => navigate("/products")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
               Products
             </button>
-            <a href="#services" className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
-              Services
-            </a>
+            <button onClick={() => navigate("/about")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+              About
+            </button>
             <button onClick={() => navigate("/apply")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
               Apply
             </button>
-            <a href="#about" className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
-              About
-            </a>
-            <a href="#contact" className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
-              Contact
-            </a>
+            <button onClick={() => navigate("/faq")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+              FAQ
+            </button>
+            <button onClick={() => navigate("/testimonials")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+              Testimonials
+            </button>
+            <button onClick={() => navigate("/blog")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+              Blog
+            </button>
           </nav>
         </div>
       </header>
