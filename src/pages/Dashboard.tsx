@@ -6,12 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { LogOut, ShieldCheck, FileText, Package, User as UserIcon, Lock, Home } from "lucide-react";
+import { LogOut, ShieldCheck, FileText, Package, User as UserIcon, Lock, Home, Bell } from "lucide-react";
 import OrdersModule from "@/components/dashboard/OrdersModule";
 import DocumentApplicationsModule from "@/components/dashboard/DocumentApplicationsModule";
 import ProfileModule from "@/components/dashboard/ProfileModule";
 import SecurityModule from "@/components/dashboard/SecurityModule";
-import { NotificationBell } from "@/components/dashboard/NotificationBell";
+import NotificationsPanel from "@/components/dashboard/NotificationsPanel";
+import NotificationBell from "@/components/NotificationBell";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -90,7 +91,7 @@ const Dashboard = () => {
         </Card>
 
         <Tabs defaultValue="orders" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4">
+          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5">
             <TabsTrigger value="orders" className="flex items-center gap-2">
               <Package className="h-4 w-4" />
               Orders
@@ -98,6 +99,10 @@ const Dashboard = () => {
             <TabsTrigger value="documents" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               Applications
+            </TabsTrigger>
+            <TabsTrigger value="notifications" className="flex items-center gap-2">
+              <Bell className="h-4 w-4" />
+              Notifications
             </TabsTrigger>
             <TabsTrigger value="profile" className="flex items-center gap-2">
               <UserIcon className="h-4 w-4" />
@@ -115,6 +120,10 @@ const Dashboard = () => {
 
           <TabsContent value="documents">
             <DocumentApplicationsModule userId={user?.id!} />
+          </TabsContent>
+
+          <TabsContent value="notifications">
+            <NotificationsPanel userId={user?.id!} />
           </TabsContent>
 
           <TabsContent value="profile">
