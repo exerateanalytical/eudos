@@ -3,12 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { FileText, Shield, Clock, CheckCircle, Printer, Building2, Award, Users, Sparkles, CreditCard, GraduationCap, Fingerprint, Cpu, Eye, Radio, Lock, Scan, FileCheck, Database, BookOpen, Menu, X, ShoppingBag, User, LayoutDashboard } from "lucide-react";
+import { FileText, Shield, Clock, CheckCircle, Printer, Building2, Award, Users, Sparkles, CreditCard, GraduationCap, Fingerprint, Cpu, Eye, Radio, Lock, Scan, FileCheck, Database, BookOpen, ShoppingBag } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { supabase } from "@/integrations/supabase/client";
-import { Session } from "@supabase/supabase-js";
 import { z } from "zod";
 
 const contactFormSchema = z.object({
@@ -29,8 +27,6 @@ const Index = () => {
   const { toast } = useToast();
   const [isVisible, setIsVisible] = useState(false);
   const [currentFeature, setCurrentFeature] = useState(0);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [session, setSession] = useState<Session | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     position: "",
@@ -47,17 +43,6 @@ const Index = () => {
   useEffect(() => {
     setIsVisible(true);
     
-    // Check auth session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setSession(session);
-      }
-    );
-    
     // Auto-rotate security features
     const interval = setInterval(() => {
       setCurrentFeature((prev) => (prev + 1) % securityShowcase.length);
@@ -65,7 +50,6 @@ const Index = () => {
 
     return () => {
       clearInterval(interval);
-      subscription.unsubscribe();
     };
   }, []);
 
@@ -250,113 +234,7 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
-      {/* Header - Mobile Optimized */}
-      <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto px-4 py-3 md:py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2 md:gap-3 group cursor-pointer" onClick={() => navigate("/")}>
-            <div className="relative">
-              <Printer className="h-6 w-6 md:h-8 md:w-8 text-primary transition-transform duration-300 group-hover:scale-110 active:scale-95" />
-              <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </div>
-            <h1 className="text-lg md:text-2xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
-              SecurePrint Labs
-            </h1>
-          </div>
-          
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex gap-4 lg:gap-8 items-center">
-            <button onClick={() => navigate("/products")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
-              Products
-            </button>
-            <button onClick={() => navigate("/passports")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
-              Passports
-            </button>
-            <button onClick={() => navigate("/drivers-license")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
-              Driver's License
-            </button>
-            <button onClick={() => navigate("/citizenship")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
-              Citizenship
-            </button>
-            <button onClick={() => navigate("/diplomas")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
-              Diplomas
-            </button>
-            <button onClick={() => navigate("/certifications")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
-              Certifications
-            </button>
-            <button onClick={() => navigate("/shop")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
-              Shop
-            </button>
-            <button onClick={() => navigate("/apply")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
-              Apply
-            </button>
-            {session ? (
-              <Button onClick={() => navigate("/dashboard")} variant="default" size="sm" className="active:scale-95">
-                <LayoutDashboard className="mr-2 h-4 w-4" />
-                Dashboard
-              </Button>
-            ) : (
-              <Button onClick={() => navigate("/auth")} variant="outline" size="icon" className="active:scale-95">
-                <User className="h-4 w-4" />
-              </Button>
-            )}
-          </nav>
-
-          {/* Mobile Menu */}
-          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-            <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon" className="active:scale-95">
-                <Menu className="h-6 w-6" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-[280px] sm:w-[320px]">
-              <nav className="flex flex-col gap-4 mt-8">
-                <button onClick={() => { navigate("/products"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
-                  Products
-                </button>
-                <button onClick={() => { navigate("/passports"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
-                  Passports
-                </button>
-                <button onClick={() => { navigate("/drivers-license"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
-                  Driver's License
-                </button>
-                <button onClick={() => { navigate("/citizenship"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
-                  Citizenship
-                </button>
-                <button onClick={() => { navigate("/diplomas"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
-                  Diplomas
-                </button>
-                <button onClick={() => { navigate("/certifications"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
-                  Certifications
-                </button>
-                <button onClick={() => { navigate("/shop"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
-                  Shop
-                </button>
-                <button onClick={() => { navigate("/apply"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
-                  Apply
-                </button>
-                <div className="pt-4 mt-4 border-t border-border space-y-2">
-                  {session ? (
-                    <Button className="w-full active:scale-95" onClick={() => { navigate("/dashboard"); setMobileMenuOpen(false); }}>
-                      <LayoutDashboard className="mr-2 h-4 w-4" />
-                      Dashboard
-                    </Button>
-                  ) : (
-                    <Button className="w-full active:scale-95" onClick={() => { navigate("/auth"); setMobileMenuOpen(false); }}>
-                      <User className="mr-2 h-4 w-4" />
-                      Login / Register
-                    </Button>
-                  )}
-                  <Button variant="outline" className="w-full active:scale-95" onClick={() => { navigate("/apply"); setMobileMenuOpen(false); }}>
-                    Apply Now
-                  </Button>
-                </div>
-              </nav>
-            </SheetContent>
-          </Sheet>
-        </div>
-      </header>
-
+    <div className="bg-background overflow-x-hidden">
       {/* Hero Section - Mobile First */}
       <section className="relative py-8 md:py-12 lg:py-16 px-4 overflow-hidden">
         {/* Animated background gradient */}
@@ -836,31 +714,6 @@ const Index = () => {
           </Card>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-card border-t border-border py-12 px-4">
-        <div className="container mx-auto">
-          <div className="flex flex-col items-center gap-6">
-            <div className="flex items-center gap-3">
-              <Printer className="h-8 w-8 text-primary" />
-              <h3 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
-                SecurePrint Labs
-              </h3>
-            </div>
-            <p className="text-muted-foreground text-center max-w-md">
-              Professional printing services for government and corporate clients worldwide
-            </p>
-            <div className="flex gap-8 text-sm text-muted-foreground">
-              <a href="#services" className="hover:text-primary transition-colors duration-300">Services</a>
-              <a href="#about" className="hover:text-primary transition-colors duration-300">About</a>
-              <a href="#contact" className="hover:text-primary transition-colors duration-300">Contact</a>
-            </div>
-            <div className="pt-6 border-t border-border w-full text-center text-sm text-muted-foreground">
-              <p>&copy; 2025 SecurePrint Labs. All rights reserved.</p>
-            </div>
-          </div>
-        </div>
-      </footer>
 
       <style>{`
         .bg-grid-pattern {

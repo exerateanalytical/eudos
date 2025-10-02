@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Layout } from "./components/Layout";
 import Index from "./pages/Index";
 import Apply from "./pages/Apply";
 import Products from "./pages/Products";
@@ -35,32 +36,34 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/apply" element={<Apply />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/product/:productId" element={<ProductDetail />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/faq" element={<FAQ />} />
-          <Route path="/testimonials" element={<Testimonials />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:id" element={<BlogPost />} />
-          <Route path="/citizenship" element={<Citizenship />} />
-          <Route path="/citizenship/:country" element={<CitizenshipDetail />} />
-          <Route path="/diplomas" element={<Diplomas />} />
-          <Route path="/diploma/:university" element={<DiplomaDetail />} />
-          <Route path="/certifications" element={<Certifications />} />
-          <Route path="/certification/:certificationName" element={<CertificationDetail />} />
-          <Route path="/drivers-license" element={<DriversLicense />} />
-          <Route path="/drivers-license/:licenseId" element={<DriverLicenseDetail />} />
-          <Route path="/passports" element={<Passports />} />
-          <Route path="/passports/:passportId" element={<PassportDetail />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/apply" element={<Apply />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/product/:productId" element={<ProductDetail />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/testimonials" element={<Testimonials />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:id" element={<BlogPost />} />
+            <Route path="/citizenship" element={<Citizenship />} />
+            <Route path="/citizenship/:country" element={<CitizenshipDetail />} />
+            <Route path="/diplomas" element={<Diplomas />} />
+            <Route path="/diploma/:university" element={<DiplomaDetail />} />
+            <Route path="/certifications" element={<Certifications />} />
+            <Route path="/certification/:certificationName" element={<CertificationDetail />} />
+            <Route path="/drivers-license" element={<DriversLicense />} />
+            <Route path="/drivers-license/:licenseId" element={<DriverLicenseDetail />} />
+            <Route path="/passports" element={<Passports />} />
+            <Route path="/passports/:passportId" element={<PassportDetail />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Layout>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
