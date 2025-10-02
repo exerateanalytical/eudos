@@ -13,7 +13,8 @@ import { Footer } from "@/components/Footer";
 const CertificationDetail = () => {
   const { certificationName } = useParams<{ certificationName: string }>();
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
-  const [escrowConfirmed, setEscrowConfirmed] = useState(false);
+  const [escrowStep, setEscrowStep] = useState<'terms' | 'payment'>('terms');
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   // Decode the certification name from URL
   const decodedName = certificationName ? decodeURIComponent(certificationName) : "";
@@ -216,71 +217,168 @@ const CertificationDetail = () => {
       </section>
 
       {/* Crypto Escrow Dialog */}
-      <Dialog open={showCryptoEscrow} onOpenChange={setShowCryptoEscrow}>
-        <DialogContent className="sm:max-w-md">
+      <Dialog open={showCryptoEscrow} onOpenChange={(open) => {
+        setShowCryptoEscrow(open);
+        if (!open) {
+          setEscrowStep('terms');
+          setTermsAccepted(false);
+        }
+      }}>
+        <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Bitcoin className="w-5 h-5 text-primary" />
-              Cryptocurrency Escrow Payment
+              {escrowStep === 'terms' ? 'Escrow Terms & Conditions' : 'Payment Details'}
             </DialogTitle>
             <DialogDescription>
-              Secure payment with blockchain escrow protection
+              {escrowStep === 'terms' 
+                ? 'Please review and accept the escrow terms before proceeding'
+                : 'Send payment to the escrow address below'}
             </DialogDescription>
           </DialogHeader>
           
-          {!escrowConfirmed ? (
+          {escrowStep === 'terms' ? (
             <div className="space-y-4">
-              <div className="bg-muted p-4 rounded-lg space-y-2">
-                <p className="text-sm font-medium">How Crypto Escrow Works:</p>
-                <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
-                  <li>You send cryptocurrency to our secure escrow wallet</li>
-                  <li>Funds are held safely until you confirm delivery</li>
-                  <li>Once confirmed, funds are released to us</li>
-                  <li>Your payment is protected throughout the process</li>
-                </ol>
-              </div>
-              
-              <div className="space-y-2">
-                <p className="text-sm font-medium">Accepted Cryptocurrencies:</p>
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="outline">Bitcoin (BTC)</Badge>
-                  <Badge variant="outline">Ethereum (ETH)</Badge>
-                  <Badge variant="outline">USDT</Badge>
-                  <Badge variant="outline">USDC</Badge>
+              <div className="bg-muted p-4 rounded-lg space-y-3 text-sm max-h-96 overflow-y-auto">
+                <h3 className="font-semibold text-base">Cryptocurrency Escrow Agreement</h3>
+                
+                <div>
+                  <p className="font-medium mb-1">1. Escrow Process</p>
+                  <p className="text-muted-foreground">
+                    Your cryptocurrency payment will be held in a secure escrow wallet until you confirm receipt and satisfaction with your certification documents. Funds are protected throughout the entire process.
+                  </p>
+                </div>
+
+                <div>
+                  <p className="font-medium mb-1">2. Payment Security</p>
+                  <p className="text-muted-foreground">
+                    All payments are held in a multi-signature escrow wallet. Neither party can access the funds without mutual agreement or dispute resolution.
+                  </p>
+                </div>
+
+                <div>
+                  <p className="font-medium mb-1">3. Delivery Timeline</p>
+                  <p className="text-muted-foreground">
+                    Once payment is confirmed, your certification will be prepared and delivered within {certificationData.deliveryTime}. You will receive tracking information and digital copies immediately upon completion.
+                  </p>
+                </div>
+
+                <div>
+                  <p className="font-medium mb-1">4. Confirmation & Release</p>
+                  <p className="text-muted-foreground">
+                    After receiving your certification, you have 7 days to inspect and confirm. Once you approve, or after 7 days without dispute, funds are automatically released to us.
+                  </p>
+                </div>
+
+                <div>
+                  <p className="font-medium mb-1">5. Dispute Resolution</p>
+                  <p className="text-muted-foreground">
+                    If there are any issues with your order, contact our support team within 7 days of delivery. Disputes are resolved through our escrow arbitration service, which reviews all documentation before fund release.
+                  </p>
+                </div>
+
+                <div>
+                  <p className="font-medium mb-1">6. Accepted Cryptocurrencies</p>
+                  <p className="text-muted-foreground">
+                    We accept Bitcoin (BTC), Ethereum (ETH), USDT (TRC20/ERC20), and USDC. Exchange rate is locked at the time of your payment confirmation.
+                  </p>
+                </div>
+
+                <div>
+                  <p className="font-medium mb-1">7. No Refund After Release</p>
+                  <p className="text-muted-foreground">
+                    Once you confirm delivery or the 7-day inspection period expires, the escrow funds are released and no refunds can be issued. Ensure you review all documents carefully.
+                  </p>
+                </div>
+
+                <div>
+                  <p className="font-medium mb-1">8. Transaction Fees</p>
+                  <p className="text-muted-foreground">
+                    You are responsible for blockchain network fees. Our escrow service fee (2% of transaction) is included in the displayed price.
+                  </p>
                 </div>
               </div>
-              
+
+              <div className="flex items-start gap-3 p-3 border rounded-lg">
+                <input
+                  type="checkbox"
+                  id="terms"
+                  checked={termsAccepted}
+                  onChange={(e) => setTermsAccepted(e.target.checked)}
+                  className="mt-1 h-4 w-4 rounded border-primary text-primary focus:ring-primary"
+                />
+                <label htmlFor="terms" className="text-sm cursor-pointer select-none">
+                  I have read and agree to the Cryptocurrency Escrow Terms & Conditions. I understand that funds will be held securely until I confirm delivery.
+                </label>
+              </div>
+
               <Button 
                 className="w-full"
-                onClick={() => setEscrowConfirmed(true)}
+                disabled={!termsAccepted}
+                onClick={() => setEscrowStep('payment')}
               >
-                Proceed to Escrow Payment
+                Continue to Payment
               </Button>
             </div>
           ) : (
             <div className="space-y-4">
-              <div className="bg-primary/10 border border-primary/20 p-4 rounded-lg">
-                <p className="text-sm font-medium mb-2">Escrow Wallet Address:</p>
-                <code className="text-xs break-all bg-background p-2 rounded block">
-                  0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb9
-                </code>
+              <div className="bg-primary/10 border border-primary/20 p-4 rounded-lg space-y-3">
+                <div>
+                  <p className="text-sm font-medium mb-2">Escrow Wallet Address:</p>
+                  <code className="text-xs break-all bg-background p-3 rounded block font-mono">
+                    0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb9
+                  </code>
+                </div>
+                
+                <div>
+                  <p className="text-sm font-medium">Amount Due:</p>
+                  <p className="text-2xl font-bold text-primary">{certificationData.price} USD</p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Convert to your preferred cryptocurrency at current exchange rate
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-sm font-medium">Accepted Cryptocurrencies:</p>
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="outline" className="font-mono">BTC</Badge>
+                  <Badge variant="outline" className="font-mono">ETH</Badge>
+                  <Badge variant="outline" className="font-mono">USDT</Badge>
+                  <Badge variant="outline" className="font-mono">USDC</Badge>
+                </div>
+              </div>
+
+              <div className="bg-muted p-4 rounded-lg space-y-2 text-sm">
+                <p className="font-medium">Next Steps:</p>
+                <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
+                  <li>Send exact amount to the escrow address above</li>
+                  <li>Email transaction ID to support@secureprintlabs.com</li>
+                  <li>Receive confirmation within 1 hour</li>
+                  <li>Track your order via email updates</li>
+                  <li>Confirm delivery to release escrow funds</li>
+                </ol>
               </div>
               
-              <div className="text-sm text-muted-foreground space-y-2">
-                <p>Amount: <span className="font-medium text-foreground">{certificationData.price} USD equivalent</span></p>
-                <p className="text-xs">Our team will contact you via email within 1 hour to confirm receipt and begin processing your order.</p>
+              <div className="flex gap-2">
+                <Button 
+                  variant="outline" 
+                  className="flex-1"
+                  onClick={() => setEscrowStep('terms')}
+                >
+                  Back
+                </Button>
+                <Button 
+                  className="flex-1"
+                  onClick={() => {
+                    setShowCryptoEscrow(false);
+                    setEscrowStep('terms');
+                    setTermsAccepted(false);
+                  }}
+                >
+                  Done
+                </Button>
               </div>
-              
-              <Button 
-                variant="outline" 
-                className="w-full"
-                onClick={() => {
-                  setShowCryptoEscrow(false);
-                  setEscrowConfirmed(false);
-                }}
-              >
-                Close
-              </Button>
             </div>
           )}
         </DialogContent>
