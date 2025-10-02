@@ -23,6 +23,8 @@ import DriversLicense from "./pages/DriversLicense";
 import DriverLicenseDetail from "./pages/DriverLicenseDetail";
 import Passports from "./pages/Passports";
 import PassportDetail from "./pages/PassportDetail";
+import Auth from "./pages/Auth";
+import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -54,6 +56,8 @@ const App = () => (
           <Route path="/drivers-license/:licenseId" element={<DriverLicenseDetail />} />
           <Route path="/passports" element={<Passports />} />
           <Route path="/passports/:passportId" element={<PassportDetail />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
