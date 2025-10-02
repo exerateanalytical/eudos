@@ -105,6 +105,78 @@ const Citizenship = () => {
       minInvestment: "EUR 250,000",
       benefits: ["Cultural heritage", "Schengen access", "Investment options"],
       gradient: "from-green-600 via-white to-red-600"
+    },
+    {
+      country: "United Kingdom",
+      flag: "🇬🇧",
+      description: "Innovator Founder Visa for experienced businesspeople with innovative business ideas seeking UK residence.",
+      minInvestment: "GBP 50,000",
+      benefits: ["Global business hub", "World-class education", "Path to settlement"],
+      gradient: "from-blue-700 via-white to-red-600"
+    },
+    {
+      country: "New Zealand",
+      flag: "🇳🇿",
+      description: "Investor visa programs for high-net-worth individuals seeking residence in this Pacific nation.",
+      minInvestment: "NZD 5M",
+      benefits: ["Natural beauty", "Quality lifestyle", "Business opportunities"],
+      gradient: "from-blue-900 to-blue-700"
+    },
+    {
+      country: "Latvia",
+      flag: "🇱🇻",
+      description: "EU residence through real estate or business investment with access to Schengen Area.",
+      minInvestment: "EUR 250,000",
+      benefits: ["EU residence", "Affordable program", "Schengen mobility"],
+      gradient: "from-red-700 via-white to-red-700"
+    },
+    {
+      country: "Cyprus",
+      flag: "🇨🇾",
+      description: "Permanent residence program through real estate investment with fast-track processing.",
+      minInvestment: "EUR 300,000",
+      benefits: ["EU member state", "Mediterranean lifestyle", "Fast processing"],
+      gradient: "from-orange-500 to-green-700"
+    },
+    {
+      country: "Ireland",
+      flag: "🇮🇪",
+      description: "Immigrant Investor Programme offering residence through investment in Irish enterprises or funds.",
+      minInvestment: "EUR 1M",
+      benefits: ["English-speaking", "EU access", "Thriving economy"],
+      gradient: "from-green-700 via-white to-orange-600"
+    },
+    {
+      country: "Thailand",
+      flag: "🇹🇭",
+      description: "Elite Residence Program and investment visas for those seeking long-term residence in Southeast Asia.",
+      minInvestment: "THB 600,000",
+      benefits: ["Tropical lifestyle", "Low cost of living", "Strategic location"],
+      gradient: "from-red-600 via-white to-blue-800"
+    },
+    {
+      country: "Netherlands",
+      flag: "🇳🇱",
+      description: "Self-employed residence permit for entrepreneurs and investors establishing business operations.",
+      minInvestment: "EUR 4,500",
+      benefits: ["EU gateway", "Business-friendly", "High quality of life"],
+      gradient: "from-red-600 via-white to-blue-700"
+    },
+    {
+      country: "Turkey",
+      flag: "🇹🇷",
+      description: "Citizenship by investment through real estate or capital investment with fast processing times.",
+      minInvestment: "USD 400,000",
+      benefits: ["Dual citizenship allowed", "Strategic location", "Affordable option"],
+      gradient: "from-red-700 to-red-600"
+    },
+    {
+      country: "Brazil",
+      flag: "🇧🇷",
+      description: "Investor visa for foreign nationals making significant investments in Brazilian companies.",
+      minInvestment: "BRL 500,000",
+      benefits: ["Large market access", "Natural resources", "Growing economy"],
+      gradient: "from-green-600 via-yellow-400 to-blue-700"
     }
   ];
 
