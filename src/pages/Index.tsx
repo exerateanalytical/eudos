@@ -58,40 +58,52 @@ const Index = () => {
 
   const securityShowcase = [
     {
-      icon: Sparkles,
-      title: "Multi-Layer Holograms",
-      description: "3D holographic security overlays that shift colors and patterns when viewed from different angles",
-      gradient: "from-cyan-500 via-blue-500 to-purple-500",
-    },
-    {
-      icon: FileCheck,
-      title: "Advanced Watermarks",
-      description: "Multi-tone watermarks with embedded security threads visible under specific lighting conditions",
-      gradient: "from-blue-500 via-indigo-500 to-violet-500",
-    },
-    {
       icon: Fingerprint,
-      title: "Biometric Fingerprint",
-      description: "High-resolution fingerprint capture and storage with 256-bit encryption on embedded chips",
+      title: "Biometric Data",
+      description: "Fingerprint and facial recognition integration with 256-bit encryption on embedded chips",
       gradient: "from-green-500 via-emerald-500 to-teal-500",
     },
     {
-      icon: ScanEye,
-      title: "Iris Recognition",
-      description: "Advanced iris scanning technology for multi-factor biometric authentication",
-      gradient: "from-orange-500 via-red-500 to-pink-500",
+      icon: Cpu,
+      title: "RFID/NFC Chips",
+      description: "Embedded contactless smart chips with encrypted data storage for secure authentication",
+      gradient: "from-blue-500 via-indigo-500 to-violet-500",
     },
     {
-      icon: ScanFace,
-      title: "Facial Biometrics",
-      description: "AI-powered facial recognition with liveness detection and anti-spoofing measures",
-      gradient: "from-purple-500 via-pink-500 to-rose-500",
+      icon: Sparkles,
+      title: "Multi-Layer Holograms",
+      description: "3D holographic security overlays with rainbow iridescent effects and micro-patterns",
+      gradient: "from-cyan-500 via-blue-500 to-purple-500",
     },
     {
       icon: Eye,
       title: "UV Security Features",
       description: "Invisible UV ink patterns and elements only visible under ultraviolet light",
       gradient: "from-violet-500 via-purple-500 to-fuchsia-500",
+    },
+    {
+      icon: Scan,
+      title: "Microtext Printing",
+      description: "Microscopic text printing impossible to replicate with standard equipment",
+      gradient: "from-orange-500 via-red-500 to-pink-500",
+    },
+    {
+      icon: Radio,
+      title: "Laser Engraving",
+      description: "Permanent laser-etched personalization that cannot be altered or removed",
+      gradient: "from-purple-500 via-pink-500 to-rose-500",
+    },
+    {
+      icon: Lock,
+      title: "Tamper-Proof Design",
+      description: "Self-destructing security features that activate if document alteration is attempted",
+      gradient: "from-red-500 via-orange-500 to-yellow-500",
+    },
+    {
+      icon: Database,
+      title: "Database Registration",
+      description: "Real-time verification through secure government databases for instant authentication",
+      gradient: "from-indigo-500 via-blue-500 to-cyan-500",
     },
   ];
 
