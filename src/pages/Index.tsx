@@ -116,6 +116,9 @@ const Index = () => {
             </h1>
           </div>
           <nav className="hidden md:flex gap-8">
+            <button onClick={() => navigate("/products")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+              Products
+            </button>
             <a href="#services" className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
               Services
             </a>
