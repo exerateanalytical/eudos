@@ -243,56 +243,45 @@ const Index = () => {
             </div>
 
             {/* Right side - Security features showcase */}
-            <div className="relative h-[250px] sm:h-[280px] lg:h-[300px] mt-8 lg:mt-0">
+            <div className="relative h-[220px] sm:h-[260px] lg:h-[300px] mt-8 lg:mt-0">
               {securityShowcase.map((feature, index) => {
+                if (currentFeature !== index) return null;
                 const Icon = feature.icon;
-                const isActive = currentFeature === index;
-                
                 return (
-                  <div
-                    key={index}
-                    className={`absolute inset-0 transition-all duration-700 ${
-                      isActive 
-                        ? 'opacity-100 scale-100 translate-y-0' 
-                        : 'opacity-0 scale-95 translate-y-10 pointer-events-none'
-                    }`}
-                  >
-                    <Card className="h-full border-2 bg-card/50 backdrop-blur-sm overflow-hidden">
-                      <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-5`} />
-                      
-                      <CardContent className="h-full flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 relative">
-                        {/* Icon with animated glow */}
-                        <div className="relative mb-4 sm:mb-6">
-                          <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} blur-2xl sm:blur-3xl opacity-50 animate-pulse`} />
-                          <div className={`relative p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-br ${feature.gradient}`}>
-                            <Icon className="h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20 text-white" strokeWidth={1.5} />
-                          </div>
+                  <Card key={index} className="h-full border-2 bg-card/50 backdrop-blur-sm overflow-hidden">
+                    <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-5`} />
+                    <CardContent className="h-full flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 relative">
+                      {/* Icon with animated glow */}
+                      <div className="relative mb-3 sm:mb-4">
+                        <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} blur-xl sm:blur-2xl opacity-40`} />
+                        <div className={`relative p-3 sm:p-4 lg:p-5 rounded-2xl sm:rounded-3xl bg-gradient-to-br ${feature.gradient}`}>
+                          <Icon className="h-10 w-10 sm:h-14 sm:w-14 lg:h-16 lg:w-16 text-white" strokeWidth={1.5} />
                         </div>
+                      </div>
 
-                        {/* Feature title */}
-                        <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-center mb-2 sm:mb-3 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-                          {feature.title}
-                        </h3>
+                      {/* Feature title */}
+                      <h3 className="text-lg sm:text-2xl lg:text-3xl font-bold text-center mb-1 sm:mb-2 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                        {feature.title}
+                      </h3>
 
-                        {/* Feature description */}
-                        <p className="text-sm sm:text-base text-muted-foreground text-center max-w-md mb-4 sm:mb-6 line-clamp-2 sm:line-clamp-none">
-                          {feature.description}
-                        </p>
+                      {/* Feature description */}
+                      <p className="text-xs sm:text-sm lg:text-base text-muted-foreground text-center max-w-md mb-3 sm:mb-4 line-clamp-2 sm:line-clamp-3">
+                        {feature.description}
+                      </p>
 
-                        {/* Security badge */}
-                        <div className={`inline-flex items-center gap-2 px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-gradient-to-r ${feature.gradient} text-white font-medium shadow-lg text-xs sm:text-sm`}>
-                          <Shield className="h-4 w-4" />
-                          <span className="hidden sm:inline">Military-Grade Security</span>
-                          <span className="sm:hidden">Secure</span>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
+                      {/* Security badge */}
+                      <div className={`inline-flex items-center gap-2 px-3 sm:px-4 lg:px-6 py-1.5 sm:py-2 lg:py-2.5 rounded-full bg-gradient-to-r ${feature.gradient} text-white font-medium shadow-lg text-xs sm:text-sm`}>
+                        <Shield className="h-4 w-4" />
+                        <span className="hidden sm:inline">Military-Grade Security</span>
+                        <span className="sm:hidden">Secure</span>
+                      </div>
+                    </CardContent>
+                  </Card>
                 );
               })}
 
               {/* Progress indicators */}
-              <div className="absolute -bottom-8 sm:-bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+              <div className="absolute -bottom-6 sm:-bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
                 {securityShowcase.map((_, index) => (
                   <button
                     key={index}
