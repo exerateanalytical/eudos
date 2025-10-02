@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -44,6 +44,16 @@ const DriverLicenseDetail = () => {
   const navigate = useNavigate();
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
   const [reviewsRefresh, setReviewsRefresh] = useState(0);
+  const [activeTab, setActiveTab] = useState("features");
+
+  // Check for ?tab=reviews query param
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get("tab");
+    if (tab === "reviews") {
+      setActiveTab("reviews");
+    }
+  }, []);
 
   // Extract country from licenseId (format: "license-united-states")
   const country = licenseId?.replace('license-', '').split('-').map(word => 
@@ -287,7 +297,7 @@ const DriverLicenseDetail = () => {
       {/* Detailed Information */}
       <section className="py-16 px-4">
         <div className="container mx-auto max-w-6xl">
-          <Tabs defaultValue="features" className="w-full">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-5 mb-8">
               <TabsTrigger value="features">Features</TabsTrigger>
               <TabsTrigger value="benefits">Benefits</TabsTrigger>

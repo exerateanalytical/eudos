@@ -351,13 +351,13 @@ const Passports = () => {
                     <Button 
                       variant="outline"
                       size="sm"
-                      onClick={() => handleOrderClick(passport)}
+                      onClick={() => navigate(`/passports/${passport.id}?tab=reviews`)}
                     >
-                      Escrow
+                      See Reviews
                     </Button>
                   </div>
                   <p className="text-xs text-center text-muted-foreground">
-                    Escrow adds 1.5% fee for buyer protection
+                    Click "See Reviews" to view customer feedback
                   </p>
                 </CardFooter>
                 </Card>

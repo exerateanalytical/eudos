@@ -8,13 +8,23 @@ import { ArrowLeft, GraduationCap, Clock, FileText, CheckCircle, Shield, Award, 
 import { EscrowForm } from "@/components/EscrowForm";
 import { ReviewForm } from "@/components/reviews/ReviewForm";
 import { ReviewsList } from "@/components/reviews/ReviewsList";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const DiplomaDetail = () => {
   const { university } = useParams();
   const navigate = useNavigate();
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
   const [reviewsRefresh, setReviewsRefresh] = useState(0);
+  const [activeTab, setActiveTab] = useState("package");
+
+  // Check for ?tab=reviews query param
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get("tab");
+    if (tab === "reviews") {
+      setActiveTab("reviews");
+    }
+  }, []);
 
   const universityName = university?.replace(/-/g, ' ') || "Harvard University";
 
@@ -279,7 +289,7 @@ const DiplomaDetail = () => {
       {/* Detailed Information Tabs */}
       <section className="py-16 px-4">
         <div className="container mx-auto max-w-6xl">
-          <Tabs defaultValue="package" className="w-full">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 mb-8 bg-primary/10">
               <TabsTrigger value="package" className="bg-primary text-primary-foreground data-[state=active]:bg-primary/80">Package Details</TabsTrigger>
               <TabsTrigger value="benefits" className="bg-primary text-primary-foreground data-[state=active]:bg-primary/80">Benefits</TabsTrigger>
