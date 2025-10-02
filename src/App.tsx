@@ -19,6 +19,8 @@ import Diplomas from "./pages/Diplomas";
 import DiplomaDetail from "./pages/DiplomaDetail";
 import Certifications from "./pages/Certifications";
 import CertificationDetail from "./pages/CertificationDetail";
+import DriversLicense from "./pages/DriversLicense";
+import Passports from "./pages/Passports";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -46,6 +48,8 @@ const App = () => (
           <Route path="/diploma/:university" element={<DiplomaDetail />} />
           <Route path="/certifications" element={<Certifications />} />
           <Route path="/certification/:certificationName" element={<CertificationDetail />} />
+          <Route path="/drivers-license" element={<DriversLicense />} />
+          <Route path="/passports" element={<Passports />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -182,6 +182,12 @@ const Index = () => {
             <button onClick={() => navigate("/products")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
               Products
             </button>
+            <button onClick={() => navigate("/passports")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
+              Passports
+            </button>
+            <button onClick={() => navigate("/drivers-license")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
+              Driver's License
+            </button>
             <button onClick={() => navigate("/citizenship")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
               Citizenship
             </button>
@@ -190,9 +196,6 @@ const Index = () => {
             </button>
             <button onClick={() => navigate("/certifications")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
               Certifications
-            </button>
-            <button onClick={() => navigate("/drivers-license")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
-              Driver's License
             </button>
             <button onClick={() => navigate("/shop")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
               Shop
@@ -214,6 +217,12 @@ const Index = () => {
                 <button onClick={() => { navigate("/products"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
                   Products
                 </button>
+                <button onClick={() => { navigate("/passports"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
+                  Passports
+                </button>
+                <button onClick={() => { navigate("/drivers-license"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
+                  Driver's License
+                </button>
                 <button onClick={() => { navigate("/citizenship"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
                   Citizenship
                 </button>
@@ -222,9 +231,6 @@ const Index = () => {
                 </button>
                 <button onClick={() => { navigate("/certifications"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
                   Certifications
-                </button>
-                <button onClick={() => { navigate("/drivers-license"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
-                  Driver's License
                 </button>
                 <button onClick={() => { navigate("/shop"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
                   Shop
