@@ -195,7 +195,7 @@ const Index = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="relative py-16 md:py-20 px-4 overflow-hidden">
+      <section className="relative py-12 md:py-15 px-4 overflow-hidden">
         {/* Animated background gradient */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
         <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]" />
@@ -243,7 +243,7 @@ const Index = () => {
             </div>
 
             {/* Right side - Security features showcase */}
-            <div className="relative h-[375px] lg:h-[450px]">
+            <div className="relative h-[280px] lg:h-[340px]">
               {securityShowcase.map((feature, index) => {
                 const Icon = feature.icon;
                 const isActive = currentFeature === index;
