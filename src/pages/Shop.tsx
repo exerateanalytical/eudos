@@ -143,7 +143,7 @@ const Shop = () => {
   const [selectedSecurityFeatures, setSelectedSecurityFeatures] = useState<string[]>([]);
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [productsToShow, setProductsToShow] = useState(6); // 3 rows × 2 columns (mobile-first)
+  const [productsToShow, setProductsToShow] = useState(12); // 3 rows × 4 columns (desktop)
 
   const categories = ["Travel Documents", "Identification Cards"];
   const securityLevels = ["Military-grade", "Maximum security", "High-security"];
@@ -422,7 +422,7 @@ const Shop = () => {
             </div>
 
             {/* Products - Square Icon Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 mb-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4 mb-8">
               {filteredProducts.slice(0, productsToShow).map((product, index) => {
                 const Icon = product.icon;
                 return (
@@ -470,7 +470,7 @@ const Shop = () => {
                 <Button 
                   size="lg" 
                   variant="outline"
-                  onClick={() => setProductsToShow(prev => prev + 6)}
+                  onClick={() => setProductsToShow(prev => prev + 12)}
                   className="touch-manipulation active:scale-95"
                 >
                   Load More Products ({filteredProducts.length - productsToShow} remaining)
