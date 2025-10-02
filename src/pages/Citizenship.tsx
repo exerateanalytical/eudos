@@ -177,6 +177,94 @@ const Citizenship = () => {
       minInvestment: "BRL 500,000",
       benefits: ["Large market access", "Natural resources", "Growing economy"],
       gradient: "from-green-600 via-yellow-400 to-blue-700"
+    },
+    {
+      country: "Luxembourg",
+      flag: "🇱🇺",
+      description: "Residence permit for investors and entrepreneurs in one of Europe's wealthiest nations.",
+      minInvestment: "EUR 500,000",
+      benefits: ["EU financial center", "High income levels", "Central location"],
+      gradient: "from-red-600 via-white to-blue-600"
+    },
+    {
+      country: "Czech Republic",
+      flag: "🇨🇿",
+      description: "Business residence permit for investors establishing or investing in Czech businesses.",
+      minInvestment: "CZK 2.5M",
+      benefits: ["Central Europe", "EU membership", "Affordable living"],
+      gradient: "from-white via-blue-600 to-red-600"
+    },
+    {
+      country: "Hungary",
+      flag: "🇭🇺",
+      description: "Residence bond program offering Hungarian residence through government bond investment.",
+      minInvestment: "EUR 300,000",
+      benefits: ["EU access", "Low cost of living", "Cultural heritage"],
+      gradient: "from-red-600 via-white to-green-700"
+    },
+    {
+      country: "Bulgaria",
+      flag: "🇧🇬",
+      description: "Fast-track citizenship program through investment with EU passport benefits.",
+      minInvestment: "EUR 512,000",
+      benefits: ["EU citizenship path", "Low taxes", "Affordable"],
+      gradient: "from-white via-green-700 to-red-600"
+    },
+    {
+      country: "Romania",
+      flag: "🇷🇴",
+      description: "Business investor residence permit for establishing companies or making business investments.",
+      minInvestment: "EUR 100,000",
+      benefits: ["EU member", "Growing economy", "Low investment threshold"],
+      gradient: "from-blue-700 via-yellow-400 to-red-600"
+    },
+    {
+      country: "Montenegro",
+      flag: "🇲🇪",
+      description: "Citizenship by investment program with investment in government-approved projects.",
+      minInvestment: "EUR 250,000",
+      benefits: ["Adriatic location", "EU candidate", "Tax benefits"],
+      gradient: "from-red-700 via-yellow-400 to-red-700"
+    },
+    {
+      country: "Panama",
+      flag: "🇵🇦",
+      description: "Friendly Nations Visa and investment residence programs for qualifying nationalities.",
+      minInvestment: "USD 200,000",
+      benefits: ["Tax advantages", "Strategic location", "USD economy"],
+      gradient: "from-blue-600 via-white to-red-600"
+    },
+    {
+      country: "Costa Rica",
+      flag: "🇨🇷",
+      description: "Investor residence program through investment in Costa Rican real estate or businesses.",
+      minInvestment: "USD 200,000",
+      benefits: ["Natural beauty", "Stable democracy", "Quality healthcare"],
+      gradient: "from-blue-600 via-white to-red-600"
+    },
+    {
+      country: "Uruguay",
+      flag: "🇺🇾",
+      description: "Residence permit for investors in Uruguayan real estate or business ventures.",
+      minInvestment: "USD 1.7M",
+      benefits: ["Political stability", "High quality of life", "Business-friendly"],
+      gradient: "from-blue-700 via-white to-blue-700"
+    },
+    {
+      country: "Colombia",
+      flag: "🇨🇴",
+      description: "Investor visa for those making substantial investments in Colombian businesses or real estate.",
+      minInvestment: "COP 350M",
+      benefits: ["Growing market", "Strategic location", "Cultural richness"],
+      gradient: "from-yellow-400 via-blue-700 to-red-600"
+    },
+    {
+      country: "Argentina",
+      flag: "🇦🇷",
+      description: "Residence permit for investors making capital investments in Argentine enterprises.",
+      minInvestment: "ARS 1.5M",
+      benefits: ["Large economy", "Cultural capital", "Natural resources"],
+      gradient: "from-blue-600 via-white to-blue-600"
     }
   ];
 
