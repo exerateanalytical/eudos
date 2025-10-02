@@ -44,6 +44,27 @@ const OrdersModule = ({ userId }: OrdersModuleProps) => {
     };
 
     fetchOrders();
+
+    // Set up realtime subscription
+    const channel = supabase
+      .channel('orders-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'orders',
+          filter: `user_id=eq.${userId}`,
+        },
+        () => {
+          fetchOrders();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [userId]);
 
   const getStatusColor = (status: string) => {

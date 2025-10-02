@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, Upload, User } from "lucide-react";
 import { z } from "zod";
 
 const profileUpdateSchema = z.object({
@@ -27,6 +28,7 @@ interface Profile {
   full_name: string;
   email: string;
   phone_number: string | null;
+  avatar_url: string | null;
 }
 
 interface Address {
@@ -49,6 +51,8 @@ const ProfileModule = ({ userId }: ProfileModuleProps) => {
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddressForm, setShowAddressForm] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchProfile();
@@ -152,6 +156,79 @@ const ProfileModule = ({ userId }: ProfileModuleProps) => {
     }
   };
 
+  const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      setUploading(true);
+
+      if (!event.target.files || event.target.files.length === 0) {
+        return;
+      }
+
+      const file = event.target.files[0];
+      const fileExt = file.name.split('.').pop();
+      const filePath = `${userId}/avatar.${fileExt}`;
+
+      // Upload to storage
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(filePath);
+
+      // Update profile
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ avatar_url: publicUrl })
+        .eq('id', userId);
+
+      if (updateError) throw updateError;
+
+      toast.success("Avatar uploaded successfully");
+      fetchProfile();
+    } catch (error: any) {
+      toast.error(error.message || "Error uploading avatar");
+      console.error(error);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleDeleteAvatar = async () => {
+    try {
+      if (!profile?.avatar_url) return;
+
+      // Extract file path from URL
+      const urlParts = profile.avatar_url.split('/');
+      const filePath = `${userId}/${urlParts[urlParts.length - 1]}`;
+
+      // Delete from storage
+      const { error: deleteError } = await supabase.storage
+        .from('avatars')
+        .remove([filePath]);
+
+      if (deleteError) throw deleteError;
+
+      // Update profile
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ avatar_url: null })
+        .eq('id', userId);
+
+      if (updateError) throw updateError;
+
+      toast.success("Avatar deleted");
+      fetchProfile();
+    } catch (error: any) {
+      toast.error(error.message || "Error deleting avatar");
+      console.error(error);
+    }
+  };
+
   const handleDeleteAddress = async (addressId: string) => {
     try {
       const { error } = await supabase
@@ -174,6 +251,43 @@ const ProfileModule = ({ userId }: ProfileModuleProps) => {
 
   return (
     <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Profile Picture</CardTitle>
+          <CardDescription>Upload your profile photo</CardDescription>
+        </CardHeader>
+        <CardContent className="flex items-center gap-6">
+          <Avatar className="h-24 w-24">
+            <AvatarImage src={profile?.avatar_url || undefined} />
+            <AvatarFallback>
+              <User className="h-12 w-12" />
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex gap-2">
+            <Button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+              variant="outline"
+            >
+              <Upload className="mr-2 h-4 w-4" />
+              {uploading ? "Uploading..." : "Upload Photo"}
+            </Button>
+            {profile?.avatar_url && (
+              <Button onClick={handleDeleteAvatar} variant="outline">
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            )}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleAvatarUpload}
+              className="hidden"
+            />
+          </div>
+        </CardContent>
+      </Card>
+
       <Card>
         <CardHeader>
           <CardTitle>Personal Information</CardTitle>

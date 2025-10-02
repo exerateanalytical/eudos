@@ -64,6 +64,57 @@ export type Database = {
           },
         ]
       }
+      contact_inquiries: {
+        Row: {
+          agency: string
+          created_at: string | null
+          department: string
+          document_type: string
+          email: string
+          id: string
+          name: string
+          phone: string
+          position: string
+          quantity: string
+          specifications: string
+          status: string | null
+          updated_at: string | null
+          urgency: string
+        }
+        Insert: {
+          agency: string
+          created_at?: string | null
+          department: string
+          document_type: string
+          email: string
+          id?: string
+          name: string
+          phone: string
+          position: string
+          quantity: string
+          specifications: string
+          status?: string | null
+          updated_at?: string | null
+          urgency: string
+        }
+        Update: {
+          agency?: string
+          created_at?: string | null
+          department?: string
+          document_type?: string
+          email?: string
+          id?: string
+          name?: string
+          phone?: string
+          position?: string
+          quantity?: string
+          specifications?: string
+          status?: string | null
+          updated_at?: string | null
+          urgency?: string
+        }
+        Relationships: []
+      }
       document_applications: {
         Row: {
           country: string
@@ -186,6 +237,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          avatar_url: string | null
           created_at: string | null
           email: string
           full_name: string
@@ -194,6 +246,7 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          avatar_url?: string | null
           created_at?: string | null
           email: string
           full_name: string
@@ -202,6 +255,7 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          avatar_url?: string | null
           created_at?: string | null
           email?: string
           full_name?: string

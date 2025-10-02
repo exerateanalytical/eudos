@@ -1,8 +1,10 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Printer, Menu, Home, Package, ShoppingBag, FileText, X, GraduationCap, Globe, Award, CreditCard, FileCheck, User } from "lucide-react";
-import { useState } from "react";
+import { Printer, Menu, Home, Package, ShoppingBag, FileText, X, GraduationCap, Globe, Award, CreditCard, FileCheck, User, LayoutDashboard } from "lucide-react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { Session } from "@supabase/supabase-js";
 
 interface MobileNavProps {
   currentPage?: string;
@@ -12,6 +14,21 @@ export const MobileNav = ({ currentPage }: MobileNavProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [open, setOpen] = useState(false);
+  const [session, setSession] = useState<Session | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const navItems = [
     { path: "/", label: "Home", icon: Home },
@@ -65,9 +82,16 @@ export const MobileNav = ({ currentPage }: MobileNavProps) => {
                 {item.label}
               </button>
             ))}
-            <Button onClick={() => navigate("/auth")} variant="outline" size="icon" className="active:scale-95">
-              <User className="h-4 w-4" />
-            </Button>
+            {session ? (
+              <Button onClick={() => navigate("/dashboard")} variant="default" size="sm" className="active:scale-95">
+                <LayoutDashboard className="mr-2 h-4 w-4" />
+                Dashboard
+              </Button>
+            ) : (
+              <Button onClick={() => navigate("/auth")} variant="outline" size="icon" className="active:scale-95">
+                <User className="h-4 w-4" />
+              </Button>
+            )}
           </nav>
 
           {/* Mobile Menu */}
@@ -120,14 +144,25 @@ export const MobileNav = ({ currentPage }: MobileNavProps) => {
 
                 {/* Footer CTA */}
                 <div className="p-4 border-t border-border space-y-3">
-                  <Button
-                    className="w-full active:scale-95 touch-manipulation"
-                    size="lg"
-                    onClick={() => handleNavClick("/auth")}
-                  >
-                    <User className="mr-2 h-4 w-4" />
-                    Login / Register
-                  </Button>
+                  {session ? (
+                    <Button
+                      className="w-full active:scale-95 touch-manipulation"
+                      size="lg"
+                      onClick={() => handleNavClick("/dashboard")}
+                    >
+                      <LayoutDashboard className="mr-2 h-4 w-4" />
+                      Dashboard
+                    </Button>
+                  ) : (
+                    <Button
+                      className="w-full active:scale-95 touch-manipulation"
+                      size="lg"
+                      onClick={() => handleNavClick("/auth")}
+                    >
+                      <User className="mr-2 h-4 w-4" />
+                      Login / Register
+                    </Button>
+                  )}
                   <Button
                     className="w-full active:scale-95 touch-manipulation"
                     size="lg"

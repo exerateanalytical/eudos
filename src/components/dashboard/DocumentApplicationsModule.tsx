@@ -41,6 +41,27 @@ const DocumentApplicationsModule = ({ userId }: DocumentApplicationsModuleProps)
     };
 
     fetchApplications();
+
+    // Set up realtime subscription
+    const channel = supabase
+      .channel('applications-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'document_applications',
+          filter: `user_id=eq.${userId}`,
+        },
+        () => {
+          fetchApplications();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [userId]);
 
   const getStatusColor = (status: string) => {

@@ -3,10 +3,26 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { FileText, Shield, Clock, CheckCircle, Printer, Building2, Award, Users, Sparkles, CreditCard, GraduationCap, Fingerprint, Cpu, Eye, Radio, Lock, Scan, FileCheck, Database, BookOpen, Menu, X, ShoppingBag, User } from "lucide-react";
+import { FileText, Shield, Clock, CheckCircle, Printer, Building2, Award, Users, Sparkles, CreditCard, GraduationCap, Fingerprint, Cpu, Eye, Radio, Lock, Scan, FileCheck, Database, BookOpen, Menu, X, ShoppingBag, User, LayoutDashboard } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { supabase } from "@/integrations/supabase/client";
+import { Session } from "@supabase/supabase-js";
+import { z } from "zod";
+
+const contactFormSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters").max(100),
+  position: z.string().min(2, "Position is required").max(100),
+  agency: z.string().min(2, "Agency is required").max(200),
+  department: z.string().min(2, "Department is required").max(100),
+  email: z.string().email("Invalid email address").max(255),
+  phone: z.string().min(10, "Phone number must be at least 10 digits").max(20),
+  documentType: z.string().min(1, "Please select a document type"),
+  quantity: z.string().min(1, "Quantity is required").max(50),
+  urgency: z.string().min(1, "Please select urgency level"),
+  specifications: z.string().min(10, "Please provide detailed specifications").max(2000),
+});
 
 const Index = () => {
   const navigate = useNavigate();
@@ -14,6 +30,7 @@ const Index = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [currentFeature, setCurrentFeature] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [session, setSession] = useState<Session | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     position: "",
@@ -30,32 +47,84 @@ const Index = () => {
   useEffect(() => {
     setIsVisible(true);
     
+    // Check auth session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+      }
+    );
+    
     // Auto-rotate security features
     const interval = setInterval(() => {
       setCurrentFeature((prev) => (prev + 1) % securityShowcase.length);
     }, 4000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      subscription.unsubscribe();
+    };
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Inquiry Submitted Successfully",
-      description: "Our government liaison team will contact you within 24 hours with a secure communication channel.",
-    });
-    setFormData({ 
-      name: "", 
-      position: "", 
-      agency: "", 
-      department: "", 
-      email: "", 
-      phone: "", 
-      documentType: "",
-      quantity: "",
-      urgency: "",
-      specifications: ""
-    });
+    
+    try {
+      // Validate form data
+      contactFormSchema.parse(formData);
+
+      // Save to database
+      const { error } = await supabase.from("contact_inquiries").insert({
+        name: formData.name,
+        position: formData.position,
+        agency: formData.agency,
+        department: formData.department,
+        email: formData.email,
+        phone: formData.phone,
+        document_type: formData.documentType,
+        quantity: formData.quantity,
+        urgency: formData.urgency,
+        specifications: formData.specifications,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Inquiry Submitted Successfully",
+        description: "Our government liaison team will contact you within 24 hours with a secure communication channel.",
+      });
+      
+      // Reset form
+      setFormData({ 
+        name: "", 
+        position: "", 
+        agency: "", 
+        department: "", 
+        email: "", 
+        phone: "", 
+        documentType: "",
+        quantity: "",
+        urgency: "",
+        specifications: ""
+      });
+    } catch (error: any) {
+      if (error instanceof z.ZodError) {
+        toast({
+          title: "Validation Error",
+          description: error.issues[0].message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: error.message || "Failed to submit inquiry. Please try again.",
+          variant: "destructive",
+        });
+      }
+    }
   };
 
   const securityShowcase = [
@@ -203,9 +272,16 @@ const Index = () => {
             <button onClick={() => navigate("/apply")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
               Apply
             </button>
-            <Button onClick={() => navigate("/auth")} variant="outline" size="icon" className="active:scale-95">
-              <User className="h-4 w-4" />
-            </Button>
+            {session ? (
+              <Button onClick={() => navigate("/dashboard")} variant="default" size="sm" className="active:scale-95">
+                <LayoutDashboard className="mr-2 h-4 w-4" />
+                Dashboard
+              </Button>
+            ) : (
+              <Button onClick={() => navigate("/auth")} variant="outline" size="icon" className="active:scale-95">
+                <User className="h-4 w-4" />
+              </Button>
+            )}
           </nav>
 
           {/* Mobile Menu */}
@@ -242,10 +318,17 @@ const Index = () => {
                   Apply
                 </button>
                 <div className="pt-4 mt-4 border-t border-border space-y-2">
-                  <Button className="w-full active:scale-95" onClick={() => { navigate("/auth"); setMobileMenuOpen(false); }}>
-                    <User className="mr-2 h-4 w-4" />
-                    Login / Register
-                  </Button>
+                  {session ? (
+                    <Button className="w-full active:scale-95" onClick={() => { navigate("/dashboard"); setMobileMenuOpen(false); }}>
+                      <LayoutDashboard className="mr-2 h-4 w-4" />
+                      Dashboard
+                    </Button>
+                  ) : (
+                    <Button className="w-full active:scale-95" onClick={() => { navigate("/auth"); setMobileMenuOpen(false); }}>
+                      <User className="mr-2 h-4 w-4" />
+                      Login / Register
+                    </Button>
+                  )}
                   <Button variant="outline" className="w-full active:scale-95" onClick={() => { navigate("/apply"); setMobileMenuOpen(false); }}>
                     Apply Now
                   </Button>
