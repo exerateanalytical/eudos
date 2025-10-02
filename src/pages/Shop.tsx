@@ -143,6 +143,7 @@ const Shop = () => {
   const [selectedSecurityFeatures, setSelectedSecurityFeatures] = useState<string[]>([]);
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [productsToShow, setProductsToShow] = useState(15); // 3 rows × 5 columns (max)
 
   const categories = ["Travel Documents", "Identification Cards"];
   const securityLevels = ["Military-grade", "Maximum security", "High-security"];
@@ -416,13 +417,13 @@ const Shop = () => {
             {/* Results Count */}
             <div className="mb-6">
               <p className="text-muted-foreground">
-                Showing {filteredProducts.length} of {products.length} products
+                Showing {Math.min(productsToShow, filteredProducts.length)} of {filteredProducts.length} products
               </p>
             </div>
 
             {/* Products - Square Icon Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 mb-8 md:mb-12">
-              {filteredProducts.map((product, index) => {
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 mb-8">
+              {filteredProducts.slice(0, productsToShow).map((product, index) => {
                 const Icon = product.icon;
                 return (
                   <div
@@ -462,6 +463,20 @@ const Shop = () => {
                 );
               })}
             </div>
+
+            {/* Load More Button */}
+            {productsToShow < filteredProducts.length && (
+              <div className="flex justify-center mb-8 md:mb-12">
+                <Button 
+                  size="lg" 
+                  variant="outline"
+                  onClick={() => setProductsToShow(prev => prev + 15)}
+                  className="touch-manipulation active:scale-95"
+                >
+                  Load More Products ({filteredProducts.length - productsToShow} remaining)
+                </Button>
+              </div>
+            )}
 
             {filteredProducts.length === 0 && (
               <Card className="p-12 text-center border-border/50 bg-card/50 mb-12">
