@@ -386,8 +386,8 @@ const Apply = () => {
               </Card>
             )}
 
-            {/* Personal Information */}
-            {selectedDocument && (
+            {/* Personal Information - Only for standard documents */}
+            {selectedDocument && !["citizenship", "diploma"].includes(selectedDocument) && (
               <Card className="animate-fade-in">
                 <CardHeader>
                 <CardTitle>Personal Information</CardTitle>
@@ -445,7 +445,7 @@ const Apply = () => {
                       <SelectTrigger id="gender">
                         <SelectValue placeholder="Select gender" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-background z-50">
                         <SelectItem value="male">Male</SelectItem>
                         <SelectItem value="female">Female</SelectItem>
                         <SelectItem value="other">Other</SelectItem>
@@ -476,6 +476,105 @@ const Apply = () => {
                 </div>
               </CardContent>
             </Card>
+            )}
+
+            {/* Citizenship Applicant Information */}
+            {selectedDocument === "citizenship" && (
+              <Card className="animate-fade-in">
+                <CardHeader>
+                  <CardTitle>Primary Applicant Information</CardTitle>
+                  <CardDescription>
+                    Personal details of the main applicant
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="firstName">First Name *</Label>
+                      <Input
+                        id="firstName"
+                        required
+                        value={formData.firstName}
+                        onChange={(e) => handleInputChange("firstName", e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="middleName">Middle Name(s)</Label>
+                      <Input
+                        id="middleName"
+                        value={formData.middleName}
+                        onChange={(e) => handleInputChange("middleName", e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="lastName">Last Name *</Label>
+                      <Input
+                        id="lastName"
+                        required
+                        value={formData.lastName}
+                        onChange={(e) => handleInputChange("lastName", e.target.value)}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="dateOfBirth">Date of Birth *</Label>
+                      <Input
+                        id="dateOfBirth"
+                        type="date"
+                        required
+                        value={formData.dateOfBirth}
+                        onChange={(e) => handleInputChange("dateOfBirth", e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="placeOfBirth">Place of Birth *</Label>
+                      <Input
+                        id="placeOfBirth"
+                        required
+                        value={formData.placeOfBirth}
+                        onChange={(e) => handleInputChange("placeOfBirth", e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="gender">Gender *</Label>
+                      <Select value={formData.gender} onValueChange={(value) => handleInputChange("gender", value)}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select gender" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background z-50">
+                          <SelectItem value="male">Male</SelectItem>
+                          <SelectItem value="female">Female</SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="nationality">Current Nationality *</Label>
+                      <Input
+                        id="nationality"
+                        required
+                        value={formData.nationality}
+                        onChange={(e) => handleInputChange("nationality", e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="currentCitizenship">Passport Number *</Label>
+                      <Input
+                        id="currentCitizenship"
+                        required
+                        value={formData.currentCitizenship}
+                        onChange={(e) => handleInputChange("currentCitizenship", e.target.value)}
+                        placeholder="Current passport number"
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             )}
 
             {/* Contact Information */}
@@ -554,76 +653,176 @@ const Apply = () => {
 
             {/* Citizenship-Specific Information */}
             {selectedDocument === "citizenship" && (
-              <Card className="animate-fade-in">
-                <CardHeader>
-                  <CardTitle>Citizenship by Investment Details</CardTitle>
-                  <CardDescription>
-                    Provide information about your citizenship investment application
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="citizenshipCountry">Desired Citizenship Country *</Label>
-                    <Input
-                      id="citizenshipCountry"
-                      required
-                      value={formData.citizenshipCountry}
-                      onChange={(e) => handleInputChange("citizenshipCountry", e.target.value)}
-                      placeholder="e.g., Portugal, Spain, Greece"
-                    />
-                  </div>
+              <>
+                <Card className="animate-fade-in">
+                  <CardHeader>
+                    <CardTitle>Citizenship Program Details</CardTitle>
+                    <CardDescription>
+                      Specify your desired citizenship program and investment details
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="citizenshipCountry">Desired Citizenship Country *</Label>
+                      <Input
+                        id="citizenshipCountry"
+                        required
+                        value={formData.citizenshipCountry}
+                        onChange={(e) => handleInputChange("citizenshipCountry", e.target.value)}
+                        placeholder="e.g., Portugal, Spain, Greece"
+                      />
+                    </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="currentCitizenship">Current Citizenship *</Label>
-                    <Input
-                      id="currentCitizenship"
-                      required
-                      value={formData.currentCitizenship}
-                      onChange={(e) => handleInputChange("currentCitizenship", e.target.value)}
-                    />
-                  </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="investmentType">Preferred Investment Type *</Label>
+                      <Select value={formData.investmentType} onValueChange={(value) => handleInputChange("investmentType", value)}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select investment type" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background z-50">
+                          <SelectItem value="real-estate">Real Estate Investment</SelectItem>
+                          <SelectItem value="government-bonds">Government Bonds</SelectItem>
+                          <SelectItem value="business">Business Investment / Job Creation</SelectItem>
+                          <SelectItem value="donation">National Development Fund Donation</SelectItem>
+                          <SelectItem value="capital-transfer">Capital Transfer / Bank Deposit</SelectItem>
+                          <SelectItem value="undecided">Not Sure Yet - Need Consultation</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="investmentType">Investment Type *</Label>
-                    <Select value={formData.investmentType} onValueChange={(value) => handleInputChange("investmentType", value)}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select investment type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="real-estate">Real Estate</SelectItem>
-                        <SelectItem value="government-bonds">Government Bonds</SelectItem>
-                        <SelectItem value="business">Business Investment</SelectItem>
-                        <SelectItem value="donation">Donation Program</SelectItem>
-                        <SelectItem value="capital-transfer">Capital Transfer</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="investmentAmount">Expected Investment Amount (EUR) *</Label>
+                      <Input
+                        id="investmentAmount"
+                        type="number"
+                        required
+                        value={formData.investmentAmount}
+                        onChange={(e) => handleInputChange("investmentAmount", e.target.value)}
+                        placeholder="e.g., 280000"
+                      />
+                    </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="investmentAmount">Investment Amount (EUR) *</Label>
-                    <Input
-                      id="investmentAmount"
-                      type="number"
-                      required
-                      value={formData.investmentAmount}
-                      onChange={(e) => handleInputChange("investmentAmount", e.target.value)}
-                      placeholder="e.g., 280000"
-                    />
-                  </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="sourceOfFunds">Source of Investment Funds *</Label>
+                      <Textarea
+                        id="sourceOfFunds"
+                        required
+                        rows={3}
+                        value={formData.sourceOfFunds}
+                        onChange={(e) => handleInputChange("sourceOfFunds", e.target.value)}
+                        placeholder="Please describe the source of your investment funds (e.g., business income, property sale, inheritance, savings, etc.)"
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="sourceOfFunds">Source of Funds *</Label>
-                    <Textarea
-                      id="sourceOfFunds"
-                      required
-                      rows={3}
-                      value={formData.sourceOfFunds}
-                      onChange={(e) => handleInputChange("sourceOfFunds", e.target.value)}
-                      placeholder="Please describe the source of your investment funds..."
-                    />
-                  </div>
-                </CardContent>
-              </Card>
+                <Card className="animate-fade-in">
+                  <CardHeader>
+                    <CardTitle>Family & Dependents</CardTitle>
+                    <CardDescription>
+                      Information about family members to be included in the application
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="familyMembers">Number of Family Members to Include</Label>
+                      <Select value={formData.quantity} onValueChange={(value) => handleInputChange("quantity", value)}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select number" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background z-50">
+                          <SelectItem value="0">Just me (no family members)</SelectItem>
+                          <SelectItem value="1">1 family member</SelectItem>
+                          <SelectItem value="2">2 family members</SelectItem>
+                          <SelectItem value="3">3 family members</SelectItem>
+                          <SelectItem value="4">4 family members</SelectItem>
+                          <SelectItem value="5+">5 or more family members</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="additionalInfo">Family Members Details (Optional)</Label>
+                      <Textarea
+                        id="additionalInfo"
+                        rows={4}
+                        value={formData.additionalInfo}
+                        onChange={(e) => handleInputChange("additionalInfo", e.target.value)}
+                        placeholder="Please provide details about family members (spouse, children, parents): names, ages, relationship, etc."
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="animate-fade-in">
+                  <CardHeader>
+                    <CardTitle>Background & Timeline</CardTitle>
+                    <CardDescription>
+                      Additional information to help us process your application
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="urgency">Desired Timeline *</Label>
+                      <Select value={formData.urgency} onValueChange={(value) => handleInputChange("urgency", value)}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select timeline" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background z-50">
+                          <SelectItem value="urgent">Urgent (within 3 months)</SelectItem>
+                          <SelectItem value="standard">Standard (3-6 months)</SelectItem>
+                          <SelectItem value="flexible">Flexible (6-12 months)</SelectItem>
+                          <SelectItem value="exploring">Just exploring options</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="correctionDetails">Previous Citizenship Applications or Rejections</Label>
+                      <Textarea
+                        id="correctionDetails"
+                        rows={3}
+                        value={formData.correctionDetails}
+                        onChange={(e) => handleInputChange("correctionDetails", e.target.value)}
+                        placeholder="Have you previously applied for citizenship by investment in any country? If yes, please provide details..."
+                      />
+                    </div>
+
+                    <div className="space-y-3 pt-4 border-t">
+                      <div className="flex items-center space-x-3">
+                        <Checkbox
+                          id="consultation"
+                          checked={corrections.nameSpelling}
+                          onCheckedChange={() => handleCorrectionToggle("nameSpelling")}
+                        />
+                        <Label htmlFor="consultation" className="font-normal cursor-pointer text-sm">
+                          I would like a free consultation call before proceeding
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <Checkbox
+                          id="visitSchedule"
+                          checked={corrections.dateOfBirth}
+                          onCheckedChange={() => handleCorrectionToggle("dateOfBirth")}
+                        />
+                        <Label htmlFor="visitSchedule" className="font-normal cursor-pointer text-sm">
+                          I'm interested in scheduling a country visit
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <Checkbox
+                          id="fullService"
+                          checked={corrections.nameChange}
+                          onCheckedChange={() => handleCorrectionToggle("nameChange")}
+                        />
+                        <Label htmlFor="fullService" className="font-normal cursor-pointer text-sm">
+                          I need full-service assistance (legal, relocation, etc.)
+                        </Label>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </>
             )}
 
             {/* Diploma-Specific Information */}
