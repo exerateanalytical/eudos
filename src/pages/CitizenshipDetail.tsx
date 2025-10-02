@@ -15,7 +15,6 @@ import { useState } from "react";
 const CitizenshipDetail = () => {
   const { country } = useParams();
   const navigate = useNavigate();
-  const [showPaymentDialog, setShowPaymentDialog] = useState(false);
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
   const [escrowConfirmed, setEscrowConfirmed] = useState(false);
 
@@ -444,64 +443,22 @@ const CitizenshipDetail = () => {
             </div>
 
             <div className="flex gap-4 flex-wrap">
-              <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
-                <DialogTrigger asChild>
-                  <Button size="lg">
-                    <ShoppingCart className="h-4 w-4 mr-2" />
-                    Buy Now
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-md">
-                  <DialogHeader>
-                    <DialogTitle>Choose Payment Method</DialogTitle>
-                    <DialogDescription>
-                      Select how you'd like to pay for your {countryData.name} citizenship package
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="space-y-4 py-4">
-                    <Card className="p-4 border-2">
-                      <div className="flex items-center justify-between mb-3">
-                        <h3 className="font-bold text-lg">Package Price</h3>
-                        <Badge variant="default" className="text-lg px-3 py-1">{programPrice}</Badge>
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        Complete citizenship package including passport, driver's license, and national ID card
-                      </p>
-                    </Card>
+              <Button 
+                size="lg"
+                onClick={() => navigate(`/apply?type=citizenship&country=${countryData.name}`)}
+              >
+                <ShoppingCart className="h-4 w-4 mr-2" />
+                Buy Now
+              </Button>
 
-                    <div className="space-y-3">
-                      <Button 
-                        className="w-full h-auto py-4" 
-                        variant="default"
-                        onClick={() => {
-                          setShowPaymentDialog(false);
-                          navigate(`/apply?type=citizenship&country=${countryData.name}`);
-                        }}
-                      >
-                        <div className="text-left w-full">
-                          <div className="font-bold mb-1">Standard Payment</div>
-                          <div className="text-xs opacity-90">Credit/Debit Card, Bank Transfer</div>
-                        </div>
-                      </Button>
-
-                      <Button 
-                        className="w-full h-auto py-4" 
-                        variant="outline"
-                        onClick={() => {
-                          setShowPaymentDialog(false);
-                          setShowCryptoEscrow(true);
-                        }}
-                      >
-                        <Coins className="h-5 w-5 mr-2" />
-                        <div className="text-left w-full">
-                          <div className="font-bold mb-1">Pay with Crypto Escrow</div>
-                          <div className="text-xs opacity-90">Secure escrow protection</div>
-                        </div>
-                      </Button>
-                    </div>
-                  </div>
-                </DialogContent>
-              </Dialog>
+              <Button 
+                size="lg"
+                variant="outline"
+                onClick={() => setShowCryptoEscrow(true)}
+              >
+                <Coins className="h-4 w-4 mr-2" />
+                Pay with Crypto Escrow
+              </Button>
 
               <Dialog open={showCryptoEscrow} onOpenChange={setShowCryptoEscrow}>
                 <DialogContent className="max-w-lg">
