@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Printer, Menu, Home, Package, ShoppingBag, FileText, X, GraduationCap, Globe, Award, CreditCard, FileCheck } from "lucide-react";
+import { Printer, Menu, Home, Package, ShoppingBag, FileText, X, GraduationCap, Globe, Award, CreditCard, FileCheck, User } from "lucide-react";
 import { useState } from "react";
 
 interface MobileNavProps {
@@ -51,7 +51,7 @@ export const MobileNav = ({ currentPage }: MobileNavProps) => {
           </div>
           
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex gap-4 lg:gap-8">
+          <nav className="hidden md:flex gap-4 lg:gap-8 items-center">
             {navItems.map((item) => (
               <button
                 key={item.path}
@@ -65,6 +65,9 @@ export const MobileNav = ({ currentPage }: MobileNavProps) => {
                 {item.label}
               </button>
             ))}
+            <Button onClick={() => navigate("/auth")} variant="outline" size="icon" className="active:scale-95">
+              <User className="h-4 w-4" />
+            </Button>
           </nav>
 
           {/* Mobile Menu */}
@@ -120,6 +123,15 @@ export const MobileNav = ({ currentPage }: MobileNavProps) => {
                   <Button
                     className="w-full active:scale-95 touch-manipulation"
                     size="lg"
+                    onClick={() => handleNavClick("/auth")}
+                  >
+                    <User className="mr-2 h-4 w-4" />
+                    Login / Register
+                  </Button>
+                  <Button
+                    className="w-full active:scale-95 touch-manipulation"
+                    size="lg"
+                    variant="outline"
                     onClick={() => handleNavClick("/apply")}
                   >
                     Apply Now

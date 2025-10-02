@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { FileText, Shield, Clock, CheckCircle, Printer, Building2, Award, Users, Sparkles, CreditCard, GraduationCap, Fingerprint, Cpu, Eye, Radio, Lock, Scan, FileCheck, Database, BookOpen, Menu, X, ShoppingBag } from "lucide-react";
+import { FileText, Shield, Clock, CheckCircle, Printer, Building2, Award, Users, Sparkles, CreditCard, GraduationCap, Fingerprint, Cpu, Eye, Radio, Lock, Scan, FileCheck, Database, BookOpen, Menu, X, ShoppingBag, User } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -178,7 +178,7 @@ const Index = () => {
           </div>
           
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex gap-4 lg:gap-8">
+          <nav className="hidden md:flex gap-4 lg:gap-8 items-center">
             <button onClick={() => navigate("/products")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
               Products
             </button>
@@ -203,6 +203,9 @@ const Index = () => {
             <button onClick={() => navigate("/apply")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
               Apply
             </button>
+            <Button onClick={() => navigate("/auth")} variant="outline" size="icon" className="active:scale-95">
+              <User className="h-4 w-4" />
+            </Button>
           </nav>
 
           {/* Mobile Menu */}
@@ -238,8 +241,12 @@ const Index = () => {
                 <button onClick={() => { navigate("/apply"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
                   Apply
                 </button>
-                <div className="pt-4 mt-4 border-t border-border">
-                  <Button className="w-full active:scale-95" onClick={() => { navigate("/apply"); setMobileMenuOpen(false); }}>
+                <div className="pt-4 mt-4 border-t border-border space-y-2">
+                  <Button className="w-full active:scale-95" onClick={() => { navigate("/auth"); setMobileMenuOpen(false); }}>
+                    <User className="mr-2 h-4 w-4" />
+                    Login / Register
+                  </Button>
+                  <Button variant="outline" className="w-full active:scale-95" onClick={() => { navigate("/apply"); setMobileMenuOpen(false); }}>
                     Apply Now
                   </Button>
                 </div>
