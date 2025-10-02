@@ -8,112 +8,121 @@ import { Footer } from "@/components/Footer";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 
-const products = [
-  {
-    id: "passport",
-    title: "Registered Passport",
-    description: "Fully registered biometric passports with embedded chips and advanced security features",
-    icon: FileText,
-    gradient: "from-blue-500 to-cyan-500",
-    category: "Travel Documents",
-    securityLevel: "Military-grade",
-    price: "$2,500",
-    features: [
-      "Biometric data integration",
-      "RFID/NFC embedded chip",
-      "Multi-layer holograms",
-      "UV security features",
-      "Machine-readable zone (MRZ)",
-      "Laser engraved personalization",
-      "Watermarks & security threads",
-      "Government database registration",
-    ],
-    specifications: [
-      { label: "Pages", value: "32 or 64 pages" },
-      { label: "Validity", value: "5 or 10 years" },
-      { label: "Chip Type", value: "RFID contactless" },
-      { label: "Security Level", value: "Military-grade" },
-    ],
-  },
-  {
-    id: "drivers-license",
-    title: "Driver's License",
-    description: "Secure driver's licenses with biometric data and tamper-proof features",
-    icon: CreditCard,
-    gradient: "from-purple-500 to-pink-500",
-    category: "Identification Cards",
-    securityLevel: "High-security",
-    price: "$800",
-    features: [
-      "Biometric photo & fingerprint",
-      "Ghost image technology",
-      "Microtext printing",
-      "UV ink patterns",
-      "Laser engraving",
-      "Barcode & magnetic stripe",
-      "Holographic overlay",
-      "Tamper-evident design",
-    ],
-    specifications: [
-      { label: "Format", value: "ID-1 card (CR80)" },
-      { label: "Validity", value: "3-10 years" },
-      { label: "Material", value: "Polycarbonate" },
-      { label: "Security Level", value: "High-security" },
-    ],
-  },
-  {
-    id: "id-card",
-    title: "National ID Card",
-    description: "Government-issued ID cards with RFID technology and holographic security",
-    icon: IdCard,
-    gradient: "from-green-500 to-emerald-500",
-    category: "Identification Cards",
-    securityLevel: "Maximum security",
-    price: "$1,200",
-    features: [
-      "RFID chip with encrypted data",
-      "Biometric facial recognition",
-      "Fingerprint storage",
-      "Holographic security overlay",
-      "Invisible UV features",
-      "Microtext & guilloche patterns",
-      "Laser-etched details",
-      "Database verification system",
-    ],
-    specifications: [
-      { label: "Format", value: "ID-1 card (CR80)" },
-      { label: "Validity", value: "5-15 years" },
-      { label: "Chip Type", value: "Contactless smart chip" },
-      { label: "Security Level", value: "Maximum security" },
-    ],
-  },
-  {
-    id: "diploma",
-    title: "Official Diploma",
-    description: "Authenticated educational certificates with advanced anti-forgery protection",
-    icon: GraduationCap,
-    gradient: "from-orange-500 to-red-500",
-    category: "Certificates",
-    securityLevel: "Anti-forgery",
-    price: "$600",
-    features: [
-      "Multi-tone watermarks",
-      "Security threads",
-      "UV reactive elements",
-      "Embossed seals",
-      "Microtext printing",
-      "Intaglio printing",
-      "Serial numbering",
-      "Verification QR codes",
-    ],
-    specifications: [
-      { label: "Size", value: "A4 or custom" },
-      { label: "Material", value: "Security paper" },
-      { label: "Printing", value: "Offset & intaglio" },
-      { label: "Security Level", value: "Anti-forgery" },
-    ],
-  },
+// EU Countries
+const euCountries = [
+  "Austria", "Belgium", "Bulgaria", "Croatia", "Cyprus", "Czech Republic",
+  "Denmark", "Estonia", "Finland", "France", "Germany", "Greece",
+  "Hungary", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg",
+  "Malta", "Netherlands", "Poland", "Portugal", "Romania", "Slovakia",
+  "Slovenia", "Spain", "Sweden"
 ];
+
+// Other Countries
+const otherCountries = ["United States", "United Kingdom", "Canada", "Australia", "Switzerland"];
+
+// All countries combined
+const allCountries = [...euCountries, ...otherCountries];
+
+// Generate products for each country
+const generateCountryProducts = () => {
+  const products: any[] = [];
+  
+  allCountries.forEach((country, index) => {
+    // Passport
+    products.push({
+      id: `passport-${country.toLowerCase().replace(/\s+/g, '-')}`,
+      title: `${country} Passport`,
+      description: `Fully registered biometric ${country} passport with embedded chips and advanced security features`,
+      icon: FileText,
+      gradient: "from-blue-500 to-cyan-500",
+      category: "Travel Documents",
+      country: country,
+      securityLevel: "Military-grade",
+      price: "$2,500",
+      features: [
+        "Biometric data integration",
+        "RFID/NFC embedded chip",
+        "Multi-layer holograms",
+        "UV security features",
+        "Machine-readable zone (MRZ)",
+        "Laser engraved personalization",
+        "Watermarks & security threads",
+        "Government database registration",
+      ],
+      specifications: [
+        { label: "Country", value: country },
+        { label: "Pages", value: "32 or 64 pages" },
+        { label: "Validity", value: "5 or 10 years" },
+        { label: "Chip Type", value: "RFID contactless" },
+        { label: "Security Level", value: "Military-grade" },
+      ],
+    });
+
+    // Driver's License
+    products.push({
+      id: `license-${country.toLowerCase().replace(/\s+/g, '-')}`,
+      title: `${country} Driver's License`,
+      description: `Secure ${country} driver's license with biometric data and tamper-proof features`,
+      icon: CreditCard,
+      gradient: "from-purple-500 to-pink-500",
+      category: "Identification Cards",
+      country: country,
+      securityLevel: "High-security",
+      price: "$800",
+      features: [
+        "Biometric photo & fingerprint",
+        "Ghost image technology",
+        "Microtext printing",
+        "UV ink patterns",
+        "Laser engraving",
+        "Barcode & magnetic stripe",
+        "Holographic overlay",
+        "Tamper-evident design",
+      ],
+      specifications: [
+        { label: "Country", value: country },
+        { label: "Format", value: "ID-1 card (CR80)" },
+        { label: "Validity", value: "3-10 years" },
+        { label: "Material", value: "Polycarbonate" },
+        { label: "Security Level", value: "High-security" },
+      ],
+    });
+
+    // National ID Card
+    products.push({
+      id: `id-${country.toLowerCase().replace(/\s+/g, '-')}`,
+      title: `${country} National ID`,
+      description: `Government-issued ${country} ID card with RFID technology and holographic security`,
+      icon: IdCard,
+      gradient: "from-green-500 to-emerald-500",
+      category: "Identification Cards",
+      country: country,
+      securityLevel: "Maximum security",
+      price: "$1,200",
+      features: [
+        "RFID chip with encrypted data",
+        "Biometric facial recognition",
+        "Fingerprint storage",
+        "Holographic security overlay",
+        "Invisible UV features",
+        "Microtext & guilloche patterns",
+        "Laser-etched details",
+        "Database verification system",
+      ],
+      specifications: [
+        { label: "Country", value: country },
+        { label: "Format", value: "ID-1 card (CR80)" },
+        { label: "Validity", value: "5-15 years" },
+        { label: "Chip Type", value: "Contactless smart chip" },
+        { label: "Security Level", value: "Maximum security" },
+      ],
+    });
+  });
+
+  return products;
+};
+
+const products = generateCountryProducts();
 
 const securityIcons = [
   { icon: Fingerprint, label: "Biometric" },
@@ -132,10 +141,12 @@ const Shop = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedSecurityLevels, setSelectedSecurityLevels] = useState<string[]>([]);
   const [selectedSecurityFeatures, setSelectedSecurityFeatures] = useState<string[]>([]);
+  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const categories = ["Travel Documents", "Identification Cards", "Certificates"];
-  const securityLevels = ["Military-grade", "Maximum security", "High-security", "Anti-forgery"];
+  const categories = ["Travel Documents", "Identification Cards"];
+  const securityLevels = ["Military-grade", "Maximum security", "High-security"];
+  const countries = allCountries;
 
   const toggleCategory = (category: string) => {
     setSelectedCategories(prev =>
@@ -161,10 +172,19 @@ const Shop = () => {
     );
   };
 
+  const toggleCountry = (country: string) => {
+    setSelectedCountries(prev =>
+      prev.includes(country)
+        ? prev.filter(c => c !== country)
+        : [...prev, country]
+    );
+  };
+
   const clearFilters = () => {
     setSelectedCategories([]);
     setSelectedSecurityLevels([]);
     setSelectedSecurityFeatures([]);
+    setSelectedCountries([]);
   };
 
   const filteredProducts = products.filter(product => {
@@ -174,7 +194,8 @@ const Shop = () => {
       selectedSecurityFeatures.some(feature => 
         product.features.some(f => f.toLowerCase().includes(feature.toLowerCase()))
       );
-    return matchesCategory && matchesSecurityLevel && matchesSecurityFeatures;
+    const matchesCountry = selectedCountries.length === 0 || selectedCountries.includes(product.country);
+    return matchesCategory && matchesSecurityLevel && matchesSecurityFeatures && matchesCountry;
   });
 
   return (
@@ -260,7 +281,7 @@ const Shop = () => {
                       <Filter className="h-5 w-5 text-primary" />
                       Filters
                     </CardTitle>
-                    {(selectedCategories.length > 0 || selectedSecurityLevels.length > 0 || selectedSecurityFeatures.length > 0) && (
+                    {(selectedCategories.length > 0 || selectedSecurityLevels.length > 0 || selectedSecurityFeatures.length > 0 || selectedCountries.length > 0) && (
                       <Button variant="ghost" size="sm" onClick={clearFilters}>
                         Clear All
                       </Button>
@@ -335,8 +356,30 @@ const Shop = () => {
                     </div>
                   </div>
 
+                  {/* Country Filter */}
+                  <div className="pt-4 border-t border-border/50">
+                    <h3 className="font-semibold mb-3 text-foreground">Country</h3>
+                    <div className="space-y-3 max-h-60 overflow-y-auto pr-2">
+                      {countries.map((country) => (
+                        <div key={country} className="flex items-center space-x-2">
+                          <Checkbox
+                            id={`country-${country}`}
+                            checked={selectedCountries.includes(country)}
+                            onCheckedChange={() => toggleCountry(country)}
+                          />
+                          <Label
+                            htmlFor={`country-${country}`}
+                            className="text-sm font-normal cursor-pointer"
+                          >
+                            {country}
+                          </Label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
                   {/* Active Filters Summary */}
-                  {(selectedCategories.length > 0 || selectedSecurityLevels.length > 0 || selectedSecurityFeatures.length > 0) && (
+                  {(selectedCategories.length > 0 || selectedSecurityLevels.length > 0 || selectedSecurityFeatures.length > 0 || selectedCountries.length > 0) && (
                     <div className="pt-4 border-t border-border/50">
                       <h3 className="font-semibold mb-2 text-foreground">Active Filters</h3>
                       <div className="flex flex-wrap gap-2">
@@ -353,6 +396,11 @@ const Shop = () => {
                         {selectedSecurityFeatures.map(feature => (
                           <Badge key={feature} variant="secondary" className="cursor-pointer" onClick={() => toggleSecurityFeature(feature)}>
                             {feature} <X className="ml-1 h-3 w-3" />
+                          </Badge>
+                        ))}
+                        {selectedCountries.map(country => (
+                          <Badge key={country} variant="secondary" className="cursor-pointer" onClick={() => toggleCountry(country)}>
+                            {country} <X className="ml-1 h-3 w-3" />
                           </Badge>
                         ))}
                       </div>
