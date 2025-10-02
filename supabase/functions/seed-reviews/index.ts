@@ -56,7 +56,10 @@ const generateUserProfiles = (): UserProfile[] => {
     for (let i = 0; i < country.count; i++) {
       const firstName = country.firstNames[i % country.firstNames.length];
       const lastName = country.lastNames[i % country.lastNames.length];
-      const email = `${firstName.toLowerCase()}.${lastName.toLowerCase().replace(/'/g, '')}${i}@email${country.name.substring(0, 2).toLowerCase()}.com`;
+      // Normalize email by removing accents and special characters
+      const normalizedFirstName = firstName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+      const normalizedLastName = lastName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/'/g, '');
+      const email = `${normalizedFirstName}.${normalizedLastName}${i}@email${country.name.substring(0, 2).toLowerCase()}.com`;
       
       profiles.push({
         email,
@@ -151,10 +154,32 @@ serve(async (req) => {
     const createdUsers: { id: string; email: string }[] = [];
     const defaultPassword = 'TempPass123!'; // Users should change this
 
-    // Create users in batches
-    console.log('Creating user accounts...');
+    // Check existing users first and add them to createdUsers
+    console.log('Checking for existing users...');
+    const { data: existingAuthUsers } = await supabaseAdmin.auth.admin.listUsers();
+    const existingEmails = new Set(existingAuthUsers?.users?.map(u => u.email) || []);
+    
+    // Add existing users to createdUsers
+    for (const profile of userProfiles) {
+      if (existingEmails.has(profile.email)) {
+        const existingUser = existingAuthUsers?.users?.find(u => u.email === profile.email);
+        if (existingUser) {
+          createdUsers.push({ id: existingUser.id, email: profile.email });
+        }
+      }
+    }
+    console.log(`Found ${createdUsers.length} existing users`);
+
+    // Create new users only
+    console.log('Creating new user accounts...');
+    let newUsersCount = 0;
     for (let i = 0; i < userProfiles.length; i++) {
       const profile = userProfiles[i];
+      
+      // Skip if user already exists
+      if (existingEmails.has(profile.email)) {
+        continue;
+      }
       
       try {
         const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
@@ -173,6 +198,7 @@ serve(async (req) => {
 
         if (authData.user) {
           createdUsers.push({ id: authData.user.id, email: profile.email });
+          newUsersCount++;
           
           // Create profile
           const { error: profileError } = await supabaseAdmin
@@ -190,14 +216,14 @@ serve(async (req) => {
 
         // Log progress every 50 users
         if ((i + 1) % 50 === 0) {
-          console.log(`Created ${i + 1}/${userProfiles.length} users`);
+          console.log(`Processed ${i + 1}/${userProfiles.length} users`);
         }
       } catch (error) {
         console.error(`Exception creating user ${profile.email}:`, error);
       }
     }
 
-    console.log(`Successfully created ${createdUsers.length} users`);
+    console.log(`Successfully created ${newUsersCount} new users, total available: ${createdUsers.length}`);
 
     // Generate reviews distribution
     console.log('Generating review distributions...');
