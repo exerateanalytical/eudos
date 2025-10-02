@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { FileText, Shield, Clock, CheckCircle, Printer, Building2, Award, Users, Sparkles } from "lucide-react";
+import { FileText, Shield, Clock, CheckCircle, Printer, Building2, Award, Users, Sparkles, CreditCard, GraduationCap, Fingerprint, Cpu, Eye, Radio, Lock, Scan, FileCheck, Database, BookOpen } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -32,29 +32,41 @@ const Index = () => {
 
   const services = [
     {
-      icon: FileText,
-      title: "Government Documents",
-      description: "Certificates, licenses, permits, and official forms with security features",
+      icon: BookOpen,
+      title: "Registered Passports",
+      description: "Fully registered biometric passports with embedded chips, holograms, UV features, and machine-readable zones",
       color: "from-blue-500 to-cyan-500"
     },
     {
-      icon: Building2,
-      title: "Corporate Materials",
-      description: "Letterheads, certificates, contracts, and branded official documents",
+      icon: CreditCard,
+      title: "Driver's Licenses",
+      description: "Secure driver's licenses with biometric data, microtext, ghost images, and laser engraving",
       color: "from-purple-500 to-pink-500"
     },
     {
       icon: Shield,
-      title: "Secure Printing",
-      description: "Watermarks, holograms, microtext, and other security printing features",
+      title: "National ID Cards",
+      description: "Government-issued ID cards with RFID chips, holographic overlays, and advanced security printing",
       color: "from-green-500 to-emerald-500"
     },
     {
-      icon: Printer,
-      title: "High-Volume Printing",
-      description: "Large-scale production with consistent quality and quick turnaround",
+      icon: GraduationCap,
+      title: "Official Diplomas",
+      description: "Authenticated educational certificates with watermarks, security threads, and tamper-proof features",
       color: "from-orange-500 to-red-500"
     }
+  ];
+
+  const securityFeatures = [
+    { icon: Fingerprint, title: "Biometric Data", description: "Fingerprint and facial recognition integration" },
+    { icon: Cpu, title: "Embedded Chips", description: "RFID/NFC contactless smart chips with encrypted data" },
+    { icon: Sparkles, title: "Holograms", description: "Multi-layer holographic security overlays" },
+    { icon: Eye, title: "UV Features", description: "Invisible UV ink patterns visible under black light" },
+    { icon: Scan, title: "Microtext", description: "Microscopic text printing impossible to replicate" },
+    { icon: Radio, title: "Laser Engraving", description: "Permanent laser-etched personalization" },
+    { icon: FileCheck, title: "Watermarks", description: "Multi-tone watermarks with security threads" },
+    { icon: Lock, title: "Tamper-Proof", description: "Self-destructing security features if altered" },
+    { icon: Database, title: "Database Registration", description: "Real-time verification through secure government databases" }
   ];
 
   const features = [
@@ -111,19 +123,19 @@ const Index = () => {
         
         <div className={`container mx-auto text-center max-w-5xl relative z-10 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8 animate-fade-in">
-            <Sparkles className="h-4 w-4 text-primary" />
-            <span className="text-sm font-medium text-primary">Trusted by 500+ Organizations</span>
+            <Shield className="h-4 w-4 text-primary" />
+            <span className="text-sm font-medium text-primary">Licensed & Authorized • Government Agencies Only</span>
           </div>
           
           <h2 className="text-5xl md:text-7xl font-bold text-foreground mb-6 leading-tight animate-fade-in-up">
-            Official Document Printing
+            Official Government Document
             <span className="block bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent mt-2">
-              Solutions
+              Printing Services
             </span>
           </h2>
           
           <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-            Trusted by government agencies and organizations worldwide for secure, high-quality printing of official documents
+            Licensed facility serving government agencies worldwide with registered passports, ID cards, driver's licenses, and diplomas featuring military-grade security
           </p>
           
           <div className="flex gap-4 justify-center flex-wrap animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
@@ -183,9 +195,13 @@ const Index = () => {
       <section id="services" className="py-24 px-4 bg-background relative">
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Our Services</h2>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
+              <Building2 className="h-4 w-4 text-primary" />
+              <span className="text-sm font-medium text-primary">Government Agencies & Organizations Only</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Government Document Services</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Comprehensive printing solutions for official documents with advanced security features
+              Fully registered and verifiable documents with military-grade security features
             </p>
           </div>
           
@@ -217,37 +233,108 @@ const Index = () => {
         </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="py-24 px-4 bg-gradient-to-b from-background to-secondary/20 relative overflow-hidden">
+      {/* Security Features Section */}
+      <section className="py-24 px-4 bg-gradient-to-b from-background to-secondary/20 relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]" />
         
+        <div className="container mx-auto relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Advanced Security Features</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              What sets our documents apart from other printing laboratories - every document includes multiple layers of protection
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {securityFeatures.map((feature, index) => (
+              <Card 
+                key={index} 
+                className="group hover:shadow-xl transition-all duration-300 border-border/50 bg-card/50 backdrop-blur-sm hover:bg-card animate-scale-in"
+                style={{ animationDelay: `${index * 0.05}s` }}
+              >
+                <CardHeader>
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300">
+                      <feature.icon className="h-5 w-5 text-primary" />
+                    </div>
+                    <CardTitle className="text-lg">{feature.title}</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground text-sm">{feature.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Registration & Verification */}
+          <div className="mt-16 max-w-4xl mx-auto">
+            <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent backdrop-blur-sm">
+              <CardHeader>
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-3 rounded-xl bg-primary/20">
+                    <Database className="h-6 w-6 text-primary" />
+                  </div>
+                  <CardTitle className="text-2xl">Registration & Verification System</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground leading-relaxed mb-4">
+                  Every document we produce is registered in secure government databases with real-time verification capabilities. Our authentication system allows instant validation through multiple channels including:
+                </p>
+                <ul className="space-y-2 text-muted-foreground">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
+                    <span>Centralized database registration with unique serial numbers</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
+                    <span>RFID/NFC chip verification through authorized readers</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
+                    <span>Machine-readable zones compatible with international standards</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
+                    <span>Secure API access for government verification systems</span>
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="py-24 px-4 bg-background relative overflow-hidden">
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Why Choose Us</h2>
-            <p className="text-xl text-muted-foreground">Excellence in every print</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Why We're Different</h2>
+            <p className="text-xl text-muted-foreground">Licensed, authorized, and uncompromising on security</p>
           </div>
           
           <div className="grid md:grid-cols-2 gap-8">
             {[
               {
-                title: "Industry Experience",
-                description: "Over 20 years serving government agencies and corporations with secure document printing solutions",
-                icon: Users
-              },
-              {
-                title: "Advanced Security",
-                description: "State-of-the-art security features including watermarks, holograms, and specialized inks",
-                icon: Shield
-              },
-              {
-                title: "Quality Assurance",
-                description: "ISO certified processes ensuring consistent quality and compliance with international standards",
+                title: "Licensed & Authorized",
+                description: "Officially licensed by government authorities to produce registered documents. We hold all necessary certifications and operate under strict regulatory oversight",
                 icon: Award
               },
               {
-                title: "Confidentiality",
-                description: "Strict data protection protocols and secure facilities for handling sensitive documents",
-                icon: CheckCircle
+                title: "Military-Grade Security",
+                description: "Security features exceed international standards - combining physical, digital, and biometric layers that are virtually impossible to replicate or forge",
+                icon: Shield
+              },
+              {
+                title: "Database Integration",
+                description: "Direct integration with government verification systems ensures every document is traceable, verifiable, and can be authenticated in real-time globally",
+                icon: Database
+              },
+              {
+                title: "Government-Only Service",
+                description: "We exclusively serve government agencies and authorized organizations. Strict vetting processes and secure facilities ensure confidentiality and compliance",
+                icon: Building2
               }
             ].map((item, index) => (
               <Card 
