@@ -595,14 +595,14 @@ const CitizenshipDetail = () => {
       <section className="py-16 px-4">
         <div className="container mx-auto max-w-6xl">
           <Tabs defaultValue="investment" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 lg:grid-cols-7 mb-8">
-              <TabsTrigger value="investment">Investment Options</TabsTrigger>
-              <TabsTrigger value="benefits">Benefits</TabsTrigger>
-              <TabsTrigger value="requirements">Requirements</TabsTrigger>
-              <TabsTrigger value="process">Process</TabsTrigger>
-              <TabsTrigger value="lifestyle">Lifestyle</TabsTrigger>
-              <TabsTrigger value="business">Business</TabsTrigger>
-              <TabsTrigger value="faq">FAQ</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 lg:grid-cols-7 mb-8 bg-primary/10">
+              <TabsTrigger value="investment" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Investment Options</TabsTrigger>
+              <TabsTrigger value="benefits" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Benefits</TabsTrigger>
+              <TabsTrigger value="requirements" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Requirements</TabsTrigger>
+              <TabsTrigger value="process" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Process</TabsTrigger>
+              <TabsTrigger value="lifestyle" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Lifestyle</TabsTrigger>
+              <TabsTrigger value="business" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Business</TabsTrigger>
+              <TabsTrigger value="faq" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">FAQ</TabsTrigger>
             </TabsList>
 
             <TabsContent value="investment">
