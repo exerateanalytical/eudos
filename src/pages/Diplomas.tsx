@@ -680,59 +680,105 @@ const Diplomas = () => {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
+                  {/* Price Range Filter */}
+                  <div>
+                    <h3 className="font-semibold mb-3 text-foreground">Price Range</h3>
+                    <div className="space-y-4">
+                      <Slider
+                        min={4000}
+                        max={15000}
+                        step={500}
+                        value={priceRange}
+                        onValueChange={setPriceRange}
+                        className="w-full"
+                      />
+                      <div className="flex justify-between text-sm text-muted-foreground">
+                        <span>${priceRange[0].toLocaleString()}</span>
+                        <span>${priceRange[1].toLocaleString()}</span>
+                      </div>
+                    </div>
+                  </div>
 
-          {/* Hero Section */}
-          <section className="relative py-16 px-4 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-background" />
-        <div className="container mx-auto relative z-10">
-          <div className="text-center max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full mb-6">
-              <GraduationCap className="h-5 w-5 text-primary" />
-              <span className="text-sm font-medium text-primary">Premium Diplomas</span>
-            </div>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-              500+ Top Global Universities & Colleges
-            </h1>
-            <p className="text-lg text-muted-foreground mb-8">
-              Premium authentic diplomas from the world's most prestigious institutions. 
-              100+ American universities, 100 Canadian universities, 75+ EU universities, 100 American community colleges, 75+ Canadian colleges, and 35+ EU technical institutions.
-              Complete package with transcript, thesis, student ID, and database registration. Fast 2-week delivery worldwide.
-            </p>
-            <div className="flex gap-4 justify-center flex-wrap">
-              <Button size="lg" onClick={() => navigate("/apply")}>
-                <ShoppingCart className="h-4 w-4 mr-2" />
-                Order Now
-              </Button>
-              <Button size="lg" variant="outline" onClick={() => navigate("/faq")}>
-                Learn More
-              </Button>
-            </div>
-            </div>
-          </div>
-        </section>
+                  {/* Institution Type Filter */}
+                  <div className="pt-4 border-t border-border/50">
+                    <h3 className="font-semibold mb-3 text-foreground">Institution Type</h3>
+                    <div className="space-y-3">
+                      {types.map((type) => (
+                        <div key={type} className="flex items-center space-x-2">
+                          <Checkbox
+                            id={`type-${type}`}
+                            checked={selectedTypes.includes(type)}
+                            onCheckedChange={() => toggleType(type)}
+                          />
+                          <Label
+                            htmlFor={`type-${type}`}
+                            className="text-sm font-normal cursor-pointer"
+                          >
+                            {type}
+                            <span className="text-muted-foreground ml-1">
+                              ({universities.filter(u => (u.type || "University") === type).length})
+                            </span>
+                          </Label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
 
-        {/* Search Section */}
-        <section className="py-8 px-4 border-b">
-          <div className="container mx-auto max-w-2xl">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Search universities by name or location..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 h-12"
-              />
-            </div>
-            <p className="text-sm text-muted-foreground mt-2 text-center">
-              Showing {filteredUniversities.length} of {universities.length} universities
-            </p>
-          </div>
-        </section>
+                  {/* Country Filter */}
+                  <div className="pt-4 border-t border-border/50">
+                    <h3 className="font-semibold mb-3 text-foreground">Country</h3>
+                    <div className="space-y-3 max-h-60 overflow-y-auto pr-2">
+                      {countries.map((country) => (
+                        <div key={country} className="flex items-center space-x-2">
+                          <Checkbox
+                            id={`country-${country}`}
+                            checked={selectedCountries.includes(country)}
+                            onCheckedChange={() => toggleCountry(country)}
+                          />
+                          <Label
+                            htmlFor={`country-${country}`}
+                            className="text-sm font-normal cursor-pointer"
+                          >
+                            {country}
+                            <span className="text-muted-foreground ml-1">
+                              ({universities.filter(u => (u.country || "USA") === country).length})
+                            </span>
+                          </Label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
 
-        {/* Universities Grid */}
-        <section className="py-16 px-4">
-          <div className="container mx-auto max-w-7xl">
+                  {/* Active Filters Summary */}
+                  {(selectedCountries.length > 0 || selectedTypes.length > 0 || priceRange[0] !== 4000 || priceRange[1] !== 15000) && (
+                    <div className="pt-4 border-t border-border/50">
+                      <h3 className="font-semibold mb-2 text-foreground">Active Filters</h3>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedTypes.map(type => (
+                          <Badge key={type} variant="secondary" className="cursor-pointer" onClick={() => toggleType(type)}>
+                            {type} <X className="ml-1 h-3 w-3" />
+                          </Badge>
+                        ))}
+                        {selectedCountries.map(country => (
+                          <Badge key={country} variant="secondary" className="cursor-pointer" onClick={() => toggleCountry(country)}>
+                            {country} <X className="ml-1 h-3 w-3" />
+                          </Badge>
+                        ))}
+                        {(priceRange[0] !== 4000 || priceRange[1] !== 15000) && (
+                          <Badge variant="secondary" className="cursor-pointer" onClick={() => setPriceRange([4000, 15000])}>
+                            ${priceRange[0].toLocaleString()} - ${priceRange[1].toLocaleString()} <X className="ml-1 h-3 w-3" />
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+          </aside>
+
+          {/* Universities Grid */}
+          <div className="lg:col-span-3">
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredUniversities.map((university, index) => (
                 <Card 
