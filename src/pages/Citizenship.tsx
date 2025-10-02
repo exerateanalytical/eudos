@@ -1,12 +1,20 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Globe, MapPin, Users, TrendingUp, Home, GraduationCap, Building2, Plane, Shield, Award, CheckCircle, ArrowRight, Star, FileText, CreditCard, IdCard } from "lucide-react";
+import { Globe, MapPin, Users, TrendingUp, Home, GraduationCap, Building2, Plane, Shield, Award, CheckCircle, ArrowRight, Star, FileText, CreditCard, IdCard, Search, Filter, X } from "lucide-react";
 import { SecurityFeaturesSection } from "@/components/SecurityFeaturesSection";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 const Citizenship = () => {
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const residencePrograms = [
     {
@@ -313,10 +321,66 @@ const Citizenship = () => {
     { icon: Users, title: "Donation Programs", description: "Contributions to national development funds" }
   ];
 
+  const regions = [
+    { id: "europe", label: "Europe", count: residencePrograms.filter(p => ["Austria", "Belgium", "Cyprus", "Greece", "Ireland", "Italy", "Malta", "Netherlands", "Portugal", "Spain", "Switzerland", "United Kingdom"].includes(p.country)).length },
+    { id: "americas", label: "Americas", count: residencePrograms.filter(p => ["United States", "Canada", "Brazil", "Argentina"].includes(p.country)).length },
+    { id: "asia-pacific", label: "Asia-Pacific", count: residencePrograms.filter(p => ["Australia", "New Zealand", "Singapore"].includes(p.country)).length },
+  ];
+
+  const types = [
+    { id: "investment", label: "Investment Program" },
+    { id: "golden-visa", label: "Golden Visa" },
+    { id: "skilled-migration", label: "Skilled Migration" },
+  ];
+
+  const toggleRegion = (regionId: string) => {
+    setSelectedRegions(prev =>
+      prev.includes(regionId)
+        ? prev.filter(id => id !== regionId)
+        : [...prev, regionId]
+    );
+  };
+
+  const toggleType = (typeId: string) => {
+    setSelectedTypes(prev =>
+      prev.includes(typeId)
+        ? prev.filter(id => id !== typeId)
+        : [...prev, typeId]
+    );
+  };
+
+  const filteredPrograms = residencePrograms.filter(program => {
+    const matchesSearch = program.country.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         program.program.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    if (selectedRegions.length === 0 && selectedTypes.length === 0) return matchesSearch;
+
+    let matchesRegion = selectedRegions.length === 0;
+    if (selectedRegions.includes("europe")) {
+      matchesRegion = matchesRegion || ["Austria", "Belgium", "Cyprus", "Greece", "Ireland", "Italy", "Malta", "Netherlands", "Portugal", "Spain", "Switzerland", "United Kingdom"].includes(program.country);
+    }
+    if (selectedRegions.includes("americas")) {
+      matchesRegion = matchesRegion || ["United States", "Canada", "Brazil", "Argentina"].includes(program.country);
+    }
+    if (selectedRegions.includes("asia-pacific")) {
+      matchesRegion = matchesRegion || ["Australia", "New Zealand", "Singapore"].includes(program.country);
+    }
+
+    const matchesType = selectedTypes.length === 0 || selectedTypes.some(type => {
+      if (type === "investment") return program.investment.includes("€") || program.investment.includes("$");
+      if (type === "golden-visa") return program.program.toLowerCase().includes("golden");
+      if (type === "skilled-migration") return program.program.toLowerCase().includes("skilled");
+      return true;
+    });
+
+    return matchesSearch && matchesRegion && matchesType;
+  });
+
+
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="relative py-20 px-4 overflow-hidden">
+      {/* Hero Section - Reduced by 1/2 */}
+      <section className="relative py-10 md:py-12 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
         <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]" />
         
@@ -423,7 +487,7 @@ const Citizenship = () => {
         </div>
       </section>
 
-      {/* Programs Grid */}
+      {/* Main Content with Sidebar */}
       <section id="programs" className="py-16 px-4 bg-card/30">
         <div className="container mx-auto">
           <div className="text-center mb-12">
@@ -435,67 +499,171 @@ const Citizenship = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {residencePrograms.map((program, index) => (
-              <Card key={index} className="border-2 hover:shadow-xl transition-all duration-300 group overflow-hidden">
-                {/* Country Header with Gradient */}
-                <div className={`relative h-32 bg-gradient-to-br ${program.gradient} flex items-center justify-center`}>
-                  <div className="absolute inset-0 bg-black/10" />
-                  <div className="relative z-10 text-center">
-                    <div className="text-6xl mb-2 drop-shadow-lg">{program.flag}</div>
-                    <Shield className="h-8 w-8 text-white/80 mx-auto" />
+          <div className="flex gap-6">
+            {/* Sidebar */}
+            <aside className={`${isSidebarOpen ? 'block' : 'hidden'} lg:block lg:w-64 flex-shrink-0`}>
+              <div className="sticky top-4 space-y-6">
+                {/* Search */}
+                <div>
+                  <h3 className="text-sm font-semibold mb-3 text-foreground">Search</h3>
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search countries..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-9"
+                    />
                   </div>
-                  <Badge variant="secondary" className="absolute top-3 right-3">
-                    <Star className="h-3 w-3 mr-1 fill-primary text-primary" />
-                    Premium
-                  </Badge>
                 </div>
 
-                <CardHeader>
-                  <CardTitle className="text-2xl group-hover:text-primary transition-colors text-center">
-                    {program.country}
-                  </CardTitle>
-                  <CardDescription className="text-sm leading-relaxed">
-                    {program.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="bg-primary/5 rounded-lg p-3 border border-primary/20">
-                      <p className="text-xs text-muted-foreground mb-1">Minimum Investment</p>
-                      <p className="text-lg font-bold text-primary">{program.minInvestment}</p>
-                    </div>
-
-                    <div className="space-y-2">
-                      <p className="text-sm font-semibold text-foreground">Key Benefits:</p>
-                      {program.benefits.map((benefit, idx) => (
-                        <div key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
-                          <span>{benefit}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="flex gap-2">
-                      <Button 
-                        className="flex-1 group/btn" 
-                        onClick={() => navigate(`/apply?type=citizenship&country=${program.country}`)}
-                      >
-                        Apply Now
-                        <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                      </Button>
-                      <Button 
-                        variant="outline"
-                        className="flex-1"
-                        onClick={() => navigate(`/citizenship/${program.country.toLowerCase().replace(/ /g, '-')}`)}
-                      >
-                        Learn More
-                      </Button>
-                    </div>
+                {/* Region Filter */}
+                <div>
+                  <h3 className="text-sm font-semibold mb-3 text-foreground">Region</h3>
+                  <div className="space-y-3">
+                    {regions.map((region) => (
+                      <div key={region.id} className="flex items-center gap-2">
+                        <Checkbox
+                          id={region.id}
+                          checked={selectedRegions.includes(region.id)}
+                          onCheckedChange={() => toggleRegion(region.id)}
+                        />
+                        <Label
+                          htmlFor={region.id}
+                          className="text-sm cursor-pointer flex items-center justify-between flex-1"
+                        >
+                          <span>{region.label}</span>
+                          <Badge variant="secondary" className="ml-2">
+                            {region.count}
+                          </Badge>
+                        </Label>
+                      </div>
+                    ))}
                   </div>
-                </CardContent>
-              </Card>
-            ))}
+                </div>
+
+                {/* Program Type Filter */}
+                <div>
+                  <h3 className="text-sm font-semibold mb-3 text-foreground">Program Type</h3>
+                  <div className="space-y-3">
+                    {types.map((type) => (
+                      <div key={type.id} className="flex items-center gap-2">
+                        <Checkbox
+                          id={type.id}
+                          checked={selectedTypes.includes(type.id)}
+                          onCheckedChange={() => toggleType(type.id)}
+                        />
+                        <Label
+                          htmlFor={type.id}
+                          className="text-sm cursor-pointer"
+                        >
+                          {type.label}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Clear Filters */}
+                {(searchTerm || selectedRegions.length > 0 || selectedTypes.length > 0) && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setSearchTerm("");
+                      setSelectedRegions([]);
+                      setSelectedTypes([]);
+                    }}
+                    className="w-full"
+                  >
+                    <X className="h-4 w-4 mr-2" />
+                    Clear Filters
+                  </Button>
+                )}
+              </div>
+            </aside>
+
+            {/* Main Content */}
+            <div className="flex-1">
+              {/* Mobile Filter Toggle */}
+              <div className="lg:hidden mb-4 flex items-center justify-between">
+                <p className="text-sm text-muted-foreground">
+                  {filteredPrograms.length} program{filteredPrograms.length !== 1 ? 's' : ''} found
+                </p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                >
+                  <Filter className="h-4 w-4 mr-2" />
+                  Filters
+                </Button>
+              </div>
+
+              {/* Programs Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                {filteredPrograms.map((program, index) => (
+                  <Card key={index} className="border-2 hover:shadow-xl transition-all duration-300 group overflow-hidden">
+                    {/* Country Header with Gradient */}
+                    <div className={`relative h-32 bg-gradient-to-br ${program.gradient} flex items-center justify-center`}>
+                      <div className="absolute inset-0 bg-black/10" />
+                      <div className="relative z-10 text-center">
+                        <div className="text-6xl mb-2 drop-shadow-lg">{program.flag}</div>
+                        <Shield className="h-8 w-8 text-white/80 mx-auto" />
+                      </div>
+                      <Badge variant="secondary" className="absolute top-3 right-3">
+                        <Star className="h-3 w-3 mr-1 fill-primary text-primary" />
+                        Premium
+                      </Badge>
+                    </div>
+
+                    <CardHeader>
+                      <CardTitle className="text-2xl group-hover:text-primary transition-colors text-center">
+                        {program.country}
+                      </CardTitle>
+                      <CardDescription className="text-sm leading-relaxed">
+                        {program.description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div className="bg-primary/5 rounded-lg p-3 border border-primary/20">
+                          <p className="text-xs text-muted-foreground mb-1">Minimum Investment</p>
+                          <p className="text-lg font-bold text-primary">{program.minInvestment}</p>
+                        </div>
+
+                        <div className="space-y-2">
+                          <p className="text-sm font-semibold text-foreground">Key Benefits:</p>
+                          {program.benefits.map((benefit, idx) => (
+                            <div key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
+                              <span>{benefit}</span>
+                            </div>
+                          ))}
+                        </div>
+
+                        <div className="flex gap-2">
+                          <Button 
+                            className="flex-1 group/btn" 
+                            onClick={() => navigate(`/apply?type=citizenship&country=${program.country}`)}
+                          >
+                            Apply Now
+                            <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                          </Button>
+                          <Button 
+                            variant="outline"
+                            className="flex-1"
+                            onClick={() => navigate(`/citizenship/${program.country.toLowerCase().replace(/ /g, '-')}`)}
+                          >
+                            Learn More
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -531,8 +699,9 @@ const Citizenship = () => {
                     <p className="text-muted-foreground">{item.description}</p>
                   </div>
                 </CardContent>
-              </Card>
-            ))}
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
       </section>

@@ -55,11 +55,18 @@ const DriversLicense = () => {
   const [selectedLicense, setSelectedLicense] = useState<any>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
+  const [selectedSecurityLevels, setSelectedSecurityLevels] = useState<string[]>([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const regions = [
     { id: "eu", label: "European Union", count: euCountries.length },
     { id: "other", label: "Other Countries", count: otherCountries.length },
+  ];
+
+  const securityLevels = [
+    { id: "high", label: "High-Security" },
+    { id: "biometric", label: "Biometric Data" },
+    { id: "holographic", label: "Holographic Features" },
   ];
 
   const toggleRegion = (regionId: string) => {
@@ -70,18 +77,28 @@ const DriversLicense = () => {
     );
   };
 
+  const toggleSecurityLevel = (levelId: string) => {
+    setSelectedSecurityLevels(prev =>
+      prev.includes(levelId)
+        ? prev.filter(id => id !== levelId)
+        : [...prev, levelId]
+    );
+  };
+
   const filteredLicenses = driversLicenses.filter(license => {
     const matchesSearch = license.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          license.country.toLowerCase().includes(searchTerm.toLowerCase());
     
-    if (selectedRegions.length === 0) return matchesSearch;
+    if (selectedRegions.length === 0 && selectedSecurityLevels.length === 0) return matchesSearch;
 
     const isEU = euCountries.includes(license.country);
-    const matchesRegion = 
+    const matchesRegion = selectedRegions.length === 0 ||
       (selectedRegions.includes("eu") && isEU) ||
       (selectedRegions.includes("other") && !isEU);
 
-    return matchesSearch && matchesRegion;
+    const matchesSecurityLevel = selectedSecurityLevels.length === 0 || true; // All licenses have all security features
+
+    return matchesSearch && matchesRegion && matchesSecurityLevel;
   });
 
   const handleOrderClick = (license: any) => {
@@ -175,14 +192,37 @@ const DriversLicense = () => {
                   </div>
                 </div>
 
+                {/* Security Level Filter */}
+                <div>
+                  <h3 className="text-sm font-semibold mb-3 text-foreground">Security Features</h3>
+                  <div className="space-y-3">
+                    {securityLevels.map((level) => (
+                      <div key={level.id} className="flex items-center gap-2">
+                        <Checkbox
+                          id={level.id}
+                          checked={selectedSecurityLevels.includes(level.id)}
+                          onCheckedChange={() => toggleSecurityLevel(level.id)}
+                        />
+                        <Label
+                          htmlFor={level.id}
+                          className="text-sm cursor-pointer"
+                        >
+                          {level.label}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
                 {/* Clear Filters */}
-                {(searchTerm || selectedRegions.length > 0) && (
+                {(searchTerm || selectedRegions.length > 0 || selectedSecurityLevels.length > 0) && (
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => {
                       setSearchTerm("");
                       setSelectedRegions([]);
+                      setSelectedSecurityLevels([]);
                     }}
                     className="w-full"
                   >
