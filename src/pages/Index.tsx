@@ -200,6 +200,9 @@ const Index = () => {
             <button onClick={() => navigate("/blog")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
               Blog
             </button>
+            <button onClick={() => navigate("/citizenship")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
+              Citizenship
+            </button>
           </nav>
 
           {/* Mobile Menu */}
@@ -231,6 +234,9 @@ const Index = () => {
                 </button>
                 <button onClick={() => { navigate("/blog"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
                   Blog
+                </button>
+                <button onClick={() => { navigate("/citizenship"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
+                  Citizenship
                 </button>
                 <div className="pt-4 mt-4 border-t border-border">
                   <Button className="w-full active:scale-95" onClick={() => { navigate("/apply"); setMobileMenuOpen(false); }}>

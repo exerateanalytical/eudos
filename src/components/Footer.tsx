@@ -49,6 +49,11 @@ export const Footer = () => {
                   Apply Now
                 </button>
               </li>
+              <li>
+                <button onClick={() => navigate("/citizenship")} className="text-muted-foreground hover:text-primary transition-colors">
+                  Citizenship
+                </button>
+              </li>
             </ul>
           </div>
 
