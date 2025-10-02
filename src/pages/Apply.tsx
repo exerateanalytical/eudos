@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,17 +9,21 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "@/hooks/use-toast";
-import { FileText, CreditCard, IdCard, AlertCircle } from "lucide-react";
+import { FileText, CreditCard, IdCard, AlertCircle, Globe, GraduationCap } from "lucide-react";
 import { Footer } from "@/components/Footer";
 
 const documentTypes = [
   { id: "passport", label: "Passport", icon: FileText },
   { id: "drivers-license", label: "Driver's License", icon: CreditCard },
   { id: "id-card", label: "National ID Card", icon: IdCard },
+  { id: "citizenship", label: "Citizenship by Investment", icon: Globe },
+  { id: "diploma", label: "Academic Diploma/Certificate", icon: GraduationCap },
 ];
+
 
 const Apply = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [selectedDocument, setSelectedDocument] = useState("");
   const [applicationType, setApplicationType] = useState<"new" | "replacement">("new");
   const [replacementReason, setReplacementReason] = useState("");
@@ -44,6 +48,20 @@ const Apply = () => {
     address: "",
     city: "",
     postalCode: "",
+    country: "",
+    
+    // Citizenship-specific fields
+    citizenshipCountry: "",
+    investmentType: "",
+    investmentAmount: "",
+    sourceOfFunds: "",
+    currentCitizenship: "",
+    
+    // Diploma-specific fields
+    institutionName: "",
+    degreeType: "",
+    fieldOfStudy: "",
+    graduationYear: "",
     
     // Government Agency Information
     agencyName: "",
@@ -64,6 +82,18 @@ const Apply = () => {
     quantity: "",
     additionalInfo: "",
   });
+
+  useEffect(() => {
+    const type = searchParams.get("type");
+    const country = searchParams.get("country");
+    
+    if (type === "citizenship") {
+      setSelectedDocument("citizenship");
+      if (country) {
+        setFormData(prev => ({ ...prev, citizenshipCountry: country }));
+      }
+    }
+  }, [searchParams]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -488,7 +518,8 @@ const Apply = () => {
                   />
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
+
+                <div className="grid md:grid-cols-3 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="city">City *</Label>
                     <Input
@@ -507,13 +538,164 @@ const Apply = () => {
                       onChange={(e) => handleInputChange("postalCode", e.target.value)}
                     />
                   </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="country">Country *</Label>
+                    <Input
+                      id="country"
+                      required
+                      value={formData.country}
+                      onChange={(e) => handleInputChange("country", e.target.value)}
+                    />
+                  </div>
                 </div>
               </CardContent>
             </Card>
             )}
 
-            {/* Government Agency Information */}
-            {selectedDocument && (
+            {/* Citizenship-Specific Information */}
+            {selectedDocument === "citizenship" && (
+              <Card className="animate-fade-in">
+                <CardHeader>
+                  <CardTitle>Citizenship by Investment Details</CardTitle>
+                  <CardDescription>
+                    Provide information about your citizenship investment application
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="citizenshipCountry">Desired Citizenship Country *</Label>
+                    <Input
+                      id="citizenshipCountry"
+                      required
+                      value={formData.citizenshipCountry}
+                      onChange={(e) => handleInputChange("citizenshipCountry", e.target.value)}
+                      placeholder="e.g., Portugal, Spain, Greece"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="currentCitizenship">Current Citizenship *</Label>
+                    <Input
+                      id="currentCitizenship"
+                      required
+                      value={formData.currentCitizenship}
+                      onChange={(e) => handleInputChange("currentCitizenship", e.target.value)}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="investmentType">Investment Type *</Label>
+                    <Select value={formData.investmentType} onValueChange={(value) => handleInputChange("investmentType", value)}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select investment type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="real-estate">Real Estate</SelectItem>
+                        <SelectItem value="government-bonds">Government Bonds</SelectItem>
+                        <SelectItem value="business">Business Investment</SelectItem>
+                        <SelectItem value="donation">Donation Program</SelectItem>
+                        <SelectItem value="capital-transfer">Capital Transfer</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="investmentAmount">Investment Amount (EUR) *</Label>
+                    <Input
+                      id="investmentAmount"
+                      type="number"
+                      required
+                      value={formData.investmentAmount}
+                      onChange={(e) => handleInputChange("investmentAmount", e.target.value)}
+                      placeholder="e.g., 280000"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="sourceOfFunds">Source of Funds *</Label>
+                    <Textarea
+                      id="sourceOfFunds"
+                      required
+                      rows={3}
+                      value={formData.sourceOfFunds}
+                      onChange={(e) => handleInputChange("sourceOfFunds", e.target.value)}
+                      placeholder="Please describe the source of your investment funds..."
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Diploma-Specific Information */}
+            {selectedDocument === "diploma" && (
+              <Card className="animate-fade-in">
+                <CardHeader>
+                  <CardTitle>Academic Diploma Details</CardTitle>
+                  <CardDescription>
+                    Provide information about the academic diploma or certificate
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="institutionName">Institution Name *</Label>
+                    <Input
+                      id="institutionName"
+                      required
+                      value={formData.institutionName}
+                      onChange={(e) => handleInputChange("institutionName", e.target.value)}
+                      placeholder="e.g., Harvard University"
+                    />
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="degreeType">Degree Type *</Label>
+                      <Select value={formData.degreeType} onValueChange={(value) => handleInputChange("degreeType", value)}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select degree type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="high-school">High School Diploma</SelectItem>
+                          <SelectItem value="associate">Associate Degree</SelectItem>
+                          <SelectItem value="bachelor">Bachelor's Degree</SelectItem>
+                          <SelectItem value="master">Master's Degree</SelectItem>
+                          <SelectItem value="doctorate">Doctorate/PhD</SelectItem>
+                          <SelectItem value="certificate">Professional Certificate</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="graduationYear">Graduation Year *</Label>
+                      <Input
+                        id="graduationYear"
+                        type="number"
+                        required
+                        value={formData.graduationYear}
+                        onChange={(e) => handleInputChange("graduationYear", e.target.value)}
+                        placeholder="e.g., 2020"
+                        min="1950"
+                        max={new Date().getFullYear()}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="fieldOfStudy">Field of Study *</Label>
+                    <Input
+                      id="fieldOfStudy"
+                      required
+                      value={formData.fieldOfStudy}
+                      onChange={(e) => handleInputChange("fieldOfStudy", e.target.value)}
+                      placeholder="e.g., Computer Science, Business Administration"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Government Agency Information - Only for standard documents */}
+            {selectedDocument && !["citizenship", "diploma"].includes(selectedDocument) && (
               <Card className="animate-fade-in">
                 <CardHeader>
                 <CardTitle>Government Agency Information</CardTitle>

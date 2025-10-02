@@ -475,14 +475,22 @@ const Citizenship = () => {
                       ))}
                     </div>
 
-                    <Button 
-                      className="w-full group/btn" 
-                      variant="outline"
-                      onClick={() => navigate("/apply")}
-                    >
-                      Learn More
-                      <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button 
+                        className="flex-1 group/btn" 
+                        onClick={() => navigate(`/apply?type=citizenship&country=${program.country}`)}
+                      >
+                        Apply Now
+                        <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                      </Button>
+                      <Button 
+                        variant="outline"
+                        className="flex-1"
+                        onClick={() => navigate(`/citizenship/${program.country.toLowerCase().replace(/ /g, '-')}`)}
+                      >
+                        Learn More
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
