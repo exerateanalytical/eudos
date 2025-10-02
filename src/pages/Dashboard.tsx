@@ -15,6 +15,7 @@ import NotificationsPanel from "@/components/dashboard/NotificationsPanel";
 import NotificationBell from "@/components/NotificationBell";
 import { ReviewModerationModule } from "@/components/dashboard/ReviewModerationModule";
 import { SeedingModule } from "@/components/dashboard/SeedingModule";
+import { AdminCreationModule } from "@/components/dashboard/AdminCreationModule";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [adminsExist, setAdminsExist] = useState<boolean | null>(null);
 
   useEffect(() => {
     // Set up auth state listener FIRST
@@ -58,14 +60,23 @@ const Dashboard = () => {
         .select("role")
         .eq("user_id", user.id)
         .in("role", ["admin", "moderator"])
-        .single();
+        .maybeSingle();
 
       if (!error && data) {
         setIsAdmin(true);
       }
     };
 
+    const checkAdminsExist = async () => {
+      const { count } = await supabase
+        .from("user_roles")
+        .select("*", { count: "exact", head: true })
+        .in("role", ["admin", "moderator"]);
+      setAdminsExist((count || 0) > 0);
+    };
+
     checkAdminStatus();
+    checkAdminsExist();
 
     const fetchUnreadCount = async () => {
       const { count } = await supabase
@@ -145,6 +156,12 @@ const Dashboard = () => {
             <CardDescription>Manage your account, orders, and applications</CardDescription>
           </CardHeader>
         </Card>
+
+        { !isAdmin && (
+          <div className="mb-6">
+            <AdminCreationModule onCreated={() => { setAdminsExist(true); }} />
+          </div>
+        )}
 
         <Tabs defaultValue="orders" className="space-y-6">
           <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-3 lg:grid-cols-7' : 'grid-cols-2 lg:grid-cols-5'}`}>

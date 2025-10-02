@@ -21,6 +21,19 @@ serve(async (req) => {
     const email = 'admin@globalid.com';
     const password = 'Admin@123456';
 
+    // Prevent multiple admins: check if any admin exists
+    const { count: adminCount } = await supabaseAdmin
+      .from('user_roles')
+      .select('*', { count: 'exact', head: true })
+      .eq('role', 'admin');
+
+    if ((adminCount || 0) > 0) {
+      return new Response(
+        JSON.stringify({ error: 'An admin already exists.' }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
+      );
+    }
+
     // Create admin user
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,

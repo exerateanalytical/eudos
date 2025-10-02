@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { UserCog, Loader2, Copy, CheckCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
-export const AdminCreationModule = () => {
+export const AdminCreationModule = ({ onCreated }: { onCreated?: () => void }) => {
   const [isCreating, setIsCreating] = useState(false);
   const [credentials, setCredentials] = useState<{ email: string; password: string } | null>(null);
   const [copied, setCopied] = useState(false);
@@ -24,6 +24,7 @@ export const AdminCreationModule = () => {
 
       setCredentials({ email: data.email, password: data.password });
       toast.success('Admin account created successfully!');
+      onCreated?.();
     } catch (error: any) {
       console.error('Admin creation error:', error);
       toast.error(error.message || 'Failed to create admin account');
