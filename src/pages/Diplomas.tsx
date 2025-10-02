@@ -5,8 +5,20 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { GraduationCap, Search, ShoppingCart } from "lucide-react";
+import { GraduationCap, Search, ShoppingCart, Filter } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
 
 const universities = [
   { id: 1, name: "Harvard University", location: "Cambridge, MA", ranking: 1, price: "$15,000" },
@@ -541,20 +553,124 @@ const universities = [
 const Diplomas = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
+  const [priceRange, setPriceRange] = useState([4000, 15000]);
 
-  const filteredUniversities = universities.filter(
-    (uni) =>
-      uni.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      uni.location.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Get unique countries
+  const countries = Array.from(new Set(universities.map(u => u.country || "USA")));
+  
+  // Get unique types
+  const types = Array.from(new Set(universities.map(u => u.type || "University")));
+
+  const toggleCountry = (country: string) => {
+    setSelectedCountries(prev =>
+      prev.includes(country)
+        ? prev.filter(c => c !== country)
+        : [...prev, country]
+    );
+  };
+
+  const filteredUniversities = universities.filter((uni) => {
+    const matchesSearch = uni.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      uni.location.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const country = uni.country || "USA";
+    const matchesCountry = selectedCountries.length === 0 || selectedCountries.includes(country);
+    
+    const price = parseInt(uni.price.replace(/[$,]/g, ""));
+    const matchesPrice = price >= priceRange[0] && price <= priceRange[1];
+    
+    return matchesSearch && matchesCountry && matchesPrice;
+  });
 
   return (
-    <div className="min-h-screen bg-background">
-      <MobileNav />
+    <SidebarProvider>
+      <div className="min-h-screen bg-background w-full flex">
+        {/* Sidebar */}
+        <Sidebar className="border-r">
+          <div className="p-4 border-b flex items-center justify-between">
+            <h2 className="font-semibold text-lg flex items-center gap-2">
+              <Filter className="h-5 w-5" />
+              Filters
+            </h2>
+            <SidebarTrigger />
+          </div>
+          
+          <SidebarContent>
+            {/* Price Range Filter */}
+            <SidebarGroup>
+              <SidebarGroupLabel>Price Range</SidebarGroupLabel>
+              <SidebarGroupContent className="px-4 py-2">
+                <div className="space-y-4">
+                  <Slider
+                    min={4000}
+                    max={15000}
+                    step={500}
+                    value={priceRange}
+                    onValueChange={setPriceRange}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between text-sm text-muted-foreground">
+                    <span>${priceRange[0].toLocaleString()}</span>
+                    <span>${priceRange[1].toLocaleString()}</span>
+                  </div>
+                </div>
+              </SidebarGroupContent>
+            </SidebarGroup>
 
-      {/* Hero Section */}
-      <section className="relative py-16 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-background" />
+            {/* Country Filter */}
+            <SidebarGroup>
+              <SidebarGroupLabel>Country</SidebarGroupLabel>
+              <SidebarGroupContent className="px-4 py-2">
+                <div className="space-y-3">
+                  {countries.map((country) => (
+                    <div key={country} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={country}
+                        checked={selectedCountries.includes(country)}
+                        onCheckedChange={() => toggleCountry(country)}
+                      />
+                      <Label
+                        htmlFor={country}
+                        className="text-sm font-normal cursor-pointer"
+                      >
+                        {country}
+                        <span className="text-muted-foreground ml-1">
+                          ({universities.filter(u => (u.country || "USA") === country).length})
+                        </span>
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            {/* Reset Filters */}
+            <SidebarGroup>
+              <SidebarGroupContent className="px-4">
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => {
+                    setSelectedCountries([]);
+                    setPriceRange([4000, 15000]);
+                    setSearchQuery("");
+                  }}
+                >
+                  Reset Filters
+                </Button>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </SidebarContent>
+        </Sidebar>
+
+        {/* Main Content */}
+        <div className="flex-1 overflow-auto">
+          <MobileNav />
+
+          {/* Hero Section */}
+          <section className="relative py-16 px-4 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-background" />
         <div className="container mx-auto relative z-10">
           <div className="text-center max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full mb-6">
@@ -578,64 +694,64 @@ const Diplomas = () => {
                 Learn More
               </Button>
             </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Search Section */}
-      <section className="py-8 px-4 border-b">
-        <div className="container mx-auto max-w-2xl">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <Input
-              type="text"
-              placeholder="Search universities by name or location..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 h-12"
-            />
+        {/* Search Section */}
+        <section className="py-8 px-4 border-b">
+          <div className="container mx-auto max-w-2xl">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Search universities by name or location..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 h-12"
+              />
+            </div>
+            <p className="text-sm text-muted-foreground mt-2 text-center">
+              Showing {filteredUniversities.length} of {universities.length} universities
+            </p>
           </div>
-          <p className="text-sm text-muted-foreground mt-2 text-center">
-            Showing {filteredUniversities.length} of {universities.length} universities
-          </p>
-        </div>
-      </section>
+        </section>
 
-      {/* Universities Grid */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto max-w-7xl">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredUniversities.map((university, index) => (
-              <Card 
-                key={university.id} 
-                className="group relative overflow-hidden hover:shadow-2xl transition-all duration-300 animate-fade-in border-2 hover:border-primary/50"
-                style={{ animationDelay: `${index * 0.05}s` }}
-              >
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                
-                <CardHeader className="relative">
-                  <div className="flex items-start justify-between mb-3">
-                    <Badge variant="secondary" className="text-xs font-bold">
-                      #{university.ranking}
-                    </Badge>
-                    <Badge className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-lg text-sm font-bold px-3 py-1">
-                      {university.price}
-                    </Badge>
-                  </div>
+        {/* Universities Grid */}
+        <section className="py-16 px-4">
+          <div className="container mx-auto max-w-7xl">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredUniversities.map((university, index) => (
+                <Card
+                  key={university.id} 
+                  className="group relative overflow-hidden hover:shadow-2xl transition-all duration-300 animate-fade-in border-2 hover:border-primary/50"
+                  style={{ animationDelay: `${index * 0.05}s` }}
+                >
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   
-                  {/* University Icon */}
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
-                    <GraduationCap className="h-6 w-6 text-primary" />
-                  </div>
+                  <CardHeader className="relative">
+                    <div className="flex items-start justify-between mb-3">
+                      <Badge variant="secondary" className="text-xs font-bold">
+                        #{university.ranking}
+                      </Badge>
+                      <Badge className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-lg text-sm font-bold px-3 py-1">
+                        {university.price}
+                      </Badge>
+                    </div>
+                    
+                    {/* University Icon */}
+                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                      <GraduationCap className="h-6 w-6 text-primary" />
+                    </div>
+                    
+                    <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors duration-300">
+                      {university.name}
+                    </CardTitle>
+                  </CardHeader>
                   
-                  <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors duration-300">
-                    {university.name}
-                  </CardTitle>
-                </CardHeader>
-                
-                <CardContent className="relative">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4 pb-4 border-b">
+                  <CardContent className="relative">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4 pb-4 border-b">
                     <div className="w-2 h-2 bg-primary rounded-full" />
                     <span className="font-medium">{university.location}</span>
                   </div>
@@ -695,7 +811,9 @@ const Diplomas = () => {
       </section>
 
       <Footer />
-    </div>
+        </div>
+      </div>
+    </SidebarProvider>
   );
 };
 
