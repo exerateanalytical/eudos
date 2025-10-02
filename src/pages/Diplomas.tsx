@@ -109,6 +109,33 @@ const universities = [
   { id: 98, name: "North Dakota State University", location: "Fargo, ND", ranking: 98, price: "$8,000" },
   { id: 99, name: "Montana State University", location: "Bozeman, MT", ranking: 99, price: "$8,500" },
   { id: 100, name: "Idaho State University", location: "Pocatello, ID", ranking: 100, price: "$8,000" },
+  
+  // Top Canadian Universities
+  { id: 101, name: "University of Toronto", location: "Toronto, ON, Canada", ranking: 1, price: "$14,000", country: "Canada" },
+  { id: 102, name: "McGill University", location: "Montreal, QC, Canada", ranking: 2, price: "$14,000", country: "Canada" },
+  { id: 103, name: "University of British Columbia", location: "Vancouver, BC, Canada", ranking: 3, price: "$13,000", country: "Canada" },
+  { id: 104, name: "McMaster University", location: "Hamilton, ON, Canada", ranking: 4, price: "$12,000", country: "Canada" },
+  { id: 105, name: "University of Alberta", location: "Edmonton, AB, Canada", ranking: 5, price: "$12,000", country: "Canada" },
+  { id: 106, name: "University of Montreal", location: "Montreal, QC, Canada", ranking: 6, price: "$12,000", country: "Canada" },
+  { id: 107, name: "University of Waterloo", location: "Waterloo, ON, Canada", ranking: 7, price: "$12,000", country: "Canada" },
+  { id: 108, name: "Western University", location: "London, ON, Canada", ranking: 8, price: "$11,000", country: "Canada" },
+  { id: 109, name: "Queen's University", location: "Kingston, ON, Canada", ranking: 9, price: "$11,000", country: "Canada" },
+  { id: 110, name: "University of Calgary", location: "Calgary, AB, Canada", ranking: 10, price: "$11,000", country: "Canada" },
+  { id: 111, name: "Dalhousie University", location: "Halifax, NS, Canada", ranking: 11, price: "$10,000", country: "Canada" },
+  { id: 112, name: "University of Ottawa", location: "Ottawa, ON, Canada", ranking: 12, price: "$10,000", country: "Canada" },
+  { id: 113, name: "Simon Fraser University", location: "Burnaby, BC, Canada", ranking: 13, price: "$10,000", country: "Canada" },
+  { id: 114, name: "University of Victoria", location: "Victoria, BC, Canada", ranking: 14, price: "$10,000", country: "Canada" },
+  { id: 115, name: "Laval University", location: "Quebec City, QC, Canada", ranking: 15, price: "$10,000", country: "Canada" },
+  { id: 116, name: "York University", location: "Toronto, ON, Canada", ranking: 16, price: "$9,500", country: "Canada" },
+  { id: 117, name: "University of Saskatchewan", location: "Saskatoon, SK, Canada", ranking: 17, price: "$9,500", country: "Canada" },
+  { id: 118, name: "University of Manitoba", location: "Winnipeg, MB, Canada", ranking: 18, price: "$9,500", country: "Canada" },
+  { id: 119, name: "Carleton University", location: "Ottawa, ON, Canada", ranking: 19, price: "$9,500", country: "Canada" },
+  { id: 120, name: "University of Guelph", location: "Guelph, ON, Canada", ranking: 20, price: "$9,500", country: "Canada" },
+  { id: 121, name: "Concordia University", location: "Montreal, QC, Canada", ranking: 21, price: "$9,000", country: "Canada" },
+  { id: 122, name: "Memorial University of Newfoundland", location: "St. John's, NL, Canada", ranking: 22, price: "$9,000", country: "Canada" },
+  { id: 123, name: "Ryerson University", location: "Toronto, ON, Canada", ranking: 23, price: "$9,000", country: "Canada" },
+  { id: 124, name: "University of New Brunswick", location: "Fredericton, NB, Canada", ranking: 24, price: "$9,000", country: "Canada" },
+  { id: 125, name: "University of Windsor", location: "Windsor, ON, Canada", ranking: 25, price: "$8,500", country: "Canada" },
 ];
 
 const Diplomas = () => {
@@ -135,10 +162,10 @@ const Diplomas = () => {
               <span className="text-sm font-medium text-primary">Premium Diplomas</span>
             </div>
             <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-              Top 100 American Universities
+              Top 100 American & Top 25 Canadian Universities
             </h1>
             <p className="text-lg text-muted-foreground mb-8">
-              Premium authentic university diplomas from America's most prestigious institutions. 
+              Premium authentic university diplomas from America's and Canada's most prestigious institutions. 
               Complete package with transcript, thesis, student ID, and database registration. Fast 2-week delivery worldwide.
             </p>
             <div className="flex gap-4 justify-center flex-wrap">
