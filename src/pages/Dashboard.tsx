@@ -6,13 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { LogOut, ShieldCheck, FileText, Package, User as UserIcon, Lock, Home, Bell } from "lucide-react";
+import { LogOut, ShieldCheck, FileText, Package, User as UserIcon, Lock, Home, Bell, Eye } from "lucide-react";
 import OrdersModule from "@/components/dashboard/OrdersModule";
 import DocumentApplicationsModule from "@/components/dashboard/DocumentApplicationsModule";
 import ProfileModule from "@/components/dashboard/ProfileModule";
 import SecurityModule from "@/components/dashboard/SecurityModule";
 import NotificationsPanel from "@/components/dashboard/NotificationsPanel";
 import NotificationBell from "@/components/NotificationBell";
+import { ReviewModerationModule } from "@/components/dashboard/ReviewModerationModule";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const Dashboard = () => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     // Set up auth state listener FIRST
@@ -48,6 +50,21 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!user) return;
+
+    const checkAdminStatus = async () => {
+      const { data, error } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user.id)
+        .in("role", ["admin", "moderator"])
+        .single();
+
+      if (!error && data) {
+        setIsAdmin(true);
+      }
+    };
+
+    checkAdminStatus();
 
     const fetchUnreadCount = async () => {
       const { count } = await supabase
@@ -129,7 +146,7 @@ const Dashboard = () => {
         </Card>
 
         <Tabs defaultValue="orders" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5">
+          <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-3 lg:grid-cols-6' : 'grid-cols-2 lg:grid-cols-5'}`}>
             <TabsTrigger value="orders" className="flex items-center gap-2">
               <Package className="h-4 w-4" />
               Orders
@@ -150,6 +167,12 @@ const Dashboard = () => {
               <Lock className="h-4 w-4" />
               Security
             </TabsTrigger>
+            {isAdmin && (
+              <TabsTrigger value="reviews" className="flex items-center gap-2">
+                <Eye className="h-4 w-4" />
+                Reviews
+              </TabsTrigger>
+            )}
           </TabsList>
 
           <TabsContent value="orders">
@@ -171,6 +194,12 @@ const Dashboard = () => {
           <TabsContent value="security">
             <SecurityModule userId={user?.id!} />
           </TabsContent>
+
+          {isAdmin && (
+            <TabsContent value="reviews">
+              <ReviewModerationModule />
+            </TabsContent>
+          )}
         </Tabs>
       </main>
     </div>

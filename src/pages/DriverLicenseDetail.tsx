@@ -7,6 +7,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { CreditCard, Shield, Clock, CheckCircle, ArrowLeft, ShoppingCart, Coins, Mail } from "lucide-react";
 import { EscrowForm } from "@/components/EscrowForm";
+import { ReviewForm } from "@/components/reviews/ReviewForm";
+import { ReviewsList } from "@/components/reviews/ReviewsList";
 
 // Import EU logo images
 import euAT from "@/assets/drivers-license/eu-at.png";
@@ -41,6 +43,7 @@ const DriverLicenseDetail = () => {
   const { licenseId } = useParams();
   const navigate = useNavigate();
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
+  const [reviewsRefresh, setReviewsRefresh] = useState(0);
 
   // Extract country from licenseId (format: "license-united-states")
   const country = licenseId?.replace('license-', '').split('-').map(word => 
@@ -145,20 +148,6 @@ const DriverLicenseDetail = () => {
       },
     ],
 
-    reviews: [
-      { name: "Henrik Nielsen", country: "Denmark", rating: 5, date: "February 2024", review: "Exceptional quality polycarbonate card with perfect holographic overlays. The ghost image and UV features are exactly like the original. Passed all checks at traffic stops without issue." },
-      { name: "Claire Beaumont", country: "Belgium", rating: 4.5, date: "December 2023", review: "Very professional service. The license looks completely authentic with all security features intact. Delivery to Brussels was fast. Minor scratch on arrival but they replaced it immediately." },
-      { name: "Andreas Müller", country: "Germany", rating: 5, date: "October 2023", review: "Outstanding work! The microtext printing and laser engraving are flawless. Used it successfully for car rental across three countries. Customer support was excellent throughout." },
-      { name: "Maria Silva", country: "Portugal", rating: 4, date: "August 2023", review: "Good quality license with proper barcode and magnetic stripe. Processing took 6 days instead of 5, but the final product is solid and works perfectly." },
-      { name: "Finn O'Brien", country: "Ireland", rating: 5, date: "June 2023", review: "Impressed by the attention to detail. The tamper-evident design and hologram quality are top-notch. Has worked flawlessly for daily use and official purposes." },
-      { name: "Petra Novotná", country: "Slovakia", rating: 4.5, date: "April 2023", review: "Very satisfied with the authenticity. All biometric features integrated perfectly. The card feels exactly like a real government-issued license. Fast shipping to Bratislava." },
-      { name: "Lucas Vermeulen", country: "Netherlands", rating: 3.5, date: "January 2023", review: "Decent quality overall. Had some initial concerns about color matching but it turned out fine. Works well for identification purposes. Could improve communication during production." },
-      { name: "Sarah Thompson", country: "United Kingdom", rating: 5, date: "November 2022", review: "Absolutely perfect! The polycarbonate material is durable and the security features are identical to my old license. Used it for several official verifications with no problems." },
-      { name: "Giorgio Bianchi", country: "Italy", rating: 4.5, date: "September 2022", review: "High-quality document with excellent craftsmanship. The laser engraving is precise and all features work correctly. Delivered to Rome in 5 days as promised." },
-      { name: "Alexandra Popov", country: "Bulgaria", rating: 5, date: "May 2022", review: "Professional service from beginning to end. The license passes all authentication systems perfectly. Very pleased with the quality and quick turnaround time." },
-      { name: "Robert Hansen", country: "Norway", rating: 4, date: "February 2021", review: "Good quality license with proper security elements. Took slightly longer than expected but customer service kept me updated. Final product meets all expectations." },
-      { name: "Emma Larsson", country: "Sweden", rating: 5, date: "October 2020", review: "Exceptional attention to detail. Every security feature from UV ink to ghost image is perfect. Used it extensively without any issues. Highly recommend their services." }
-    ],
 
     faqs: [
       {
@@ -379,30 +368,18 @@ const DriverLicenseDetail = () => {
             </TabsContent>
 
             <TabsContent value="reviews">
-              <Card>
-                <CardContent className="pt-6">
-                  <h2 className="text-2xl font-bold mb-6">Customer Reviews</h2>
-                  <div className="space-y-6">
-                    {licenseData.reviews.map((review, idx) => (
-                      <div key={idx} className="border-b border-border/50 pb-6 last:border-0">
-                        <div className="flex items-start justify-between mb-2">
-                          <div>
-                            <div className="font-bold">{review.name}</div>
-                            <div className="text-sm text-muted-foreground">{review.country} • {review.date}</div>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            {[...Array(5)].map((_, i) => (
-                              <span key={i} className={i < Math.floor(review.rating) ? "text-primary" : "text-muted-foreground/30"}>★</span>
-                            ))}
-                            <span className="ml-1 text-sm font-medium">{review.rating}</span>
-                          </div>
-                        </div>
-                        <p className="text-muted-foreground">{review.review}</p>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="space-y-6">
+                <ReviewForm
+                  productType="license"
+                  productId={licenseId || ""}
+                  onReviewSubmitted={() => setReviewsRefresh(prev => prev + 1)}
+                />
+                <ReviewsList
+                  productType="license"
+                  productId={licenseId || ""}
+                  refreshTrigger={reviewsRefresh}
+                />
+              </div>
             </TabsContent>
 
             <TabsContent value="faq">

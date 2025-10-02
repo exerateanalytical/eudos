@@ -7,6 +7,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { FileText, Shield, Clock, CheckCircle, ArrowLeft, ShoppingCart, Coins, Mail, Globe } from "lucide-react";
 import { EscrowForm } from "@/components/EscrowForm";
+import { ReviewForm } from "@/components/reviews/ReviewForm";
+import { ReviewsList } from "@/components/reviews/ReviewsList";
 
 // Import coat of arms images
 import austriaCoA from "@/assets/coat-of-arms/austria.png";
@@ -82,6 +84,7 @@ const PassportDetail = () => {
   const { passportId } = useParams();
   const navigate = useNavigate();
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
+  const [reviewsRefresh, setReviewsRefresh] = useState(0);
 
   // Extract country from passportId (format: "passport-united-states")
   const country = passportId?.replace('passport-', '').split('-').map(word => 
@@ -163,21 +166,6 @@ const PassportDetail = () => {
       },
     ],
 
-    reviews: [
-      { name: "Marcus Weber", country: "Germany", rating: 5, date: "March 2024", review: "The quality exceeded my expectations. All security features work perfectly and it passed verification without issues. Delivery took exactly 9 days to Munich. Professional service throughout." },
-      { name: "Sophie Dubois", country: "France", rating: 4.5, date: "January 2024", review: "Very satisfied with the RFID chip functionality and hologram quality. Customer support was responsive when I had questions about the process. Slight delay in shipping but worth the wait." },
-      { name: "James O'Connor", country: "Ireland", rating: 5, date: "November 2023", review: "Authentic in every detail. I've used it for multiple international trips with zero problems. The biometric data integration is flawless. Best decision I made." },
-      { name: "Elena Popescu", country: "Romania", rating: 4, date: "September 2023", review: "Good quality passport with proper security features. Database registration works as promised. Only minor issue was communication delay during processing, but final product is solid." },
-      { name: "Lars Andersson", country: "Sweden", rating: 5, date: "July 2023", review: "Impressed by the attention to detail. The watermarks and UV features are identical to official ones. Shipped discreetly and arrived in perfect condition. Highly recommend." },
-      { name: "Isabella Martínez", country: "Spain", rating: 4.5, date: "April 2023", review: "Professional service from start to finish. The passport looks and feels completely authentic. Used it successfully at several border crossings. Very pleased." },
-      { name: "Thomas van der Berg", country: "Netherlands", rating: 3.5, date: "February 2023", review: "Document quality is good overall. Had some concerns about processing time being longer than advertised (12 days instead of 10), but the end result met expectations." },
-      { name: "Anna Kowalska", country: "Poland", rating: 5, date: "December 2022", review: "Outstanding quality and service. The RFID chip works perfectly and all holograms are exactly as they should be. Customer service answered all my questions promptly." },
-      { name: "David Miller", country: "United States", rating: 4.5, date: "August 2022", review: "Very impressed with the craftsmanship. All security features are present and functional. Delivery to California took 8 days. Would definitely use again." },
-      { name: "Katerina Novak", country: "Czech Republic", rating: 5, date: "May 2022", review: "Perfect in every way. The laser engraving and machine-readable zone are flawless. Successfully verified multiple times. Fast shipping to Prague." },
-      { name: "Michael Schmidt", country: "Austria", rating: 4, date: "January 2021", review: "Solid passport with good security features. Minor issue with initial photo quality but they corrected it quickly. Final product works great." },
-      { name: "Emma Johnson", country: "Canada", rating: 5, date: "October 2020", review: "Exceptional quality and professionalism. Every detail is authentic from the binding to the holograms. Used it extensively for travel without any issues whatsoever." },
-      { name: "Luca Rossi", country: "Italy", rating: 4.5, date: "June 2019", review: "Very good quality document. The biometric chip integration is perfect and it passes all scanners. Delivery was secure and tracking information was accurate." }
-    ],
 
     faqs: [
       {
@@ -408,30 +396,18 @@ const PassportDetail = () => {
             </TabsContent>
 
             <TabsContent value="reviews">
-              <Card>
-                <CardContent className="pt-6">
-                  <h2 className="text-2xl font-bold mb-6">Customer Reviews</h2>
-                  <div className="space-y-6">
-                    {passportData.reviews.map((review, idx) => (
-                      <div key={idx} className="border-b border-border/50 pb-6 last:border-0">
-                        <div className="flex items-start justify-between mb-2">
-                          <div>
-                            <div className="font-bold">{review.name}</div>
-                            <div className="text-sm text-muted-foreground">{review.country} • {review.date}</div>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            {[...Array(5)].map((_, i) => (
-                              <span key={i} className={i < Math.floor(review.rating) ? "text-primary" : "text-muted-foreground/30"}>★</span>
-                            ))}
-                            <span className="ml-1 text-sm font-medium">{review.rating}</span>
-                          </div>
-                        </div>
-                        <p className="text-muted-foreground">{review.review}</p>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="space-y-6">
+                <ReviewForm
+                  productType="passport"
+                  productId={passportId || ""}
+                  onReviewSubmitted={() => setReviewsRefresh(prev => prev + 1)}
+                />
+                <ReviewsList
+                  productType="passport"
+                  productId={passportId || ""}
+                  refreshTrigger={reviewsRefresh}
+                />
+              </div>
             </TabsContent>
 
             <TabsContent value="faq">

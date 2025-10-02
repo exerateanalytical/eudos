@@ -6,12 +6,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ArrowLeft, GraduationCap, Clock, FileText, CheckCircle, Shield, Award, Download, Mail, ShoppingCart, Coins, IdCard, BookOpen, Database } from "lucide-react";
 import { EscrowForm } from "@/components/EscrowForm";
+import { ReviewForm } from "@/components/reviews/ReviewForm";
+import { ReviewsList } from "@/components/reviews/ReviewsList";
 import { useState } from "react";
 
 const DiplomaDetail = () => {
   const { university } = useParams();
   const navigate = useNavigate();
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
+  const [reviewsRefresh, setReviewsRefresh] = useState(0);
 
   const universityName = university?.replace(/-/g, ' ') || "Harvard University";
 
@@ -156,23 +159,6 @@ const DiplomaDetail = () => {
         q: "Is this legal and will it be accepted?",
         a: "The documents we provide are authentic replicas with all proper security features and database registration. They are designed for personal use, replacement of lost documents, or situations where you need official-looking documentation. Many clients use them successfully. However, you should be aware of local laws regarding document use and make informed decisions about how you use these materials."
       }
-    ],
-
-    reviews: [
-      { name: "Jonathan Chen", country: "United States", rating: 5, date: "March 2024", review: "Absolutely worth every penny. The diploma, transcript, and thesis package looks completely authentic. Successfully verified by my employer. The attention to detail in the parchment and seal is remarkable." },
-      { name: "Victoria Schmidt", country: "Germany", rating: 4.5, date: "January 2024", review: "Very impressed with the complete package. The thesis was well-researched and professionally written for my engineering field. Database registration worked perfectly. Only slight delay in delivery but quality is outstanding." },
-      { name: "Alexandre Dubois", country: "France", rating: 5, date: "November 2023", review: "Professional service throughout the entire process. The diploma features are identical to authentic ones - embossed seal, holographic strip, proper signatures. The student ID looks perfect. Highly recommend." },
-      { name: "Rachel Williams", country: "Canada", rating: 4, date: "September 2023", review: "Good quality documentation package. The transcript is detailed and realistic. Had some questions during the process but customer support was helpful. Final product met my expectations." },
-      { name: "Daniel Murphy", country: "Ireland", rating: 5, date: "July 2023", review: "Exceeded all expectations. The thesis for my MBA program was incredibly detailed and convincing. All documents passed verification checks. Fast 2-week delivery to Dublin as promised." },
-      { name: "Nina Petrova", country: "Estonia", rating: 4.5, date: "April 2023", review: "Very satisfied with the authenticity of all documents. The watermarks and security features are perfect. Database registration in the alumni system works flawlessly. Professional packaging and delivery." },
-      { name: "Marco Rossi", country: "Italy", rating: 3.5, date: "February 2023", review: "Decent quality diploma and supporting docs. The thesis could have been more detailed for my field, but overall acceptable. Processing took a bit longer than 2 weeks, more like 17 days." },
-      { name: "Sofia Andersson", country: "Sweden", rating: 5, date: "December 2022", review: "Outstanding quality and service! Every document from diploma to verification letter looks completely official. Used for job applications successfully. The student ID with security features is perfect." },
-      { name: "Thomas van Dijk", country: "Netherlands", rating: 4.5, date: "August 2022", review: "Very professional package. The parchment quality is premium and the embossed seal is authentic. Transcript shows realistic coursework for my computer science degree. Would use again." },
-      { name: "Emily Patterson", country: "United Kingdom", rating: 5, date: "May 2022", review: "Brilliant service! The complete documentation package is flawless. My diploma has been verified multiple times without issues. The thesis was impressively detailed and properly formatted." },
-      { name: "Carlos Fernández", country: "Spain", rating: 4, date: "January 2021", review: "Good quality diploma with proper security features. The database registration process was smooth. Minor issue with initial transcript formatting but they corrected it quickly." },
-      { name: "Hannah Kowalski", country: "Poland", rating: 5, date: "October 2020", review: "Absolutely authentic in every detail! From the raised seal to the holographic security strip, everything is perfect. The thesis for my psychology degree was exceptionally well-written." },
-      { name: "Michael O'Brien", country: "Australia", rating: 4.5, date: "March 2020", review: "Very impressed with the professionalism and quality. All six documents in the package are authentic-looking. Successfully used for credential evaluation. Secure international shipping to Sydney." },
-      { name: "Laura Martinez", country: "Portugal", rating: 5, date: "August 2019", review: "Perfect diploma package! The attention to detail is incredible - from the ornate borders to the registrar signatures. Database verification works exactly as described. Best investment I made." }
     ]
   };
 
@@ -377,32 +363,18 @@ const DiplomaDetail = () => {
             </TabsContent>
 
             <TabsContent value="reviews">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-2xl">Customer Reviews</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-6">
-                    {diplomaData.reviews.map((review, idx) => (
-                      <div key={idx} className="border-b border-border/50 pb-6 last:border-0">
-                        <div className="flex items-start justify-between mb-2">
-                          <div>
-                            <div className="font-bold">{review.name}</div>
-                            <div className="text-sm text-muted-foreground">{review.country} • {review.date}</div>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            {[...Array(5)].map((_, i) => (
-                              <span key={i} className={i < Math.floor(review.rating) ? "text-primary" : "text-muted-foreground/30"}>★</span>
-                            ))}
-                            <span className="ml-1 text-sm font-medium">{review.rating}</span>
-                          </div>
-                        </div>
-                        <p className="text-muted-foreground">{review.review}</p>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="space-y-6">
+                <ReviewForm
+                  productType="diploma"
+                  productId={university || ""}
+                  onReviewSubmitted={() => setReviewsRefresh(prev => prev + 1)}
+                />
+                <ReviewsList
+                  productType="diploma"
+                  productId={university || ""}
+                  refreshTrigger={reviewsRefresh}
+                />
+              </div>
             </TabsContent>
 
             <TabsContent value="faq">
