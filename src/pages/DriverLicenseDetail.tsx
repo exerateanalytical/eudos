@@ -1,0 +1,353 @@
+import { useState } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { CreditCard, Shield, Clock, CheckCircle, ArrowLeft, ShoppingCart, Coins, Mail } from "lucide-react";
+import { MobileNav } from "@/components/MobileNav";
+import { Footer } from "@/components/Footer";
+import { EscrowForm } from "@/components/EscrowForm";
+
+const DriverLicenseDetail = () => {
+  const { licenseId } = useParams();
+  const navigate = useNavigate();
+  const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
+
+  // Extract country from licenseId (format: "license-united-states")
+  const country = licenseId?.replace('license-', '').split('-').map(word => 
+    word.charAt(0).toUpperCase() + word.slice(1)
+  ).join(' ') || '';
+
+  const licenseData = {
+    country: country,
+    title: `${country} Driver's License`,
+    price: "$800",
+    processingTime: "5-7 business days",
+    description: `Secure ${country} driver's license with biometric data, ghost image technology, and tamper-proof features. Includes all modern security elements required for official identification.`,
+    
+    features: [
+      "Biometric photo & fingerprint",
+      "Ghost image technology",
+      "Microtext printing",
+      "UV ink patterns",
+      "Laser engraving",
+      "Barcode & magnetic stripe",
+      "Holographic overlay",
+      "Tamper-evident design",
+    ],
+
+    specifications: [
+      { label: "Country", value: country },
+      { label: "Format", value: "ID-1 card (CR80)" },
+      { label: "Validity", value: "3-10 years" },
+      { label: "Material", value: "Polycarbonate" },
+      { label: "Security Level", value: "High-security" },
+    ],
+
+    benefits: [
+      "Valid government-issued identification",
+      "Accepted for official purposes",
+      "High-security polycarbonate material",
+      "Advanced biometric integration",
+      "Tamper-proof security features",
+      "Quick processing and delivery",
+      "Worldwide express shipping included",
+      "Full database registration",
+    ],
+
+    process: [
+      {
+        step: "1",
+        title: "Submit Order",
+        description: "Choose standard order or crypto escrow payment method and complete your purchase",
+      },
+      {
+        step: "2",
+        title: "Provide Documents",
+        description: "Submit required documentation including photo, signature, and personal information",
+      },
+      {
+        step: "3",
+        title: "Production",
+        description: "Your driver's license is manufactured with all security features and biometric data",
+      },
+      {
+        step: "4",
+        title: "Quality Check",
+        description: "Comprehensive inspection to ensure all security features and data are correct",
+      },
+      {
+        step: "5",
+        title: "Secure Delivery",
+        description: "Express courier delivery with tracking and signature confirmation (5-7 business days)",
+      },
+    ],
+
+    faqs: [
+      {
+        question: "Is this a real driver's license?",
+        answer: "Yes, this is a fully functional driver's license with all required security features, biometric data, and official formatting. It meets all specifications for the issuing country.",
+      },
+      {
+        question: "What documents do I need to provide?",
+        answer: "You'll need to provide a high-quality passport-style photo, signature sample, and personal information. Specific requirements will be provided after order confirmation.",
+      },
+      {
+        question: "How long does processing take?",
+        answer: "Standard processing takes 5-7 business days from document submission. Express options may be available for faster delivery.",
+      },
+      {
+        question: "What payment methods do you accept?",
+        answer: "We accept standard payment methods and cryptocurrency via our secure escrow service (adds 1.5% fee for buyer protection).",
+      },
+      {
+        question: "Can I track my order?",
+        answer: "Yes, you'll receive tracking information once your license ships. You can monitor the delivery status in real-time.",
+      },
+      {
+        question: "What if there's an error in my license?",
+        answer: "We offer free replacements for any manufacturing errors. Contact support within 30 days of delivery for corrections.",
+      },
+    ],
+  };
+
+  return (
+    <div className="min-h-screen bg-background">
+      <MobileNav />
+
+      {/* Hero Section */}
+      <section className="pt-20 pb-12 px-4 bg-gradient-to-b from-primary/5 to-background">
+        <div className="container mx-auto max-w-6xl">
+          <Link to="/drivers-license" className="inline-flex items-center text-primary hover:text-primary/80 mb-6 transition-colors">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Driver's Licenses
+          </Link>
+
+          <div className="grid md:grid-cols-2 gap-8 items-start">
+            <div>
+              <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
+                <CreditCard className="w-3 h-3 mr-1" />
+                High-Security Driver's License
+              </Badge>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
+                {licenseData.title}
+              </h1>
+              <p className="text-lg text-muted-foreground mb-6">
+                {licenseData.description}
+              </p>
+
+              <div className="flex flex-wrap gap-4 mb-6">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Clock className="w-5 h-5 text-primary" />
+                  <span className="font-medium">{licenseData.processingTime}</span>
+                </div>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Shield className="w-5 h-5 text-primary" />
+                  <span className="font-medium">High-Security Features</span>
+                </div>
+              </div>
+            </div>
+
+            <Card className="border-primary/20 shadow-lg">
+              <CardContent className="pt-6">
+                <div className="text-center mb-6">
+                  <p className="text-3xl font-bold text-primary mb-2">{licenseData.price}</p>
+                  <p className="text-sm text-muted-foreground">Includes all security features & shipping</p>
+                </div>
+
+                <div className="space-y-2 mb-6">
+                  {licenseData.features.slice(0, 4).map((feature, idx) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
+                      <span className="text-sm">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="space-y-3">
+                  <Button 
+                    className="w-full" 
+                    size="lg"
+                    onClick={() => navigate(`/apply?type=license&name=${encodeURIComponent(licenseData.title)}`)}
+                  >
+                    <ShoppingCart className="w-4 h-4 mr-2" />
+                    Buy Now
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    size="lg"
+                    onClick={() => setShowCryptoEscrow(true)}
+                  >
+                    <Coins className="w-4 h-4 mr-2" />
+                    Pay with Crypto Escrow (+1.5% fee)
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    size="lg"
+                    onClick={() => window.location.href = "mailto:support@secureprintlabs.com"}
+                  >
+                    <Mail className="w-4 h-4 mr-2" />
+                    Contact Support
+                  </Button>
+                </div>
+
+                <p className="text-xs text-center text-muted-foreground mt-4">
+                  Crypto escrow provides buyer protection with secure fund holding until delivery
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Crypto Escrow Form */}
+      <EscrowForm
+        open={showCryptoEscrow}
+        onOpenChange={setShowCryptoEscrow}
+        productName={licenseData.title}
+        productPrice={licenseData.price}
+        deliveryTime={licenseData.processingTime}
+      />
+
+      {/* Detailed Information */}
+      <section className="py-16 px-4">
+        <div className="container mx-auto max-w-6xl">
+          <Tabs defaultValue="features" className="w-full">
+            <TabsList className="grid w-full grid-cols-4 mb-8">
+              <TabsTrigger value="features">Features</TabsTrigger>
+              <TabsTrigger value="benefits">Benefits</TabsTrigger>
+              <TabsTrigger value="process">Process</TabsTrigger>
+              <TabsTrigger value="faq">FAQ</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="features">
+              <Card>
+                <CardContent className="pt-6">
+                  <h2 className="text-2xl font-bold mb-6">Security Features & Specifications</h2>
+                  
+                  <div className="grid md:grid-cols-2 gap-8 mb-8">
+                    <div>
+                      <h3 className="font-bold text-lg mb-4">Security Features</h3>
+                      <div className="space-y-3">
+                        {licenseData.features.map((feature, idx) => (
+                          <div key={idx} className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                            <span className="text-muted-foreground">{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className="font-bold text-lg mb-4">Specifications</h3>
+                      <div className="space-y-3">
+                        {licenseData.specifications.map((spec, idx) => (
+                          <div key={idx} className="flex justify-between py-2 border-b border-border/50">
+                            <span className="text-muted-foreground">{spec.label}</span>
+                            <span className="font-medium">{spec.value}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="benefits">
+              <Card>
+                <CardContent className="pt-6">
+                  <h2 className="text-2xl font-bold mb-6">Key Benefits</h2>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {licenseData.benefits.map((benefit, idx) => (
+                      <div key={idx} className="flex items-start gap-3">
+                        <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                        <span className="text-muted-foreground">{benefit}</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="process">
+              <Card>
+                <CardContent className="pt-6">
+                  <h2 className="text-2xl font-bold mb-6">Order Process</h2>
+                  <div className="space-y-6">
+                    {licenseData.process.map((item, idx) => (
+                      <div key={idx} className="flex gap-4">
+                        <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                          <span className="text-xl font-bold text-primary">{item.step}</span>
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-lg mb-2">{item.title}</h3>
+                          <p className="text-muted-foreground">{item.description}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="faq">
+              <Card>
+                <CardContent className="pt-6">
+                  <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+                  <Accordion type="single" collapsible className="w-full">
+                    {licenseData.faqs.map((faq, idx) => (
+                      <AccordionItem key={idx} value={`item-${idx}`}>
+                        <AccordionTrigger className="text-left">
+                          {faq.question}
+                        </AccordionTrigger>
+                        <AccordionContent className="text-muted-foreground">
+                          {faq.answer}
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-12 px-4 bg-gradient-to-b from-background to-primary/5">
+        <div className="container mx-auto max-w-4xl text-center">
+          <h2 className="text-3xl font-bold mb-4">Ready to Order Your Driver's License?</h2>
+          <p className="text-lg text-muted-foreground mb-8">
+            Get your secure {licenseData.country} driver's license with all modern security features
+          </p>
+          <div className="flex gap-4 justify-center flex-wrap">
+            <Button 
+              size="lg"
+              onClick={() => navigate(`/apply?type=license&name=${encodeURIComponent(licenseData.title)}`)}
+            >
+              <ShoppingCart className="w-4 h-4 mr-2" />
+              Order Now
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline"
+              onClick={() => setShowCryptoEscrow(true)}
+            >
+              <Coins className="w-4 h-4 mr-2" />
+              Pay with Crypto Escrow
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  );
+};
+
+export default DriverLicenseDetail;
