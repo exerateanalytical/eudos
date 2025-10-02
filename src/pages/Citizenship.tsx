@@ -6,40 +6,6 @@ import { Globe, MapPin, Users, TrendingUp, Home, GraduationCap, Building2, Plane
 import { Footer } from "@/components/Footer";
 import { MobileNav } from "@/components/MobileNav";
 
-// Import country images
-import australiaImg from "@/assets/countries/australia.jpg";
-import austriaImg from "@/assets/countries/austria.jpg";
-import canadaImg from "@/assets/countries/canada.jpg";
-import greeceImg from "@/assets/countries/greece.jpg";
-import portugalImg from "@/assets/countries/portugal.jpg";
-import spainImg from "@/assets/countries/spain.jpg";
-import maltaImg from "@/assets/countries/malta.jpg";
-import monacoImg from "@/assets/countries/monaco.jpg";
-import uaeImg from "@/assets/countries/uae.jpg";
-import singaporeImg from "@/assets/countries/singapore.jpg";
-import switzerlandImg from "@/assets/countries/switzerland.jpg";
-import italyImg from "@/assets/countries/italy.jpg";
-import ukImg from "@/assets/countries/uk.jpg";
-import newZealandImg from "@/assets/countries/new-zealand.jpg";
-import latviaImg from "@/assets/countries/latvia.jpg";
-import cyprusImg from "@/assets/countries/cyprus.jpg";
-import irelandImg from "@/assets/countries/ireland.jpg";
-import thailandImg from "@/assets/countries/thailand.jpg";
-import netherlandsImg from "@/assets/countries/netherlands.jpg";
-import turkeyImg from "@/assets/countries/turkey.jpg";
-import brazilImg from "@/assets/countries/brazil.jpg";
-import luxembourgImg from "@/assets/countries/luxembourg.jpg";
-import czechImg from "@/assets/countries/czech.jpg";
-import hungaryImg from "@/assets/countries/hungary.jpg";
-import bulgariaImg from "@/assets/countries/bulgaria.jpg";
-import romaniaImg from "@/assets/countries/romania.jpg";
-import montenegroImg from "@/assets/countries/montenegro.jpg";
-import panamaImg from "@/assets/countries/panama.jpg";
-import costaRicaImg from "@/assets/countries/costa-rica.jpg";
-import uruguayImg from "@/assets/countries/uruguay.jpg";
-import colombiaImg from "@/assets/countries/colombia.jpg";
-import argentinaImg from "@/assets/countries/argentina.jpg";
-
 const Citizenship = () => {
   const navigate = useNavigate();
 
@@ -47,7 +13,6 @@ const Citizenship = () => {
     {
       country: "Australia",
       flag: "🇦🇺",
-      image: australiaImg,
       description: "Streamlined pathway to permanent residence for highly skilled individuals and global business innovators.",
       minInvestment: "Varies by pathway",
       benefits: ["Permanent residence", "Business innovation hub", "High quality of life"],
@@ -56,7 +21,6 @@ const Citizenship = () => {
     {
       country: "Austria",
       flag: "🇦🇹",
-      image: austriaImg,
       description: "EU residence with visa-free access to Schengen Area for select German-speaking applicants.",
       minInvestment: "EUR 3M+",
       benefits: ["EU residence", "Schengen access", "Central European location"],
@@ -65,7 +29,6 @@ const Citizenship = () => {
     {
       country: "Canada",
       flag: "🇨🇦",
-      image: canadaImg,
       description: "Two residence programs for investors and entrepreneurs seeking access to this thriving North American market.",
       minInvestment: "CAD 1M+",
       benefits: ["Thriving economy", "Quality education", "Healthcare system"],
@@ -74,7 +37,6 @@ const Citizenship = () => {
     {
       country: "Greece",
       flag: "🇬🇷",
-      image: greeceImg,
       description: "Golden Visa Program with minimum specialized real estate investment granting residence permit.",
       minInvestment: "EUR 250,000",
       benefits: ["Real estate investment", "Schengen access", "Mediterranean lifestyle"],
@@ -83,7 +45,6 @@ const Citizenship = () => {
     {
       country: "Portugal",
       flag: "🇵🇹",
-      image: portugalImg,
       description: "Golden Residence Permit Program offering pathway to EU residence through investment.",
       minInvestment: "EUR 280,000",
       benefits: ["EU residence", "Schengen mobility", "Path to citizenship"],
@@ -92,7 +53,6 @@ const Citizenship = () => {
     {
       country: "Spain",
       flag: "🇪🇸",
-      image: spainImg,
       description: "Golden Visa program with real estate investment options and Schengen Area access.",
       minInvestment: "EUR 500,000",
       benefits: ["Mediterranean climate", "EU access", "Quality lifestyle"],
@@ -101,7 +61,6 @@ const Citizenship = () => {
     {
       country: "Malta",
       flag: "🇲🇹",
-      image: maltaImg,
       description: "Permanent Residence Programme with freedom of travel within Schengen Area and EU security.",
       minInvestment: "EUR 100,000",
       benefits: ["EU membership", "English-speaking", "Tax advantages"],
@@ -110,7 +69,6 @@ const Citizenship = () => {
     {
       country: "Monaco",
       flag: "🇲🇨",
-      image: monacoImg,
       description: "Premium European residence offering unrivalled standard of living for high-net-worth individuals.",
       minInvestment: "EUR 1M+ deposit",
       benefits: ["No income tax", "Premium lifestyle", "Mediterranean location"],
@@ -119,7 +77,6 @@ const Citizenship = () => {
     {
       country: "United Arab Emirates",
       flag: "🇦🇪",
-      image: uaeImg,
       description: "Golden Visa providing long-term residence for investors, entrepreneurs, and talented professionals.",
       minInvestment: "AED 2M",
       benefits: ["Tax-free income", "Strategic location", "Business hub"],
@@ -128,7 +85,6 @@ const Citizenship = () => {
     {
       country: "Singapore",
       flag: "🇸🇬",
-      image: singaporeImg,
       description: "Global business hub with investor programs for high-net-worth individuals and entrepreneurs.",
       minInvestment: "SGD 2.5M",
       benefits: ["Financial hub", "Low taxes", "Strategic Asian gateway"],
@@ -137,7 +93,6 @@ const Citizenship = () => {
     {
       country: "Switzerland",
       flag: "🇨🇭",
-      image: switzerlandImg,
       description: "Lump sum taxation program for wealthy foreign nationals seeking Swiss residence.",
       minInvestment: "CHF 250,000/year",
       benefits: ["Political stability", "Quality of life", "Central Europe"],
@@ -146,7 +101,6 @@ const Citizenship = () => {
     {
       country: "Italy",
       flag: "🇮🇹",
-      image: italyImg,
       description: "Two residence options for investors with visa-free travel across Schengen Area. No permanent stay required.",
       minInvestment: "EUR 250,000",
       benefits: ["Cultural heritage", "Schengen access", "Investment options"],
@@ -155,7 +109,6 @@ const Citizenship = () => {
     {
       country: "United Kingdom",
       flag: "🇬🇧",
-      image: ukImg,
       description: "Innovator Founder Visa for experienced businesspeople with innovative business ideas seeking UK residence.",
       minInvestment: "GBP 50,000",
       benefits: ["Global business hub", "World-class education", "Path to settlement"],
@@ -164,7 +117,6 @@ const Citizenship = () => {
     {
       country: "New Zealand",
       flag: "🇳🇿",
-      image: newZealandImg,
       description: "Investor visa programs for high-net-worth individuals seeking residence in this Pacific nation.",
       minInvestment: "NZD 5M",
       benefits: ["Natural beauty", "Quality lifestyle", "Business opportunities"],
@@ -173,7 +125,6 @@ const Citizenship = () => {
     {
       country: "Latvia",
       flag: "🇱🇻",
-      image: latviaImg,
       description: "EU residence through real estate or business investment with access to Schengen Area.",
       minInvestment: "EUR 250,000",
       benefits: ["EU residence", "Affordable program", "Schengen mobility"],
@@ -182,7 +133,6 @@ const Citizenship = () => {
     {
       country: "Cyprus",
       flag: "🇨🇾",
-      image: cyprusImg,
       description: "Permanent residence program through real estate investment with fast-track processing.",
       minInvestment: "EUR 300,000",
       benefits: ["EU member state", "Mediterranean lifestyle", "Fast processing"],
@@ -191,7 +141,6 @@ const Citizenship = () => {
     {
       country: "Ireland",
       flag: "🇮🇪",
-      image: irelandImg,
       description: "Immigrant Investor Programme offering residence through investment in Irish enterprises or funds.",
       minInvestment: "EUR 1M",
       benefits: ["English-speaking", "EU access", "Thriving economy"],
@@ -200,7 +149,6 @@ const Citizenship = () => {
     {
       country: "Thailand",
       flag: "🇹🇭",
-      image: thailandImg,
       description: "Elite Residence Program and investment visas for those seeking long-term residence in Southeast Asia.",
       minInvestment: "THB 600,000",
       benefits: ["Tropical lifestyle", "Low cost of living", "Strategic location"],
@@ -209,7 +157,6 @@ const Citizenship = () => {
     {
       country: "Netherlands",
       flag: "🇳🇱",
-      image: netherlandsImg,
       description: "Self-employed residence permit for entrepreneurs and investors establishing business operations.",
       minInvestment: "EUR 4,500",
       benefits: ["EU gateway", "Business-friendly", "High quality of life"],
@@ -218,7 +165,6 @@ const Citizenship = () => {
     {
       country: "Turkey",
       flag: "🇹🇷",
-      image: turkeyImg,
       description: "Citizenship by investment through real estate or capital investment with fast processing times.",
       minInvestment: "USD 400,000",
       benefits: ["Dual citizenship allowed", "Strategic location", "Affordable option"],
@@ -227,7 +173,6 @@ const Citizenship = () => {
     {
       country: "Brazil",
       flag: "🇧🇷",
-      image: brazilImg,
       description: "Investor visa for foreign nationals making significant investments in Brazilian companies.",
       minInvestment: "BRL 500,000",
       benefits: ["Large market access", "Natural resources", "Growing economy"],
@@ -236,7 +181,6 @@ const Citizenship = () => {
     {
       country: "Luxembourg",
       flag: "🇱🇺",
-      image: luxembourgImg,
       description: "Residence permit for investors and entrepreneurs in one of Europe's wealthiest nations.",
       minInvestment: "EUR 500,000",
       benefits: ["EU financial center", "High income levels", "Central location"],
@@ -245,7 +189,6 @@ const Citizenship = () => {
     {
       country: "Czech Republic",
       flag: "🇨🇿",
-      image: czechImg,
       description: "Business residence permit for investors establishing or investing in Czech businesses.",
       minInvestment: "CZK 2.5M",
       benefits: ["Central Europe", "EU membership", "Affordable living"],
@@ -254,7 +197,6 @@ const Citizenship = () => {
     {
       country: "Hungary",
       flag: "🇭🇺",
-      image: hungaryImg,
       description: "Residence bond program offering Hungarian residence through government bond investment.",
       minInvestment: "EUR 300,000",
       benefits: ["EU access", "Low cost of living", "Cultural heritage"],
@@ -263,7 +205,6 @@ const Citizenship = () => {
     {
       country: "Bulgaria",
       flag: "🇧🇬",
-      image: bulgariaImg,
       description: "Fast-track citizenship program through investment with EU passport benefits.",
       minInvestment: "EUR 512,000",
       benefits: ["EU citizenship path", "Low taxes", "Affordable"],
@@ -272,7 +213,6 @@ const Citizenship = () => {
     {
       country: "Romania",
       flag: "🇷🇴",
-      image: romaniaImg,
       description: "Business investor residence permit for establishing companies or making business investments.",
       minInvestment: "EUR 100,000",
       benefits: ["EU member", "Growing economy", "Low investment threshold"],
@@ -281,7 +221,6 @@ const Citizenship = () => {
     {
       country: "Montenegro",
       flag: "🇲🇪",
-      image: montenegroImg,
       description: "Citizenship by investment program with investment in government-approved projects.",
       minInvestment: "EUR 250,000",
       benefits: ["Adriatic location", "EU candidate", "Tax benefits"],
@@ -290,7 +229,6 @@ const Citizenship = () => {
     {
       country: "Panama",
       flag: "🇵🇦",
-      image: panamaImg,
       description: "Friendly Nations Visa and investment residence programs for qualifying nationalities.",
       minInvestment: "USD 200,000",
       benefits: ["Tax advantages", "Strategic location", "USD economy"],
@@ -299,7 +237,6 @@ const Citizenship = () => {
     {
       country: "Costa Rica",
       flag: "🇨🇷",
-      image: costaRicaImg,
       description: "Investor residence program through investment in Costa Rican real estate or businesses.",
       minInvestment: "USD 200,000",
       benefits: ["Natural beauty", "Stable democracy", "Quality healthcare"],
@@ -308,7 +245,6 @@ const Citizenship = () => {
     {
       country: "Uruguay",
       flag: "🇺🇾",
-      image: uruguayImg,
       description: "Residence permit for investors in Uruguayan real estate or business ventures.",
       minInvestment: "USD 1.7M",
       benefits: ["Political stability", "High quality of life", "Business-friendly"],
@@ -317,7 +253,6 @@ const Citizenship = () => {
     {
       country: "Colombia",
       flag: "🇨🇴",
-      image: colombiaImg,
       description: "Investor visa for those making substantial investments in Colombian businesses or real estate.",
       minInvestment: "COP 350M",
       benefits: ["Growing market", "Strategic location", "Cultural richness"],
@@ -326,7 +261,6 @@ const Citizenship = () => {
     {
       country: "Argentina",
       flag: "🇦🇷",
-      image: argentinaImg,
       description: "Residence permit for investors making capital investments in Argentine enterprises.",
       minInvestment: "ARS 1.5M",
       benefits: ["Large economy", "Cultural capital", "Natural resources"],
@@ -503,21 +437,12 @@ const Citizenship = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {residencePrograms.map((program, index) => (
               <Card key={index} className="border-2 hover:shadow-xl transition-all duration-300 group overflow-hidden">
-                {/* Country Image */}
-                <div className="relative h-48 overflow-hidden">
-                  <img 
-                    src={program.image} 
-                    alt={`${program.country} landmark`}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute bottom-3 left-3 flex items-center gap-2">
-                    <div className="text-4xl drop-shadow-lg">{program.flag}</div>
-                    <div>
-                      <CardTitle className="text-white text-2xl drop-shadow-lg">
-                        {program.country}
-                      </CardTitle>
-                    </div>
+                {/* Country Header with Gradient */}
+                <div className={`relative h-32 bg-gradient-to-br ${program.gradient} flex items-center justify-center`}>
+                  <div className="absolute inset-0 bg-black/10" />
+                  <div className="relative z-10 text-center">
+                    <div className="text-6xl mb-2 drop-shadow-lg">{program.flag}</div>
+                    <Shield className="h-8 w-8 text-white/80 mx-auto" />
                   </div>
                   <Badge variant="secondary" className="absolute top-3 right-3">
                     <Star className="h-3 w-3 mr-1 fill-primary text-primary" />
@@ -526,6 +451,9 @@ const Citizenship = () => {
                 </div>
 
                 <CardHeader>
+                  <CardTitle className="text-2xl group-hover:text-primary transition-colors text-center">
+                    {program.country}
+                  </CardTitle>
                   <CardDescription className="text-sm leading-relaxed">
                     {program.description}
                   </CardDescription>
