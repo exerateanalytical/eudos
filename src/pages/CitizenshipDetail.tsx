@@ -233,8 +233,39 @@ const CitizenshipDetail = () => {
   const isPremiumCountry = ["United States", "United Kingdom", "Canada", "USA", "UK"].includes(tempCountryName);
   const programPrice = isPremiumCountry ? "USD 50,000" : "USD 37,000";
 
+  // Country flag mapping
+  const countryFlags: Record<string, string> = {
+    "Portugal": "🇵🇹",
+    "Spain": "🇪🇸",
+    "Greece": "🇬🇷",
+    "Malta": "🇲🇹",
+    "Cyprus": "🇨🇾",
+    "Ireland": "🇮🇪",
+    "Italy": "🇮🇹",
+    "Colombia": "🇨🇴",
+    "United States": "🇺🇸",
+    "USA": "🇺🇸",
+    "United Kingdom": "🇬🇧",
+    "UK": "🇬🇧",
+    "Canada": "🇨🇦",
+    "Australia": "🇦🇺",
+    "New Zealand": "🇳🇿",
+    "Germany": "🇩🇪",
+    "France": "🇫🇷",
+    "Netherlands": "🇳🇱",
+    "Belgium": "🇧🇪",
+    "Austria": "🇦🇹",
+    "Switzerland": "🇨🇭",
+    "Turkey": "🇹🇷",
+    "Dubai": "🇦🇪",
+    "United Arab Emirates": "🇦🇪",
+    "UAE": "🇦🇪",
+  };
+
+  const countryFlag = countryFlags[tempCountryName] || "🌍";
+
   const countryData = {
-    flag: "🇨🇴",
+    flag: countryFlag,
     name: tempCountryName,
     gradient: "from-yellow-400 via-blue-700 to-red-600",
     minInvestment: programPrice,
