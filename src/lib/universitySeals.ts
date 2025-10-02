@@ -219,6 +219,28 @@ import stmarysCalgary from "@/assets/university-seals/stmarys-calgary.png";
 import newmanSeal from "@/assets/university-seals/newman.png";
 import canadianCollegeGeneric from "@/assets/university-seals/canadian-college-generic.png";
 
+// UK Universities
+import oxfordSeal from "@/assets/university-seals/oxford.png";
+import cambridgeSeal from "@/assets/university-seals/cambridge.png";
+import imperialSeal from "@/assets/university-seals/imperial.png";
+import lseSeal from "@/assets/university-seals/lse.png";
+import uclSeal from "@/assets/university-seals/ucl.png";
+import kclSeal from "@/assets/university-seals/kcl.png";
+import edinburghSeal from "@/assets/university-seals/edinburgh.png";
+import manchesterSeal from "@/assets/university-seals/manchester.png";
+import bristolSeal from "@/assets/university-seals/bristol.png";
+import warwickSeal from "@/assets/university-seals/warwick.png";
+import glasgowSeal from "@/assets/university-seals/glasgow.png";
+import durhamSeal from "@/assets/university-seals/durham.png";
+import birminghamSeal from "@/assets/university-seals/birmingham.png";
+import nottinghamSeal from "@/assets/university-seals/nottingham.png";
+import southamptonSeal from "@/assets/university-seals/southampton.png";
+import leedsSeal from "@/assets/university-seals/leeds.png";
+import sheffieldSeal from "@/assets/university-seals/sheffield.png";
+import liverpoolSeal from "@/assets/university-seals/liverpool.png";
+import qmulSeal from "@/assets/university-seals/qmul.png";
+import lancasterSeal from "@/assets/university-seals/lancaster.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -440,6 +462,28 @@ export const universitySealMap: Record<string, string> = {
   "Université Sainte-Anne": sainteAnneSeal,
   "St. Mary's University College": stmarysCalgary,
   "Newman Theological College": newmanSeal,
+  
+  // UK Universities
+  "University of Oxford": oxfordSeal,
+  "University of Cambridge": cambridgeSeal,
+  "Imperial College London": imperialSeal,
+  "London School of Economics (LSE)": lseSeal,
+  "University College London (UCL)": uclSeal,
+  "King's College London": kclSeal,
+  "University of Edinburgh": edinburghSeal,
+  "University of Manchester": manchesterSeal,
+  "University of Bristol": bristolSeal,
+  "University of Warwick": warwickSeal,
+  "University of Glasgow": glasgowSeal,
+  "Durham University": durhamSeal,
+  "University of Birmingham": birminghamSeal,
+  "University of Nottingham": nottinghamSeal,
+  "University of Southampton": southamptonSeal,
+  "University of Leeds": leedsSeal,
+  "University of Sheffield": sheffieldSeal,
+  "University of Liverpool": liverpoolSeal,
+  "Queen Mary University of London": qmulSeal,
+  "Lancaster University": lancasterSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
