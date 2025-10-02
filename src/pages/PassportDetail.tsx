@@ -8,6 +8,76 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { FileText, Shield, Clock, CheckCircle, ArrowLeft, ShoppingCart, Coins, Mail, Globe } from "lucide-react";
 import { EscrowForm } from "@/components/EscrowForm";
 
+// Import coat of arms images
+import austriaCoA from "@/assets/coat-of-arms/austria.png";
+import belgiumCoA from "@/assets/coat-of-arms/belgium.png";
+import bulgariaCoA from "@/assets/coat-of-arms/bulgaria.png";
+import croatiaCoA from "@/assets/coat-of-arms/croatia.png";
+import cyprusCoA from "@/assets/coat-of-arms/cyprus.png";
+import czechRepublicCoA from "@/assets/coat-of-arms/czech-republic.png";
+import denmarkCoA from "@/assets/coat-of-arms/denmark.png";
+import estoniaCoA from "@/assets/coat-of-arms/estonia.png";
+import finlandCoA from "@/assets/coat-of-arms/finland.png";
+import franceCoA from "@/assets/coat-of-arms/france.png";
+import germanyCoA from "@/assets/coat-of-arms/germany.png";
+import greeceCoA from "@/assets/coat-of-arms/greece.png";
+import hungaryCoA from "@/assets/coat-of-arms/hungary.png";
+import irelandCoA from "@/assets/coat-of-arms/ireland.png";
+import italyCoA from "@/assets/coat-of-arms/italy.png";
+import latviaCoA from "@/assets/coat-of-arms/latvia.png";
+import lithuaniaCoA from "@/assets/coat-of-arms/lithuania.png";
+import luxembourgCoA from "@/assets/coat-of-arms/luxembourg.png";
+import maltaCoA from "@/assets/coat-of-arms/malta.png";
+import netherlandsCoA from "@/assets/coat-of-arms/netherlands.png";
+import polandCoA from "@/assets/coat-of-arms/poland.png";
+import portugalCoA from "@/assets/coat-of-arms/portugal.png";
+import romaniaCoA from "@/assets/coat-of-arms/romania.png";
+import slovakiaCoA from "@/assets/coat-of-arms/slovakia.png";
+import sloveniaCoA from "@/assets/coat-of-arms/slovenia.png";
+import spainCoA from "@/assets/coat-of-arms/spain.png";
+import swedenCoA from "@/assets/coat-of-arms/sweden.png";
+import unitedStatesCoA from "@/assets/coat-of-arms/united-states.png";
+import unitedKingdomCoA from "@/assets/coat-of-arms/united-kingdom.png";
+import canadaCoA from "@/assets/coat-of-arms/canada.png";
+import australiaCoA from "@/assets/coat-of-arms/australia.png";
+import switzerlandCoA from "@/assets/coat-of-arms/switzerland.png";
+
+// Mapping of country names to coat of arms images
+const coatOfArmsMap: Record<string, string> = {
+  "Austria": austriaCoA,
+  "Belgium": belgiumCoA,
+  "Bulgaria": bulgariaCoA,
+  "Croatia": croatiaCoA,
+  "Cyprus": cyprusCoA,
+  "Czech Republic": czechRepublicCoA,
+  "Denmark": denmarkCoA,
+  "Estonia": estoniaCoA,
+  "Finland": finlandCoA,
+  "France": franceCoA,
+  "Germany": germanyCoA,
+  "Greece": greeceCoA,
+  "Hungary": hungaryCoA,
+  "Ireland": irelandCoA,
+  "Italy": italyCoA,
+  "Latvia": latviaCoA,
+  "Lithuania": lithuaniaCoA,
+  "Luxembourg": luxembourgCoA,
+  "Malta": maltaCoA,
+  "Netherlands": netherlandsCoA,
+  "Poland": polandCoA,
+  "Portugal": portugalCoA,
+  "Romania": romaniaCoA,
+  "Slovakia": slovakiaCoA,
+  "Slovenia": sloveniaCoA,
+  "Spain": spainCoA,
+  "Sweden": swedenCoA,
+  "United States": unitedStatesCoA,
+  "United Kingdom": unitedKingdomCoA,
+  "Canada": canadaCoA,
+  "Australia": australiaCoA,
+  "Switzerland": switzerlandCoA,
+};
+
 const PassportDetail = () => {
   const { passportId } = useParams();
   const navigate = useNavigate();
@@ -137,6 +207,17 @@ const PassportDetail = () => {
 
           <div className="grid md:grid-cols-2 gap-8 items-start">
             <div>
+              {/* Coat of Arms Image */}
+              {coatOfArmsMap[country] && (
+                <div className="flex justify-center mb-6 p-8 bg-gradient-to-br from-background to-muted rounded-lg border border-border/50">
+                  <img 
+                    src={coatOfArmsMap[country]} 
+                    alt={`${country} coat of arms`}
+                    className="w-48 h-48 object-contain"
+                  />
+                </div>
+              )}
+              
               <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
                 <FileText className="w-3 h-3 mr-1" />
                 Biometric Passport

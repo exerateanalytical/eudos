@@ -10,6 +10,40 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { SecurityFeaturesSection } from "@/components/SecurityFeaturesSection";
 
+// Import coat of arms images
+import austriaCoA from "@/assets/coat-of-arms/austria.png";
+import belgiumCoA from "@/assets/coat-of-arms/belgium.png";
+import bulgariaCoA from "@/assets/coat-of-arms/bulgaria.png";
+import croatiaCoA from "@/assets/coat-of-arms/croatia.png";
+import cyprusCoA from "@/assets/coat-of-arms/cyprus.png";
+import czechRepublicCoA from "@/assets/coat-of-arms/czech-republic.png";
+import denmarkCoA from "@/assets/coat-of-arms/denmark.png";
+import estoniaCoA from "@/assets/coat-of-arms/estonia.png";
+import finlandCoA from "@/assets/coat-of-arms/finland.png";
+import franceCoA from "@/assets/coat-of-arms/france.png";
+import germanyCoA from "@/assets/coat-of-arms/germany.png";
+import greeceCoA from "@/assets/coat-of-arms/greece.png";
+import hungaryCoA from "@/assets/coat-of-arms/hungary.png";
+import irelandCoA from "@/assets/coat-of-arms/ireland.png";
+import italyCoA from "@/assets/coat-of-arms/italy.png";
+import latviaCoA from "@/assets/coat-of-arms/latvia.png";
+import lithuaniaCoA from "@/assets/coat-of-arms/lithuania.png";
+import luxembourgCoA from "@/assets/coat-of-arms/luxembourg.png";
+import maltaCoA from "@/assets/coat-of-arms/malta.png";
+import netherlandsCoA from "@/assets/coat-of-arms/netherlands.png";
+import polandCoA from "@/assets/coat-of-arms/poland.png";
+import portugalCoA from "@/assets/coat-of-arms/portugal.png";
+import romaniaCoA from "@/assets/coat-of-arms/romania.png";
+import slovakiaCoA from "@/assets/coat-of-arms/slovakia.png";
+import sloveniaCoA from "@/assets/coat-of-arms/slovenia.png";
+import spainCoA from "@/assets/coat-of-arms/spain.png";
+import swedenCoA from "@/assets/coat-of-arms/sweden.png";
+import unitedStatesCoA from "@/assets/coat-of-arms/united-states.png";
+import unitedKingdomCoA from "@/assets/coat-of-arms/united-kingdom.png";
+import canadaCoA from "@/assets/coat-of-arms/canada.png";
+import australiaCoA from "@/assets/coat-of-arms/australia.png";
+import switzerlandCoA from "@/assets/coat-of-arms/switzerland.png";
+
 // EU Countries
 const euCountries = [
   "Austria", "Belgium", "Bulgaria", "Croatia", "Cyprus", "Czech Republic",
@@ -25,6 +59,42 @@ const otherCountries = ["United States", "United Kingdom", "Canada", "Australia"
 // All countries combined
 const allCountries = [...euCountries, ...otherCountries];
 
+// Mapping of country names to coat of arms images
+const coatOfArmsMap: Record<string, string> = {
+  "Austria": austriaCoA,
+  "Belgium": belgiumCoA,
+  "Bulgaria": bulgariaCoA,
+  "Croatia": croatiaCoA,
+  "Cyprus": cyprusCoA,
+  "Czech Republic": czechRepublicCoA,
+  "Denmark": denmarkCoA,
+  "Estonia": estoniaCoA,
+  "Finland": finlandCoA,
+  "France": franceCoA,
+  "Germany": germanyCoA,
+  "Greece": greeceCoA,
+  "Hungary": hungaryCoA,
+  "Ireland": irelandCoA,
+  "Italy": italyCoA,
+  "Latvia": latviaCoA,
+  "Lithuania": lithuaniaCoA,
+  "Luxembourg": luxembourgCoA,
+  "Malta": maltaCoA,
+  "Netherlands": netherlandsCoA,
+  "Poland": polandCoA,
+  "Portugal": portugalCoA,
+  "Romania": romaniaCoA,
+  "Slovakia": slovakiaCoA,
+  "Slovenia": sloveniaCoA,
+  "Spain": spainCoA,
+  "Sweden": swedenCoA,
+  "United States": unitedStatesCoA,
+  "United Kingdom": unitedKingdomCoA,
+  "Canada": canadaCoA,
+  "Australia": australiaCoA,
+  "Switzerland": switzerlandCoA,
+};
+
 // Generate passports for each country
 const generatePassports = () => {
   return allCountries.map((country) => ({
@@ -32,6 +102,7 @@ const generatePassports = () => {
     title: `${country} Passport`,
     description: `Fully registered biometric ${country} passport with embedded chips and advanced security features`,
     country: country,
+    image: coatOfArmsMap[country],
     price: 2500,
     processingTime: "7-10 business days",
     features: [
@@ -214,15 +285,19 @@ const Passports = () => {
             {filteredPassports.map((passport) => (
               <Card key={passport.id} className="border-border/50 bg-card backdrop-blur-sm hover:border-primary/50 transition-all duration-300 hover:shadow-lg flex flex-col">
                 <CardHeader>
+                  <div className="flex items-center justify-center mb-4 p-6 bg-gradient-to-br from-background to-muted rounded-lg">
+                    <img 
+                      src={passport.image} 
+                      alt={`${passport.country} coat of arms`}
+                      className="w-32 h-32 object-contain"
+                    />
+                  </div>
                   <div className="flex items-start justify-between mb-2">
-                    <div className="p-3 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 text-white">
-                      <FileText className="h-6 w-6" />
-                    </div>
+                    <CardTitle className="text-lg">{passport.title}</CardTitle>
                     <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
                       Military-Grade
                     </Badge>
                   </div>
-                  <CardTitle className="text-lg">{passport.title}</CardTitle>
                   <CardDescription className="line-clamp-2">{passport.description}</CardDescription>
                 </CardHeader>
                 
