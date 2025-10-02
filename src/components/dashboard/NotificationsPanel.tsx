@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Bell, Check, CheckCheck, Trash2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Bell, Check, CheckCheck, Trash2, AlertCircle, CheckCircle, Info } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
@@ -23,9 +23,9 @@ interface NotificationsPanelProps {
 }
 
 const NotificationsPanel = ({ userId }: NotificationsPanelProps) => {
+  const navigate = useNavigate();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchNotifications();
@@ -70,16 +70,16 @@ const NotificationsPanel = ({ userId }: NotificationsPanelProps) => {
     }
   };
 
-  const markAsRead = async (notificationId: string) => {
+  const markAsRead = async (id: string) => {
     try {
       const { error } = await supabase
         .from("notifications")
         .update({ read: true })
-        .eq("id", notificationId);
+        .eq("id", id);
 
       if (error) throw error;
     } catch (error: any) {
-      toast.error("Error marking notification as read");
+      toast.error("Error updating notification");
     }
   };
 
@@ -94,16 +94,16 @@ const NotificationsPanel = ({ userId }: NotificationsPanelProps) => {
       if (error) throw error;
       toast.success("All notifications marked as read");
     } catch (error: any) {
-      toast.error("Error marking notifications as read");
+      toast.error("Error updating notifications");
     }
   };
 
-  const deleteNotification = async (notificationId: string) => {
+  const deleteNotification = async (id: string) => {
     try {
       const { error } = await supabase
         .from("notifications")
         .delete()
-        .eq("id", notificationId);
+        .eq("id", id);
 
       if (error) throw error;
       toast.success("Notification deleted");
@@ -112,121 +112,111 @@ const NotificationsPanel = ({ userId }: NotificationsPanelProps) => {
     }
   };
 
-  const handleNotificationClick = async (notification: Notification) => {
-    if (!notification.read) {
-      await markAsRead(notification.id);
-    }
+  const handleNotificationClick = (notification: Notification) => {
+    markAsRead(notification.id);
     if (notification.link) {
       navigate(notification.link);
     }
   };
 
-  const getTypeColor = (type: string) => {
+  const getTypeIcon = (type: string) => {
     switch (type) {
       case "success":
-        return "default";
+        return <CheckCircle className="h-4 w-4 text-green-500" />;
       case "error":
-        return "destructive";
-      case "warning":
-        return "secondary";
+        return <AlertCircle className="h-4 w-4 text-red-500" />;
       default:
-        return "outline";
+        return <Info className="h-4 w-4 text-blue-500" />;
     }
   };
 
-  const unreadCount = notifications.filter(n => !n.read).length;
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   if (loading) {
-    return <div className="p-4">Loading notifications...</div>;
+    return <Card><CardContent className="p-6">Loading notifications...</CardContent></Card>;
   }
 
   return (
     <Card>
-      <CardContent className="p-0">
-        <div className="flex items-center justify-between p-4 border-b">
+      <CardContent className="p-6 space-y-4">
+        <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <Bell className="h-5 w-5" />
-            <h3 className="font-semibold">Notifications</h3>
+            <h3 className="text-lg font-semibold">Notifications</h3>
             {unreadCount > 0 && (
-              <Badge variant="default" className="ml-2">
-                {unreadCount}
-              </Badge>
+              <Badge variant="default">{unreadCount} new</Badge>
             )}
           </div>
           {unreadCount > 0 && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={markAllAsRead}
-            >
-              <CheckCheck className="h-4 w-4 mr-2" />
+            <Button variant="outline" size="sm" onClick={markAllAsRead}>
+              <CheckCheck className="mr-2 h-4 w-4" />
               Mark all read
             </Button>
           )}
         </div>
 
-        <ScrollArea className="h-[400px]">
-          {notifications.length === 0 ? (
-            <div className="p-8 text-center text-muted-foreground">
-              <Bell className="h-12 w-12 mx-auto mb-2 opacity-20" />
-              <p>No notifications yet</p>
-            </div>
-          ) : (
-            <div className="divide-y">
-              {notifications.map((notification) => (
-                <div
+        <ScrollArea className="h-[500px]">
+          <div className="space-y-2">
+            {notifications.length === 0 ? (
+              <div className="p-8 text-center text-muted-foreground">
+                <Bell className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                <p>No notifications yet</p>
+              </div>
+            ) : (
+              notifications.map((notification) => (
+                <Card
                   key={notification.id}
-                  className={`p-4 hover:bg-accent/5 transition-colors cursor-pointer ${
-                    !notification.read ? 'bg-primary/5' : ''
+                  className={`cursor-pointer transition-colors ${
+                    !notification.read ? "bg-primary/5 border-primary/20" : ""
                   }`}
                   onClick={() => handleNotificationClick(notification)}
                 >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h4 className="font-semibold text-sm">
-                          {notification.title}
-                        </h4>
-                        <Badge variant={getTypeColor(notification.type)} className="text-xs">
-                          {notification.type}
-                        </Badge>
+                  <CardContent className="p-4">
+                    <div className="flex items-start gap-3">
+                      <div className="mt-1">{getTypeIcon(notification.type)}</div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-2">
+                          <h4 className="font-semibold text-sm">{notification.title}</h4>
+                          {!notification.read && (
+                            <div className="h-2 w-2 rounded-full bg-primary flex-shrink-0 mt-1" />
+                          )}
+                        </div>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {notification.message}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-2">
+                          {new Date(notification.created_at).toLocaleString()}
+                        </p>
                       </div>
-                      <p className="text-sm text-muted-foreground mb-2">
-                        {notification.message}
-                      </p>
-                      <span className="text-xs text-muted-foreground">
-                        {new Date(notification.created_at).toLocaleString()}
-                      </span>
-                    </div>
-                    <div className="flex gap-1">
-                      {!notification.read && (
+                      <div className="flex gap-1">
+                        {!notification.read && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              markAsRead(notification.id);
+                            }}
+                          >
+                            <Check className="h-4 w-4" />
+                          </Button>
+                        )}
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={(e) => {
                             e.stopPropagation();
-                            markAsRead(notification.id);
+                            deleteNotification(notification.id);
                           }}
                         >
-                          <Check className="h-4 w-4" />
+                          <Trash2 className="h-4 w-4" />
                         </Button>
-                      )}
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          deleteNotification(notification.id);
-                        }}
-                      >
-                        <Trash2 className="h-4 w-4 text-destructive" />
-                      </Button>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+                  </CardContent>
+                </Card>
+              ))
+            )}
+          </div>
         </ScrollArea>
       </CardContent>
     </Card>
