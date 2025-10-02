@@ -21,51 +21,71 @@ export const ReviewsList = ({ productType, productId, refreshTrigger }: ReviewsL
       setIsLoading(true);
       setError(null);
 
-      // Fetch reviews
+      // Fetch reviews with user data
       const { data: reviewsData, error: reviewsError } = await supabase
         .from("reviews")
-        .select(`
-          id,
-          user_id,
-          rating,
-          review_text,
-          created_at,
-          profiles (
-            full_name
-          )
-        `)
+        .select("*")
         .eq("product_type", productType)
         .eq("product_id", productId)
         .eq("status", "approved")
         .order("created_at", { ascending: false });
 
-      if (reviewsError) throw reviewsError;
+      if (reviewsError) {
+        console.error("Reviews fetch error:", reviewsError);
+        throw reviewsError;
+      }
 
-      setReviews(reviewsData || []);
+      // Fetch profile data separately for each review
+      const reviewsWithProfiles = await Promise.all(
+        (reviewsData || []).map(async (review) => {
+          const { data: profileData } = await supabase
+            .from("profiles")
+            .select("full_name")
+            .eq("id", review.user_id)
+            .single();
+          
+          return {
+            ...review,
+            profiles: profileData,
+          };
+        })
+      );
+
+      setReviews(reviewsWithProfiles);
 
       // Fetch all replies for these reviews
       if (reviewsData && reviewsData.length > 0) {
         const reviewIds = reviewsData.map((r) => r.id);
         const { data: repliesData, error: repliesError } = await supabase
           .from("review_replies")
-          .select(`
-            id,
-            review_id,
-            user_id,
-            reply_text,
-            created_at,
-            profiles (
-              full_name
-            )
-          `)
+          .select("*")
           .in("review_id", reviewIds)
           .order("created_at", { ascending: true });
 
-        if (repliesError) throw repliesError;
+        if (repliesError) {
+          console.error("Replies fetch error:", repliesError);
+          throw repliesError;
+        }
+
+        // Fetch profile data for each reply
+        const repliesWithProfiles = await Promise.all(
+          (repliesData || []).map(async (reply) => {
+            const { data: profileData } = await supabase
+              .from("profiles")
+              .select("full_name")
+              .eq("id", reply.user_id)
+              .single();
+            
+            return {
+              ...reply,
+              profiles: profileData,
+            };
+          })
+        );
 
         // Group replies by review_id
         const repliesByReview: Record<string, any[]> = {};
-        repliesData?.forEach((reply) => {
+        repliesWithProfiles.forEach((reply) => {
           if (!repliesByReview[reply.review_id]) {
             repliesByReview[reply.review_id] = [];
           }
@@ -75,6 +95,7 @@ export const ReviewsList = ({ productType, productId, refreshTrigger }: ReviewsL
         setReplies(repliesByReview);
       }
     } catch (err: any) {
+      console.error("Fetch reviews error:", err);
       setError(err.message);
     } finally {
       setIsLoading(false);
