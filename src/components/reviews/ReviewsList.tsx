@@ -30,7 +30,7 @@ export const ReviewsList = ({ productType, productId, refreshTrigger }: ReviewsL
           rating,
           review_text,
           created_at,
-          profiles!reviews_user_id_fkey (
+          profiles (
             full_name
           )
         `)
@@ -54,7 +54,7 @@ export const ReviewsList = ({ productType, productId, refreshTrigger }: ReviewsL
             user_id,
             reply_text,
             created_at,
-            profiles!review_replies_user_id_fkey (
+            profiles (
               full_name
             )
           `)
