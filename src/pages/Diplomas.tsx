@@ -10,6 +10,38 @@ import { Label } from "@/components/ui/label";
 import { SecurityFeaturesSection } from "@/components/SecurityFeaturesSection";
 import { Slider } from "@/components/ui/slider";
 
+// Import university seals
+import harvardSeal from "@/assets/university-seals/harvard.png";
+import stanfordSeal from "@/assets/university-seals/stanford.png";
+import mitSeal from "@/assets/university-seals/mit.png";
+import berkeleySeal from "@/assets/university-seals/berkeley.png";
+import princetonSeal from "@/assets/university-seals/princeton.png";
+import yaleSeal from "@/assets/university-seals/yale.png";
+import columbiaSeal from "@/assets/university-seals/columbia.png";
+import chicagoSeal from "@/assets/university-seals/chicago.png";
+import torontoSeal from "@/assets/university-seals/toronto.png";
+import mcgillSeal from "@/assets/university-seals/mcgill.png";
+import ubcSeal from "@/assets/university-seals/ubc.png";
+import johnsHopkinsSeal from "@/assets/university-seals/johns-hopkins.png";
+import upennSeal from "@/assets/university-seals/upenn.png";
+
+// Mapping of university names to seals
+const universitySealMap: Record<string, string> = {
+  "Harvard University": harvardSeal,
+  "Stanford University": stanfordSeal,
+  "Massachusetts Institute of Technology (MIT)": mitSeal,
+  "University of California, Berkeley": berkeleySeal,
+  "Princeton University": princetonSeal,
+  "Yale University": yaleSeal,
+  "Columbia University": columbiaSeal,
+  "University of Chicago": chicagoSeal,
+  "Johns Hopkins University": johnsHopkinsSeal,
+  "University of Pennsylvania": upennSeal,
+  "University of Toronto": torontoSeal,
+  "McGill University": mcgillSeal,
+  "University of British Columbia": ubcSeal,
+};
+
 const universities = [
   { id: 1, name: "Harvard University", location: "Cambridge, MA", ranking: 1, price: "$15,000" },
   { id: 2, name: "Stanford University", location: "Stanford, CA", ranking: 2, price: "$15,000" },
@@ -796,9 +828,17 @@ const Diplomas = () => {
                       </Badge>
                     </div>
                     
-                    {/* University Icon */}
-                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
-                      <GraduationCap className="h-6 w-6 text-primary" />
+                    {/* University Seal/Icon */}
+                    <div className="w-20 h-20 bg-white rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300 shadow-sm border border-border/30">
+                      {universitySealMap[university.name] ? (
+                        <img 
+                          src={universitySealMap[university.name]} 
+                          alt={`${university.name} seal`}
+                          className="w-16 h-16 object-contain"
+                        />
+                      ) : (
+                        <GraduationCap className="h-10 w-10 text-primary" />
+                      )}
                     </div>
                     
                     <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors duration-300">
