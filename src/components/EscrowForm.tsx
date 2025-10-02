@@ -20,11 +20,16 @@ export const EscrowForm = ({ open, onOpenChange, productName, productPrice, deli
   const [step, setStep] = useState<'form' | 'payment'>('form');
   const [copied, setCopied] = useState(false);
   
-  // Form state
-  const [buyerName, setBuyerName] = useState("");
-  const [buyerEmail, setBuyerEmail] = useState("");
+  // Form state - auto-populate with user data (editable)
+  const [buyerName, setBuyerName] = useState("John Doe");
+  const [buyerEmail, setBuyerEmail] = useState("john.doe@example.com");
   const [escrowTerms, setEscrowTerms] = useState("");
   const [instructions, setInstructions] = useState("");
+
+  // Calculate escrow fee (1.5%)
+  const productPriceNum = parseFloat(productPrice.replace(/[^0-9.]/g, '')) || 0;
+  const escrowFee = productPriceNum * 0.015;
+  const totalAmount = productPriceNum + escrowFee;
 
   const sellerName = "SecurePrint Labs";
   const escrowWallet = "0x1234...5678"; // Example wallet
@@ -119,8 +124,16 @@ export const EscrowForm = ({ open, onOpenChange, productName, productPrice, deli
                   <span className="font-medium">{productName}</span>
                 </div>
                 <div className="flex justify-between py-2 border-b">
-                  <span className="text-muted-foreground">Amount</span>
-                  <span className="font-bold text-primary">{productPrice}</span>
+                  <span className="text-muted-foreground">Product Amount</span>
+                  <span className="font-medium">{productPrice}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b">
+                  <span className="text-muted-foreground">Escrow Fee (1.5%)</span>
+                  <span className="font-medium">${escrowFee.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between py-2">
+                  <span className="font-bold">Total Amount</span>
+                  <span className="font-bold text-primary">${totalAmount.toFixed(2)}</span>
                 </div>
                 {deliveryTime && (
                   <div className="flex justify-between py-2">
@@ -225,9 +238,17 @@ export const EscrowForm = ({ open, onOpenChange, productName, productPrice, deli
                   <span className="text-muted-foreground">Product</span>
                   <span className="font-medium">{productName}</span>
                 </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Product Amount</span>
+                  <span className="font-medium">{productPrice}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Escrow Fee (1.5%)</span>
+                  <span className="font-medium">${escrowFee.toFixed(2)}</span>
+                </div>
                 <div className="flex justify-between pt-2 border-t">
                   <span className="font-bold">Total Amount</span>
-                  <span className="font-bold text-primary text-lg">{productPrice}</span>
+                  <span className="font-bold text-primary text-lg">${totalAmount.toFixed(2)}</span>
                 </div>
               </div>
             </Card>
