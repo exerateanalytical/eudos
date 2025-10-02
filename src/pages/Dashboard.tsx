@@ -11,6 +11,7 @@ import OrdersModule from "@/components/dashboard/OrdersModule";
 import DocumentApplicationsModule from "@/components/dashboard/DocumentApplicationsModule";
 import ProfileModule from "@/components/dashboard/ProfileModule";
 import SecurityModule from "@/components/dashboard/SecurityModule";
+import { NotificationBell } from "@/components/dashboard/NotificationBell";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -66,7 +67,8 @@ const Dashboard = () => {
       <header className="border-b bg-card/50 backdrop-blur">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold">Dashboard</h1>
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
+            {user && <NotificationBell userId={user.id} />}
             <Button variant="outline" onClick={() => navigate("/")}>
               <Home className="mr-2 h-4 w-4" />
               Home
