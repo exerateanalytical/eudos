@@ -44,6 +44,32 @@ import ohioStateSeal from "@/assets/university-seals/ohio-state.png";
 import pennStateSeal from "@/assets/university-seals/penn-state.png";
 import purdueSeal from "@/assets/university-seals/purdue.png";
 import ucdavisSeal from "@/assets/university-seals/ucdavis.png";
+import coloradoSeal from "@/assets/university-seals/colorado.png";
+import minnesotaSeal from "@/assets/university-seals/minnesota.png";
+import marylandSeal from "@/assets/university-seals/maryland.png";
+import rutgersSeal from "@/assets/university-seals/rutgers.png";
+import texasAMSeal from "@/assets/university-seals/texas-am.png";
+import pittSeal from "@/assets/university-seals/pitt.png";
+import msuSeal from "@/assets/university-seals/msu.png";
+import miamiSeal from "@/assets/university-seals/miami.png";
+import indianaSeal from "@/assets/university-seals/indiana.png";
+import arizonaSeal from "@/assets/university-seals/arizona.png";
+import asuSeal from "@/assets/university-seals/asu.png";
+import georgiaSeal from "@/assets/university-seals/georgia.png";
+import ncstateSeal from "@/assets/university-seals/ncstate.png";
+import vtSeal from "@/assets/university-seals/vt.png";
+import iowaSeal from "@/assets/university-seals/iowa.png";
+import clemsonSeal from "@/assets/university-seals/clemson.png";
+import uconnSeal from "@/assets/university-seals/uconn.png";
+import umassSeal from "@/assets/university-seals/umass.png";
+import delawareSeal from "@/assets/university-seals/delaware.png";
+import syracuseSeal from "@/assets/university-seals/syracuse.png";
+import oregonSeal from "@/assets/university-seals/oregon.png";
+import rochesterSeal from "@/assets/university-seals/rochester.png";
+import caseWesternSeal from "@/assets/university-seals/case-western.png";
+import lehighSeal from "@/assets/university-seals/lehigh.png";
+import rpiSeal from "@/assets/university-seals/rpi.png";
+import brandeisSeal from "@/assets/university-seals/brandeis.png";
 
 // Canadian Universities
 import torontoSeal from "@/assets/university-seals/toronto.png";
@@ -68,6 +94,9 @@ import carletonSeal from "@/assets/university-seals/carleton.png";
 import guelphSeal from "@/assets/university-seals/guelph.png";
 import concordiaSeal from "@/assets/university-seals/concordia.png";
 import memorialSeal from "@/assets/university-seals/memorial.png";
+import ryersonSeal from "@/assets/university-seals/ryerson.png";
+import unbSeal from "@/assets/university-seals/unb.png";
+import windsorSeal from "@/assets/university-seals/windsor.png";
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -116,6 +145,32 @@ export const universitySealMap: Record<string, string> = {
   "Pennsylvania State University": pennStateSeal,
   "Purdue University": purdueSeal,
   "University of California, Davis": ucdavisSeal,
+  "University of Colorado Boulder": coloradoSeal,
+  "University of Minnesota": minnesotaSeal,
+  "University of Maryland": marylandSeal,
+  "Rutgers University": rutgersSeal,
+  "Texas A&M University": texasAMSeal,
+  "University of Pittsburgh": pittSeal,
+  "Michigan State University": msuSeal,
+  "University of Miami": miamiSeal,
+  "Indiana University Bloomington": indianaSeal,
+  "University of Arizona": arizonaSeal,
+  "Arizona State University": asuSeal,
+  "University of Georgia": georgiaSeal,
+  "North Carolina State University": ncstateSeal,
+  "Virginia Tech": vtSeal,
+  "University of Iowa": iowaSeal,
+  "Clemson University": clemsonSeal,
+  "University of Connecticut": uconnSeal,
+  "University of Massachusetts Amherst": umassSeal,
+  "University of Delaware": delawareSeal,
+  "Syracuse University": syracuseSeal,
+  "University of Oregon": oregonSeal,
+  "University of Rochester": rochesterSeal,
+  "Case Western Reserve University": caseWesternSeal,
+  "Lehigh University": lehighSeal,
+  "Rensselaer Polytechnic Institute (RPI)": rpiSeal,
+  "Brandeis University": brandeisSeal,
 
   // Canadian Universities
   "University of Toronto": torontoSeal,
@@ -140,4 +195,7 @@ export const universitySealMap: Record<string, string> = {
   "University of Guelph": guelphSeal,
   "Concordia University": concordiaSeal,
   "Memorial University of Newfoundland": memorialSeal,
+  "Ryerson University": ryersonSeal,
+  "University of New Brunswick": unbSeal,
+  "University of Windsor": windsorSeal,
 };
