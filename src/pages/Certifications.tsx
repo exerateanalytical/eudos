@@ -475,14 +475,24 @@ const Certifications = () => {
                       </div>
                     </div>
                     
-                    <Button 
-                      className="w-full group-hover:shadow-lg transition-all duration-300" 
-                      size="lg"
-                      onClick={() => navigate(`/apply?type=certification&name=${encodeURIComponent(cert.name)}`)}
-                    >
-                      <ShoppingCart className="h-4 w-4 mr-2" />
-                      Order Now
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button 
+                        variant="outline"
+                        className="flex-1 group-hover:shadow-lg transition-all duration-300" 
+                        size="lg"
+                        onClick={() => navigate(`/certification/${encodeURIComponent(cert.name)}`)}
+                      >
+                        View Details
+                      </Button>
+                      <Button 
+                        className="flex-1 group-hover:shadow-lg transition-all duration-300" 
+                        size="lg"
+                        onClick={() => navigate(`/apply?type=certification&name=${encodeURIComponent(cert.name)}`)}
+                      >
+                        <ShoppingCart className="h-4 w-4 mr-2" />
+                        Order
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               ))}
