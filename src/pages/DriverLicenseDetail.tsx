@@ -6,8 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { CreditCard, Shield, Clock, CheckCircle, ArrowLeft, ShoppingCart, Coins, Mail } from "lucide-react";
-import { MobileNav } from "@/components/MobileNav";
-import { Footer } from "@/components/Footer";
 import { EscrowForm } from "@/components/EscrowForm";
 
 const DriverLicenseDetail = () => {
@@ -115,8 +113,6 @@ const DriverLicenseDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <MobileNav />
-
       {/* Hero Section */}
       <section className="pt-20 pb-12 px-4 bg-gradient-to-b from-primary/5 to-background">
         <div className="container mx-auto max-w-6xl">
@@ -344,8 +340,6 @@ const DriverLicenseDetail = () => {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };

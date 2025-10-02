@@ -2,8 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Shield, Award, Building2, Database, Clock, CheckCircle, Users, Globe, Lock, Sparkles, Fingerprint, Cpu, Eye, Radio, FileCheck, Scan, Printer } from "lucide-react";
-import { Footer } from "@/components/Footer";
-import { MobileNav } from "@/components/MobileNav";
 
 const About = () => {
   const navigate = useNavigate();
@@ -112,8 +110,6 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <MobileNav currentPage="about" />
-
       {/* Hero Section - Mobile Optimized */}
       <section className="relative py-10 md:py-16 lg:py-20 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
@@ -279,8 +275,6 @@ const About = () => {
           </Card>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };

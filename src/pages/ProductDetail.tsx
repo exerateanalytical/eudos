@@ -12,8 +12,6 @@ import {
   Database, CheckCircle2, Package, Truck, HeadphonesIcon, Globe,
   Calendar, Award, Star, Coins
 } from "lucide-react";
-import { Footer } from "@/components/Footer";
-import { MobileNav } from "@/components/MobileNav";
 
 // Product data (same as Shop page)
 const euCountries = [
@@ -188,8 +186,6 @@ const ProductDetail = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <MobileNav />
-
       <div className="container mx-auto px-4 py-6 md:py-12">
         {/* Back Button */}
         <Button 
@@ -528,8 +524,6 @@ const ProductDetail = () => {
           </Card>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 };

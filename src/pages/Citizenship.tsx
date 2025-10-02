@@ -3,8 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Globe, MapPin, Users, TrendingUp, Home, GraduationCap, Building2, Plane, Shield, Award, CheckCircle, ArrowRight, Star, FileText, CreditCard, IdCard } from "lucide-react";
-import { Footer } from "@/components/Footer";
-import { MobileNav } from "@/components/MobileNav";
 
 const Citizenship = () => {
   const navigate = useNavigate();
@@ -316,9 +314,6 @@ const Citizenship = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <MobileNav />
-
       {/* Hero Section */}
       <section className="relative py-20 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
@@ -562,8 +557,6 @@ const Citizenship = () => {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };

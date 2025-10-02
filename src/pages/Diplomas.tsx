@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { MobileNav } from "@/components/MobileNav";
-import { Footer } from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -596,8 +594,6 @@ const Diplomas = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <MobileNav />
-
       {/* Hero Section */}
       <section className="relative py-16 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-background" />
@@ -863,8 +859,6 @@ const Diplomas = () => {
           </div>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 };

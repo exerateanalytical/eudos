@@ -5,8 +5,6 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ArrowLeft, CheckCircle, Clock, FileText, Users, TrendingUp, Shield, Award, Globe, Home, Download, Mail, Phone, MapPin, Building, ShoppingCart, Coins } from "lucide-react";
-import { Footer } from "@/components/Footer";
-import { MobileNav } from "@/components/MobileNav";
 import { EscrowForm } from "@/components/EscrowForm";
 import { toast } from "@/hooks/use-toast";
 import { useState } from "react";
@@ -402,8 +400,6 @@ const CitizenshipDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <MobileNav />
-
       {/* Hero Section */}
       <section className="relative py-12 px-4 overflow-hidden">
         <div className={`absolute inset-0 bg-gradient-to-br ${countryData.gradient} opacity-10`} />
@@ -798,8 +794,6 @@ const CitizenshipDetail = () => {
           </Button>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };

@@ -6,8 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Award, Clock, Shield, CheckCircle, FileCheck, Globe, Bitcoin, Mail, Phone, MapPin, ExternalLink, ArrowLeft, ShoppingCart, Coins } from "lucide-react";
-import { MobileNav } from "@/components/MobileNav";
-import { Footer } from "@/components/Footer";
 import { EscrowForm } from "@/components/EscrowForm";
 
 const CertificationDetail = () => {
@@ -134,8 +132,6 @@ const CertificationDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <MobileNav />
-      
       {/* Hero Section */}
       <section className="pt-20 pb-12 px-4 bg-gradient-to-b from-primary/5 to-background">
         <div className="container mx-auto max-w-6xl">
@@ -372,8 +368,6 @@ const CertificationDetail = () => {
           </Button>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };

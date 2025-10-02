@@ -4,8 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CreditCard, Shield, ShoppingCart, Search, Filter, X } from "lucide-react";
-import { MobileNav } from "@/components/MobileNav";
-import { Footer } from "@/components/Footer";
 import { EscrowForm } from "@/components/EscrowForm";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -92,8 +90,6 @@ const DriversLicense = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <MobileNav currentPage="drivers-license" />
-
       {/* Hero Section */}
       <section className="relative py-12 md:py-20 px-4 overflow-hidden border-b border-border/40">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
@@ -304,8 +300,6 @@ const DriversLicense = () => {
         productPrice={selectedLicense ? `$${selectedLicense.price}` : "$0"}
         deliveryTime={selectedLicense?.processingTime || ""}
       />
-
-      <Footer />
     </div>
   );
 };

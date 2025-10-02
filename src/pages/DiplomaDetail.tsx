@@ -5,8 +5,6 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ArrowLeft, GraduationCap, Clock, FileText, CheckCircle, Shield, Award, Download, Mail, ShoppingCart, Coins, IdCard, BookOpen, Database } from "lucide-react";
-import { Footer } from "@/components/Footer";
-import { MobileNav } from "@/components/MobileNav";
 import { EscrowForm } from "@/components/EscrowForm";
 import { useState } from "react";
 
@@ -163,8 +161,6 @@ const DiplomaDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <MobileNav />
-
       {/* Hero Section */}
       <section className="relative py-12 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-background" />
@@ -386,8 +382,6 @@ const DiplomaDetail = () => {
           </Tabs>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };

@@ -10,7 +10,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "@/hooks/use-toast";
 import { FileText, CreditCard, IdCard, AlertCircle, Globe, GraduationCap } from "lucide-react";
-import { Footer } from "@/components/Footer";
+
 
 const documentTypes = [
   { id: "passport", label: "Passport", icon: FileText },
@@ -1008,8 +1008,6 @@ const Apply = () => {
           </form>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 };

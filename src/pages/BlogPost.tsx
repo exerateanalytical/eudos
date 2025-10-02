@@ -3,7 +3,7 @@ import { Printer, Calendar, User, ArrowLeft, Share2, BookmarkPlus, Tag } from "l
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Footer } from "@/components/Footer";
+
 
 // Blog post data (in a real app, this would come from a CMS or API)
 const blogPostsData: { [key: string]: any } = {
@@ -500,8 +500,6 @@ const BlogPost = () => {
           </div>
         </div>
       </article>
-
-      <Footer />
     </div>
   );
 };

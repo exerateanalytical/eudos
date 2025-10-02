@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Printer, FileText, CreditCard, IdCard, GraduationCap, Shield, Fingerprint, Cpu, Sparkles, Eye, Scan, Radio, Lock, FileCheck, Database, Filter, X } from "lucide-react";
-import { Footer } from "@/components/Footer";
+
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 
@@ -175,43 +175,6 @@ const Products = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3 group cursor-pointer" onClick={() => navigate("/")}>
-            <div className="relative">
-              <Printer className="h-8 w-8 text-primary transition-transform duration-300 group-hover:scale-110" />
-              <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
-              SecurePrint Labs
-            </h1>
-          </div>
-          <nav className="hidden md:flex gap-4 lg:gap-8">
-            <button onClick={() => navigate("/")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base">
-              Home
-            </button>
-            <button onClick={() => navigate("/products")} className="text-primary font-medium text-sm lg:text-base">
-              Products
-            </button>
-            <button onClick={() => navigate("/about")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base">
-              About
-            </button>
-            <button onClick={() => navigate("/apply")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base">
-              Apply
-            </button>
-            <button onClick={() => navigate("/faq")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base">
-              FAQ
-            </button>
-            <button onClick={() => navigate("/testimonials")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base">
-              Testimonials
-            </button>
-            <button onClick={() => navigate("/blog")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base">
-              Blog
-            </button>
-          </nav>
-        </div>
-      </header>
 
       <div className="container mx-auto px-4 py-6 md:py-12">
         {/* Page Header */}
@@ -492,8 +455,6 @@ const Products = () => {
           </div>
         </div>
       </div>
-      
-      <Footer />
     </div>
   );
 };

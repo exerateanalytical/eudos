@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Printer, FileText, CreditCard, IdCard, GraduationCap, Shield, Fingerprint, Cpu, Sparkles, Eye, Scan, Radio, Lock, FileCheck, Database, Filter, X, ShoppingCart } from "lucide-react";
-import { Footer } from "@/components/Footer";
+
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 
@@ -534,8 +534,6 @@ const Shop = () => {
           </div>
         </div>
       </div>
-      
-      <Footer />
     </div>
   );
 };
