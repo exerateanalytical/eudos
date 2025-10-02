@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Globe, MapPin, Users, TrendingUp, Home, GraduationCap, Building2, Plane, Shield, Award, CheckCircle, ArrowRight, Star } from "lucide-react";
+import { Globe, MapPin, Users, TrendingUp, Home, GraduationCap, Building2, Plane, Shield, Award, CheckCircle, ArrowRight, Star, FileText, CreditCard, IdCard } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { MobileNav } from "@/components/MobileNav";
 
@@ -13,257 +13,257 @@ const Citizenship = () => {
     {
       country: "Australia",
       flag: "🇦🇺",
-      description: "Streamlined pathway to permanent residence for highly skilled individuals and global business innovators.",
-      minInvestment: "Varies by pathway",
-      benefits: ["Permanent residence", "Business innovation hub", "High quality of life"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-yellow-500 to-red-500"
     },
     {
       country: "Austria",
       flag: "🇦🇹",
-      description: "EU residence with visa-free access to Schengen Area for select German-speaking applicants.",
-      minInvestment: "EUR 3M+",
-      benefits: ["EU residence", "Schengen access", "Central European location"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-red-500 to-red-600"
     },
     {
       country: "Canada",
       flag: "🇨🇦",
-      description: "Two residence programs for investors and entrepreneurs seeking access to this thriving North American market.",
-      minInvestment: "CAD 1M+",
-      benefits: ["Thriving economy", "Quality education", "Healthcare system"],
+      description: "Premium citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 50,000",
+      benefits: ["Complete documentation package", "Premium country", "1 month processing"],
       gradient: "from-red-500 via-white to-red-500"
     },
     {
       country: "Greece",
       flag: "🇬🇷",
-      description: "Golden Visa Program with minimum specialized real estate investment granting residence permit.",
-      minInvestment: "EUR 250,000",
-      benefits: ["Real estate investment", "Schengen access", "Mediterranean lifestyle"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-blue-500 to-cyan-500"
     },
     {
       country: "Portugal",
       flag: "🇵🇹",
-      description: "Golden Residence Permit Program offering pathway to EU residence through investment.",
-      minInvestment: "EUR 280,000",
-      benefits: ["EU residence", "Schengen mobility", "Path to citizenship"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-green-600 to-red-600"
     },
     {
       country: "Spain",
       flag: "🇪🇸",
-      description: "Golden Visa program with real estate investment options and Schengen Area access.",
-      minInvestment: "EUR 500,000",
-      benefits: ["Mediterranean climate", "EU access", "Quality lifestyle"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-red-600 via-yellow-400 to-red-600"
     },
     {
       country: "Malta",
       flag: "🇲🇹",
-      description: "Permanent Residence Programme with freedom of travel within Schengen Area and EU security.",
-      minInvestment: "EUR 100,000",
-      benefits: ["EU membership", "English-speaking", "Tax advantages"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-white via-red-600 to-white"
     },
     {
       country: "Monaco",
       flag: "🇲🇨",
-      description: "Premium European residence offering unrivalled standard of living for high-net-worth individuals.",
-      minInvestment: "EUR 1M+ deposit",
-      benefits: ["No income tax", "Premium lifestyle", "Mediterranean location"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-red-600 to-white"
     },
     {
       country: "United Arab Emirates",
       flag: "🇦🇪",
-      description: "Golden Visa providing long-term residence for investors, entrepreneurs, and talented professionals.",
-      minInvestment: "AED 2M",
-      benefits: ["Tax-free income", "Strategic location", "Business hub"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-green-600 via-white to-black"
     },
     {
       country: "Singapore",
       flag: "🇸🇬",
-      description: "Global business hub with investor programs for high-net-worth individuals and entrepreneurs.",
-      minInvestment: "SGD 2.5M",
-      benefits: ["Financial hub", "Low taxes", "Strategic Asian gateway"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-red-600 to-white"
     },
     {
       country: "Switzerland",
       flag: "🇨🇭",
-      description: "Lump sum taxation program for wealthy foreign nationals seeking Swiss residence.",
-      minInvestment: "CHF 250,000/year",
-      benefits: ["Political stability", "Quality of life", "Central Europe"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-red-600 via-white to-red-600"
     },
     {
       country: "Italy",
       flag: "🇮🇹",
-      description: "Two residence options for investors with visa-free travel across Schengen Area. No permanent stay required.",
-      minInvestment: "EUR 250,000",
-      benefits: ["Cultural heritage", "Schengen access", "Investment options"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-green-600 via-white to-red-600"
     },
     {
       country: "United Kingdom",
       flag: "🇬🇧",
-      description: "Innovator Founder Visa for experienced businesspeople with innovative business ideas seeking UK residence.",
-      minInvestment: "GBP 50,000",
-      benefits: ["Global business hub", "World-class education", "Path to settlement"],
+      description: "Premium citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 50,000",
+      benefits: ["Complete documentation package", "Premium country", "1 month processing"],
       gradient: "from-blue-700 via-white to-red-600"
     },
     {
       country: "New Zealand",
       flag: "🇳🇿",
-      description: "Investor visa programs for high-net-worth individuals seeking residence in this Pacific nation.",
-      minInvestment: "NZD 5M",
-      benefits: ["Natural beauty", "Quality lifestyle", "Business opportunities"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-blue-900 to-blue-700"
     },
     {
       country: "Latvia",
       flag: "🇱🇻",
-      description: "EU residence through real estate or business investment with access to Schengen Area.",
-      minInvestment: "EUR 250,000",
-      benefits: ["EU residence", "Affordable program", "Schengen mobility"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-red-700 via-white to-red-700"
     },
     {
       country: "Cyprus",
       flag: "🇨🇾",
-      description: "Permanent residence program through real estate investment with fast-track processing.",
-      minInvestment: "EUR 300,000",
-      benefits: ["EU member state", "Mediterranean lifestyle", "Fast processing"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-orange-500 to-green-700"
     },
     {
       country: "Ireland",
       flag: "🇮🇪",
-      description: "Immigrant Investor Programme offering residence through investment in Irish enterprises or funds.",
-      minInvestment: "EUR 1M",
-      benefits: ["English-speaking", "EU access", "Thriving economy"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-green-700 via-white to-orange-600"
     },
     {
       country: "Thailand",
       flag: "🇹🇭",
-      description: "Elite Residence Program and investment visas for those seeking long-term residence in Southeast Asia.",
-      minInvestment: "THB 600,000",
-      benefits: ["Tropical lifestyle", "Low cost of living", "Strategic location"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-red-600 via-white to-blue-800"
     },
     {
       country: "Netherlands",
       flag: "🇳🇱",
-      description: "Self-employed residence permit for entrepreneurs and investors establishing business operations.",
-      minInvestment: "EUR 4,500",
-      benefits: ["EU gateway", "Business-friendly", "High quality of life"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-red-600 via-white to-blue-700"
     },
     {
       country: "Turkey",
       flag: "🇹🇷",
-      description: "Citizenship by investment through real estate or capital investment with fast processing times.",
-      minInvestment: "USD 400,000",
-      benefits: ["Dual citizenship allowed", "Strategic location", "Affordable option"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-red-700 to-red-600"
     },
     {
       country: "Brazil",
       flag: "🇧🇷",
-      description: "Investor visa for foreign nationals making significant investments in Brazilian companies.",
-      minInvestment: "BRL 500,000",
-      benefits: ["Large market access", "Natural resources", "Growing economy"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-green-600 via-yellow-400 to-blue-700"
     },
     {
       country: "Luxembourg",
       flag: "🇱🇺",
-      description: "Residence permit for investors and entrepreneurs in one of Europe's wealthiest nations.",
-      minInvestment: "EUR 500,000",
-      benefits: ["EU financial center", "High income levels", "Central location"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-red-600 via-white to-blue-600"
     },
     {
       country: "Czech Republic",
       flag: "🇨🇿",
-      description: "Business residence permit for investors establishing or investing in Czech businesses.",
-      minInvestment: "CZK 2.5M",
-      benefits: ["Central Europe", "EU membership", "Affordable living"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-white via-blue-600 to-red-600"
     },
     {
       country: "Hungary",
       flag: "🇭🇺",
-      description: "Residence bond program offering Hungarian residence through government bond investment.",
-      minInvestment: "EUR 300,000",
-      benefits: ["EU access", "Low cost of living", "Cultural heritage"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-red-600 via-white to-green-700"
     },
     {
       country: "Bulgaria",
       flag: "🇧🇬",
-      description: "Fast-track citizenship program through investment with EU passport benefits.",
-      minInvestment: "EUR 512,000",
-      benefits: ["EU citizenship path", "Low taxes", "Affordable"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-white via-green-700 to-red-600"
     },
     {
       country: "Romania",
       flag: "🇷🇴",
-      description: "Business investor residence permit for establishing companies or making business investments.",
-      minInvestment: "EUR 100,000",
-      benefits: ["EU member", "Growing economy", "Low investment threshold"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-blue-700 via-yellow-400 to-red-600"
     },
     {
       country: "Montenegro",
       flag: "🇲🇪",
-      description: "Citizenship by investment program with investment in government-approved projects.",
-      minInvestment: "EUR 250,000",
-      benefits: ["Adriatic location", "EU candidate", "Tax benefits"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-red-700 via-yellow-400 to-red-700"
     },
     {
       country: "Panama",
       flag: "🇵🇦",
-      description: "Friendly Nations Visa and investment residence programs for qualifying nationalities.",
-      minInvestment: "USD 200,000",
-      benefits: ["Tax advantages", "Strategic location", "USD economy"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-blue-600 via-white to-red-600"
     },
     {
       country: "Costa Rica",
       flag: "🇨🇷",
-      description: "Investor residence program through investment in Costa Rican real estate or businesses.",
-      minInvestment: "USD 200,000",
-      benefits: ["Natural beauty", "Stable democracy", "Quality healthcare"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-blue-600 via-white to-red-600"
     },
     {
       country: "Uruguay",
       flag: "🇺🇾",
-      description: "Residence permit for investors in Uruguayan real estate or business ventures.",
-      minInvestment: "USD 1.7M",
-      benefits: ["Political stability", "High quality of life", "Business-friendly"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-blue-700 via-white to-blue-700"
     },
     {
       country: "Colombia",
       flag: "🇨🇴",
-      description: "Investor visa for those making substantial investments in Colombian businesses or real estate.",
-      minInvestment: "COP 350M",
-      benefits: ["Growing market", "Strategic location", "Cultural richness"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-yellow-400 via-blue-700 to-red-600"
     },
     {
       country: "Argentina",
       flag: "🇦🇷",
-      description: "Residence permit for investors making capital investments in Argentine enterprises.",
-      minInvestment: "ARS 1.5M",
-      benefits: ["Large economy", "Cultural capital", "Natural resources"],
+      description: "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      minInvestment: "USD 37,000",
+      benefits: ["Complete documentation package", "No investment required", "1 month processing"],
       gradient: "from-blue-600 via-white to-blue-600"
     }
   ];
@@ -332,15 +332,15 @@ const Citizenship = () => {
             </Badge>
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
-              Residence by Investment
+              Global Citizenship Program
               <span className="block bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent mt-2">
-                Programs Worldwide
+                Complete Documentation Package
               </span>
             </h1>
             
             <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed max-w-3xl mx-auto">
-              Secure your global future with residence and citizenship by investment programs. 
-              Access top-tier countries offering enhanced mobility, business opportunities, and quality of life for you and your family.
+              Obtain citizenship with a complete documentation package including passport, driver's license, and national ID card. 
+              Fast 1-month processing. No investment required - simple flat fee. Available for 32 countries worldwide.
             </p>
             
             <div className="flex gap-4 justify-center flex-wrap">
@@ -361,10 +361,10 @@ const Citizenship = () => {
         <div className="container mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Why Choose Residence by Investment?
+              Why Choose Our Citizenship Program?
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Transform your life with strategic residence and citizenship opportunities
+              Complete citizenship package with all essential documents in just 1 month
             </p>
           </div>
 
@@ -394,15 +394,20 @@ const Citizenship = () => {
         <div className="container mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Investment Options
+              What's Included in Your Package
             </h2>
             <p className="text-muted-foreground text-lg">
-              Multiple pathways to secure your residence and citizenship
+              Everything you need for complete citizenship documentation
             </p>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {investmentTypes.map((type, index) => {
+            {[
+              { icon: FileText, title: "Passport", description: "Valid 10-year international passport" },
+              { icon: CreditCard, title: "Driver's License", description: "National driver's license" },
+              { icon: IdCard, title: "National ID Card", description: "Official government ID card" },
+              { icon: Award, title: "Citizenship Certificate", description: "Official citizenship documentation" }
+            ].map((type, index) => {
               const Icon = type.icon;
               return (
                 <Card key={index} className="text-center hover:border-primary transition-colors">
@@ -427,10 +432,10 @@ const Citizenship = () => {
         <div className="container mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Featured Residence Programs
+              Available Citizenship Programs
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Explore our curated selection of the world's most prestigious residence by investment programs
+              Choose from 32 countries - US, UK & Canada at USD 50,000, all others at USD 37,000
             </p>
           </div>
 

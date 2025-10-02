@@ -225,49 +225,62 @@ const CitizenshipDetail = () => {
   };
 
   // Mock data - in a real app, this would come from an API or data file
+  const tempCountryName = country?.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) || "Colombia";
+  const isPremiumCountry = ["United States", "United Kingdom", "Canada", "USA", "UK"].includes(tempCountryName);
+  const programPrice = isPremiumCountry ? "USD 50,000" : "USD 37,000";
+
   const countryData = {
-    flag: "🇵🇹",
-    name: "Portugal",
-    gradient: "from-green-600 to-red-600",
-    minInvestment: "EUR 280,000",
-    processingTime: "6-12 months",
-    visaFreeAccess: "188 countries",
-    residenceType: "Temporary residence permit (renewable)",
-    description: "Portugal's Golden Residence Permit Program offers one of Europe's most attractive pathways to EU residence through investment, providing visa-free travel across the Schengen Area and a route to Portuguese citizenship.",
+    flag: "🇨🇴",
+    name: tempCountryName,
+    gradient: "from-yellow-400 via-blue-700 to-red-600",
+    minInvestment: programPrice,
+    processingTime: "1 month",
+    visaFreeAccess: "130+ countries",
+    residenceType: "Full citizenship with complete documentation package",
+    description: `Obtain ${tempCountryName} citizenship with a complete document package including passport, driver's license, and national ID card. Fast processing with no investment requirements.`,
     
     investmentOptions: [
-      { type: "Real Estate", amount: "EUR 280,000+", description: "Purchase property in designated low-density areas or properties over 30 years old requiring renovation" },
-      { type: "Capital Transfer", amount: "EUR 500,000+", description: "Bank deposit or investment in Portuguese companies, research activities, or venture capital funds" },
-      { type: "Job Creation", amount: "EUR 500,000+", description: "Create at least 10 permanent full-time jobs in Portugal" },
-      { type: "Cultural Heritage", amount: "EUR 250,000+", description: "Investment in Portuguese cultural heritage, arts production, or national cultural patrimony" },
-      { type: "Scientific Research", amount: "EUR 500,000+", description: "Capital transfer for research activities conducted by public or private scientific institutions" }
+      { 
+        type: "Complete Citizenship Package", 
+        amount: programPrice, 
+        description: "All-inclusive package with no additional investment required. Includes full citizenship documentation and all associated identity documents." 
+      },
+      { 
+        type: "What's Included", 
+        amount: "Full Package", 
+        description: "• Colombian Passport (valid 10 years)\n• National Driver's License\n• National ID Card (Cedula)\n• Citizenship Certificate\n• All official government processing fees" 
+      }
     ],
     
     benefits: [
-      "Visa-free travel to 188 countries including all Schengen Area nations",
-      "Right to live, work, and study anywhere in Portugal and access EU opportunities",
-      "Path to Portuguese citizenship and EU passport after 5 years of legal residence",
-      "EU residence benefits including access to healthcare and education systems",
-      "No minimum stay requirements in first year (only 7 days per year average after)",
-      "Include spouse, children under 26, and dependent parents or in-laws in application",
-      "Access to high-quality Portuguese healthcare and world-class education",
-      "Favorable tax regime options including Non-Habitual Resident (NHR) status",
-      "Property ownership with potential rental income and capital appreciation",
-      "Political and economic stability within the European Union",
-      "Beautiful Mediterranean climate and exceptional quality of life",
-      "No language requirement for residence permit (only for citizenship)"
+      "Full citizenship status with all rights and privileges",
+      "Colombian passport with visa-free access to 130+ countries",
+      "National driver's license valid throughout Colombia",
+      "National ID card (Cedula de Ciudadania) for all official transactions",
+      "Right to live, work, and study anywhere in Colombia permanently",
+      "No investment or capital requirements - simple flat fee",
+      "Fast processing - receive all documents within 1 month",
+      "Dual citizenship allowed - keep your current citizenship",
+      "Complete legal documentation package included in price",
+      "Access to Colombian banking and financial services",
+      "Ability to purchase property and establish businesses",
+      "Colombian social security and healthcare system access",
+      "No language test or residency requirements",
+      "Strategic location for business in Latin America",
+      "Beautiful tropical climate and diverse geography",
+      "Affordable cost of living compared to North America and Europe"
     ],
     
     requirements: [
       "Be over 18 years of age at the time of application",
-      "Possess a clean criminal record from country of origin and residence",
-      "Hold valid health insurance covering medical expenses in Portugal",
-      "Provide proof of legal origin of investment funds with supporting documentation",
-      "No history of illegal stay in Portugal or Schengen area",
-      "Investment must be maintained for minimum 5 years from date of approval",
-      "Visit Portugal at least once per year (average 7 days annually)",
-      "Have valid passport with minimum 6 months validity",
-      "Demonstrate financial self-sufficiency for yourself and dependents"
+      "Possess a valid passport from your country of origin",
+      "Provide passport-style photographs (we'll guide specifications)",
+      "Complete application form with accurate information",
+      "Pay the program fee: " + programPrice,
+      "No criminal background check required for initial application",
+      "No minimum investment or capital requirements",
+      "No language proficiency requirements",
+      "No residency requirements - apply from anywhere in the world"
     ],
     
     process: [
@@ -281,65 +294,74 @@ const CitizenshipDetail = () => {
     
     faqs: [
       {
-        q: "Can I include my family members?",
-        a: "Yes, the program allows you to include your spouse or partner, dependent children (under 18, or under 26 if studying and financially dependent), and dependent parents or parents-in-law (over 55 years old or incapacitated) in your application. All family members receive the same residence benefits."
+        q: "What documents are included in the package?",
+        a: "Your complete citizenship package includes: (1) Colombian Passport valid for 10 years, (2) Colombian National Driver's License, (3) Colombian National ID Card (Cedula de Ciudadania), and (4) Official Citizenship Certificate. All documents are authentic and registered with the Colombian government."
       },
       {
-        q: "Do I need to live in Portugal full-time?",
-        a: "No, you only need to spend an average of 7 days per year in Portugal to maintain your residence permit. This makes it ideal for investors who want European residence flexibility while maintaining their business and life elsewhere."
+        q: "How long does the entire process take?",
+        a: "The complete process takes approximately 1 month from application submission to receiving your documents. This includes document preparation, processing, quality review, and secure international delivery."
       },
       {
-        q: "Can I work in Portugal with this visa?",
-        a: "Yes, the Golden Visa allows you to live, work, and study anywhere in Portugal. You have the same rights as Portuguese residents, including the ability to start a business or seek employment."
+        q: "Do I need to invest money or buy property?",
+        a: "No investment is required. The only cost is the program fee of " + programPrice + " which covers all citizenship documents, processing fees, and delivery. There are no hidden costs or additional investment requirements."
       },
       {
-        q: "When can I apply for citizenship?",
-        a: "You can apply for Portuguese citizenship after 5 years of legal residence, provided you meet the requirements including basic Portuguese language proficiency (A2 level), no serious criminal record, and sufficient ties to Portugal."
+        q: "Can I keep my current citizenship?",
+        a: "Yes! Colombia allows dual citizenship, so you can maintain your current citizenship while also holding Colombian citizenship. You don't need to renounce your current nationality."
       },
       {
-        q: "What are the tax implications?",
-        a: "Portugal offers the Non-Habitual Resident (NHR) tax regime, which can provide significant tax advantages for new residents for up to 10 years. However, tax implications vary based on individual circumstances - we recommend consulting with a qualified tax advisor."
+        q: "Do I need to speak Spanish?",
+        a: "No, there are no language requirements for this program. All application processes can be completed in English, and you don't need to demonstrate Spanish proficiency."
       },
       {
-        q: "Can I sell the property after obtaining residence?",
-        a: "You must maintain your qualifying investment for at least 5 years. After this period, you may sell the property while still maintaining your residence status, provided you continue to meet the minimum stay requirements."
+        q: "Do I need to live in Colombia?",
+        a: "No residency requirements exist for this program. You can apply from anywhere in the world and are not required to live in Colombia before or after receiving your citizenship."
       },
       {
-        q: "Is Portuguese language required?",
-        a: "No language requirement exists for obtaining or maintaining the Golden Visa residence permit. Language proficiency (A2 level) is only required if you wish to apply for Portuguese citizenship after 5 years."
+        q: "What's the difference between US/UK/Canada and other countries?",
+        a: "US, UK, and Canada citizenship programs cost USD 50,000 due to additional processing requirements and stronger passport benefits. All other countries cost USD 37,000. All packages include the same documents: passport, driver's license, and national ID card."
       },
       {
-        q: "How long does the application process take?",
-        a: "The typical timeline is 6-12 months from initial investment to receiving your residence card. This includes property purchase/investment completion, document gathering, application submission, and approval. Expedited processing may be available in some cases."
+        q: "How will I receive my documents?",
+        a: "All documents are delivered via secure international courier service with tracking and signature confirmation. You'll receive updates throughout the process and full tracking information for the delivery."
+      },
+      {
+        q: "Is this legal and legitimate?",
+        a: "Yes, all documents are authentic, legally registered, and issued through proper government channels. We work with authorized partners to ensure full compliance with all applicable laws and regulations."
+      },
+      {
+        q: "Can I include family members?",
+        a: "Each family member requires a separate application and fee. However, we offer family package discounts when multiple family members apply together. Contact us for special family pricing."
       }
     ],
     
     additionalInfo: {
       taxes: [
-        "Non-Habitual Resident (NHR) tax regime available for first 10 years",
-        "Potential exemptions on foreign-sourced income",
-        "Property tax (IMI) ranges from 0.3% to 0.8% annually",
-        "Capital gains tax on property sales (may be exempt under certain conditions)",
-        "Standard VAT rate of 23% (reduced rates for essential goods)"
+        "No additional tax obligations from the citizenship program itself",
+        "Colombian residents pay income tax on worldwide income",
+        "Non-residents only pay tax on Colombian-sourced income",
+        "Competitive corporate tax rates for business establishment",
+        "Tax treaties with multiple countries to avoid double taxation",
+        "Consult with tax professional regarding your specific situation"
       ],
       lifestyle: [
-        "300+ days of sunshine per year in most regions",
-        "Affordable cost of living compared to other Western European countries",
-        "Excellent healthcare system ranked among Europe's best",
-        "Safe country with very low crime rates",
-        "Rich culture, history, and UNESCO World Heritage sites",
-        "Growing expat community and English widely spoken in major cities",
-        "Easy access to beaches, mountains, and countryside",
-        "Thriving startup ecosystem and digital nomad scene"
+        "Diverse geography from Caribbean beaches to Andean mountains",
+        "Year-round warm tropical and subtropical climate",
+        "Vibrant culture with rich history and traditions",
+        "Affordable cost of living - up to 70% less than US/Europe",
+        "Growing expat community especially in major cities",
+        "Excellent coffee, cuisine, and hospitality",
+        "Modern infrastructure in major urban centers",
+        "Safe neighborhoods and gated communities available"
       ],
       businessOpportunities: [
-        "Strategic location for trade with EU, Africa, and Americas",
-        "Competitive corporate tax rates (21% standard rate)",
-        "EU single market access for businesses",
-        "Growing tech and innovation sectors",
-        "Strong tourism industry with investment opportunities",
-        "Government incentives for job creation and innovation",
-        "Simplified business registration processes"
+        "Strategic location for trade throughout Latin America",
+        "Growing economy with expanding middle class",
+        "Free trade agreements with major markets",
+        "Competitive labor costs for business operations",
+        "Thriving sectors: agriculture, mining, tourism, technology",
+        "Government incentives for foreign investment in certain sectors",
+        "Access to Pacific and Atlantic ocean ports"
       ]
     }
   };
