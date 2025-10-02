@@ -115,6 +115,17 @@ import hawaiiSeal from "@/assets/university-seals/hawaii.png";
 import nevadaSeal from "@/assets/university-seals/nevada.png";
 import hofstraSeal from "@/assets/university-seals/hofstra.png";
 import sluSeal from "@/assets/university-seals/slu.png";
+import alaskaSeal from "@/assets/university-seals/alaska.png";
+import wyomingSeal from "@/assets/university-seals/wyoming.png";
+import montanaSeal from "@/assets/university-seals/montana.png";
+import idahoSeal from "@/assets/university-seals/idaho.png";
+import southDakotaSeal from "@/assets/university-seals/south-dakota.png";
+import northDakotaSeal from "@/assets/university-seals/north-dakota.png";
+import sdsuSeal from "@/assets/university-seals/sdsu.png";
+import ndsuSeal from "@/assets/university-seals/ndsu.png";
+import montanaStateSeal from "@/assets/university-seals/montana-state.png";
+import idahoStateSeal from "@/assets/university-seals/idaho-state.png";
+import niuSeal from "@/assets/university-seals/niu.png";
 
 // Canadian Universities
 import torontoSeal from "@/assets/university-seals/toronto.png";
@@ -261,6 +272,18 @@ export const universitySealMap: Record<string, string> = {
   "University of Richmond": richmondSeal,
   "Binghamton University--SUNY": binghamtonSeal,
   "Clark University": clarkSeal,
+  "University of Alaska Fairbanks": alaskaSeal,
+  "University of Wyoming": wyomingSeal,
+  "University of Montana": montanaSeal,
+  "University of Idaho": idahoSeal,
+  "University of South Dakota": southDakotaSeal,
+  "University of North Dakota": northDakotaSeal,
+  "South Dakota State University": sdsuSeal,
+  "North Dakota State University": ndsuSeal,
+  "Montana State University": montanaStateSeal,
+  "Idaho State University": idahoStateSeal,
+  "Northern Illinois University": niuSeal,
+
 
   // Canadian Universities
   "University of Toronto": torontoSeal,
