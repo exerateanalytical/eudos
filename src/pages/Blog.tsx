@@ -449,7 +449,11 @@ const Blog = () => {
 
               <div className="grid md:grid-cols-2 gap-6">
                 {filteredPosts.map((post) => (
-                  <Card key={post.id} className="hover:shadow-xl transition-all duration-300 border-border/50 bg-card/50 backdrop-blur-sm group cursor-pointer">
+                  <Card 
+                    key={post.id} 
+                    className="hover:shadow-xl transition-all duration-300 border-border/50 bg-card/50 backdrop-blur-sm group cursor-pointer"
+                    onClick={() => navigate(`/blog/${post.id}`)}
+                  >
                     <CardHeader>
                       <div className="flex flex-wrap gap-2 mb-3">
                         <Badge variant="secondary">{post.category}</Badge>
