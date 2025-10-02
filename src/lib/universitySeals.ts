@@ -154,6 +154,31 @@ import memorialSeal from "@/assets/university-seals/memorial.png";
 import ryersonSeal from "@/assets/university-seals/ryerson.png";
 import unbSeal from "@/assets/university-seals/unb.png";
 import windsorSeal from "@/assets/university-seals/windsor.png";
+import lakeheadSeal from "@/assets/university-seals/lakehead.png";
+import reginaSeal from "@/assets/university-seals/regina.png";
+import laurentianSeal from "@/assets/university-seals/laurentian.png";
+import unbcSeal from "@/assets/university-seals/unbc.png";
+import brockSeal from "@/assets/university-seals/brock.png";
+import trentSeal from "@/assets/university-seals/trent.png";
+import wluSeal from "@/assets/university-seals/wlu.png";
+import acadiaSeal from "@/assets/university-seals/acadia.png";
+import bishopsSeal from "@/assets/university-seals/bishops.png";
+import mountAllisonSeal from "@/assets/university-seals/mount-allison.png";
+import stfxSeal from "@/assets/university-seals/stfx.png";
+import lethbridgeSeal from "@/assets/university-seals/lethbridge.png";
+import truSeal from "@/assets/university-seals/tru.png";
+import viuSeal from "@/assets/university-seals/viu.png";
+import nipissingSeal from "@/assets/university-seals/nipissing.png";
+import brandonSeal from "@/assets/university-seals/brandon.png";
+import cbuSeal from "@/assets/university-seals/cbu.png";
+import upeiSeal from "@/assets/university-seals/upei.png";
+import msvuSeal from "@/assets/university-seals/msvu.png";
+import smuHalifaxSeal from "@/assets/university-seals/smu-halifax.png";
+import usherbrookeSeal from "@/assets/university-seals/usherbrooke.png";
+import ontarioTechSeal from "@/assets/university-seals/ontario-tech.png";
+import winnipegSeal from "@/assets/university-seals/winnipeg.png";
+import canadianCollegeGeneric from "@/assets/university-seals/canadian-college-generic.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -312,6 +337,29 @@ export const universitySealMap: Record<string, string> = {
   "Ryerson University": ryersonSeal,
   "University of New Brunswick": unbSeal,
   "University of Windsor": windsorSeal,
+  "Lakehead University": lakeheadSeal,
+  "University of Regina": reginaSeal,
+  "Laurentian University": laurentianSeal,
+  "University of Northern British Columbia": unbcSeal,
+  "Brock University": brockSeal,
+  "Trent University": trentSeal,
+  "Wilfrid Laurier University": wluSeal,
+  "Acadia University": acadiaSeal,
+  "Bishop's University": bishopsSeal,
+  "Mount Allison University": mountAllisonSeal,
+  "St. Francis Xavier University": stfxSeal,
+  "University of Lethbridge": lethbridgeSeal,
+  "Thompson Rivers University": truSeal,
+  "Vancouver Island University": viuSeal,
+  "Nipissing University": nipissingSeal,
+  "Brandon University": brandonSeal,
+  "Cape Breton University": cbuSeal,
+  "University of Prince Edward Island": upeiSeal,
+  "Mount Saint Vincent University": msvuSeal,
+  "Saint Mary's University": smuHalifaxSeal,
+  "Université de Sherbrooke": usherbrookeSeal,
+  "Ontario Tech University": ontarioTechSeal,
+  "University of Winnipeg": winnipegSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
@@ -324,6 +372,11 @@ export const getUniversitySeal = (universityName: string, type?: string): string
   // Fallback for community colleges
   if (type === "Community College" || universityName.toLowerCase().includes("community college")) {
     return communityCollegeGeneric;
+  }
+  
+  // Fallback for Canadian colleges
+  if (type === "College" && universityName.includes("Canada")) {
+    return canadianCollegeGeneric;
   }
   
   // Return undefined if no seal found (will show fallback icon in UI)
