@@ -197,6 +197,26 @@ import algomaSeal from "@/assets/university-seals/algoma.png";
 import huronSeal from "@/assets/university-seals/huron.png";
 import bresciaSeal from "@/assets/university-seals/brescia.png";
 import kingsUwoSeal from "@/assets/university-seals/kings-uwo.png";
+import monctonSeal from "@/assets/university-seals/moncton.png";
+import stuSeal from "@/assets/university-seals/stu.png";
+import twuSeal from "@/assets/university-seals/twu.png";
+import redeemerSeal from "@/assets/university-seals/redeemer.png";
+import kingsAlbertaSeal from "@/assets/university-seals/kings-alberta.png";
+import concordiaEdmontonSeal from "@/assets/university-seals/concordia-edmonton.png";
+import questSeal from "@/assets/university-seals/quest.png";
+import crandallSeal from "@/assets/university-seals/crandall.png";
+import cmuManitobaSeal from "@/assets/university-seals/cmu-manitoba.png";
+import boothSeal from "@/assets/university-seals/booth.png";
+import burmanSeal from "@/assets/university-seals/burman.png";
+import ambroseSeal from "@/assets/university-seals/ambrose.png";
+import fnunivSeal from "@/assets/university-seals/fnuniv.png";
+import stmSeal from "@/assets/university-seals/stm.png";
+import campionSeal from "@/assets/university-seals/campion.png";
+import lutherSeal from "@/assets/university-seals/luther.png";
+import teluqSeal from "@/assets/university-seals/teluq.png";
+import sainteAnneSeal from "@/assets/university-seals/sainte-anne.png";
+import stmarysCalgary from "@/assets/university-seals/stmarys-calgary.png";
+import newmanSeal from "@/assets/university-seals/newman.png";
 import canadianCollegeGeneric from "@/assets/university-seals/canadian-college-generic.png";
 
 
@@ -400,6 +420,26 @@ export const universitySealMap: Record<string, string> = {
   "Huron University College": huronSeal,
   "Brescia University College": bresciaSeal,
   "King's University College at Western": kingsUwoSeal,
+  "Université de Moncton": monctonSeal,
+  "St. Thomas University": stuSeal,
+  "Trinity Western University": twuSeal,
+  "Redeemer University": redeemerSeal,
+  "The King's University": kingsAlbertaSeal,
+  "Concordia University of Edmonton": concordiaEdmontonSeal,
+  "Quest University Canada": questSeal,
+  "Crandall University": crandallSeal,
+  "Canadian Mennonite University": cmuManitobaSeal,
+  "Booth University College": boothSeal,
+  "Burman University": burmanSeal,
+  "Ambrose University": ambroseSeal,
+  "First Nations University of Canada": fnunivSeal,
+  "St. Thomas More College": stmSeal,
+  "Campion College": campionSeal,
+  "Luther College": lutherSeal,
+  "TÉLUQ": teluqSeal,
+  "Université Sainte-Anne": sainteAnneSeal,
+  "St. Mary's University College": stmarysCalgary,
+  "Newman Theological College": newmanSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
