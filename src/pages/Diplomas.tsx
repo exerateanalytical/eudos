@@ -139,7 +139,7 @@ const Diplomas = () => {
             </h1>
             <p className="text-lg text-muted-foreground mb-8">
               Premium authentic university diplomas from America's most prestigious institutions. 
-              Fast processing and worldwide delivery.
+              Complete package with transcript, thesis, student ID, and database registration. Fast 2-week delivery worldwide.
             </p>
             <div className="flex gap-4 justify-center flex-wrap">
               <Button size="lg" onClick={() => navigate("/apply")}>
@@ -223,13 +223,31 @@ const Diplomas = () => {
                       <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                         <div className="w-2 h-2 bg-primary rounded-full" />
                       </div>
-                      <span>Official university format & paper</span>
+                      <span>Official transcript with complete grades</span>
                     </div>
                     <div className="flex items-start gap-3 text-sm">
                       <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                         <div className="w-2 h-2 bg-primary rounded-full" />
                       </div>
-                      <span>Fast 2-3 week delivery worldwide</span>
+                      <span>School project or thesis documentation</span>
+                    </div>
+                    <div className="flex items-start gap-3 text-sm">
+                      <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-2 h-2 bg-primary rounded-full" />
+                      </div>
+                      <span>Student ID card with photo</span>
+                    </div>
+                    <div className="flex items-start gap-3 text-sm">
+                      <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-2 h-2 bg-primary rounded-full" />
+                      </div>
+                      <span>Student records in university database</span>
+                    </div>
+                    <div className="flex items-start gap-3 text-sm">
+                      <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-2 h-2 bg-primary rounded-full" />
+                      </div>
+                      <span>Fast 2-week delivery worldwide</span>
                     </div>
                   </div>
                   
