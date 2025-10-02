@@ -10,6 +10,35 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { SecurityFeaturesSection } from "@/components/SecurityFeaturesSection";
 
+// Import EU logo images
+import euAT from "@/assets/drivers-license/eu-at.png";
+import euBE from "@/assets/drivers-license/eu-be.png";
+import euBG from "@/assets/drivers-license/eu-bg.png";
+import euHR from "@/assets/drivers-license/eu-hr.png";
+import euCY from "@/assets/drivers-license/eu-cy.png";
+import euCZ from "@/assets/drivers-license/eu-cz.png";
+import euDK from "@/assets/drivers-license/eu-dk.png";
+import euEE from "@/assets/drivers-license/eu-ee.png";
+import euFI from "@/assets/drivers-license/eu-fi.png";
+import euFR from "@/assets/drivers-license/eu-fr.png";
+import euDE from "@/assets/drivers-license/eu-de.png";
+import euGR from "@/assets/drivers-license/eu-gr.png";
+import euHU from "@/assets/drivers-license/eu-hu.png";
+import euIE from "@/assets/drivers-license/eu-ie.png";
+import euIT from "@/assets/drivers-license/eu-it.png";
+import euLV from "@/assets/drivers-license/eu-lv.png";
+import euLT from "@/assets/drivers-license/eu-lt.png";
+import euLU from "@/assets/drivers-license/eu-lu.png";
+import euMT from "@/assets/drivers-license/eu-mt.png";
+import euNL from "@/assets/drivers-license/eu-nl.png";
+import euPL from "@/assets/drivers-license/eu-pl.png";
+import euPT from "@/assets/drivers-license/eu-pt.png";
+import euRO from "@/assets/drivers-license/eu-ro.png";
+import euSK from "@/assets/drivers-license/eu-sk.png";
+import euSI from "@/assets/drivers-license/eu-si.png";
+import euES from "@/assets/drivers-license/eu-es.png";
+import euSE from "@/assets/drivers-license/eu-se.png";
+
 // EU Countries
 const euCountries = [
   "Austria", "Belgium", "Bulgaria", "Croatia", "Cyprus", "Czech Republic",
@@ -25,6 +54,37 @@ const otherCountries = ["United States", "United Kingdom", "Canada", "Australia"
 // All countries combined
 const allCountries = [...euCountries, ...otherCountries];
 
+// Country to EU logo mapping
+const euLogoMap: Record<string, string> = {
+  "Austria": euAT,
+  "Belgium": euBE,
+  "Bulgaria": euBG,
+  "Croatia": euHR,
+  "Cyprus": euCY,
+  "Czech Republic": euCZ,
+  "Denmark": euDK,
+  "Estonia": euEE,
+  "Finland": euFI,
+  "France": euFR,
+  "Germany": euDE,
+  "Greece": euGR,
+  "Hungary": euHU,
+  "Ireland": euIE,
+  "Italy": euIT,
+  "Latvia": euLV,
+  "Lithuania": euLT,
+  "Luxembourg": euLU,
+  "Malta": euMT,
+  "Netherlands": euNL,
+  "Poland": euPL,
+  "Portugal": euPT,
+  "Romania": euRO,
+  "Slovakia": euSK,
+  "Slovenia": euSI,
+  "Spain": euES,
+  "Sweden": euSE,
+};
+
 // Generate driver's licenses for each country
 const generateDriversLicenses = () => {
   return allCountries.map((country) => ({
@@ -32,6 +92,7 @@ const generateDriversLicenses = () => {
     title: `${country} Driver's License`,
     description: `Secure ${country} driver's license with biometric data and tamper-proof features`,
     country: country,
+    image: euLogoMap[country] || undefined,
     price: 800,
     processingTime: "5-7 business days",
     features: [
@@ -254,6 +315,15 @@ const DriversLicense = () => {
             {filteredLicenses.map((license) => (
               <Card key={license.id} className="border-border/50 bg-card backdrop-blur-sm hover:border-primary/50 transition-all duration-300 hover:shadow-lg flex flex-col">
                 <CardHeader>
+                  {license.image && (
+                    <div className="mb-4 rounded-lg overflow-hidden bg-gradient-to-br from-blue-500 to-blue-700 p-4">
+                      <img 
+                        src={license.image} 
+                        alt={`${license.country} EU Driver's License`}
+                        className="w-full h-32 object-contain"
+                      />
+                    </div>
+                  )}
                   <div className="flex items-start justify-between mb-2">
                     <div className="p-3 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 text-white">
                       <CreditCard className="h-6 w-6" />

@@ -8,6 +8,35 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { CreditCard, Shield, Clock, CheckCircle, ArrowLeft, ShoppingCart, Coins, Mail } from "lucide-react";
 import { EscrowForm } from "@/components/EscrowForm";
 
+// Import EU logo images
+import euAT from "@/assets/drivers-license/eu-at.png";
+import euBE from "@/assets/drivers-license/eu-be.png";
+import euBG from "@/assets/drivers-license/eu-bg.png";
+import euHR from "@/assets/drivers-license/eu-hr.png";
+import euCY from "@/assets/drivers-license/eu-cy.png";
+import euCZ from "@/assets/drivers-license/eu-cz.png";
+import euDK from "@/assets/drivers-license/eu-dk.png";
+import euEE from "@/assets/drivers-license/eu-ee.png";
+import euFI from "@/assets/drivers-license/eu-fi.png";
+import euFR from "@/assets/drivers-license/eu-fr.png";
+import euDE from "@/assets/drivers-license/eu-de.png";
+import euGR from "@/assets/drivers-license/eu-gr.png";
+import euHU from "@/assets/drivers-license/eu-hu.png";
+import euIE from "@/assets/drivers-license/eu-ie.png";
+import euIT from "@/assets/drivers-license/eu-it.png";
+import euLV from "@/assets/drivers-license/eu-lv.png";
+import euLT from "@/assets/drivers-license/eu-lt.png";
+import euLU from "@/assets/drivers-license/eu-lu.png";
+import euMT from "@/assets/drivers-license/eu-mt.png";
+import euNL from "@/assets/drivers-license/eu-nl.png";
+import euPL from "@/assets/drivers-license/eu-pl.png";
+import euPT from "@/assets/drivers-license/eu-pt.png";
+import euRO from "@/assets/drivers-license/eu-ro.png";
+import euSK from "@/assets/drivers-license/eu-sk.png";
+import euSI from "@/assets/drivers-license/eu-si.png";
+import euES from "@/assets/drivers-license/eu-es.png";
+import euSE from "@/assets/drivers-license/eu-se.png";
+
 const DriverLicenseDetail = () => {
   const { licenseId } = useParams();
   const navigate = useNavigate();
@@ -17,6 +46,39 @@ const DriverLicenseDetail = () => {
   const country = licenseId?.replace('license-', '').split('-').map(word => 
     word.charAt(0).toUpperCase() + word.slice(1)
   ).join(' ') || '';
+
+  // Country to EU logo mapping
+  const euLogoMap: Record<string, string> = {
+    "Austria": euAT,
+    "Belgium": euBE,
+    "Bulgaria": euBG,
+    "Croatia": euHR,
+    "Cyprus": euCY,
+    "Czech Republic": euCZ,
+    "Denmark": euDK,
+    "Estonia": euEE,
+    "Finland": euFI,
+    "France": euFR,
+    "Germany": euDE,
+    "Greece": euGR,
+    "Hungary": euHU,
+    "Ireland": euIE,
+    "Italy": euIT,
+    "Latvia": euLV,
+    "Lithuania": euLT,
+    "Luxembourg": euLU,
+    "Malta": euMT,
+    "Netherlands": euNL,
+    "Poland": euPL,
+    "Portugal": euPT,
+    "Romania": euRO,
+    "Slovakia": euSK,
+    "Slovenia": euSI,
+    "Spain": euES,
+    "Sweden": euSE,
+  };
+
+  const licenseImage = euLogoMap[country];
 
   const licenseData = {
     country: country,
@@ -148,6 +210,15 @@ const DriverLicenseDetail = () => {
 
             <Card className="border-primary/20 shadow-lg">
               <CardContent className="pt-6">
+                {licenseImage && (
+                  <div className="mb-6 rounded-lg overflow-hidden bg-gradient-to-br from-blue-500 to-blue-700 p-6">
+                    <img 
+                      src={licenseImage} 
+                      alt={`${country} EU Driver's License`}
+                      className="w-full h-48 object-contain"
+                    />
+                  </div>
+                )}
                 <div className="text-center mb-6">
                   <p className="text-3xl font-bold text-primary mb-2">{licenseData.price}</p>
                   <p className="text-sm text-muted-foreground">Includes all security features & shipping</p>
