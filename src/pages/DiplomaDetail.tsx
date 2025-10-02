@@ -382,9 +382,8 @@ const DiplomaDetail = () => {
             <TabsContent value="reviews" id="reviews-section">
               <div className="space-y-6">
                 <ReviewStatsCard
-                  count={reviewStats.count}
                   averageRating={reviewStats.averageRating}
-                  productName={diplomaData.universityName}
+                  count={reviewStats.count}
                 />
                 <ReviewForm
                   productType="diploma"
