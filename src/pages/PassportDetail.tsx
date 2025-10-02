@@ -414,8 +414,9 @@ const PassportDetail = () => {
             <TabsContent value="reviews" id="reviews-section">
               <div className="space-y-6">
                 <ReviewStatsCard
-                  averageRating={reviewStats.averageRating}
                   count={reviewStats.count}
+                  averageRating={reviewStats.averageRating}
+                  productName={passportData.title}
                 />
                 <ReviewForm
                   productType="passport"
