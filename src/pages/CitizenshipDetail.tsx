@@ -283,27 +283,27 @@ const CitizenshipDetail = () => {
       { 
         type: "What's Included", 
         amount: "Full Package", 
-        description: "• Colombian Passport (valid 10 years)\n• National Driver's License\n• National ID Card (Cedula)\n• Citizenship Certificate\n• All official government processing fees" 
+        description: `• ${tempCountryName} Passport (valid 10 years)\n• National Driver's License\n• National ID Card\n• Citizenship Certificate\n• All official government processing fees` 
       }
     ],
     
     benefits: [
       "Full citizenship status with all rights and privileges",
-      "Colombian passport with visa-free access to 130+ countries",
-      "National driver's license valid throughout Colombia",
-      "National ID card (Cedula de Ciudadania) for all official transactions",
-      "Right to live, work, and study anywhere in Colombia permanently",
+      `${tempCountryName} passport with visa-free access to 130+ countries`,
+      `National driver's license valid throughout ${tempCountryName}`,
+      "National ID card for all official transactions",
+      `Right to live, work, and study anywhere in ${tempCountryName} permanently`,
       "No investment or capital requirements - simple flat fee",
       "Fast processing - receive all documents within 1 month",
       "Dual citizenship allowed - keep your current citizenship",
       "Complete legal documentation package included in price",
-      "Access to Colombian banking and financial services",
+      `Access to ${tempCountryName} banking and financial services`,
       "Ability to purchase property and establish businesses",
-      "Colombian social security and healthcare system access",
+      `${tempCountryName} social security and healthcare system access`,
       "No language test or residency requirements",
-      "Strategic location for business in Latin America",
-      "Beautiful tropical climate and diverse geography",
-      "Affordable cost of living compared to North America and Europe"
+      "Strategic location with excellent connectivity",
+      "High quality of life and modern infrastructure",
+      "Favorable cost of living and business opportunities"
     ],
     
     requirements: [
