@@ -3,6 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { ReviewCard } from "./ReviewCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Card, CardContent } from "@/components/ui/card";
+import { Star } from "lucide-react";
 
 interface ReviewsListProps {
   productType: "passport" | "license" | "diploma";
@@ -126,9 +128,19 @@ export const ReviewsList = ({ productType, productId, refreshTrigger }: ReviewsL
 
   if (reviews.length === 0) {
     return (
-      <div className="text-center py-8 text-muted-foreground">
-        No reviews yet. Be the first to review this product!
-      </div>
+      <Card className="border-dashed">
+        <CardContent className="pt-6">
+          <div className="text-center py-12">
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Star className="h-8 w-8 text-primary" />
+            </div>
+            <h3 className="text-lg font-semibold mb-2">No Reviews Yet</h3>
+            <p className="text-muted-foreground mb-6">
+              Be the first to share your experience with this product!
+            </p>
+          </div>
+        </CardContent>
+      </Card>
     );
   }
 

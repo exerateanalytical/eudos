@@ -9,6 +9,8 @@ import { FileText, Shield, Clock, CheckCircle, ArrowLeft, ShoppingCart, Coins, M
 import { EscrowForm } from "@/components/EscrowForm";
 import { ReviewForm } from "@/components/reviews/ReviewForm";
 import { ReviewsList } from "@/components/reviews/ReviewsList";
+import { ReviewStatsCard } from "@/components/reviews/ReviewStatsCard";
+import { useReviewStats } from "@/hooks/useReviewStats";
 
 // Import coat of arms images
 import austriaCoA from "@/assets/coat-of-arms/austria.png";
@@ -86,13 +88,17 @@ const PassportDetail = () => {
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
   const [reviewsRefresh, setReviewsRefresh] = useState(0);
   const [activeTab, setActiveTab] = useState("features");
+  const reviewStats = useReviewStats("passport", passportId || "");
 
-  // Check for ?tab=reviews query param
+  // Check for ?tab=reviews query param and scroll to reviews
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const tab = params.get("tab");
     if (tab === "reviews") {
       setActiveTab("reviews");
+      setTimeout(() => {
+        document.getElementById("reviews-section")?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
     }
   }, []);
 
@@ -405,8 +411,13 @@ const PassportDetail = () => {
               </Card>
             </TabsContent>
 
-            <TabsContent value="reviews">
+            <TabsContent value="reviews" id="reviews-section">
               <div className="space-y-6">
+                <ReviewStatsCard
+                  count={reviewStats.count}
+                  averageRating={reviewStats.averageRating}
+                  productName={passportData.title}
+                />
                 <ReviewForm
                   productType="passport"
                   productId={passportId || ""}

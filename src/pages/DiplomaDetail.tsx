@@ -8,6 +8,8 @@ import { ArrowLeft, GraduationCap, Clock, FileText, CheckCircle, Shield, Award, 
 import { EscrowForm } from "@/components/EscrowForm";
 import { ReviewForm } from "@/components/reviews/ReviewForm";
 import { ReviewsList } from "@/components/reviews/ReviewsList";
+import { ReviewStatsCard } from "@/components/reviews/ReviewStatsCard";
+import { useReviewStats } from "@/hooks/useReviewStats";
 import { useState, useEffect } from "react";
 
 const DiplomaDetail = () => {
@@ -16,17 +18,22 @@ const DiplomaDetail = () => {
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
   const [reviewsRefresh, setReviewsRefresh] = useState(0);
   const [activeTab, setActiveTab] = useState("package");
+  
+  const universityName = university?.replace(/-/g, ' ') || "Harvard University";
+  const reviewStats = useReviewStats("diploma", university || "");
 
-  // Check for ?tab=reviews query param
+  // Check for ?tab=reviews query param and scroll to reviews
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const tab = params.get("tab");
     if (tab === "reviews") {
       setActiveTab("reviews");
+      setTimeout(() => {
+        document.getElementById("reviews-section")?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
     }
   }, []);
 
-  const universityName = university?.replace(/-/g, ' ') || "Harvard University";
 
   // Determine pricing based on university tier
   const tier1Unis = ["Harvard University", "Stanford University", "Massachusetts Institute of Technology (MIT)", "Princeton University", "Yale University", "Columbia University", "California Institute of Technology (Caltech)"];
@@ -372,8 +379,13 @@ const DiplomaDetail = () => {
               </Card>
             </TabsContent>
 
-            <TabsContent value="reviews">
+            <TabsContent value="reviews" id="reviews-section">
               <div className="space-y-6">
+                <ReviewStatsCard
+                  count={reviewStats.count}
+                  averageRating={reviewStats.averageRating}
+                  productName={diplomaData.universityName}
+                />
                 <ReviewForm
                   productType="diploma"
                   productId={university || ""}

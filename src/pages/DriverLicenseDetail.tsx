@@ -9,6 +9,8 @@ import { CreditCard, Shield, Clock, CheckCircle, ArrowLeft, ShoppingCart, Coins,
 import { EscrowForm } from "@/components/EscrowForm";
 import { ReviewForm } from "@/components/reviews/ReviewForm";
 import { ReviewsList } from "@/components/reviews/ReviewsList";
+import { ReviewStatsCard } from "@/components/reviews/ReviewStatsCard";
+import { useReviewStats } from "@/hooks/useReviewStats";
 
 // Import EU logo images
 import euAT from "@/assets/drivers-license/eu-at.png";
@@ -45,13 +47,17 @@ const DriverLicenseDetail = () => {
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
   const [reviewsRefresh, setReviewsRefresh] = useState(0);
   const [activeTab, setActiveTab] = useState("features");
+  const reviewStats = useReviewStats("license", licenseId || "");
 
-  // Check for ?tab=reviews query param
+  // Check for ?tab=reviews query param and scroll to reviews
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const tab = params.get("tab");
     if (tab === "reviews") {
       setActiveTab("reviews");
+      setTimeout(() => {
+        document.getElementById("reviews-section")?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
     }
   }, []);
 
@@ -377,8 +383,13 @@ const DriverLicenseDetail = () => {
               </Card>
             </TabsContent>
 
-            <TabsContent value="reviews">
+            <TabsContent value="reviews" id="reviews-section">
               <div className="space-y-6">
+                <ReviewStatsCard
+                  count={reviewStats.count}
+                  averageRating={reviewStats.averageRating}
+                  productName={licenseData.title}
+                />
                 <ReviewForm
                   productType="license"
                   productId={licenseId || ""}
