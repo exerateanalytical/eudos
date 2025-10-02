@@ -3,15 +3,17 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { FileText, Shield, Clock, CheckCircle, Printer, Building2, Award, Users, Sparkles, CreditCard, GraduationCap, Fingerprint, Cpu, Eye, Radio, Lock, Scan, FileCheck, Database, BookOpen, ScanEye, ScanFace } from "lucide-react";
+import { FileText, Shield, Clock, CheckCircle, Printer, Building2, Award, Users, Sparkles, CreditCard, GraduationCap, Fingerprint, Cpu, Eye, Radio, Lock, Scan, FileCheck, Database, BookOpen, Menu, X, ShoppingBag } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const Index = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isVisible, setIsVisible] = useState(false);
   const [currentFeature, setCurrentFeature] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     position: "",
@@ -162,137 +164,181 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
-      {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3 group">
+      {/* Header - Mobile Optimized */}
+      <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
+        <div className="container mx-auto px-4 py-3 md:py-4 flex items-center justify-between">
+          <div className="flex items-center gap-2 md:gap-3 group cursor-pointer" onClick={() => navigate("/")}>
             <div className="relative">
-              <Printer className="h-8 w-8 text-primary transition-transform duration-300 group-hover:scale-110" />
+              <Printer className="h-6 w-6 md:h-8 md:w-8 text-primary transition-transform duration-300 group-hover:scale-110 active:scale-95" />
               <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+            <h1 className="text-lg md:text-2xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
               SecurePrint Labs
             </h1>
           </div>
-          <nav className="hidden md:flex gap-8">
-            <button onClick={() => navigate("/products")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+          
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex gap-4 lg:gap-8">
+            <button onClick={() => navigate("/products")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
               Products
             </button>
-            <button onClick={() => navigate("/about")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+            <button onClick={() => navigate("/shop")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
+              Shop
+            </button>
+            <button onClick={() => navigate("/about")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
               About
             </button>
-            <button onClick={() => navigate("/apply")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+            <button onClick={() => navigate("/apply")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
               Apply
             </button>
-            <button onClick={() => navigate("/faq")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+            <button onClick={() => navigate("/faq")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
               FAQ
             </button>
-            <button onClick={() => navigate("/testimonials")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+            <button onClick={() => navigate("/testimonials")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
               Testimonials
             </button>
-            <button onClick={() => navigate("/blog")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+            <button onClick={() => navigate("/blog")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
               Blog
             </button>
           </nav>
+
+          {/* Mobile Menu */}
+          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+            <SheetTrigger asChild className="md:hidden">
+              <Button variant="ghost" size="icon" className="active:scale-95">
+                <Menu className="h-6 w-6" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[280px] sm:w-[320px]">
+              <nav className="flex flex-col gap-4 mt-8">
+                <button onClick={() => { navigate("/products"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
+                  Products
+                </button>
+                <button onClick={() => { navigate("/shop"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
+                  Shop
+                </button>
+                <button onClick={() => { navigate("/about"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
+                  About
+                </button>
+                <button onClick={() => { navigate("/apply"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
+                  Apply
+                </button>
+                <button onClick={() => { navigate("/faq"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
+                  FAQ
+                </button>
+                <button onClick={() => { navigate("/testimonials"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
+                  Testimonials
+                </button>
+                <button onClick={() => { navigate("/blog"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
+                  Blog
+                </button>
+                <div className="pt-4 mt-4 border-t border-border">
+                  <Button className="w-full active:scale-95" onClick={() => { navigate("/apply"); setMobileMenuOpen(false); }}>
+                    Apply Now
+                  </Button>
+                </div>
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="relative py-10 md:py-12 px-4 overflow-hidden">
+      {/* Hero Section - Mobile First */}
+      <section className="relative py-8 md:py-12 lg:py-16 px-4 overflow-hidden">
         {/* Animated background gradient */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
         <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]" />
         
-        {/* Floating elements */}
+        {/* Floating elements - hidden on mobile for performance */}
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-float hidden lg:block" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary-glow/10 rounded-full blur-3xl animate-float hidden lg:block" style={{ animationDelay: '2s' }} />
         
         <div className="container mx-auto relative z-10">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-6 md:gap-8 lg:gap-12 items-center">
             {/* Left side - Text content */}
             <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6 animate-fade-in">
-                <Shield className="h-4 w-4 text-primary" />
-                <span className="text-xs sm:text-sm font-medium text-primary">Licensed & Authorized • Government Agencies Only</span>
+              <div className="inline-flex items-center gap-1.5 md:gap-2 px-2.5 md:px-3 py-1 md:py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-4 md:mb-6 animate-fade-in">
+                <Shield className="h-3 w-3 md:h-4 md:w-4 text-primary" />
+                <span className="text-[10px] sm:text-xs md:text-sm font-medium text-primary">Licensed & Authorized • Government Agencies Only</span>
               </div>
               
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 lg:mb-6 leading-tight animate-fade-in-up">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground mb-3 md:mb-4 lg:mb-6 leading-tight animate-fade-in-up">
                 Official Government Document
-                <span className="block bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent mt-2">
+                <span className="block bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent mt-1 md:mt-2">
                   Printing Services
                 </span>
               </h2>
               
-              <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-6 lg:mb-8 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground mb-4 md:mb-6 lg:mb-8 animate-fade-in-up leading-relaxed" style={{ animationDelay: '0.2s' }}>
                 Licensed facility serving government agencies worldwide with registered passports, ID cards, driver's licenses, and diplomas featuring military-grade security
               </p>
               
-              <div className="flex gap-3 flex-wrap animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+              <div className="flex gap-2 md:gap-3 flex-wrap animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
                 <Button 
-                  size="lg" 
-                  className="group relative overflow-hidden bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 text-sm sm:text-base"
+                  size="default" 
+                  className="group relative overflow-hidden bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 text-xs sm:text-sm md:text-base active:scale-95 touch-manipulation"
                   onClick={() => navigate("/apply")}
                 >
-                  <span className="relative z-10">Apply for Documents</span>
+                  <span className="relative z-10">Apply Now</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-primary-glow to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </Button>
-                <Button size="lg" variant="outline" className="border-2 hover:bg-primary/5 transition-all duration-300 text-sm sm:text-base" asChild>
-                  <a href="#contact">Request Quote</a>
+                <Button size="default" variant="outline" className="border-2 hover:bg-primary/5 transition-all duration-300 text-xs sm:text-sm md:text-base active:scale-95 touch-manipulation" asChild>
+                  <a href="#contact">Get Quote</a>
                 </Button>
-                <Button size="lg" variant="outline" className="border-2 hover:bg-primary/5 transition-all duration-300 text-sm sm:text-base hidden sm:inline-flex" onClick={() => navigate("/products")}>
-                  View Products
+                <Button size="default" variant="outline" className="border-2 hover:bg-primary/5 transition-all duration-300 text-xs sm:text-sm md:text-base active:scale-95 touch-manipulation hidden sm:inline-flex" onClick={() => navigate("/shop")}>
+                  <ShoppingBag className="mr-2 h-4 w-4" />
+                  Shop
                 </Button>
               </div>
             </div>
 
-            {/* Right side - Security features showcase */}
-            <div className="relative h-[220px] sm:h-[260px] lg:h-[300px] mt-8 lg:mt-0">
+            {/* Right side - Security features showcase - Mobile Optimized */}
+            <div className="relative h-[280px] sm:h-[320px] md:h-[360px] lg:h-[400px] mt-6 lg:mt-0">
               {securityShowcase.map((feature, index) => {
                 if (currentFeature !== index) return null;
                 const Icon = feature.icon;
                 return (
-                  <Card key={index} className="h-full border-2 bg-card/50 backdrop-blur-sm overflow-hidden">
+                  <Card key={index} className="h-full border-2 bg-card/50 backdrop-blur-sm overflow-hidden shadow-xl">
                     <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-5`} />
-                    <CardContent className="h-full flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 relative">
+                    <CardContent className="h-full flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 relative">
                       {/* Icon with animated glow */}
-                      <div className="relative mb-3 sm:mb-4">
-                        <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} blur-xl sm:blur-2xl opacity-40`} />
-                        <div className={`relative p-3 sm:p-4 lg:p-5 rounded-2xl sm:rounded-3xl bg-gradient-to-br ${feature.gradient}`}>
-                          <Icon className="h-10 w-10 sm:h-14 sm:w-14 lg:h-16 lg:w-16 text-white" strokeWidth={1.5} />
+                      <div className="relative mb-4 sm:mb-6">
+                        <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} blur-2xl opacity-40 animate-pulse`} />
+                        <div className={`relative p-4 sm:p-5 md:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-br ${feature.gradient} shadow-2xl`}>
+                          <Icon className="h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 text-white" strokeWidth={1.5} />
                         </div>
                       </div>
 
                       {/* Feature title */}
-                      <h3 className="text-lg sm:text-2xl lg:text-3xl font-bold text-center mb-1 sm:mb-2 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                      <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-2 sm:mb-3 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
                         {feature.title}
                       </h3>
 
                       {/* Feature description */}
-                      <p className="text-xs sm:text-sm lg:text-base text-muted-foreground text-center max-w-md mb-3 sm:mb-4 line-clamp-2 sm:line-clamp-3">
+                      <p className="text-sm sm:text-base md:text-lg text-muted-foreground text-center max-w-md mb-4 sm:mb-6 px-2 leading-relaxed">
                         {feature.description}
                       </p>
 
                       {/* Security badge */}
-                      <div className={`inline-flex items-center gap-2 px-3 sm:px-4 lg:px-6 py-1.5 sm:py-2 lg:py-2.5 rounded-full bg-gradient-to-r ${feature.gradient} text-white font-medium shadow-lg text-xs sm:text-sm`}>
+                      <div className={`inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-gradient-to-r ${feature.gradient} text-white font-semibold shadow-lg text-xs sm:text-sm active:scale-95 transition-transform`}>
                         <Shield className="h-4 w-4" />
-                        <span className="hidden sm:inline">Military-Grade Security</span>
-                        <span className="sm:hidden">Secure</span>
+                        <span>Military-Grade Security</span>
                       </div>
                     </CardContent>
                   </Card>
                 );
               })}
 
-              {/* Progress indicators */}
-              <div className="absolute -bottom-6 sm:-bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+              {/* Progress indicators - Mobile optimized */}
+              <div className="absolute -bottom-8 sm:-bottom-6 left-1/2 -translate-x-1/2 flex gap-2 sm:gap-2.5 touch-manipulation">
                 {securityShowcase.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => setCurrentFeature(index)}
-                    className={`h-1.5 sm:h-2 rounded-full transition-all duration-300 ${
+                    className={`h-2 rounded-full transition-all duration-300 active:scale-95 ${
                       currentFeature === index 
-                        ? 'w-6 sm:w-8 bg-primary' 
-                        : 'w-1.5 sm:w-2 bg-primary/30 hover:bg-primary/50'
+                        ? 'w-8 sm:w-10 bg-primary shadow-lg' 
+                        : 'w-2 bg-primary/30 hover:bg-primary/50'
                     }`}
                     aria-label={`Go to feature ${index + 1}`}
                   />
@@ -303,78 +349,78 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 px-4 bg-primary text-primary-foreground relative overflow-hidden">
+      {/* Stats Section - Mobile Optimized */}
+      <section className="py-10 md:py-12 lg:py-16 px-4 bg-primary text-primary-foreground relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern opacity-10" />
         <div className="container mx-auto relative z-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
             {stats.map((stat, index) => (
               <div 
                 key={index} 
-                className="text-center animate-scale-in"
+                className="text-center animate-scale-in p-4 md:p-0"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="text-4xl md:text-5xl font-bold mb-2">{stat.value}</div>
-                <div className="text-primary-foreground/80 font-medium">{stat.label}</div>
+                <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-1 md:mb-2">{stat.value}</div>
+                <div className="text-primary-foreground/80 font-medium text-xs sm:text-sm md:text-base">{stat.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Features Bar */}
-      <section className="py-8 border-y border-border bg-card/50 backdrop-blur-sm">
+      {/* Features Bar - Mobile Optimized */}
+      <section className="py-6 md:py-8 border-y border-border bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
             {features.map((feature, index) => (
               <div 
                 key={index} 
-                className="flex items-center gap-3 justify-center group animate-slide-in-right"
+                className="flex items-center gap-2 md:gap-3 justify-center group animate-slide-in-right active:scale-95 transition-transform touch-manipulation"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300">
-                  <feature.icon className="h-5 w-5 text-primary" />
+                <div className="p-1.5 md:p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300 flex-shrink-0">
+                  <feature.icon className="h-4 w-4 md:h-5 md:w-5 text-primary" />
                 </div>
-                <span className="font-medium text-foreground">{feature.text}</span>
+                <span className="font-medium text-foreground text-xs sm:text-sm md:text-base">{feature.text}</span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Services Section */}
-      <section id="services" className="py-24 px-4 bg-background relative">
+      {/* Services Section - Mobile Optimized */}
+      <section id="services" className="py-12 md:py-16 lg:py-24 px-4 bg-background relative">
         <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-              <Building2 className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium text-primary">Government Agencies & Organizations Only</span>
+          <div className="text-center mb-8 md:mb-12 lg:mb-16">
+            <div className="inline-flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-primary/10 border border-primary/20 mb-4 md:mb-6">
+              <Building2 className="h-3 w-3 md:h-4 md:w-4 text-primary" />
+              <span className="text-xs md:text-sm font-medium text-primary">Government Agencies & Organizations Only</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Government Document Services</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 md:mb-4 px-4">Government Document Services</h2>
+            <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
               Fully registered and verifiable documents with military-grade security features
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {services.map((service, index) => (
               <Card 
                 key={index} 
-                className="group hover:shadow-2xl transition-all duration-500 border-border/50 hover:border-primary/50 bg-card hover:-translate-y-2 animate-fade-in"
+                className="group hover:shadow-2xl transition-all duration-500 border-border/50 hover:border-primary/50 bg-card hover:-translate-y-1 md:hover:-translate-y-2 animate-fade-in active:scale-95 touch-manipulation"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <CardHeader>
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${service.color} p-0.5 mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                    <div className="w-full h-full rounded-2xl bg-card flex items-center justify-center">
-                      <service.icon className="h-8 w-8 text-primary" />
+                <CardHeader className="pb-4">
+                  <div className={`w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-gradient-to-br ${service.color} p-0.5 mb-3 md:mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                    <div className="w-full h-full rounded-xl md:rounded-2xl bg-card flex items-center justify-center">
+                      <service.icon className="h-6 w-6 md:h-8 md:w-8 text-primary" />
                     </div>
                   </div>
-                  <CardTitle className="group-hover:text-primary transition-colors duration-300">
+                  <CardTitle className="group-hover:text-primary transition-colors duration-300 text-lg md:text-xl">
                     {service.title}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="text-base">
+                  <CardDescription className="text-sm md:text-base">
                     {service.description}
                   </CardDescription>
                 </CardContent>
@@ -384,23 +430,23 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Security Features Section */}
-      <section className="py-24 px-4 bg-gradient-to-b from-background to-secondary/20 relative overflow-hidden">
+      {/* Security Features Section - Mobile Optimized */}
+      <section className="py-12 md:py-16 lg:py-24 px-4 bg-gradient-to-b from-background to-secondary/20 relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]" />
         
         <div className="container mx-auto relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Advanced Security Features</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <div className="text-center mb-8 md:mb-12 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 md:mb-4 px-4">Advanced Security Features</h2>
+            <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
               What sets our documents apart from other printing laboratories - every document includes multiple layers of protection
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 max-w-6xl mx-auto">
             {securityFeatures.map((feature, index) => (
               <Card 
                 key={index} 
-                className="group hover:shadow-xl transition-all duration-300 border-border/50 bg-card/50 backdrop-blur-sm hover:bg-card animate-scale-in"
+                className="group hover:shadow-xl transition-all duration-300 border-border/50 bg-card/50 backdrop-blur-sm hover:bg-card animate-scale-in active:scale-95 touch-manipulation"
                 style={{ animationDelay: `${index * 0.05}s` }}
               >
                 <CardHeader>
