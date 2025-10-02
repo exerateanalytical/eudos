@@ -420,80 +420,45 @@ const Shop = () => {
               </p>
             </div>
 
-            {/* Products */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-12">
+            {/* Products - Square Icon Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 mb-8 md:mb-12">
               {filteredProducts.map((product, index) => {
                 const Icon = product.icon;
                 return (
-                  <Card
+                  <div
                     key={product.id}
-                    className="overflow-hidden hover:shadow-2xl transition-all duration-300 border-2 animate-fade-in"
-                    style={{ animationDelay: `${index * 0.1}s` }}
+                    className="group cursor-pointer animate-fade-in"
+                    style={{ animationDelay: `${index * 0.05}s` }}
+                    onClick={() => navigate(`/product/${product.id}`)}
                   >
-                    <CardHeader className="relative overflow-hidden pb-4 md:pb-6">
-                      <div className={`absolute inset-0 bg-gradient-to-br ${product.gradient} opacity-10`} />
-                      <div className="relative flex flex-col sm:flex-row items-start gap-3 md:gap-4">
-                        <div className={`p-3 md:p-4 rounded-xl bg-gradient-to-br ${product.gradient}`}>
-                          <Icon className="h-6 w-6 md:h-8 md:w-8 text-white" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-start justify-between gap-2 mb-2">
-                            <CardTitle className="text-xl md:text-2xl">{product.title}</CardTitle>
-                            <Badge variant="default" className="text-lg font-bold">{product.price}</Badge>
+                    <Card className="overflow-hidden hover:shadow-xl hover:scale-105 transition-all duration-300 border border-border/50 h-full touch-manipulation active:scale-95">
+                      <CardContent className="p-0">
+                        {/* Square Icon Container */}
+                        <div className="aspect-square relative overflow-hidden">
+                          <div className={`absolute inset-0 bg-gradient-to-br ${product.gradient} opacity-90 group-hover:opacity-100 transition-opacity duration-300`} />
+                          <div className="absolute inset-0 flex flex-col items-center justify-center p-3 md:p-4">
+                            <Icon className="h-10 w-10 md:h-12 md:w-12 text-white mb-2 md:mb-3 drop-shadow-lg" />
+                            <h3 className="text-white text-xs md:text-sm font-bold text-center line-clamp-2 drop-shadow-md px-1">
+                              {product.title}
+                            </h3>
                           </div>
-                          <CardDescription className="text-sm md:text-base">
-                            {product.description}
-                          </CardDescription>
-                          <div className="mt-2 md:mt-3">
-                            <Badge variant="secondary" className="text-xs">{product.category}</Badge>
+                          {/* Price Badge */}
+                          <div className="absolute top-2 right-2">
+                            <Badge className="text-[10px] md:text-xs font-bold bg-background/90 text-foreground backdrop-blur-sm">
+                              {product.price}
+                            </Badge>
                           </div>
                         </div>
-                      </div>
-                    </CardHeader>
-
-                    <CardContent className="space-y-4 md:space-y-6">
-                      <div>
-                        <h4 className="font-semibold mb-2 md:mb-3 flex items-center gap-2 text-sm md:text-base">
-                          <Shield className="h-3 w-3 md:h-4 md:w-4 text-primary" />
-                          Key Features
-                        </h4>
-                        <ul className="grid gap-1.5 md:gap-2">
-                          {product.features.slice(0, 5).map((feature, idx) => (
-                            <li key={idx} className="flex items-start gap-2 text-xs md:text-sm">
-                              <span className="text-primary mt-0.5">✓</span>
-                              <span className="text-muted-foreground">{feature}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div className="pt-3 md:pt-4 border-t border-border/50">
-                        <Badge variant="outline" className="text-xs">
-                          {product.securityLevel}
-                        </Badge>
-                      </div>
-                    </CardContent>
-
-                    <CardFooter className="bg-secondary/20 p-3 md:p-6 flex gap-2">
-                      <Button 
-                        className="flex-1 text-sm md:text-base" 
-                        size="sm"
-                        onClick={() => navigate(`/product/${product.id}`)}
-                      >
-                        <ShoppingCart className="mr-2 h-4 w-4" />
-                        <span className="hidden sm:inline">Buy Now</span>
-                        <span className="sm:hidden">Buy</span>
-                      </Button>
-                      <Button 
-                        variant="outline"
-                        className="flex-1 text-sm md:text-base" 
-                        size="sm"
-                        onClick={() => navigate(`/product/${product.id}`)}
-                      >
-                        View Details
-                      </Button>
-                    </CardFooter>
-                  </Card>
+                        
+                        {/* Info Section */}
+                        <div className="p-2 md:p-3 bg-card">
+                          <Badge variant="secondary" className="text-[10px] md:text-xs w-full justify-center truncate">
+                            {product.category}
+                          </Badge>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
                 );
               })}
             </div>
