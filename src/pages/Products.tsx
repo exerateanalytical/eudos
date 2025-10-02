@@ -7,6 +7,7 @@ import { Printer, FileText, CreditCard, IdCard, GraduationCap, Shield, Fingerpri
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { SecurityFeaturesSection } from "@/components/SecurityFeaturesSection";
 
 const products = [
   {
@@ -175,6 +176,8 @@ const Products = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      {/* Security Features Section */}
+      <SecurityFeaturesSection />
 
       <div className="container mx-auto px-4 py-6 md:py-12">
         {/* Page Header */}

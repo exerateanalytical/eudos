@@ -7,6 +7,7 @@ import { Printer, FileText, CreditCard, IdCard, GraduationCap, Shield, Fingerpri
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { SecurityFeaturesSection } from "@/components/SecurityFeaturesSection";
 
 // EU Countries
 const euCountries = [
@@ -201,6 +202,9 @@ const Shop = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      {/* Security Features Section */}
+      <SecurityFeaturesSection />
+
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">

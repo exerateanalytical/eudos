@@ -7,6 +7,7 @@ import { GraduationCap, Search, ShoppingCart, Filter, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { SecurityFeaturesSection } from "@/components/SecurityFeaturesSection";
 import { Slider } from "@/components/ui/slider";
 
 const universities = [
@@ -594,6 +595,9 @@ const Diplomas = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Security Features Section */}
+      <SecurityFeaturesSection />
+
       {/* Hero Section */}
       <section className="relative py-16 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-background" />

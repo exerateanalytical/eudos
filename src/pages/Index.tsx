@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
+import { SecurityFeaturesSection } from "@/components/SecurityFeaturesSection";
 
 const contactFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").max(100),
@@ -235,6 +236,9 @@ const Index = () => {
 
   return (
     <div className="bg-background overflow-x-hidden">
+      {/* Security Features Section */}
+      <SecurityFeaturesSection />
+
       {/* Hero Section - Mobile First */}
       <section className="relative py-8 md:py-12 lg:py-16 px-4 overflow-hidden">
         {/* Animated background gradient */}
