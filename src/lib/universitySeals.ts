@@ -177,6 +177,26 @@ import smuHalifaxSeal from "@/assets/university-seals/smu-halifax.png";
 import usherbrookeSeal from "@/assets/university-seals/usherbrooke.png";
 import ontarioTechSeal from "@/assets/university-seals/ontario-tech.png";
 import winnipegSeal from "@/assets/university-seals/winnipeg.png";
+import uqamSeal from "@/assets/university-seals/uqam.png";
+import uqtrSeal from "@/assets/university-seals/uqtr.png";
+import uqacSeal from "@/assets/university-seals/uqac.png";
+import uqoSeal from "@/assets/university-seals/uqo.png";
+import uqarSeal from "@/assets/university-seals/uqar.png";
+import macewanSeal from "@/assets/university-seals/macewan.png";
+import mountRoyalSeal from "@/assets/university-seals/mount-royal.png";
+import athabascaSeal from "@/assets/university-seals/athabasca.png";
+import kwantlenSeal from "@/assets/university-seals/kwantlen.png";
+import emilyCarrSeal from "@/assets/university-seals/emily-carr.png";
+import ocadSeal from "@/assets/university-seals/ocad.png";
+import ufvSeal from "@/assets/university-seals/ufv.png";
+import royalRoadsSeal from "@/assets/university-seals/royal-roads.png";
+import nscadSeal from "@/assets/university-seals/nscad.png";
+import kingsSeal from "@/assets/university-seals/kings.png";
+import tmuSeal from "@/assets/university-seals/tmu.png";
+import algomaSeal from "@/assets/university-seals/algoma.png";
+import huronSeal from "@/assets/university-seals/huron.png";
+import bresciaSeal from "@/assets/university-seals/brescia.png";
+import kingsUwoSeal from "@/assets/university-seals/kings-uwo.png";
 import canadianCollegeGeneric from "@/assets/university-seals/canadian-college-generic.png";
 
 
@@ -360,6 +380,26 @@ export const universitySealMap: Record<string, string> = {
   "Université de Sherbrooke": usherbrookeSeal,
   "Ontario Tech University": ontarioTechSeal,
   "University of Winnipeg": winnipegSeal,
+  "Université du Québec à Montréal (UQAM)": uqamSeal,
+  "Université du Québec à Trois-Rivières": uqtrSeal,
+  "Université du Québec à Chicoutimi": uqacSeal,
+  "Université du Québec en Outaouais": uqoSeal,
+  "Université du Québec à Rimouski": uqarSeal,
+  "MacEwan University": macewanSeal,
+  "Mount Royal University": mountRoyalSeal,
+  "Athabasca University": athabascaSeal,
+  "Kwantlen Polytechnic University": kwantlenSeal,
+  "Emily Carr University of Art and Design": emilyCarrSeal,
+  "OCAD University": ocadSeal,
+  "University of the Fraser Valley": ufvSeal,
+  "Royal Roads University": royalRoadsSeal,
+  "NSCAD University": nscadSeal,
+  "University of King's College": kingsSeal,
+  "Toronto Metropolitan University": tmuSeal,
+  "Algoma University": algomaSeal,
+  "Huron University College": huronSeal,
+  "Brescia University College": bresciaSeal,
+  "King's University College at Western": kingsUwoSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
