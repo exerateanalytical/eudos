@@ -5,8 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { Download, Key, Shield, Lock } from "lucide-react";
+import { Download, Key, Shield, Lock, Copy, Check } from "lucide-react";
 import { z } from "zod";
+import * as openpgp from "openpgp";
+import { authenticator } from "otplib";
+import QRCode from "qrcode";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const passwordChangeSchema = z.object({
   newPassword: z.string().min(8, "Password must be at least 8 characters"),
@@ -20,9 +24,21 @@ interface SecurityModuleProps {
   userId: string;
 }
 
+interface TwoFactorData {
+  secret_key: string;
+  is_enabled: boolean;
+  backup_codes: string[] | null;
+}
+
 const SecurityModule = ({ userId }: SecurityModuleProps) => {
   const [pgpKey, setPgpKey] = useState<string | null>(null);
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
+  const [twoFactorData, setTwoFactorData] = useState<TwoFactorData | null>(null);
+  const [qrCodeUrl, setQrCodeUrl] = useState<string>("");
+  const [verificationCode, setVerificationCode] = useState("");
+  const [backupCodes, setBackupCodes] = useState<string[]>([]);
+  const [showBackupCodes, setShowBackupCodes] = useState(false);
+  const [copiedCode, setCopiedCode] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [generatingKey, setGeneratingKey] = useState(false);
 
@@ -32,25 +48,24 @@ const SecurityModule = ({ userId }: SecurityModuleProps) => {
 
   const fetchSecuritySettings = async () => {
     try {
-      // Fetch PGP key
       const { data: pgpData } = await supabase
         .from("pgp_keys")
         .select("public_key")
         .eq("user_id", userId)
-        .single();
+        .maybeSingle();
 
       if (pgpData) {
         setPgpKey(pgpData.public_key);
       }
 
-      // Fetch 2FA status
       const { data: twoFaData } = await supabase
         .from("two_factor_auth")
-        .select("is_enabled")
+        .select("*")
         .eq("user_id", userId)
-        .single();
+        .maybeSingle();
 
       if (twoFaData) {
+        setTwoFactorData(twoFaData);
         setTwoFactorEnabled(twoFaData.is_enabled);
       }
     } catch (error: any) {
@@ -63,30 +78,21 @@ const SecurityModule = ({ userId }: SecurityModuleProps) => {
   const generatePGPKey = async () => {
     setGeneratingKey(true);
     try {
-      // Generate a simple PGP key pair (in production, use openpgp.js library)
-      const timestamp = Date.now();
-      const publicKey = `-----BEGIN PGP PUBLIC KEY BLOCK-----
-Version: OpenPGP.js
-Generated: ${new Date().toISOString()}
-User ID: ${userId}
-Public Key ID: ${timestamp}
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("email, full_name")
+        .eq("id", userId)
+        .single();
 
-[This is a mock PGP public key for demonstration]
-[In production, use OpenPGP.js to generate real keys]
------END PGP PUBLIC KEY BLOCK-----`;
+      if (!profile) throw new Error("Profile not found");
 
-      const privateKey = `-----BEGIN PGP PRIVATE KEY BLOCK-----
-Version: OpenPGP.js
-Generated: ${new Date().toISOString()}
-User ID: ${userId}
-Private Key ID: ${timestamp}
+      const { privateKey, publicKey } = await openpgp.generateKey({
+        type: "rsa",
+        rsaBits: 4096,
+        userIDs: [{ name: profile.full_name, email: profile.email }],
+        format: "armored",
+      });
 
-[This is a mock PGP private key for demonstration]
-[In production, use OpenPGP.js to generate real keys]
-[KEEP THIS KEY SECURE - Never share your private key]
------END PGP PRIVATE KEY BLOCK-----`;
-
-      // Save public key to database
       const { error } = await supabase.from("pgp_keys").upsert({
         user_id: userId,
         public_key: publicKey,
@@ -96,7 +102,6 @@ Private Key ID: ${timestamp}
 
       setPgpKey(publicKey);
 
-      // Download private key
       const blob = new Blob([privateKey], { type: "text/plain" });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -107,9 +112,9 @@ Private Key ID: ${timestamp}
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
 
-      toast.success("PGP key pair generated! Private key downloaded.");
+      toast.success("PGP key pair generated! Private key downloaded. Keep it secure!");
     } catch (error: any) {
-      toast.error("Error generating PGP keys");
+      toast.error(error.message || "Error generating PGP keys");
       console.error(error);
     } finally {
       setGeneratingKey(false);
@@ -132,24 +137,80 @@ Private Key ID: ${timestamp}
 
   const setup2FA = async () => {
     try {
-      // Generate TOTP secret (in production, use speakeasy library)
-      const secret = `BASE32SECRET${Math.random().toString(36).substring(2, 15)}`.toUpperCase();
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("email")
+        .eq("id", userId)
+        .single();
+
+      if (!profile) throw new Error("Profile not found");
+
+      const secret = authenticator.generateSecret();
       
+      const codes = Array.from({ length: 10 }, () => 
+        authenticator.generateSecret().substring(0, 8).toUpperCase()
+      );
+
+      const otpauth = authenticator.keyuri(
+        profile.email,
+        "SecurePrint Labs",
+        secret
+      );
+
+      const qrCode = await QRCode.toDataURL(otpauth);
+      setQrCodeUrl(qrCode);
+      setBackupCodes(codes);
+      setShowBackupCodes(true);
+
       const { error } = await supabase.from("two_factor_auth").upsert({
         user_id: userId,
         secret_key: secret,
-        is_enabled: true,
-        backup_codes: Array.from({ length: 10 }, () => 
-          Math.random().toString(36).substring(2, 10).toUpperCase()
-        ),
+        is_enabled: false,
+        backup_codes: codes,
       });
 
       if (error) throw error;
 
-      toast.success("2FA setup initiated. In production, scan QR code with authenticator app.");
-      setTwoFactorEnabled(true);
+      setTwoFactorData({
+        secret_key: secret,
+        is_enabled: false,
+        backup_codes: codes,
+      });
+
+      toast.success("Scan QR code with your authenticator app");
     } catch (error: any) {
-      toast.error("Error setting up 2FA");
+      toast.error(error.message || "Error setting up 2FA");
+      console.error(error);
+    }
+  };
+
+  const verify2FA = async () => {
+    try {
+      if (!twoFactorData) throw new Error("2FA not set up");
+
+      const isValid = authenticator.verify({
+        token: verificationCode,
+        secret: twoFactorData.secret_key,
+      });
+
+      if (!isValid) {
+        toast.error("Invalid verification code");
+        return;
+      }
+
+      const { error } = await supabase
+        .from("two_factor_auth")
+        .update({ is_enabled: true })
+        .eq("user_id", userId);
+
+      if (error) throw error;
+
+      setTwoFactorEnabled(true);
+      setQrCodeUrl("");
+      setVerificationCode("");
+      toast.success("2FA enabled successfully!");
+    } catch (error: any) {
+      toast.error(error.message || "Error verifying 2FA");
       console.error(error);
     }
   };
@@ -163,10 +224,12 @@ Private Key ID: ${timestamp}
 
       if (error) throw error;
 
-      toast.success("2FA disabled");
       setTwoFactorEnabled(false);
+      setQrCodeUrl("");
+      setShowBackupCodes(false);
+      toast.success("2FA disabled");
     } catch (error: any) {
-      toast.error("Error disabling 2FA");
+      toast.error(error.message || "Error disabling 2FA");
       console.error(error);
     }
   };
@@ -198,6 +261,13 @@ Private Key ID: ${timestamp}
         toast.error(error.message || "Error updating password");
       }
     }
+  };
+
+  const copyToClipboard = async (text: string, code: string) => {
+    await navigator.clipboard.writeText(text);
+    setCopiedCode(code);
+    setTimeout(() => setCopiedCode(""), 2000);
+    toast.success("Copied to clipboard");
   };
 
   if (loading) {
@@ -250,7 +320,7 @@ Private Key ID: ${timestamp}
             PGP Encryption Keys
           </CardTitle>
           <CardDescription>
-            Secure your communications with PGP encryption
+            Secure your communications with PGP encryption (4096-bit RSA)
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -258,7 +328,7 @@ Private Key ID: ${timestamp}
             <div>
               <p className="text-sm text-muted-foreground mb-4">
                 Generate a PGP key pair to encrypt sensitive communications. Your private key will be
-                downloaded automatically - keep it secure!
+                downloaded automatically - keep it secure and never share it!
               </p>
               <Button onClick={generatePGPKey} disabled={generatingKey}>
                 {generatingKey ? "Generating..." : "Generate PGP Keys"}
@@ -266,9 +336,11 @@ Private Key ID: ${timestamp}
             </div>
           ) : (
             <div>
-              <p className="text-sm text-muted-foreground mb-4">
-                Your PGP keys have been generated. You can download your public key to share with others.
-              </p>
+              <Alert className="mb-4">
+                <AlertDescription>
+                  ✓ Your PGP keys have been generated. Share your public key with others to receive encrypted messages.
+                </AlertDescription>
+              </Alert>
               <Button onClick={downloadPublicKey} variant="outline">
                 <Download className="h-4 w-4 mr-2" />
                 Download Public Key
@@ -285,22 +357,90 @@ Private Key ID: ${timestamp}
             Two-Factor Authentication (2FA)
           </CardTitle>
           <CardDescription>
-            Add an extra layer of security to your account
+            Add an extra layer of security using TOTP authenticator apps
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {!twoFactorEnabled ? (
+          {!twoFactorEnabled && !qrCodeUrl && (
             <div>
               <p className="text-sm text-muted-foreground mb-4">
-                Enable 2FA to require a verification code from your authenticator app when logging in.
+                Enable 2FA to require a verification code from your authenticator app (Google Authenticator, Authy, etc.) when logging in.
               </p>
               <Button onClick={setup2FA}>Enable 2FA</Button>
             </div>
-          ) : (
+          )}
+
+          {qrCodeUrl && !twoFactorEnabled && (
+            <div className="space-y-4">
+              <Alert>
+                <AlertDescription>
+                  <strong>Step 1:</strong> Scan this QR code with your authenticator app
+                </AlertDescription>
+              </Alert>
+              <div className="flex justify-center">
+                <img src={qrCodeUrl} alt="2FA QR Code" className="border rounded-lg p-4 bg-white" />
+              </div>
+              
+              <Alert>
+                <AlertDescription>
+                  <strong>Step 2:</strong> Enter the 6-digit code from your app to verify
+                </AlertDescription>
+              </Alert>
+              <div className="space-y-2">
+                <Label htmlFor="verificationCode">Verification Code</Label>
+                <Input
+                  id="verificationCode"
+                  type="text"
+                  maxLength={6}
+                  placeholder="000000"
+                  value={verificationCode}
+                  onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, ""))}
+                />
+              </div>
+              <div className="flex gap-2">
+                <Button onClick={verify2FA} disabled={verificationCode.length !== 6}>
+                  Verify & Enable
+                </Button>
+                <Button variant="outline" onClick={() => {
+                  setQrCodeUrl("");
+                  setVerificationCode("");
+                }}>
+                  Cancel
+                </Button>
+              </div>
+
+              {showBackupCodes && backupCodes.length > 0 && (
+                <Alert>
+                  <AlertDescription>
+                    <strong>Important:</strong> Save these backup codes. Each can be used once if you lose access to your authenticator.
+                    <div className="grid grid-cols-2 gap-2 mt-4">
+                      {backupCodes.map((code, idx) => (
+                        <div key={idx} className="flex items-center gap-2 bg-muted p-2 rounded font-mono text-sm">
+                          <span>{code}</span>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => copyToClipboard(code, code)}
+                            className="ml-auto"
+                          >
+                            {copiedCode === code ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </AlertDescription>
+                </Alert>
+              )}
+            </div>
+          )}
+
+          {twoFactorEnabled && (
             <div>
-              <p className="text-sm text-success mb-4">
-                ✓ Two-factor authentication is enabled
-              </p>
+              <Alert className="mb-4">
+                <AlertDescription>
+                  ✓ Two-factor authentication is enabled. Your account is protected with TOTP codes.
+                </AlertDescription>
+              </Alert>
               <Button onClick={disable2FA} variant="outline">
                 Disable 2FA
               </Button>
