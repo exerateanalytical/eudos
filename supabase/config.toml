@@ -2,3 +2,6 @@ project_id = "glsvoagtlaksuaimsppn"
 
 [functions.seed-reviews]
 verify_jwt = false
+
+[functions.create-admin]
+verify_jwt = false

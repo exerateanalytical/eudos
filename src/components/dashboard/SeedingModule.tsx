@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Database, Loader2, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AdminCreationModule } from "./AdminCreationModule";
 
 export const SeedingModule = () => {
   const [isSeeding, setIsSeeding] = useState(false);
@@ -32,7 +33,9 @@ export const SeedingModule = () => {
   };
 
   return (
-    <Card>
+    <div className="space-y-6">
+      <AdminCreationModule />
+      <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Database className="h-5 w-5" />
@@ -78,5 +81,6 @@ export const SeedingModule = () => {
         )}
       </CardContent>
     </Card>
+    </div>
   );
 };
