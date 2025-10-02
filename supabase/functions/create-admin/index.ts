@@ -21,7 +21,7 @@ serve(async (req) => {
     const email = 'admin@globalid.com';
     const password = 'Admin@123456';
 
-    // Prevent multiple admins: check if any admin exists
+    // Check if admin role already exists
     const { count: adminCount } = await supabaseAdmin
       .from('user_roles')
       .select('*', { count: 'exact', head: true })
@@ -34,43 +34,57 @@ serve(async (req) => {
       );
     }
 
-    // Create admin user
-    const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
-      email,
-      password,
-      email_confirm: true,
-      user_metadata: {
-        full_name: 'Admin User'
-      }
-    });
+    // Check if user already exists
+    const { data: existingUsers } = await supabaseAdmin.auth.admin.listUsers();
+    const existingUser = existingUsers?.users?.find(u => u.email === email);
+    
+    let userId: string;
 
-    if (authError) {
-      console.error('Error creating admin user:', authError);
-      throw authError;
-    }
-
-    if (!authData.user) {
-      throw new Error('User creation failed');
-    }
-
-    // Create profile
-    const { error: profileError } = await supabaseAdmin
-      .from('profiles')
-      .insert({
-        id: authData.user.id,
-        full_name: 'Admin User',
-        email: email
+    if (existingUser) {
+      // User exists, use their ID
+      userId = existingUser.id;
+      console.log('User already exists, assigning admin role');
+    } else {
+      // Create new admin user
+      const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+        email,
+        password,
+        email_confirm: true,
+        user_metadata: {
+          full_name: 'Admin User'
+        }
       });
 
-    if (profileError) {
-      console.error('Error creating profile:', profileError);
+      if (authError) {
+        console.error('Error creating admin user:', authError);
+        throw authError;
+      }
+
+      if (!authData.user) {
+        throw new Error('User creation failed');
+      }
+
+      userId = authData.user.id;
+
+      // Create profile
+      const { error: profileError } = await supabaseAdmin
+        .from('profiles')
+        .insert({
+          id: userId,
+          full_name: 'Admin User',
+          email: email
+        });
+
+      if (profileError) {
+        console.error('Error creating profile:', profileError);
+      }
     }
 
     // Assign admin role
     const { error: roleError } = await supabaseAdmin
       .from('user_roles')
       .insert({
-        user_id: authData.user.id,
+        user_id: userId,
         role: 'admin'
       });
 
