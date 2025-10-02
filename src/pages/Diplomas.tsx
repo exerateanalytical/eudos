@@ -177,39 +177,65 @@ const Diplomas = () => {
       <section className="py-16 px-4">
         <div className="container mx-auto max-w-7xl">
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredUniversities.map((university) => (
-              <Card key={university.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex items-start justify-between mb-2">
-                    <Badge variant="secondary">#{university.ranking}</Badge>
-                    <Badge className="bg-primary text-primary-foreground">
+            {filteredUniversities.map((university, index) => (
+              <Card 
+                key={university.id} 
+                className="group relative overflow-hidden hover:shadow-2xl transition-all duration-300 animate-fade-in border-2 hover:border-primary/50"
+                style={{ animationDelay: `${index * 0.05}s` }}
+              >
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                
+                <CardHeader className="relative">
+                  <div className="flex items-start justify-between mb-3">
+                    <Badge variant="secondary" className="text-xs font-bold">
+                      #{university.ranking}
+                    </Badge>
+                    <Badge className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-lg text-sm font-bold px-3 py-1">
                       {university.price}
                     </Badge>
                   </div>
-                  <CardTitle className="text-lg leading-tight">
+                  
+                  {/* University Icon */}
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                    <GraduationCap className="h-6 w-6 text-primary" />
+                  </div>
+                  
+                  <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors duration-300">
                     {university.name}
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    📍 {university.location}
-                  </p>
-                  <div className="space-y-2 mb-4 text-sm">
-                    <div className="flex items-center gap-2">
-                      <GraduationCap className="h-4 w-4 text-primary" />
-                      <span>Authentic diploma with seal</span>
+                
+                <CardContent className="relative">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4 pb-4 border-b">
+                    <div className="w-2 h-2 bg-primary rounded-full" />
+                    <span className="font-medium">{university.location}</span>
+                  </div>
+                  
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-start gap-3 text-sm">
+                      <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-2 h-2 bg-primary rounded-full" />
+                      </div>
+                      <span>Authentic diploma with official seal</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <GraduationCap className="h-4 w-4 text-primary" />
-                      <span>Official university format</span>
+                    <div className="flex items-start gap-3 text-sm">
+                      <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-2 h-2 bg-primary rounded-full" />
+                      </div>
+                      <span>Official university format & paper</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <GraduationCap className="h-4 w-4 text-primary" />
-                      <span>Fast 2-3 week delivery</span>
+                    <div className="flex items-start gap-3 text-sm">
+                      <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-2 h-2 bg-primary rounded-full" />
+                      </div>
+                      <span>Fast 2-3 week delivery worldwide</span>
                     </div>
                   </div>
+                  
                   <Button 
-                    className="w-full" 
+                    className="w-full group-hover:shadow-lg transition-all duration-300" 
+                    size="lg"
                     onClick={() => navigate(`/apply?type=diploma&university=${encodeURIComponent(university.name)}`)}
                   >
                     <ShoppingCart className="h-4 w-4 mr-2" />
