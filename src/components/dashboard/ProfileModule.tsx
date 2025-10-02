@@ -6,6 +6,21 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Plus, Trash2 } from "lucide-react";
+import { z } from "zod";
+
+const profileUpdateSchema = z.object({
+  full_name: z.string().min(2, "Name must be at least 2 characters").max(100),
+  phone_number: z.string().optional(),
+});
+
+const addressSchema = z.object({
+  address_type: z.enum(["shipping", "billing"]),
+  street: z.string().min(1, "Street address is required").max(200),
+  city: z.string().min(1, "City is required").max(100),
+  state: z.string().min(1, "State is required").max(100),
+  zip_code: z.string().min(1, "ZIP code is required").max(20),
+  country: z.string().min(1, "Country is required").max(100),
+});
 
 interface Profile {
   id: string;
@@ -77,21 +92,28 @@ const ProfileModule = ({ userId }: ProfileModuleProps) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
+    const data = {
+      full_name: formData.get("full_name") as string,
+      phone_number: formData.get("phone_number") as string || null,
+    };
+
     try {
+      profileUpdateSchema.parse(data);
+
       const { error } = await supabase
         .from("profiles")
-        .update({
-          full_name: formData.get("full_name") as string,
-          phone_number: formData.get("phone_number") as string,
-        })
+        .update(data)
         .eq("id", userId);
 
       if (error) throw error;
       toast.success("Profile updated successfully");
       fetchProfile();
     } catch (error: any) {
-      toast.error("Error updating profile");
-      console.error(error);
+      if (error instanceof z.ZodError) {
+        toast.error(error.issues[0].message);
+      } else {
+        toast.error(error.message || "Error updating profile");
+      }
     }
   };
 
@@ -99,24 +121,34 @@ const ProfileModule = ({ userId }: ProfileModuleProps) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
+    const data = {
+      address_type: formData.get("address_type") as string,
+      street: formData.get("street") as string,
+      city: formData.get("city") as string,
+      state: formData.get("state") as string,
+      zip_code: formData.get("zip_code") as string,
+      country: formData.get("country") as string,
+    };
+
     try {
+      addressSchema.parse(data);
+
       const { error } = await supabase.from("addresses").insert({
         user_id: userId,
-        address_type: formData.get("address_type") as string,
-        street: formData.get("street") as string,
-        city: formData.get("city") as string,
-        state: formData.get("state") as string,
-        zip_code: formData.get("zip_code") as string,
-        country: formData.get("country") as string,
+        ...data,
       });
 
       if (error) throw error;
       toast.success("Address added successfully");
       setShowAddressForm(false);
+      (e.target as HTMLFormElement).reset();
       fetchAddresses();
     } catch (error: any) {
-      toast.error("Error adding address");
-      console.error(error);
+      if (error instanceof z.ZodError) {
+        toast.error(error.issues[0].message);
+      } else {
+        toast.error(error.message || "Error adding address");
+      }
     }
   };
 
