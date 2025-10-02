@@ -183,25 +183,43 @@ const Index = () => {
       icon: BookOpen,
       title: "Registered Passports",
       description: "Fully registered biometric passports with embedded chips, holograms, UV features, and machine-readable zones",
-      color: "from-blue-500 to-cyan-500"
+      color: "from-blue-500 to-cyan-500",
+      link: "/passports"
     },
     {
       icon: CreditCard,
       title: "Driver's Licenses",
       description: "Secure driver's licenses with biometric data, microtext, ghost images, and laser engraving",
-      color: "from-purple-500 to-pink-500"
+      color: "from-purple-500 to-pink-500",
+      link: "/drivers-license"
     },
     {
       icon: Shield,
       title: "National ID Cards",
       description: "Government-issued ID cards with RFID chips, holographic overlays, and advanced security printing",
-      color: "from-green-500 to-emerald-500"
+      color: "from-green-500 to-emerald-500",
+      link: "/citizenship"
     },
     {
       icon: GraduationCap,
       title: "Official Diplomas",
       description: "Authenticated educational certificates with watermarks, security threads, and tamper-proof features",
-      color: "from-orange-500 to-red-500"
+      color: "from-orange-500 to-red-500",
+      link: "/diplomas"
+    },
+    {
+      icon: Award,
+      title: "Professional Certifications",
+      description: "Verified professional certificates and credentials with anti-forgery security elements",
+      color: "from-indigo-500 to-violet-500",
+      link: "/certifications"
+    },
+    {
+      icon: FileText,
+      title: "Official Documents",
+      description: "Wide range of government-authorized documents with advanced security features",
+      color: "from-teal-500 to-cyan-500",
+      link: "/products"
     }
   ];
 
@@ -498,12 +516,13 @@ const Index = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {services.map((service, index) => (
               <Card 
                 key={index} 
-                className="group hover:shadow-2xl transition-all duration-500 border-border/50 hover:border-primary/50 bg-card hover:-translate-y-1 md:hover:-translate-y-2 animate-fade-in active:scale-95 touch-manipulation"
+                className="group hover:shadow-2xl transition-all duration-500 border-border/50 hover:border-primary/50 bg-card hover:-translate-y-1 md:hover:-translate-y-2 animate-fade-in active:scale-95 touch-manipulation cursor-pointer"
                 style={{ animationDelay: `${index * 0.1}s` }}
+                onClick={() => navigate(service.link)}
               >
                 <CardHeader className="pb-4">
                   <div className={`w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-gradient-to-br ${service.color} p-0.5 mb-3 md:mb-4 group-hover:scale-110 transition-transform duration-300`}>
