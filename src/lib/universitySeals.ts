@@ -241,6 +241,23 @@ import liverpoolSeal from "@/assets/university-seals/liverpool.png";
 import qmulSeal from "@/assets/university-seals/qmul.png";
 import lancasterSeal from "@/assets/university-seals/lancaster.png";
 
+// German Universities
+import lmuMunichSeal from "@/assets/university-seals/lmu-munich.png";
+import tumSeal from "@/assets/university-seals/tum.png";
+import heidelbergSeal from "@/assets/university-seals/heidelberg.png";
+import humboldtBerlinSeal from "@/assets/university-seals/humboldt-berlin.png";
+import fuBerlinSeal from "@/assets/university-seals/fu-berlin.png";
+import rwthAachenSeal from "@/assets/university-seals/rwth-aachen.png";
+import freiburgSeal from "@/assets/university-seals/freiburg.png";
+import gottingenSeal from "@/assets/university-seals/gottingen.png";
+import tubingenSeal from "@/assets/university-seals/tubingen.png";
+import bonnSeal from "@/assets/university-seals/bonn.png";
+import kitSeal from "@/assets/university-seals/kit.png";
+import hamburgSeal from "@/assets/university-seals/hamburg.png";
+import cologneSeal from "@/assets/university-seals/cologne.png";
+import tuBerlinSeal from "@/assets/university-seals/tu-berlin.png";
+import mannheimSeal from "@/assets/university-seals/mannheim.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -484,6 +501,23 @@ export const universitySealMap: Record<string, string> = {
   "University of Liverpool": liverpoolSeal,
   "Queen Mary University of London": qmulSeal,
   "Lancaster University": lancasterSeal,
+  
+  // German Universities
+  "Ludwig Maximilian University of Munich (LMU)": lmuMunichSeal,
+  "Technical University of Munich (TUM)": tumSeal,
+  "Heidelberg University": heidelbergSeal,
+  "Humboldt University of Berlin": humboldtBerlinSeal,
+  "Free University of Berlin": fuBerlinSeal,
+  "RWTH Aachen University": rwthAachenSeal,
+  "University of Freiburg": freiburgSeal,
+  "University of Göttingen": gottingenSeal,
+  "University of Tübingen": tubingenSeal,
+  "University of Bonn": bonnSeal,
+  "Karlsruhe Institute of Technology (KIT)": kitSeal,
+  "University of Hamburg": hamburgSeal,
+  "University of Cologne": cologneSeal,
+  "Technical University of Berlin": tuBerlinSeal,
+  "University of Mannheim": mannheimSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
