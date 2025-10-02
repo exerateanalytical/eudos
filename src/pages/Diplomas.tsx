@@ -612,7 +612,7 @@ const Diplomas = () => {
             </h1>
             <p className="text-lg text-muted-foreground mb-8">
               Premium authentic diplomas from the world's most prestigious institutions. 
-              100+ American universities, 100 Canadian universities, 75+ EU universities, 100 American community colleges, 75+ Canadian colleges, and 35+ EU technical institutions.
+              All diplomas are <span className="font-semibold text-primary">apostilled</span>, <span className="font-semibold text-primary">registered in school databases</span>, <span className="font-semibold text-primary">fully verifiable</span>, and contain <span className="font-semibold text-primary">all security features</span>.
               Complete package with transcript, thesis, student ID, and database registration. Fast 2-week delivery worldwide.
             </p>
             <div className="flex gap-4 justify-center flex-wrap">
@@ -820,25 +820,25 @@ const Diplomas = () => {
                         <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                           <div className="w-2 h-2 bg-primary rounded-full" />
                         </div>
-                        <span>Authentic diploma with official seal</span>
+                        <span><span className="font-semibold">Apostille certified</span> - Internationally recognized</span>
                       </div>
                       <div className="flex items-start gap-3 text-sm">
                         <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                           <div className="w-2 h-2 bg-primary rounded-full" />
                         </div>
-                        <span>Official transcript included</span>
+                        <span><span className="font-semibold">Database registered</span> - Fully verifiable</span>
                       </div>
                       <div className="flex items-start gap-3 text-sm">
                         <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                           <div className="w-2 h-2 bg-primary rounded-full" />
                         </div>
-                        <span>Thesis and student ID</span>
+                        <span><span className="font-semibold">All security features</span> - Holograms, watermarks, seals</span>
                       </div>
                       <div className="flex items-start gap-3 text-sm">
                         <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                           <div className="w-2 h-2 bg-primary rounded-full" />
                         </div>
-                        <span>Database registration verified</span>
+                        <span>Complete package with transcript & thesis</span>
                       </div>
                       <div className="flex items-start gap-3 text-sm">
                         <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
