@@ -4,7 +4,75 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { ArrowLeft, GraduationCap, Clock, FileText, CheckCircle, Shield, Award, Download, Mail, ShoppingCart, Coins, IdCard, BookOpen, Database } from "lucide-react";
+import { ArrowLeft, Clock, FileText, CheckCircle, Shield, Award, Download, Mail, ShoppingCart, Coins, IdCard, BookOpen, Database } from "lucide-react";
+
+// Import university seals
+import harvardSeal from "@/assets/university-seals/harvard.png";
+import stanfordSeal from "@/assets/university-seals/stanford.png";
+import mitSeal from "@/assets/university-seals/mit.png";
+import berkeleySeal from "@/assets/university-seals/berkeley.png";
+import princetonSeal from "@/assets/university-seals/princeton.png";
+import yaleSeal from "@/assets/university-seals/yale.png";
+import columbiaSeal from "@/assets/university-seals/columbia.png";
+import chicagoSeal from "@/assets/university-seals/chicago.png";
+import torontoSeal from "@/assets/university-seals/toronto.png";
+import mcgillSeal from "@/assets/university-seals/mcgill.png";
+import ubcSeal from "@/assets/university-seals/ubc.png";
+import johnsHopkinsSeal from "@/assets/university-seals/johns-hopkins.png";
+import upennSeal from "@/assets/university-seals/upenn.png";
+import caltechSeal from "@/assets/university-seals/caltech.png";
+import cornellSeal from "@/assets/university-seals/cornell.png";
+import northwesternSeal from "@/assets/university-seals/northwestern.png";
+import dukeSeal from "@/assets/university-seals/duke.png";
+import michiganSeal from "@/assets/university-seals/michigan.png";
+import uclaSeal from "@/assets/university-seals/ucla.png";
+import brownSeal from "@/assets/university-seals/brown.png";
+import dartmouthSeal from "@/assets/university-seals/dartmouth.png";
+import vanderbiltSeal from "@/assets/university-seals/vanderbilt.png";
+import riceSeal from "@/assets/university-seals/rice.png";
+import cmuSeal from "@/assets/university-seals/cmu.png";
+import uscSeal from "@/assets/university-seals/usc.png";
+import georgetownSeal from "@/assets/university-seals/georgetown.png";
+import nyuSeal from "@/assets/university-seals/nyu.png";
+import mcmasterSeal from "@/assets/university-seals/mcmaster.png";
+import albertaSeal from "@/assets/university-seals/alberta.png";
+import waterlooSeal from "@/assets/university-seals/waterloo.png";
+import queensSeal from "@/assets/university-seals/queens.png";
+
+// Mapping of university names to seals
+const universitySealMap: Record<string, string> = {
+  "Harvard University": harvardSeal,
+  "Stanford University": stanfordSeal,
+  "Massachusetts Institute of Technology (MIT)": mitSeal,
+  "University of California, Berkeley": berkeleySeal,
+  "Princeton University": princetonSeal,
+  "Yale University": yaleSeal,
+  "Columbia University": columbiaSeal,
+  "University of Chicago": chicagoSeal,
+  "California Institute of Technology (Caltech)": caltechSeal,
+  "Johns Hopkins University": johnsHopkinsSeal,
+  "University of Pennsylvania": upennSeal,
+  "Cornell University": cornellSeal,
+  "University of Michigan": michiganSeal,
+  "Northwestern University": northwesternSeal,
+  "Duke University": dukeSeal,
+  "University of California, Los Angeles (UCLA)": uclaSeal,
+  "Brown University": brownSeal,
+  "Dartmouth College": dartmouthSeal,
+  "Vanderbilt University": vanderbiltSeal,
+  "Rice University": riceSeal,
+  "Carnegie Mellon University": cmuSeal,
+  "University of Southern California": uscSeal,
+  "Georgetown University": georgetownSeal,
+  "New York University": nyuSeal,
+  "University of Toronto": torontoSeal,
+  "McGill University": mcgillSeal,
+  "University of British Columbia": ubcSeal,
+  "McMaster University": mcmasterSeal,
+  "University of Alberta": albertaSeal,
+  "University of Waterloo": waterlooSeal,
+  "Queen's University": queensSeal,
+};
 import { EscrowForm } from "@/components/EscrowForm";
 import { ReviewForm } from "@/components/reviews/ReviewForm";
 import { ReviewsList } from "@/components/reviews/ReviewsList";
@@ -196,8 +264,16 @@ const DiplomaDetail = () => {
 
           <div className="max-w-4xl">
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                <GraduationCap className="h-8 w-8 text-primary" />
+              <div className="w-20 h-20 bg-white rounded-lg flex items-center justify-center shadow-sm border border-border/30">
+                {universitySealMap[universityName] ? (
+                  <img 
+                    src={universitySealMap[universityName]} 
+                    alt={`${universityName} seal`}
+                    className="w-16 h-16 object-contain"
+                  />
+                ) : (
+                  <Award className="h-10 w-10 text-primary" />
+                )}
               </div>
               <div>
                 <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-2">
@@ -473,7 +549,7 @@ const DiplomaDetail = () => {
             <Card className="border-primary/20">
               <CardContent className="pt-6">
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                  <GraduationCap className="w-6 h-6 text-primary" />
+                  <Award className="w-6 h-6 text-primary" />
                 </div>
                 <h3 className="text-xl font-bold mb-3">Custom Tailored</h3>
                 <p className="text-muted-foreground">
