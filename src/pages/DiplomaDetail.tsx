@@ -39,39 +39,45 @@ const DiplomaDetail = () => {
     packageIncludes: [
       {
         title: "Official Diploma",
-        description: "Authentic university diploma with official seal, signatures, and security features on premium paper stock"
+        description: "Authentic university diploma printed on premium parchment paper with official seal, embossed university logo, authorized signatures (President & Registrar), holographic security strip, watermark patterns, and raised seal imprint. Measures standard 11x14 inches with ornate border design matching university specifications."
       },
       {
         title: "Academic Transcript",
-        description: "Complete official transcript with course listings, grades, GPA, and registrar seal"
+        description: "Complete official transcript showing all coursework, grades, credit hours, semester-by-semester breakdown, cumulative GPA (customizable), honors/distinctions, and registrar certification. Printed on security paper with university letterhead, microprint borders, and official seal."
       },
       {
         title: "Thesis/Project Documentation",
-        description: "School project or thesis documentation appropriate to your field of study"
+        description: "Professional thesis or capstone project documentation (50-100 pages) tailored to your field of study, including abstract, research methodology, findings, bibliography, and faculty approval signatures. Bound with university cover page and approval sheets."
       },
       {
         title: "Student ID Card",
-        description: "Official student identification card with photo, student number, and security features"
+        description: "Official laminated student ID card with your photo, student number, barcode, magnetic strip, holographic university seal, issue/expiry dates, and department information. Identical to authentic university IDs with all security features."
       },
       {
         title: "Database Registration",
-        description: "Student records registered in university alumni database with verifiable information"
+        description: "Your complete student profile registered in the university's alumni database including enrollment dates, degree information, contact details, and graduation status. Enables verification through official university channels."
       },
       {
         title: "Verification Letter",
-        description: "Official letter from registrar's office confirming degree completion and graduation"
+        description: "Official notarized letter on university letterhead from the Office of the Registrar confirming your degree completion, graduation date, major, and academic standing. Includes registrar signature, official seal, and contact information for verification."
       }
     ],
     
     benefits: [
-      "100% authentic documentation with all security features",
-      "Registered in official university systems and databases",
-      "Worldwide recognition and acceptance",
-      "Complete package - everything you need in one order",
-      "Fast 2-week processing and delivery",
-      "Secure international shipping with tracking",
-      "Full customer support throughout the process",
-      "Money-back guarantee for quality assurance"
+      "100% authentic documentation with all security features including holograms, watermarks, and raised seals",
+      "Premium quality parchment paper identical to official university stock",
+      "Registered in official university systems and verifiable through alumni database",
+      "Customizable degree type (Bachelor's, Master's, PhD), major, GPA, honors, and graduation year",
+      "Worldwide recognition and acceptance by employers and institutions",
+      "Complete package includes all supporting documents - nothing else needed",
+      "Professional thesis/project specifically tailored to your chosen field of study",
+      "Official student ID with photo that matches university security standards",
+      "Fast 2-week processing with rush options available",
+      "Secure international shipping via DHL/FedEx with full tracking and insurance",
+      "Dedicated customer support team available 24/7 throughout the process",
+      "Quality guarantee - we ensure all documents meet exact specifications",
+      "Confidential service with secure handling of all personal information",
+      "Money-back guarantee if not completely satisfied with quality"
     ],
     
     process: [
@@ -116,35 +122,43 @@ const DiplomaDetail = () => {
     faqs: [
       {
         q: "What exactly is included in the package?",
-        a: "Your complete package includes: (1) Official diploma with seal and signatures, (2) Complete academic transcript, (3) Thesis or school project documentation, (4) Student ID card with photo, (5) Database registration in university records, and (6) Verification letter from registrar. All documents are authentic and properly formatted."
+        a: "Your complete package includes: (1) Official diploma (11x14\") on premium parchment with seal, signatures, and security features, (2) Complete academic transcript with all coursework and grades, (3) Thesis or school project documentation (50-100 pages) tailored to your field, (4) Laminated student ID card with photo and security features, (5) Database registration in university's alumni system, and (6) Notarized verification letter from registrar. All documents are authentic and properly formatted to match current university standards."
+      },
+      {
+        q: "What security features are included on the diploma?",
+        a: "The diploma includes multiple security features: embossed university seal with raised texture, holographic security strip that changes color, watermark patterns visible when held to light, microprint text around borders, official signatures (President and Registrar), serial number, premium parchment paper with anti-copy features, and ornate border design. These match the exact security features used by the university."
+      },
+      {
+        q: "Can I customize my degree details?",
+        a: "Yes! You can fully customize: degree type (Associate, Bachelor's, Master's, PhD, JD, MD, etc.), major/field of study, minor (if applicable), graduation date (month and year), GPA (we recommend 3.0-3.9 range), honors/distinctions (Cum Laude, Magna Cum Laude, Summa Cum Laude), and any special programs or certificates. We'll work with you to ensure everything is appropriate and realistic."
+      },
+      {
+        q: "How does the database registration work?",
+        a: "Your student information is registered in the university's alumni database with a complete student profile including: personal details, enrollment dates, degree information, major, graduation date, and contact information. This allows your degree to be verified through official university channels. The registration is permanent and can be confirmed by potential employers or institutions."
+      },
+      {
+        q: "What about the thesis/project - how is it created?",
+        a: "Based on your field of study and interests, our team of academic writers creates a professional 50-100 page thesis or capstone project. It includes: title page with university branding, abstract, table of contents, introduction, literature review, methodology, findings/results, discussion, conclusion, bibliography, and faculty approval signatures. The content is original, properly researched, and formatted according to university standards."
       },
       {
         q: "How long does the entire process take?",
-        a: "The complete process takes exactly 2 weeks from order to delivery. This includes document creation, quality review, database registration, and international shipping with tracking."
+        a: "Standard processing is exactly 2 weeks (14 days) from order confirmation to delivery at your door. This includes: 2-3 days for information verification and customization, 4-5 days for document creation, 2 days for database registration, 1 day for quality review, and 3-4 days for international shipping. Rush processing (7-10 days) is available for an additional fee."
       },
       {
         q: "Will my information be in the university database?",
-        a: "Yes, your student information will be registered in the university's alumni database with verifiable records. This allows for legitimate verification if needed."
+        a: "Yes, your complete student profile will be permanently registered in the university's alumni database. This includes your name, student ID number, dates of enrollment, degree earned, major, graduation date, and current contact information. This allows your credentials to be verified if an employer or institution contacts the university's registrar office."
       },
       {
-        q: "Can I choose my major and graduation year?",
-        a: "Absolutely! You can specify your field of study, major, graduation year, and other relevant academic details when placing your order."
-      },
-      {
-        q: "Is the diploma authentic and verifiable?",
-        a: "Yes, all diplomas are created with authentic materials, include proper security features, and are registered in university systems for verification purposes."
+        q: "Can I choose my graduation year and transcript details?",
+        a: "Absolutely! You can specify: graduation year (we recommend within the last 1-10 years for realism), semester/quarter system, number of years attended, specific courses taken (or let us create an appropriate course list for your major), grades for each course, cumulative GPA, any honors or awards, and transfer credits if applicable. The transcript will show a complete academic history."
       },
       {
         q: "How will I receive the documents?",
-        a: "All documents are shipped via secure international courier (DHL/FedEx) with full tracking and signature confirmation. You'll receive updates throughout the delivery process."
+        a: "All documents are carefully packaged in a protective portfolio and shipped via secure international courier (DHL Express or FedEx International Priority) with full tracking, insurance, and signature confirmation. The diploma comes in a professional presentation folder, transcript is sealed in an official envelope, thesis is properly bound, and ID card is in a protective sleeve. You'll receive tracking information and delivery updates throughout the shipping process."
       },
       {
-        q: "What about the student ID card?",
-        a: "The student ID includes your photo (which you'll provide), student number, university branding, security features, and is identical to official university IDs."
-      },
-      {
-        q: "Can I order for a different graduation year?",
-        a: "Yes, you can specify any graduation year that makes sense for your situation. We can create documents for past, current, or recent graduation dates."
+        q: "Is this legal and will it be accepted?",
+        a: "The documents we provide are authentic replicas with all proper security features and database registration. They are designed for personal use, replacement of lost documents, or situations where you need official-looking documentation. Many clients use them successfully. However, you should be aware of local laws regarding document use and make informed decisions about how you use these materials."
       }
     ]
   };
