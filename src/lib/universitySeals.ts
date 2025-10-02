@@ -1,4 +1,4 @@
-// University Seals Import
+// University Seals Import - U.S. Universities
 import harvardSeal from "@/assets/university-seals/harvard.png";
 import stanfordSeal from "@/assets/university-seals/stanford.png";
 import mitSeal from "@/assets/university-seals/mit.png";
@@ -65,11 +65,56 @@ import umassSeal from "@/assets/university-seals/umass.png";
 import delawareSeal from "@/assets/university-seals/delaware.png";
 import syracuseSeal from "@/assets/university-seals/syracuse.png";
 import oregonSeal from "@/assets/university-seals/oregon.png";
+import tennesseeSeal from "@/assets/university-seals/tennessee.png";
+import auburnSeal from "@/assets/university-seals/auburn.png";
+import alabamaSeal from "@/assets/university-seals/alabama.png";
+import southCarolinaSeal from "@/assets/university-seals/south-carolina.png";
+import oklahomaSeal from "@/assets/university-seals/oklahoma.png";
+import fsuSeal from "@/assets/university-seals/fsu.png";
+import iowaStateSeal from "@/assets/university-seals/iowa-state.png";
+import kansasSeal from "@/assets/university-seals/kansas.png";
+import nebraskaSeal from "@/assets/university-seals/nebraska.png";
+import missouriSeal from "@/assets/university-seals/missouri.png";
+import kentuckySeal from "@/assets/university-seals/kentucky.png";
+import lsuSeal from "@/assets/university-seals/lsu.png";
+import arkansasSeal from "@/assets/university-seals/arkansas.png";
+import utahSeal from "@/assets/university-seals/utah.png";
 import rochesterSeal from "@/assets/university-seals/rochester.png";
 import caseWesternSeal from "@/assets/university-seals/case-western.png";
+import stonyBrookSeal from "@/assets/university-seals/stony-brook.png";
+import ucscSeal from "@/assets/university-seals/ucsc.png";
 import lehighSeal from "@/assets/university-seals/lehigh.png";
+import wpiSeal from "@/assets/university-seals/wpi.png";
 import rpiSeal from "@/assets/university-seals/rpi.png";
 import brandeisSeal from "@/assets/university-seals/brandeis.png";
+import minesSeal from "@/assets/university-seals/mines.png";
+import okstateSeal from "@/assets/university-seals/okstate.png";
+import miamiOhioSeal from "@/assets/university-seals/miami-ohio.png";
+import buffaloSeal from "@/assets/university-seals/buffalo.png";
+import fordhamSeal from "@/assets/university-seals/fordham.png";
+import cincinnatiSeal from "@/assets/university-seals/cincinnati.png";
+import baylorSeal from "@/assets/university-seals/baylor.png";
+import gwuSeal from "@/assets/university-seals/gwu.png";
+import americanSeal from "@/assets/university-seals/american.png";
+import smuSeal from "@/assets/university-seals/smu.png";
+import templeSeal from "@/assets/university-seals/temple.png";
+import oregonStateSeal from "@/assets/university-seals/oregon-state.png";
+import usfSeal from "@/assets/university-seals/usf.png";
+import richmondSeal from "@/assets/university-seals/richmond.png";
+import binghamtonSeal from "@/assets/university-seals/binghamton.png";
+import clarkSeal from "@/assets/university-seals/clark.png";
+import newMexicoSeal from "@/assets/university-seals/new-mexico.png";
+import oleMissSeal from "@/assets/university-seals/ole-miss.png";
+import wvuSeal from "@/assets/university-seals/wvu.png";
+import kansasStateSeal from "@/assets/university-seals/kansas-state.png";
+import rhodeIslandSeal from "@/assets/university-seals/rhode-island.png";
+import vermontSeal from "@/assets/university-seals/vermont.png";
+import unhSeal from "@/assets/university-seals/unh.png";
+import maineSeal from "@/assets/university-seals/maine.png";
+import hawaiiSeal from "@/assets/university-seals/hawaii.png";
+import nevadaSeal from "@/assets/university-seals/nevada.png";
+import hofstraSeal from "@/assets/university-seals/hofstra.png";
+import sluSeal from "@/assets/university-seals/slu.png";
 
 // Canadian Universities
 import torontoSeal from "@/assets/university-seals/toronto.png";
@@ -166,11 +211,56 @@ export const universitySealMap: Record<string, string> = {
   "University of Delaware": delawareSeal,
   "Syracuse University": syracuseSeal,
   "University of Oregon": oregonSeal,
+  "University of Tennessee": tennesseeSeal,
+  "Auburn University": auburnSeal,
+  "University of Alabama": alabamaSeal,
+  "University of South Carolina": southCarolinaSeal,
+  "University of Oklahoma": oklahomaSeal,
+  "Florida State University": fsuSeal,
+  "Iowa State University": iowaStateSeal,
+  "University of Kansas": kansasSeal,
+  "University of Nebraska-Lincoln": nebraskaSeal,
+  "University of Missouri": missouriSeal,
+  "University of Kentucky": kentuckySeal,
+  "Louisiana State University": lsuSeal,
+  "University of Arkansas": arkansasSeal,
+  "University of Utah": utahSeal,
+  "University of New Mexico": newMexicoSeal,
+  "University of Mississippi": oleMissSeal,
+  "West Virginia University": wvuSeal,
+  "Kansas State University": kansasStateSeal,
+  "University of Rhode Island": rhodeIslandSeal,
+  "University of Vermont": vermontSeal,
+  "University of New Hampshire": unhSeal,
+  "University of Maine": maineSeal,
+  "University of Hawaii at Manoa": hawaiiSeal,
+  "University of Nevada, Reno": nevadaSeal,
   "University of Rochester": rochesterSeal,
   "Case Western Reserve University": caseWesternSeal,
+  "Stony Brook University": stonyBrookSeal,
+  "University of California--Santa Cruz": ucscSeal,
   "Lehigh University": lehighSeal,
+  "Worcester Polytechnic Institute (WPI)": wpiSeal,
   "Rensselaer Polytechnic Institute (RPI)": rpiSeal,
   "Brandeis University": brandeisSeal,
+  "Colorado School of Mines": minesSeal,
+  "Oklahoma State University": okstateSeal,
+  "Miami University": miamiOhioSeal,
+  "University at Buffalo--SUNY": buffaloSeal,
+  "Fordham University": fordhamSeal,
+  "University of Cincinnati": cincinnatiSeal,
+  "Baylor University": baylorSeal,
+  "George Washington University": gwuSeal,
+  "American University": americanSeal,
+  "Southern Methodist University (SMU)": smuSeal,
+  "Temple University": templeSeal,
+  "Oregon State University": oregonStateSeal,
+  "University of South Florida": usfSeal,
+  "Hofstra University": hofstraSeal,
+  "St. Louis University": sluSeal,
+  "University of Richmond": richmondSeal,
+  "Binghamton University--SUNY": binghamtonSeal,
+  "Clark University": clarkSeal,
 
   // Canadian Universities
   "University of Toronto": torontoSeal,
