@@ -11,10 +11,15 @@ const Index = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
-    organization: "",
+    position: "",
+    agency: "",
+    department: "",
     email: "",
     phone: "",
-    message: ""
+    documentType: "",
+    quantity: "",
+    urgency: "",
+    specifications: ""
   });
 
   useEffect(() => {
@@ -24,10 +29,21 @@ const Index = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     toast({
-      title: "Request Submitted",
-      description: "Thank you for your inquiry. We'll contact you within 24 hours.",
+      title: "Inquiry Submitted Successfully",
+      description: "Our government liaison team will contact you within 24 hours with a secure communication channel.",
     });
-    setFormData({ name: "", organization: "", email: "", phone: "", message: "" });
+    setFormData({ 
+      name: "", 
+      position: "", 
+      agency: "", 
+      department: "", 
+      email: "", 
+      phone: "", 
+      documentType: "",
+      quantity: "",
+      urgency: "",
+      specifications: ""
+    });
   };
 
   const services = [
@@ -360,54 +376,56 @@ const Index = () => {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-24 px-4 bg-background">
-        <div className="container mx-auto max-w-2xl">
+      <section id="contact" className="py-24 px-4 bg-gradient-to-b from-background to-secondary/20">
+        <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Get in Touch</h2>
-            <p className="text-xl text-muted-foreground">
-              Request a quote or learn more about our services
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
+              <Shield className="h-4 w-4 text-primary" />
+              <span className="text-sm font-medium text-primary">Secure Government Inquiry</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Submit Official Inquiry</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Licensed government agencies and authorized organizations only. All inquiries are handled with strict confidentiality.
             </p>
           </div>
           
           <Card className="shadow-2xl border-border/50 bg-card/50 backdrop-blur-sm">
             <CardContent className="pt-8">
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
+                {/* Contact Person Details */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
+                    <Users className="h-5 w-5 text-primary" />
+                    Contact Person Information
+                  </h3>
+                  <div className="grid md:grid-cols-2 gap-4">
                     <Input
-                      placeholder="Full Name"
+                      placeholder="Full Name *"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       required
                       className="border-border/50 focus:border-primary transition-colors duration-300"
                     />
-                  </div>
-                  <div className="space-y-2">
                     <Input
-                      placeholder="Organization"
-                      value={formData.organization}
-                      onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
+                      placeholder="Official Position/Title *"
+                      value={formData.position}
+                      onChange={(e) => setFormData({ ...formData, position: e.target.value })}
                       required
                       className="border-border/50 focus:border-primary transition-colors duration-300"
                     />
                   </div>
-                </div>
-                
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
+                  <div className="grid md:grid-cols-2 gap-4">
                     <Input
                       type="email"
-                      placeholder="Email Address"
+                      placeholder="Official Email Address *"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       required
                       className="border-border/50 focus:border-primary transition-colors duration-300"
                     />
-                  </div>
-                  <div className="space-y-2">
                     <Input
                       type="tel"
-                      placeholder="Phone Number"
+                      placeholder="Direct Phone Number *"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       required
@@ -415,16 +433,95 @@ const Index = () => {
                     />
                   </div>
                 </div>
-                
-                <div className="space-y-2">
+
+                {/* Agency Details */}
+                <div className="space-y-4 pt-4 border-t border-border/50">
+                  <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
+                    <Building2 className="h-5 w-5 text-primary" />
+                    Agency Information
+                  </h3>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <Input
+                      placeholder="Government Agency/Organization *"
+                      value={formData.agency}
+                      onChange={(e) => setFormData({ ...formData, agency: e.target.value })}
+                      required
+                      className="border-border/50 focus:border-primary transition-colors duration-300"
+                    />
+                    <Input
+                      placeholder="Department/Division *"
+                      value={formData.department}
+                      onChange={(e) => setFormData({ ...formData, department: e.target.value })}
+                      required
+                      className="border-border/50 focus:border-primary transition-colors duration-300"
+                    />
+                  </div>
+                </div>
+
+                {/* Document Requirements */}
+                <div className="space-y-4 pt-4 border-t border-border/50">
+                  <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
+                    <FileCheck className="h-5 w-5 text-primary" />
+                    Document Requirements
+                  </h3>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <select
+                        value={formData.documentType}
+                        onChange={(e) => setFormData({ ...formData, documentType: e.target.value })}
+                        required
+                        className="w-full px-3 py-2 rounded-md border border-border/50 bg-background text-foreground focus:border-primary focus:outline-none transition-colors duration-300"
+                      >
+                        <option value="">Select Document Type *</option>
+                        <option value="passports">Registered Passports</option>
+                        <option value="drivers-license">Driver's Licenses</option>
+                        <option value="id-cards">National ID Cards</option>
+                        <option value="diplomas">Official Diplomas</option>
+                        <option value="multiple">Multiple Document Types</option>
+                        <option value="other">Other Government Documents</option>
+                      </select>
+                    </div>
+                    <Input
+                      placeholder="Estimated Quantity *"
+                      value={formData.quantity}
+                      onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
+                      required
+                      className="border-border/50 focus:border-primary transition-colors duration-300"
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <select
+                      value={formData.urgency}
+                      onChange={(e) => setFormData({ ...formData, urgency: e.target.value })}
+                      required
+                      className="w-full px-3 py-2 rounded-md border border-border/50 bg-background text-foreground focus:border-primary focus:outline-none transition-colors duration-300"
+                    >
+                      <option value="">Project Urgency *</option>
+                      <option value="standard">Standard (4-6 weeks)</option>
+                      <option value="expedited">Expedited (2-3 weeks)</option>
+                      <option value="urgent">Urgent (1 week)</option>
+                      <option value="emergency">Emergency (72 hours)</option>
+                    </select>
+                  </div>
+
                   <Textarea
-                    placeholder="Tell us about your printing needs..."
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    placeholder="Detailed specifications, security requirements, and any special considerations... *"
+                    value={formData.specifications}
+                    onChange={(e) => setFormData({ ...formData, specifications: e.target.value })}
                     required
-                    rows={5}
+                    rows={6}
                     className="border-border/50 focus:border-primary transition-colors duration-300 resize-none"
                   />
+                </div>
+
+                {/* Security Notice */}
+                <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 flex gap-3">
+                  <Lock className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                  <div className="text-sm text-muted-foreground">
+                    <p className="font-medium text-foreground mb-1">Confidential Processing</p>
+                    <p>All inquiries are processed through secure channels. Our government liaison team will contact you within 24 hours to establish encrypted communication and verify authorization.</p>
+                  </div>
                 </div>
                 
                 <Button 
@@ -432,7 +529,10 @@ const Index = () => {
                   className="w-full group relative overflow-hidden bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300" 
                   size="lg"
                 >
-                  <span className="relative z-10">Submit Request</span>
+                  <span className="relative z-10 flex items-center justify-center gap-2">
+                    <Shield className="h-5 w-5" />
+                    Submit Secure Inquiry
+                  </span>
                   <div className="absolute inset-0 bg-gradient-to-r from-primary-glow to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </Button>
               </form>
