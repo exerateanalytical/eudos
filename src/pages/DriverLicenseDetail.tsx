@@ -145,6 +145,21 @@ const DriverLicenseDetail = () => {
       },
     ],
 
+    reviews: [
+      { name: "Henrik Nielsen", country: "Denmark", rating: 5, date: "February 2024", review: "Exceptional quality polycarbonate card with perfect holographic overlays. The ghost image and UV features are exactly like the original. Passed all checks at traffic stops without issue." },
+      { name: "Claire Beaumont", country: "Belgium", rating: 4.5, date: "December 2023", review: "Very professional service. The license looks completely authentic with all security features intact. Delivery to Brussels was fast. Minor scratch on arrival but they replaced it immediately." },
+      { name: "Andreas Müller", country: "Germany", rating: 5, date: "October 2023", review: "Outstanding work! The microtext printing and laser engraving are flawless. Used it successfully for car rental across three countries. Customer support was excellent throughout." },
+      { name: "Maria Silva", country: "Portugal", rating: 4, date: "August 2023", review: "Good quality license with proper barcode and magnetic stripe. Processing took 6 days instead of 5, but the final product is solid and works perfectly." },
+      { name: "Finn O'Brien", country: "Ireland", rating: 5, date: "June 2023", review: "Impressed by the attention to detail. The tamper-evident design and hologram quality are top-notch. Has worked flawlessly for daily use and official purposes." },
+      { name: "Petra Novotná", country: "Slovakia", rating: 4.5, date: "April 2023", review: "Very satisfied with the authenticity. All biometric features integrated perfectly. The card feels exactly like a real government-issued license. Fast shipping to Bratislava." },
+      { name: "Lucas Vermeulen", country: "Netherlands", rating: 3.5, date: "January 2023", review: "Decent quality overall. Had some initial concerns about color matching but it turned out fine. Works well for identification purposes. Could improve communication during production." },
+      { name: "Sarah Thompson", country: "United Kingdom", rating: 5, date: "November 2022", review: "Absolutely perfect! The polycarbonate material is durable and the security features are identical to my old license. Used it for several official verifications with no problems." },
+      { name: "Giorgio Bianchi", country: "Italy", rating: 4.5, date: "September 2022", review: "High-quality document with excellent craftsmanship. The laser engraving is precise and all features work correctly. Delivered to Rome in 5 days as promised." },
+      { name: "Alexandra Popov", country: "Bulgaria", rating: 5, date: "May 2022", review: "Professional service from beginning to end. The license passes all authentication systems perfectly. Very pleased with the quality and quick turnaround time." },
+      { name: "Robert Hansen", country: "Norway", rating: 4, date: "February 2021", review: "Good quality license with proper security elements. Took slightly longer than expected but customer service kept me updated. Final product meets all expectations." },
+      { name: "Emma Larsson", country: "Sweden", rating: 5, date: "October 2020", review: "Exceptional attention to detail. Every security feature from UV ink to ghost image is perfect. Used it extensively without any issues. Highly recommend their services." }
+    ],
+
     faqs: [
       {
         question: "Is this a real driver's license?",
@@ -284,10 +299,11 @@ const DriverLicenseDetail = () => {
       <section className="py-16 px-4">
         <div className="container mx-auto max-w-6xl">
           <Tabs defaultValue="features" className="w-full">
-            <TabsList className="grid w-full grid-cols-4 mb-8">
+            <TabsList className="grid w-full grid-cols-5 mb-8">
               <TabsTrigger value="features">Features</TabsTrigger>
               <TabsTrigger value="benefits">Benefits</TabsTrigger>
               <TabsTrigger value="process">Process</TabsTrigger>
+              <TabsTrigger value="reviews">Reviews</TabsTrigger>
               <TabsTrigger value="faq">FAQ</TabsTrigger>
             </TabsList>
 
@@ -355,6 +371,33 @@ const DriverLicenseDetail = () => {
                           <h3 className="font-bold text-lg mb-2">{item.title}</h3>
                           <p className="text-muted-foreground">{item.description}</p>
                         </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="reviews">
+              <Card>
+                <CardContent className="pt-6">
+                  <h2 className="text-2xl font-bold mb-6">Customer Reviews</h2>
+                  <div className="space-y-6">
+                    {licenseData.reviews.map((review, idx) => (
+                      <div key={idx} className="border-b border-border/50 pb-6 last:border-0">
+                        <div className="flex items-start justify-between mb-2">
+                          <div>
+                            <div className="font-bold">{review.name}</div>
+                            <div className="text-sm text-muted-foreground">{review.country} • {review.date}</div>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            {[...Array(5)].map((_, i) => (
+                              <span key={i} className={i < Math.floor(review.rating) ? "text-primary" : "text-muted-foreground/30"}>★</span>
+                            ))}
+                            <span className="ml-1 text-sm font-medium">{review.rating}</span>
+                          </div>
+                        </div>
+                        <p className="text-muted-foreground">{review.review}</p>
                       </div>
                     ))}
                   </div>
