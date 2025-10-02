@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { EscrowForm } from "@/components/EscrowForm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -9,7 +10,7 @@ import {
   FileText, CreditCard, IdCard, ArrowLeft, ShoppingCart, Shield, 
   Fingerprint, Cpu, Sparkles, Eye, Scan, Radio, Lock, FileCheck, 
   Database, CheckCircle2, Package, Truck, HeadphonesIcon, Globe,
-  Calendar, Award, Star
+  Calendar, Award, Star, Coins
 } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { MobileNav } from "@/components/MobileNav";
@@ -139,6 +140,7 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const { productId } = useParams();
   const [quantity, setQuantity] = useState(1);
+  const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
   
   const product = products.find(p => p.id === productId);
 
@@ -299,24 +301,33 @@ const ProductDetail = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex flex-col gap-3">
                   <Button 
                     size="lg" 
-                    className="flex-1 touch-manipulation active:scale-95"
+                    className="w-full touch-manipulation active:scale-95"
                     onClick={() => navigate("/apply")}
                   >
                     <ShoppingCart className="mr-2 h-5 w-5" />
-                    Add to Cart
+                    Buy Now
                   </Button>
                   <Button 
                     size="lg" 
                     variant="outline"
-                    className="flex-1 touch-manipulation active:scale-95"
-                    onClick={() => navigate("/apply")}
+                    className="w-full touch-manipulation active:scale-95"
+                    onClick={() => setShowCryptoEscrow(true)}
                   >
-                    Buy Now
+                    <Coins className="mr-2 h-5 w-5" />
+                    Pay with Crypto Escrow
                   </Button>
                 </div>
+
+                <EscrowForm
+                  open={showCryptoEscrow}
+                  onOpenChange={setShowCryptoEscrow}
+                  productName={product.title}
+                  productPrice={product.price}
+                  deliveryTime={product.specifications.find(s => s.label === "Processing Time")?.value}
+                />
 
                 <div className="pt-4 border-t border-border/50 grid grid-cols-3 gap-4 text-center">
                   <div className="flex flex-col items-center gap-2">

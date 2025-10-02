@@ -4,18 +4,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ArrowLeft, GraduationCap, Clock, FileText, CheckCircle, Shield, Award, Download, Mail, ShoppingCart, Coins, IdCard, BookOpen, Database } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { MobileNav } from "@/components/MobileNav";
-import { toast } from "@/hooks/use-toast";
+import { EscrowForm } from "@/components/EscrowForm";
 import { useState } from "react";
 
 const DiplomaDetail = () => {
   const { university } = useParams();
   const navigate = useNavigate();
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
-  const [escrowConfirmed, setEscrowConfirmed] = useState(false);
 
   const universityName = university?.replace(/-/g, ' ') || "Harvard University";
 
@@ -254,111 +252,13 @@ const DiplomaDetail = () => {
                 Pay with Crypto Escrow
               </Button>
 
-              <Dialog open={showCryptoEscrow} onOpenChange={setShowCryptoEscrow}>
-                <DialogContent className="max-w-lg">
-                  <DialogHeader>
-                    <DialogTitle>Crypto Escrow Payment</DialogTitle>
-                    <DialogDescription>
-                      Secure payment with escrow protection
-                    </DialogDescription>
-                  </DialogHeader>
-                  
-                  {!escrowConfirmed ? (
-                    <div className="space-y-4 py-4">
-                      <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
-                        <div className="flex items-start gap-3 mb-4">
-                          <Shield className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                          <div>
-                            <h3 className="font-bold mb-2">Escrow Protection</h3>
-                            <p className="text-sm text-muted-foreground">
-                              Your payment will be held in escrow until you confirm delivery. The vendor will only receive payment after successful completion.
-                            </p>
-                          </div>
-                        </div>
-                        <div className="space-y-2 text-sm">
-                          <div className="flex items-center gap-2">
-                            <CheckCircle className="h-4 w-4 text-primary" />
-                            <span><strong>Auto-release:</strong> 7 days</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <CheckCircle className="h-4 w-4 text-primary" />
-                            <span><strong>Dispute protection</strong></span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <Card className="p-4">
-                        <h3 className="font-bold mb-3">Payment Details</h3>
-                        <div className="space-y-2 text-sm">
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Amount</span>
-                            <span className="font-bold">{diplomaData.price}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Package</span>
-                            <span>{diplomaData.universityName}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Processing</span>
-                            <span>{diplomaData.deliveryTime}</span>
-                          </div>
-                        </div>
-                      </Card>
-
-                      <Button 
-                        className="w-full" 
-                        size="lg"
-                        onClick={() => setEscrowConfirmed(true)}
-                      >
-                        Proceed to Payment
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="space-y-4 py-4">
-                      <Card className="p-4 bg-primary/5">
-                        <h3 className="font-bold mb-3">Send Payment</h3>
-                        <div className="space-y-3 text-sm">
-                          <div>
-                            <p className="text-muted-foreground mb-1">Cryptocurrency</p>
-                            <p className="font-bold">USDT (TRC20)</p>
-                          </div>
-                          <div>
-                            <p className="text-muted-foreground mb-1">Amount</p>
-                            <p className="font-bold">{diplomaData.price}</p>
-                          </div>
-                          <div>
-                            <p className="text-muted-foreground mb-1">Wallet Address</p>
-                            <div className="bg-background p-3 rounded border break-all font-mono text-xs">
-                              TXhZ9kC3nH5LmqP7vW2BtN8KdY4JfR6Qg9
-                            </div>
-                          </div>
-                        </div>
-                      </Card>
-
-                      <div className="bg-muted p-4 rounded-lg">
-                        <p className="text-sm text-muted-foreground">
-                          After sending payment, our team will verify the transaction and begin processing your order. You'll receive confirmation within 24 hours.
-                        </p>
-                      </div>
-
-                      <Button 
-                        className="w-full" 
-                        size="lg"
-                        onClick={() => {
-                          toast({
-                            title: "Payment Instructions Sent",
-                            description: "We'll notify you once the payment is confirmed and your application is processed.",
-                          });
-                          setShowCryptoEscrow(false);
-                          setEscrowConfirmed(false);
-                        }}
-                      >
-                        I've Sent the Payment
-                      </Button>
-                    </div>
-                  )}
-                </DialogContent>
-              </Dialog>
+              <EscrowForm
+                open={showCryptoEscrow}
+                onOpenChange={setShowCryptoEscrow}
+                productName={diplomaData.universityName}
+                productPrice={diplomaData.price}
+                deliveryTime={diplomaData.deliveryTime}
+              />
 
               <Button 
                 size="lg"

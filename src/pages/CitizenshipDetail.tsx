@@ -4,10 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowLeft, CheckCircle, Clock, FileText, Users, TrendingUp, Shield, Award, Globe, Home, Download, Mail, Phone, MapPin, Building, ShoppingCart, Coins } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { MobileNav } from "@/components/MobileNav";
+import { EscrowForm } from "@/components/EscrowForm";
 import { toast } from "@/hooks/use-toast";
 import { useState } from "react";
 
@@ -16,7 +16,6 @@ const CitizenshipDetail = () => {
   const { country } = useParams();
   const navigate = useNavigate();
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
-  const [escrowConfirmed, setEscrowConfirmed] = useState(false);
 
   const generateBrochure = () => {
     const brochureContent = `
@@ -490,122 +489,13 @@ const CitizenshipDetail = () => {
                 Pay with Crypto Escrow
               </Button>
 
-              <Dialog open={showCryptoEscrow} onOpenChange={setShowCryptoEscrow}>
-                <DialogContent className="max-w-lg">
-                  <DialogHeader>
-                    <DialogTitle>Crypto Escrow Payment</DialogTitle>
-                    <DialogDescription>
-                      Secure payment with escrow protection
-                    </DialogDescription>
-                  </DialogHeader>
-                  
-                  {!escrowConfirmed ? (
-                    <div className="space-y-4 py-4">
-                      <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
-                        <div className="flex items-start gap-3 mb-4">
-                          <Shield className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                          <div>
-                            <h3 className="font-bold mb-2">Escrow Protection</h3>
-                            <p className="text-sm text-muted-foreground">
-                              Your payment will be held in escrow until you confirm delivery. The vendor will only receive payment after successful completion.
-                            </p>
-                          </div>
-                        </div>
-                        <div className="space-y-2 text-sm">
-                          <div className="flex items-center gap-2">
-                            <CheckCircle className="h-4 w-4 text-primary" />
-                            <span><strong>Auto-release:</strong> 7 days</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <CheckCircle className="h-4 w-4 text-primary" />
-                            <span><strong>Dispute protection</strong></span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <Card className="p-4">
-                        <h3 className="font-bold mb-3">Payment Details</h3>
-                        <div className="space-y-2 text-sm">
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Amount</span>
-                            <span className="font-bold">{programPrice}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Package</span>
-                            <span>{countryData.name} Citizenship</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Escrow Fee</span>
-                            <span>2.5%</span>
-                          </div>
-                        </div>
-                      </Card>
-
-                      <Button 
-                        className="w-full" 
-                        size="lg"
-                        onClick={() => {
-                          setEscrowConfirmed(true);
-                          toast({
-                            title: "Escrow Initiated",
-                            description: "Please complete the payment to proceed.",
-                          });
-                        }}
-                      >
-                        Continue to Payment
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="space-y-4 py-4">
-                      <div className="text-center">
-                        <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                          <Coins className="h-8 w-8 text-primary" />
-                        </div>
-                        <h3 className="font-bold text-lg mb-2">Complete Your Payment</h3>
-                        <p className="text-sm text-muted-foreground mb-4">
-                          Send the exact amount to the wallet address below
-                        </p>
-                      </div>
-
-                      <Card className="p-4 bg-muted/50">
-                        <div className="space-y-3">
-                          <div>
-                            <p className="text-xs text-muted-foreground mb-1">Wallet Address (USDT - TRC20)</p>
-                            <code className="text-xs bg-background p-2 rounded block break-all">
-                              TXm8JKvR9cH3NrP6YqL8sW4Bd2Uz5FtKpQ
-                            </code>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm font-medium">Amount</span>
-                            <span className="font-bold">{programPrice} USDT</span>
-                          </div>
-                        </div>
-                      </Card>
-
-                      <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
-                        <p className="text-xs text-amber-700 dark:text-amber-400">
-                          ⚠️ Send only USDT on TRC20 network. Other tokens or networks may result in loss of funds.
-                        </p>
-                      </div>
-
-                      <Button 
-                        className="w-full" 
-                        size="lg"
-                        onClick={() => {
-                          toast({
-                            title: "Payment Submitted",
-                            description: "We'll notify you once the payment is confirmed and your application is processed.",
-                          });
-                          setShowCryptoEscrow(false);
-                          setEscrowConfirmed(false);
-                        }}
-                      >
-                        I've Sent the Payment
-                      </Button>
-                    </div>
-                  )}
-                </DialogContent>
-              </Dialog>
+              <EscrowForm
+                open={showCryptoEscrow}
+                onOpenChange={setShowCryptoEscrow}
+                productName={`${countryData.name} Citizenship`}
+                productPrice={programPrice}
+                deliveryTime="1 month"
+              />
 
               <Button 
                 size="lg"
