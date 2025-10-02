@@ -6,6 +6,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { FileText, Shield, Clock, CheckCircle, Printer, Building2, Award, Users, Sparkles, CreditCard, GraduationCap, Fingerprint, Cpu, Eye, Radio, Lock, Scan, FileCheck, Database, BookOpen, ScanEye, ScanFace } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
+import hologramImage from "@/assets/hologram-security.jpg";
+import watermarkImage from "@/assets/watermark-security.jpg";
+import fingerprintImage from "@/assets/fingerprint-scan.jpg";
+import irisScanImage from "@/assets/iris-scan.jpg";
+import faceScanImage from "@/assets/face-scan.jpg";
+import uvSecurityImage from "@/assets/uv-security.jpg";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -58,37 +64,37 @@ const Index = () => {
 
   const securityShowcase = [
     {
-      icon: Sparkles,
+      image: hologramImage,
       title: "Multi-Layer Holograms",
       description: "3D holographic security overlays that shift colors and patterns when viewed from different angles",
       gradient: "from-cyan-500 via-blue-500 to-purple-500",
     },
     {
-      icon: FileCheck,
+      image: watermarkImage,
       title: "Advanced Watermarks",
       description: "Multi-tone watermarks with embedded security threads visible under specific lighting conditions",
       gradient: "from-blue-500 via-indigo-500 to-violet-500",
     },
     {
-      icon: Fingerprint,
+      image: fingerprintImage,
       title: "Biometric Fingerprint",
       description: "High-resolution fingerprint capture and storage with 256-bit encryption on embedded chips",
       gradient: "from-green-500 via-emerald-500 to-teal-500",
     },
     {
-      icon: ScanEye,
+      image: irisScanImage,
       title: "Iris Recognition",
       description: "Advanced iris scanning technology for multi-factor biometric authentication",
       gradient: "from-orange-500 via-red-500 to-pink-500",
     },
     {
-      icon: ScanFace,
+      image: faceScanImage,
       title: "Facial Biometrics",
       description: "AI-powered facial recognition with liveness detection and anti-spoofing measures",
       gradient: "from-purple-500 via-pink-500 to-rose-500",
     },
     {
-      icon: Eye,
+      image: uvSecurityImage,
       title: "UV Security Features",
       description: "Invisible UV ink patterns and elements only visible under ultraviolet light",
       gradient: "from-violet-500 via-purple-500 to-fuchsia-500",
@@ -233,7 +239,6 @@ const Index = () => {
             {/* Right side - Security features showcase */}
             <div className="relative h-[500px] lg:h-[600px]">
               {securityShowcase.map((feature, index) => {
-                const Icon = feature.icon;
                 const isActive = currentFeature === index;
                 
                 return (
@@ -246,14 +251,19 @@ const Index = () => {
                     }`}
                   >
                     <Card className="h-full border-2 bg-card/50 backdrop-blur-sm overflow-hidden">
-                      <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-5`} />
+                      <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-10`} />
                       
                       <CardContent className="h-full flex flex-col items-center justify-center p-8 relative">
-                        {/* Icon with animated glow */}
-                        <div className="relative mb-8">
-                          <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} blur-3xl opacity-50 animate-pulse`} />
-                          <div className={`relative p-8 rounded-3xl bg-gradient-to-br ${feature.gradient}`}>
-                            <Icon className="h-24 w-24 text-white" strokeWidth={1.5} />
+                        {/* Realistic image with glow effect */}
+                        <div className="relative mb-8 w-full max-w-2xl">
+                          <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} blur-3xl opacity-30 animate-pulse`} />
+                          <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+                            <img 
+                              src={feature.image} 
+                              alt={feature.title}
+                              className="w-full h-auto object-cover"
+                            />
+                            <div className={`absolute inset-0 bg-gradient-to-t ${feature.gradient} opacity-20`} />
                           </div>
                         </div>
 
