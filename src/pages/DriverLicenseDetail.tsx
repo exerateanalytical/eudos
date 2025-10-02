@@ -385,11 +385,10 @@ const DriverLicenseDetail = () => {
 
             <TabsContent value="reviews" id="reviews-section">
               <div className="space-y-6">
-                <ReviewStatsCard
-                  count={reviewStats.count}
-                  averageRating={reviewStats.averageRating}
-                  productName={licenseData.title}
-                />
+            <ReviewStatsCard
+              count={reviewStats.count}
+              averageRating={reviewStats.averageRating}
+            />
                 <ReviewForm
                   productType="license"
                   productId={licenseId || ""}
