@@ -627,13 +627,13 @@ const CitizenshipDetail = () => {
         <div className="container mx-auto max-w-6xl">
           <Tabs defaultValue="investment" className="w-full">
             <TabsList className="grid w-full grid-cols-2 lg:grid-cols-7 mb-8 bg-primary/10">
-              <TabsTrigger value="investment" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Investment Options</TabsTrigger>
-              <TabsTrigger value="benefits" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Benefits</TabsTrigger>
-              <TabsTrigger value="requirements" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Requirements</TabsTrigger>
-              <TabsTrigger value="process" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Process</TabsTrigger>
-              <TabsTrigger value="lifestyle" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Lifestyle</TabsTrigger>
-              <TabsTrigger value="business" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Business</TabsTrigger>
-              <TabsTrigger value="faq" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">FAQ</TabsTrigger>
+              <TabsTrigger value="investment" className="bg-primary text-primary-foreground data-[state=active]:bg-primary/80">Investment Options</TabsTrigger>
+              <TabsTrigger value="benefits" className="bg-primary text-primary-foreground data-[state=active]:bg-primary/80">Benefits</TabsTrigger>
+              <TabsTrigger value="requirements" className="bg-primary text-primary-foreground data-[state=active]:bg-primary/80">Requirements</TabsTrigger>
+              <TabsTrigger value="process" className="bg-primary text-primary-foreground data-[state=active]:bg-primary/80">Process</TabsTrigger>
+              <TabsTrigger value="lifestyle" className="bg-primary text-primary-foreground data-[state=active]:bg-primary/80">Lifestyle</TabsTrigger>
+              <TabsTrigger value="business" className="bg-primary text-primary-foreground data-[state=active]:bg-primary/80">Business</TabsTrigger>
+              <TabsTrigger value="faq" className="bg-primary text-primary-foreground data-[state=active]:bg-primary/80">FAQ</TabsTrigger>
             </TabsList>
 
             <TabsContent value="investment">
