@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { FileText, Shield, Clock, CheckCircle, Printer, Building2, Award, Users, Sparkles, CreditCard, GraduationCap, Fingerprint, Cpu, Eye, Radio, Lock, Scan, FileCheck, Database, BookOpen } from "lucide-react";
+import { FileText, Shield, Clock, CheckCircle, Printer, Building2, Award, Users, Sparkles, CreditCard, GraduationCap, Fingerprint, Cpu, Eye, Radio, Lock, Scan, FileCheck, Database, BookOpen, ScanEye, ScanFace } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -11,6 +11,7 @@ const Index = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isVisible, setIsVisible] = useState(false);
+  const [currentFeature, setCurrentFeature] = useState(0);
   const [formData, setFormData] = useState({
     name: "",
     position: "",
@@ -26,6 +27,13 @@ const Index = () => {
 
   useEffect(() => {
     setIsVisible(true);
+    
+    // Auto-rotate security features
+    const interval = setInterval(() => {
+      setCurrentFeature((prev) => (prev + 1) % securityShowcase.length);
+    }, 4000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -47,6 +55,45 @@ const Index = () => {
       specifications: ""
     });
   };
+
+  const securityShowcase = [
+    {
+      icon: Sparkles,
+      title: "Multi-Layer Holograms",
+      description: "3D holographic security overlays that shift colors and patterns when viewed from different angles",
+      gradient: "from-cyan-500 via-blue-500 to-purple-500",
+    },
+    {
+      icon: FileCheck,
+      title: "Advanced Watermarks",
+      description: "Multi-tone watermarks with embedded security threads visible under specific lighting conditions",
+      gradient: "from-blue-500 via-indigo-500 to-violet-500",
+    },
+    {
+      icon: Fingerprint,
+      title: "Biometric Fingerprint",
+      description: "High-resolution fingerprint capture and storage with 256-bit encryption on embedded chips",
+      gradient: "from-green-500 via-emerald-500 to-teal-500",
+    },
+    {
+      icon: ScanEye,
+      title: "Iris Recognition",
+      description: "Advanced iris scanning technology for multi-factor biometric authentication",
+      gradient: "from-orange-500 via-red-500 to-pink-500",
+    },
+    {
+      icon: ScanFace,
+      title: "Facial Biometrics",
+      description: "AI-powered facial recognition with liveness detection and anti-spoofing measures",
+      gradient: "from-purple-500 via-pink-500 to-rose-500",
+    },
+    {
+      icon: Eye,
+      title: "UV Security Features",
+      description: "Invisible UV ink patterns and elements only visible under ultraviolet light",
+      gradient: "from-violet-500 via-purple-500 to-fuchsia-500",
+    },
+  ];
 
   const services = [
     {
@@ -145,38 +192,108 @@ const Index = () => {
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-float" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary-glow/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
         
-        <div className={`container mx-auto text-center max-w-5xl relative z-10 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8 animate-fade-in">
-            <Shield className="h-4 w-4 text-primary" />
-            <span className="text-sm font-medium text-primary">Licensed & Authorized • Government Agencies Only</span>
-          </div>
-          
-          <h2 className="text-5xl md:text-7xl font-bold text-foreground mb-6 leading-tight animate-fade-in-up">
-            Official Government Document
-            <span className="block bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent mt-2">
-              Printing Services
-            </span>
-          </h2>
-          
-          <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-            Licensed facility serving government agencies worldwide with registered passports, ID cards, driver's licenses, and diplomas featuring military-grade security
-          </p>
-          
-          <div className="flex gap-4 justify-center flex-wrap animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-            <Button 
-              size="lg" 
-              className="group relative overflow-hidden bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300"
-              onClick={() => navigate("/apply")}
-            >
-              <span className="relative z-10">Apply for Documents</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-primary-glow to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </Button>
-            <Button size="lg" variant="outline" className="border-2 hover:bg-primary/5 transition-all duration-300" asChild>
-              <a href="#contact">Request Quote</a>
-            </Button>
-            <Button size="lg" variant="outline" className="border-2 hover:bg-primary/5 transition-all duration-300" asChild>
-              <a href="#services">Explore Services</a>
-            </Button>
+        <div className="container mx-auto relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left side - Text content */}
+            <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8 animate-fade-in">
+                <Shield className="h-4 w-4 text-primary" />
+                <span className="text-sm font-medium text-primary">Licensed & Authorized • Government Agencies Only</span>
+              </div>
+              
+              <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6 leading-tight animate-fade-in-up">
+                Official Government Document
+                <span className="block bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent mt-2">
+                  Printing Services
+                </span>
+              </h2>
+              
+              <p className="text-xl md:text-2xl text-muted-foreground mb-12 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+                Licensed facility serving government agencies worldwide with registered passports, ID cards, driver's licenses, and diplomas featuring military-grade security
+              </p>
+              
+              <div className="flex gap-4 flex-wrap animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+                <Button 
+                  size="lg" 
+                  className="group relative overflow-hidden bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300"
+                  onClick={() => navigate("/apply")}
+                >
+                  <span className="relative z-10">Apply for Documents</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary-glow to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </Button>
+                <Button size="lg" variant="outline" className="border-2 hover:bg-primary/5 transition-all duration-300" asChild>
+                  <a href="#contact">Request Quote</a>
+                </Button>
+                <Button size="lg" variant="outline" className="border-2 hover:bg-primary/5 transition-all duration-300" onClick={() => navigate("/products")}>
+                  View Products
+                </Button>
+              </div>
+            </div>
+
+            {/* Right side - Security features showcase */}
+            <div className="relative h-[500px] lg:h-[600px]">
+              {securityShowcase.map((feature, index) => {
+                const Icon = feature.icon;
+                const isActive = currentFeature === index;
+                
+                return (
+                  <div
+                    key={index}
+                    className={`absolute inset-0 transition-all duration-700 ${
+                      isActive 
+                        ? 'opacity-100 scale-100 translate-y-0' 
+                        : 'opacity-0 scale-95 translate-y-10 pointer-events-none'
+                    }`}
+                  >
+                    <Card className="h-full border-2 bg-card/50 backdrop-blur-sm overflow-hidden">
+                      <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-5`} />
+                      
+                      <CardContent className="h-full flex flex-col items-center justify-center p-8 relative">
+                        {/* Icon with animated glow */}
+                        <div className="relative mb-8">
+                          <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} blur-3xl opacity-50 animate-pulse`} />
+                          <div className={`relative p-8 rounded-3xl bg-gradient-to-br ${feature.gradient}`}>
+                            <Icon className="h-24 w-24 text-white" strokeWidth={1.5} />
+                          </div>
+                        </div>
+
+                        {/* Feature title */}
+                        <h3 className="text-3xl md:text-4xl font-bold text-center mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                          {feature.title}
+                        </h3>
+
+                        {/* Feature description */}
+                        <p className="text-lg text-muted-foreground text-center max-w-md mb-8">
+                          {feature.description}
+                        </p>
+
+                        {/* Security badge */}
+                        <div className={`inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r ${feature.gradient} text-white font-medium shadow-lg`}>
+                          <Shield className="h-5 w-5" />
+                          <span>Military-Grade Security</span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                );
+              })}
+
+              {/* Progress indicators */}
+              <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+                {securityShowcase.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentFeature(index)}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      currentFeature === index 
+                        ? 'w-8 bg-primary' 
+                        : 'w-2 bg-primary/30 hover:bg-primary/50'
+                    }`}
+                    aria-label={`Go to feature ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
