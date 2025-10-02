@@ -170,7 +170,7 @@ const Passports = () => {
         open={showCryptoEscrow}
         onOpenChange={setShowCryptoEscrow}
         productName={selectedPassport?.title || ""}
-        productPrice={selectedPassport?.price || 0}
+        productPrice={selectedPassport ? `$${selectedPassport.price}` : "$0"}
         deliveryTime={selectedPassport?.processingTime || ""}
       />
 

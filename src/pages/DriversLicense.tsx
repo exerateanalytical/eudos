@@ -170,7 +170,7 @@ const DriversLicense = () => {
         open={showCryptoEscrow}
         onOpenChange={setShowCryptoEscrow}
         productName={selectedLicense?.title || ""}
-        productPrice={selectedLicense?.price || 0}
+        productPrice={selectedLicense ? `$${selectedLicense.price}` : "$0"}
         deliveryTime={selectedLicense?.processingTime || ""}
       />
 
