@@ -362,7 +362,7 @@ const DiplomaDetail = () => {
 
               <Button 
                 size="lg"
-                onClick={() => window.location.href = "mailto:diplomas@secureprintlabs.com"}
+                onClick={() => window.location.href = "mailto:support@secureprintlabs.com"}
               >
                 <Mail className="h-4 w-4 mr-2" />
                 Contact Support
