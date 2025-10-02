@@ -9,6 +9,7 @@ import {
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/Footer";
+import { MobileNav } from "@/components/MobileNav";
 
 const FAQ = () => {
   const navigate = useNavigate();
@@ -152,68 +153,39 @@ const FAQ = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3 group cursor-pointer" onClick={() => navigate("/")}>
-            <div className="relative">
-              <Printer className="h-8 w-8 text-primary transition-transform duration-300 group-hover:scale-110" />
-              <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
-              SecurePrint Labs
-            </h1>
-          </div>
-          <nav className="hidden md:flex gap-8">
-            <button onClick={() => navigate("/")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
-              Home
-            </button>
-            <button onClick={() => navigate("/products")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
-              Products
-            </button>
-            <button onClick={() => navigate("/about")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
-              About
-            </button>
-            <button onClick={() => navigate("/faq")} className="text-primary font-medium">
-              FAQ
-            </button>
-            <button onClick={() => navigate("/testimonials")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
-              Testimonials
-            </button>
-            <button onClick={() => navigate("/blog")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
-              Blog
-            </button>
-          </nav>
-        </div>
-      </header>
+      <MobileNav currentPage="faq" />
 
-      {/* Hero Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-primary/5 to-background">
+      {/* Hero Section - Mobile Optimized */}
+      <section className="py-10 md:py-16 lg:py-20 px-4 bg-gradient-to-b from-primary/5 to-background">
         <div className="container mx-auto max-w-4xl text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8">
-            <HelpCircle className="h-4 w-4 text-primary" />
-            <span className="text-sm font-medium text-primary">Frequently Asked Questions</span>
+          <div className="inline-flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-primary/10 border border-primary/20 mb-6 md:mb-8">
+            <HelpCircle className="h-3 w-3 md:h-4 md:w-4 text-primary" />
+            <span className="text-xs md:text-sm font-medium text-primary">Frequently Asked Questions</span>
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">How Can We Help You?</h1>
-          <p className="text-xl text-muted-foreground">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 px-4">How Can We Help You?</h1>
+          <p className="text-base md:text-lg lg:text-xl text-muted-foreground px-4">
             Find answers to common questions about our secure document production services
           </p>
         </div>
       </section>
 
-      {/* FAQ Content */}
-      <section className="py-12 px-4">
-        <div className="container mx-auto max-w-4xl space-y-12">
+      {/* FAQ Content - Mobile Optimized */}
+      <section className="py-8 md:py-12 px-4">
+        <div className="container mx-auto max-w-4xl space-y-8 md:space-y-12">
           {faqCategories.map((category, catIndex) => (
             <div key={catIndex}>
-              <h2 className="text-3xl font-bold mb-6 text-foreground">{category.category}</h2>
-              <Accordion type="single" collapsible className="space-y-4">
+              <h2 className="text-2xl sm:text-3xl md:text-3xl font-bold mb-4 md:mb-6 text-foreground px-2">{category.category}</h2>
+              <Accordion type="single" collapsible className="space-y-3 md:space-y-4">
                 {category.questions.map((item, qIndex) => (
-                  <AccordionItem key={qIndex} value={`${catIndex}-${qIndex}`} className="border border-border/50 rounded-lg px-6 bg-card/50">
-                    <AccordionTrigger className="text-left hover:text-primary">
-                      {item.q}
+                  <AccordionItem 
+                    key={qIndex} 
+                    value={`${catIndex}-${qIndex}`} 
+                    className="border border-border/50 rounded-lg px-4 md:px-6 bg-card/50 backdrop-blur-sm"
+                  >
+                    <AccordionTrigger className="text-left hover:text-primary py-4 md:py-5 touch-manipulation active:scale-[0.99]">
+                      <span className="text-sm md:text-base lg:text-lg font-semibold pr-2">{item.q}</span>
                     </AccordionTrigger>
-                    <AccordionContent className="text-muted-foreground leading-relaxed">
+                    <AccordionContent className="text-muted-foreground leading-relaxed pb-4 md:pb-5 text-sm md:text-base">
                       {item.a}
                     </AccordionContent>
                   </AccordionItem>
@@ -224,19 +196,28 @@ const FAQ = () => {
         </div>
       </section>
 
-      {/* Still Have Questions */}
-      <section className="py-24 px-4">
+      {/* Still Have Questions - Mobile Optimized */}
+      <section className="py-12 md:py-16 lg:py-24 px-4">
         <div className="container mx-auto max-w-3xl">
-          <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent backdrop-blur-sm p-8 text-center">
-            <h2 className="text-3xl font-bold mb-4">Still Have Questions?</h2>
-            <p className="text-xl text-muted-foreground mb-8">
+          <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent backdrop-blur-sm p-6 md:p-8 text-center">
+            <h2 className="text-2xl sm:text-3xl md:text-3xl font-bold mb-3 md:mb-4">Still Have Questions?</h2>
+            <p className="text-base md:text-lg lg:text-xl text-muted-foreground mb-6 md:mb-8 px-4">
               Our team is ready to assist with any inquiries about our secure document services
             </p>
-            <div className="flex gap-4 justify-center flex-wrap">
-              <Button size="lg" className="bg-primary hover:bg-primary/90" onClick={() => navigate("/#contact")}>
+            <div className="flex gap-3 md:gap-4 justify-center flex-wrap">
+              <Button 
+                size="default" 
+                className="bg-primary hover:bg-primary/90 active:scale-95 touch-manipulation text-sm md:text-base" 
+                onClick={() => navigate("/#contact")}
+              >
                 Contact Us
               </Button>
-              <Button size="lg" variant="outline" onClick={() => navigate("/apply")}>
+              <Button 
+                size="default" 
+                variant="outline" 
+                className="active:scale-95 touch-manipulation text-sm md:text-base"
+                onClick={() => navigate("/apply")}
+              >
                 Submit Application
               </Button>
             </div>

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Shield, Award, Building2, Database, Clock, CheckCircle, Users, Globe, Lock, Sparkles, Fingerprint, Cpu, Eye, Radio, FileCheck, Scan, Printer } from "lucide-react";
 import { Footer } from "@/components/Footer";
+import { MobileNav } from "@/components/MobileNav";
 
 const About = () => {
   const navigate = useNavigate();
@@ -111,90 +112,60 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3 group cursor-pointer" onClick={() => navigate("/")}>
-            <div className="relative">
-              <Printer className="h-8 w-8 text-primary transition-transform duration-300 group-hover:scale-110" />
-              <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
-              SecurePrint Labs
-            </h1>
-          </div>
-          <nav className="hidden md:flex gap-8">
-            <button onClick={() => navigate("/")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
-              Home
-            </button>
-            <button onClick={() => navigate("/products")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
-              Products
-            </button>
-            <button onClick={() => navigate("/about")} className="text-primary font-medium">
-              About
-            </button>
-            <button onClick={() => navigate("/faq")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
-              FAQ
-            </button>
-            <button onClick={() => navigate("/testimonials")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
-              Testimonials
-            </button>
-            <button onClick={() => navigate("/blog")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
-              Blog
-            </button>
-          </nav>
-        </div>
-      </header>
+      <MobileNav currentPage="about" />
 
-      {/* Hero Section */}
-      <section className="relative py-20 px-4 overflow-hidden">
+      {/* Hero Section - Mobile Optimized */}
+      <section className="relative py-10 md:py-16 lg:py-20 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
         <div className="container mx-auto max-w-4xl text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8">
-            <Award className="h-4 w-4 text-primary" />
-            <span className="text-sm font-medium text-primary">Licensed Government Document Production Facility</span>
+          <div className="inline-flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-primary/10 border border-primary/20 mb-6 md:mb-8">
+            <Award className="h-3 w-3 md:h-4 md:w-4 text-primary" />
+            <span className="text-xs md:text-sm font-medium text-primary">Licensed Government Document Production Facility</span>
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent px-4">
             About SecurePrint Labs
           </h1>
-          <p className="text-xl text-muted-foreground leading-relaxed">
+          <p className="text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed px-4">
             With over two decades of excellence, we are the trusted partner for government agencies worldwide, delivering secure, registered documents with unmatched precision and military-grade security.
           </p>
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="py-12 px-4 bg-primary text-primary-foreground">
+      {/* Stats - Mobile Optimized */}
+      <section className="py-8 md:py-10 lg:py-12 px-4 bg-primary text-primary-foreground">
         <div className="container mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
             {achievements.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-4xl md:text-5xl font-bold mb-2">{stat.value}</div>
-                <div className="text-primary-foreground/80 font-medium">{stat.label}</div>
+              <div key={index} className="text-center p-4 md:p-0">
+                <div className="text-3xl sm:text-4xl md:text-5xl font-bold mb-1 md:mb-2">{stat.value}</div>
+                <div className="text-primary-foreground/80 font-medium text-xs sm:text-sm md:text-base">{stat.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Why Choose Us */}
-      <section className="py-24 px-4">
+      {/* Why Choose Us - Mobile Optimized */}
+      <section className="py-12 md:py-16 lg:py-24 px-4">
         <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Why Choose SecurePrint Labs</h2>
-            <p className="text-xl text-muted-foreground">The industry's most trusted government document production facility</p>
+          <div className="text-center mb-8 md:mb-12 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 px-4">Why Choose SecurePrint Labs</h2>
+            <p className="text-base md:text-lg lg:text-xl text-muted-foreground px-4">The industry's most trusted government document production facility</p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {whyChooseUs.map((item, index) => (
-              <Card key={index} className="hover:shadow-xl transition-all duration-300 border-border/50 bg-card/50 backdrop-blur-sm">
-                <CardHeader>
-                  <div className="p-3 rounded-xl bg-primary/10 w-fit mb-3">
-                    <item.icon className="h-6 w-6 text-primary" />
+              <Card 
+                key={index} 
+                className="hover:shadow-xl transition-all duration-300 border-border/50 bg-card/50 backdrop-blur-sm active:scale-95 touch-manipulation"
+              >
+                <CardHeader className="pb-4">
+                  <div className="p-2.5 md:p-3 rounded-xl bg-primary/10 w-fit mb-2 md:mb-3">
+                    <item.icon className="h-5 w-5 md:h-6 md:w-6 text-primary" />
                   </div>
-                  <CardTitle className="text-xl">{item.title}</CardTitle>
+                  <CardTitle className="text-lg md:text-xl">{item.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground leading-relaxed">{item.description}</p>
+                  <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{item.description}</p>
                 </CardContent>
               </Card>
             ))}
