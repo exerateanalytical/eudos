@@ -1,12 +1,118 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Printer, Star, Quote, Building2, Shield, Award } from "lucide-react";
+import { Printer, Star, Quote, Building2, Shield, Award, Send } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { toast } from "@/hooks/use-toast";
+import { z } from "zod";
 import { Footer } from "@/components/Footer";
+
+// Validation schema for testimonial submission
+const testimonialSchema = z.object({
+  name: z.string()
+    .trim()
+    .min(2, { message: "Name must be at least 2 characters" })
+    .max(100, { message: "Name must be less than 100 characters" }),
+  position: z.string()
+    .trim()
+    .min(2, { message: "Position must be at least 2 characters" })
+    .max(150, { message: "Position must be less than 150 characters" }),
+  organization: z.string()
+    .trim()
+    .min(2, { message: "Organization name must be at least 2 characters" })
+    .max(200, { message: "Organization name must be less than 200 characters" }),
+  country: z.string()
+    .trim()
+    .min(2, { message: "Country must be at least 2 characters" })
+    .max(100, { message: "Country must be less than 100 characters" }),
+  email: z.string()
+    .trim()
+    .email({ message: "Invalid email address" })
+    .max(255, { message: "Email must be less than 255 characters" }),
+  testimonial: z.string()
+    .trim()
+    .min(50, { message: "Testimonial must be at least 50 characters" })
+    .max(1000, { message: "Testimonial must be less than 1000 characters" }),
+  rating: z.number()
+    .min(1, { message: "Please select a rating" })
+    .max(5, { message: "Rating must be between 1 and 5" })
+});
+
+type TestimonialFormData = z.infer<typeof testimonialSchema>;
 
 const Testimonials = () => {
   const navigate = useNavigate();
+
+  const [formData, setFormData] = useState<TestimonialFormData>({
+    name: "",
+    position: "",
+    organization: "",
+    country: "",
+    email: "",
+    testimonial: "",
+    rating: 0
+  });
+
+  const [hoveredRating, setHoveredRating] = useState(0);
+  const [errors, setErrors] = useState<Partial<Record<keyof TestimonialFormData, string>>>({});
+
+  const handleInputChange = (field: keyof TestimonialFormData, value: string | number) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    // Clear error for this field when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: undefined }));
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validate form data
+    try {
+      testimonialSchema.parse(formData);
+      
+      // If validation passes, show success message
+      toast({
+        title: "Thank You for Your Review!",
+        description: "Your testimonial has been submitted and will be reviewed by our team. We appreciate your feedback.",
+      });
+
+      // Reset form
+      setFormData({
+        name: "",
+        position: "",
+        organization: "",
+        country: "",
+        email: "",
+        testimonial: "",
+        rating: 0
+      });
+      setErrors({});
+      
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        // Set validation errors
+        const fieldErrors: Partial<Record<keyof TestimonialFormData, string>> = {};
+        error.issues.forEach((err) => {
+          if (err.path[0]) {
+            fieldErrors[err.path[0] as keyof TestimonialFormData] = err.message;
+          }
+        });
+        setErrors(fieldErrors);
+
+        toast({
+          title: "Validation Error",
+          description: "Please check the form for errors and try again.",
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
 
   const testimonials = [
     {
@@ -239,8 +345,155 @@ const Testimonials = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* Submit Your Review Section */}
       <section className="py-24 px-4 bg-secondary/20">
+        <div className="container mx-auto max-w-4xl">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
+              <Send className="h-4 w-4 text-primary" />
+              <span className="text-sm font-medium text-primary">Share Your Experience</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Submit Your Testimonial</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              We value feedback from government agencies and authorized organizations who have used our services
+            </p>
+          </div>
+
+          <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
+            <CardContent className="pt-8">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Personal Information */}
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Full Name *</Label>
+                    <Input
+                      id="name"
+                      value={formData.name}
+                      onChange={(e) => handleInputChange("name", e.target.value)}
+                      placeholder="Dr. John Smith"
+                      className={errors.name ? "border-destructive" : ""}
+                      maxLength={100}
+                    />
+                    {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="position">Position/Title *</Label>
+                    <Input
+                      id="position"
+                      value={formData.position}
+                      onChange={(e) => handleInputChange("position", e.target.value)}
+                      placeholder="Director of Document Services"
+                      className={errors.position ? "border-destructive" : ""}
+                      maxLength={150}
+                    />
+                    {errors.position && <p className="text-sm text-destructive">{errors.position}</p>}
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="organization">Organization *</Label>
+                    <Input
+                      id="organization"
+                      value={formData.organization}
+                      onChange={(e) => handleInputChange("organization", e.target.value)}
+                      placeholder="Ministry of Interior"
+                      className={errors.organization ? "border-destructive" : ""}
+                      maxLength={200}
+                    />
+                    {errors.organization && <p className="text-sm text-destructive">{errors.organization}</p>}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="country">Country *</Label>
+                    <Input
+                      id="country"
+                      value={formData.country}
+                      onChange={(e) => handleInputChange("country", e.target.value)}
+                      placeholder="United States"
+                      className={errors.country ? "border-destructive" : ""}
+                      maxLength={100}
+                    />
+                    {errors.country && <p className="text-sm text-destructive">{errors.country}</p>}
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="email">Official Email Address *</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => handleInputChange("email", e.target.value)}
+                    placeholder="official@government.gov"
+                    className={errors.email ? "border-destructive" : ""}
+                    maxLength={255}
+                  />
+                  {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
+                </div>
+
+                {/* Rating */}
+                <div className="space-y-2">
+                  <Label>Your Rating *</Label>
+                  <div className="flex gap-2">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => handleInputChange("rating", star)}
+                        onMouseEnter={() => setHoveredRating(star)}
+                        onMouseLeave={() => setHoveredRating(0)}
+                        className="transition-transform hover:scale-110"
+                      >
+                        <Star
+                          className={`h-8 w-8 transition-colors ${
+                            star <= (hoveredRating || formData.rating)
+                              ? "fill-primary text-primary"
+                              : "text-muted-foreground"
+                          }`}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                  {errors.rating && <p className="text-sm text-destructive">{errors.rating}</p>}
+                </div>
+
+                {/* Testimonial */}
+                <div className="space-y-2">
+                  <Label htmlFor="testimonial">Your Testimonial *</Label>
+                  <Textarea
+                    id="testimonial"
+                    value={formData.testimonial}
+                    onChange={(e) => handleInputChange("testimonial", e.target.value)}
+                    placeholder="Share your experience with SecurePrint Labs' services, security features, and support... (minimum 50 characters)"
+                    className={`min-h-32 ${errors.testimonial ? "border-destructive" : ""}`}
+                    maxLength={1000}
+                  />
+                  <div className="flex justify-between items-center">
+                    <div>
+                      {errors.testimonial && <p className="text-sm text-destructive">{errors.testimonial}</p>}
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      {formData.testimonial.length}/1000 characters
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pt-4">
+                  <Button type="submit" size="lg" className="w-full md:w-auto">
+                    <Send className="mr-2 h-4 w-4" />
+                    Submit Testimonial
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-24 px-4">
         <div className="container mx-auto max-w-4xl text-center">
           <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent backdrop-blur-sm p-8">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Join Our Satisfied Clients</h2>
