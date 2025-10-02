@@ -351,7 +351,7 @@ const Citizenship = () => {
 
   const filteredPrograms = residencePrograms.filter(program => {
     const matchesSearch = program.country.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         program.program.toLowerCase().includes(searchTerm.toLowerCase());
+                         program.description.toLowerCase().includes(searchTerm.toLowerCase());
     
     if (selectedRegions.length === 0 && selectedTypes.length === 0) return matchesSearch;
 
@@ -363,13 +363,13 @@ const Citizenship = () => {
       matchesRegion = matchesRegion || ["United States", "Canada", "Brazil", "Argentina"].includes(program.country);
     }
     if (selectedRegions.includes("asia-pacific")) {
-      matchesRegion = matchesRegion || ["Australia", "New Zealand", "Singapore"].includes(program.country);
+      matchesRegion = matchesRegion || ["Australia", "New Zealand", "Singapore", "United Arab Emirates"].includes(program.country);
     }
 
     const matchesType = selectedTypes.length === 0 || selectedTypes.some(type => {
-      if (type === "investment") return program.investment.includes("€") || program.investment.includes("$");
-      if (type === "golden-visa") return program.program.toLowerCase().includes("golden");
-      if (type === "skilled-migration") return program.program.toLowerCase().includes("skilled");
+      if (type === "investment") return program.minInvestment.includes("€") || program.minInvestment.includes("$");
+      if (type === "golden-visa") return program.description.toLowerCase().includes("golden") || program.description.toLowerCase().includes("citizenship");
+      if (type === "skilled-migration") return program.description.toLowerCase().includes("skilled");
       return true;
     });
 
@@ -699,9 +699,8 @@ const Citizenship = () => {
                     <p className="text-muted-foreground">{item.description}</p>
                   </div>
                 </CardContent>
-                </Card>
-              ))}
-            </div>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
