@@ -187,44 +187,44 @@ const Products = () => {
               SecurePrint Labs
             </h1>
           </div>
-          <nav className="hidden md:flex gap-8">
-            <button onClick={() => navigate("/")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+          <nav className="hidden md:flex gap-4 lg:gap-8">
+            <button onClick={() => navigate("/")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base">
               Home
             </button>
-            <button onClick={() => navigate("/products")} className="text-primary font-medium">
+            <button onClick={() => navigate("/products")} className="text-primary font-medium text-sm lg:text-base">
               Products
             </button>
-            <button onClick={() => navigate("/about")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+            <button onClick={() => navigate("/about")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base">
               About
             </button>
-            <button onClick={() => navigate("/apply")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+            <button onClick={() => navigate("/apply")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base">
               Apply
             </button>
-            <button onClick={() => navigate("/faq")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+            <button onClick={() => navigate("/faq")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base">
               FAQ
             </button>
-            <button onClick={() => navigate("/testimonials")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+            <button onClick={() => navigate("/testimonials")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base">
               Testimonials
             </button>
-            <button onClick={() => navigate("/blog")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+            <button onClick={() => navigate("/blog")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base">
               Blog
             </button>
           </nav>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-6 md:py-12">
         {/* Page Header */}
-        <div className="text-center mb-12 animate-fade-in">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-            <Shield className="h-4 w-4 text-primary" />
-            <span className="text-sm font-medium text-primary">Government-Grade Security Documents</span>
+        <div className="text-center mb-8 md:mb-12 animate-fade-in">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-primary/10 border border-primary/20 mb-4 md:mb-6">
+            <Shield className="h-3 w-3 md:h-4 md:w-4 text-primary" />
+            <span className="text-xs md:text-sm font-medium text-primary">Government-Grade Security Documents</span>
           </div>
           
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 px-4">
             Our Product Catalog
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
             Explore our range of secure government documents featuring military-grade security features and biometric technology
           </p>
         </div>
@@ -366,7 +366,7 @@ const Products = () => {
             </div>
 
             {/* Products */}
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-12">
               {filteredProducts.map((product, index) => {
                 const Icon = product.icon;
                 return (
@@ -375,33 +375,33 @@ const Products = () => {
                     className="overflow-hidden hover:shadow-2xl transition-all duration-300 border-2 animate-fade-in"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
-                    <CardHeader className="relative overflow-hidden pb-6">
+                    <CardHeader className="relative overflow-hidden pb-4 md:pb-6">
                       <div className={`absolute inset-0 bg-gradient-to-br ${product.gradient} opacity-10`} />
-                      <div className="relative flex items-start gap-4">
-                        <div className={`p-4 rounded-xl bg-gradient-to-br ${product.gradient}`}>
-                          <Icon className="h-8 w-8 text-white" />
+                      <div className="relative flex flex-col sm:flex-row items-start gap-3 md:gap-4">
+                        <div className={`p-3 md:p-4 rounded-xl bg-gradient-to-br ${product.gradient}`}>
+                          <Icon className="h-6 w-6 md:h-8 md:w-8 text-white" />
                         </div>
                         <div className="flex-1">
-                          <CardTitle className="text-2xl mb-2">{product.title}</CardTitle>
-                          <CardDescription className="text-base">
+                          <CardTitle className="text-xl md:text-2xl mb-2">{product.title}</CardTitle>
+                          <CardDescription className="text-sm md:text-base">
                             {product.description}
                           </CardDescription>
-                          <div className="mt-3">
-                            <Badge variant="secondary">{product.category}</Badge>
+                          <div className="mt-2 md:mt-3">
+                            <Badge variant="secondary" className="text-xs">{product.category}</Badge>
                           </div>
                         </div>
                       </div>
                     </CardHeader>
 
-                    <CardContent className="space-y-6">
+                    <CardContent className="space-y-4 md:space-y-6">
                       <div>
-                        <h4 className="font-semibold mb-3 flex items-center gap-2">
-                          <Shield className="h-4 w-4 text-primary" />
+                        <h4 className="font-semibold mb-2 md:mb-3 flex items-center gap-2 text-sm md:text-base">
+                          <Shield className="h-3 w-3 md:h-4 md:w-4 text-primary" />
                           Key Features
                         </h4>
-                        <ul className="grid gap-2">
+                        <ul className="grid gap-1.5 md:gap-2">
                           {product.features.map((feature, idx) => (
-                            <li key={idx} className="flex items-start gap-2 text-sm">
+                            <li key={idx} className="flex items-start gap-2 text-xs md:text-sm">
                               <span className="text-primary mt-0.5">✓</span>
                               <span className="text-muted-foreground">{feature}</span>
                             </li>
@@ -409,12 +409,12 @@ const Products = () => {
                         </ul>
                       </div>
 
-                      <div className="pt-4 border-t border-border/50">
-                        <h4 className="font-semibold mb-3">Specifications</h4>
-                        <div className="grid grid-cols-2 gap-3">
+                      <div className="pt-3 md:pt-4 border-t border-border/50">
+                        <h4 className="font-semibold mb-2 md:mb-3 text-sm md:text-base">Specifications</h4>
+                        <div className="grid grid-cols-2 gap-2 md:gap-3">
                           {product.specifications.map((spec, idx) => (
-                            <div key={idx} className="text-sm">
-                              <div className="text-muted-foreground">{spec.label}</div>
+                            <div key={idx} className="text-xs md:text-sm">
+                              <div className="text-muted-foreground text-xs">{spec.label}</div>
                               <div className="font-medium">{spec.value}</div>
                             </div>
                           ))}
@@ -422,12 +422,14 @@ const Products = () => {
                       </div>
                     </CardContent>
 
-                    <CardFooter className="bg-secondary/20">
+                    <CardFooter className="bg-secondary/20 p-3 md:p-6">
                       <Button 
-                        className="w-full" 
+                        className="w-full text-sm md:text-base" 
+                        size="sm"
                         onClick={() => navigate("/apply")}
                       >
-                        Apply for {product.title}
+                        <span className="hidden sm:inline">Apply for {product.title}</span>
+                        <span className="sm:hidden">Apply Now</span>
                       </Button>
                     </CardFooter>
                   </Card>
@@ -449,21 +451,21 @@ const Products = () => {
             )}
 
             {/* Security Features Overview */}
-            <div className="mb-12">
-              <h2 className="text-2xl font-bold text-center mb-8">Advanced Security Features</h2>
-              <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-4">
+            <div className="mb-8 md:mb-12">
+              <h2 className="text-xl md:text-2xl font-bold text-center mb-6 md:mb-8">Advanced Security Features</h2>
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-9 gap-2 md:gap-4">
                 {securityIcons.map((item, index) => {
                   const Icon = item.icon;
                   return (
                     <div
                       key={index}
-                      className="flex flex-col items-center gap-2 p-4 rounded-lg border border-border hover:border-primary/50 transition-all hover:shadow-lg animate-scale-in"
+                      className="flex flex-col items-center gap-1.5 md:gap-2 p-2 md:p-4 rounded-lg border border-border hover:border-primary/50 transition-all hover:shadow-lg animate-scale-in"
                       style={{ animationDelay: `${index * 0.05}s` }}
                     >
-                      <div className="p-3 rounded-full bg-primary/10">
-                        <Icon className="h-6 w-6 text-primary" />
+                      <div className="p-2 md:p-3 rounded-full bg-primary/10">
+                        <Icon className="h-4 w-4 md:h-6 md:w-6 text-primary" />
                       </div>
-                      <span className="text-xs font-medium text-center">{item.label}</span>
+                      <span className="text-[10px] md:text-xs font-medium text-center leading-tight">{item.label}</span>
                     </div>
                   );
                 })}
@@ -472,17 +474,17 @@ const Products = () => {
 
             {/* Call to Action */}
             <Card className="bg-gradient-to-br from-primary/10 to-primary-glow/10 border-primary/20">
-              <CardHeader className="text-center">
-                <CardTitle className="text-3xl mb-3">Ready to Get Started?</CardTitle>
-                <CardDescription className="text-lg">
+              <CardHeader className="text-center p-4 md:p-6">
+                <CardTitle className="text-2xl md:text-3xl mb-2 md:mb-3">Ready to Get Started?</CardTitle>
+                <CardDescription className="text-sm md:text-base lg:text-lg">
                   Our licensed facility is ready to serve your government agency with the highest quality secure documents
                 </CardDescription>
               </CardHeader>
-              <CardContent className="flex justify-center gap-4 flex-wrap">
-                <Button size="lg" onClick={() => navigate("/apply")}>
+              <CardContent className="flex justify-center gap-3 md:gap-4 flex-wrap p-4 md:p-6 pt-0">
+                <Button size="default" className="text-sm md:text-base" onClick={() => navigate("/apply")}>
                   Start Application
                 </Button>
-                <Button size="lg" variant="outline" onClick={() => navigate("/#contact")}>
+                <Button size="default" variant="outline" className="text-sm md:text-base" onClick={() => navigate("/#contact")}>
                   Contact Sales
                 </Button>
               </CardContent>
