@@ -176,9 +176,6 @@ const Products = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Security Features Section */}
-      <SecurityFeaturesSection />
-
       <div className="container mx-auto px-4 py-6 md:py-12">
         {/* Page Header */}
         <div className="text-center mb-8 md:mb-12 animate-fade-in">
@@ -458,6 +455,9 @@ const Products = () => {
           </div>
         </div>
       </div>
+
+      {/* Security Features Section */}
+      <SecurityFeaturesSection />
     </div>
   );
 };

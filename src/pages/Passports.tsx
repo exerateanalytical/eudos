@@ -91,9 +91,6 @@ const Passports = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Security Features Section */}
-      <SecurityFeaturesSection />
-
       {/* Hero Section */}
       <section className="relative py-12 md:py-20 px-4 overflow-hidden border-b border-border/40">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
@@ -295,6 +292,9 @@ const Passports = () => {
           </div>
         </div>
       </section>
+
+      {/* Security Features Section */}
+      <SecurityFeaturesSection />
 
       {/* Crypto Escrow Dialog */}
       <EscrowForm

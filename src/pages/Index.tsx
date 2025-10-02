@@ -236,9 +236,6 @@ const Index = () => {
 
   return (
     <div className="bg-background overflow-x-hidden">
-      {/* Security Features Section */}
-      <SecurityFeaturesSection />
-
       {/* Hero Section - Mobile First */}
       <section className="relative py-8 md:py-12 lg:py-16 px-4 overflow-hidden">
         {/* Animated background gradient */}
@@ -552,6 +549,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Security Features Section */}
+      <SecurityFeaturesSection />
 
       {/* Contact Section */}
       <section id="contact" className="py-24 px-4 bg-gradient-to-b from-background to-secondary/20">

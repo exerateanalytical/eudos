@@ -202,9 +202,7 @@ const Shop = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Security Features Section */}
-      <SecurityFeaturesSection />
-
+      {/* Page Header */}
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -538,6 +536,9 @@ const Shop = () => {
           </div>
         </div>
       </div>
+
+      {/* Security Features Section */}
+      <SecurityFeaturesSection />
     </div>
   );
 };

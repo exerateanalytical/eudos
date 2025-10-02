@@ -258,9 +258,6 @@ const Certifications = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Security Features Section */}
-      <SecurityFeaturesSection />
-
       {/* Hero Section */}
       <section className="relative py-16 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-background" />
@@ -500,6 +497,9 @@ const Certifications = () => {
           </div>
         </div>
       </div>
+
+      {/* Security Features Section */}
+      <SecurityFeaturesSection />
     </div>
   );
 };
