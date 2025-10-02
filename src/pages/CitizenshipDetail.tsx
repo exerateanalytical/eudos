@@ -453,7 +453,6 @@ const CitizenshipDetail = () => {
 
               <Button 
                 size="lg"
-                variant="outline"
                 onClick={() => setShowCryptoEscrow(true)}
               >
                 <Coins className="h-4 w-4 mr-2" />
@@ -578,14 +577,13 @@ const CitizenshipDetail = () => {
               </Dialog>
 
               <Button 
-                size="lg" 
-                variant="outline"
+                size="lg"
                 onClick={generateBrochure}
               >
                 <Download className="h-4 w-4 mr-2" />
                 Download Brochure
               </Button>
-              <Button size="lg" variant="outline" asChild>
+              <Button size="lg" asChild>
                 <a href="mailto:citizenship@secureprintlabs.com">Contact Advisor</a>
               </Button>
             </div>
