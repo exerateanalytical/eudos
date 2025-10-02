@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Printer, Menu, Home, Package, ShoppingBag, Info, FileText, HelpCircle, MessageSquare, BookOpen, X } from "lucide-react";
+import { Printer, Menu, Home, Package, ShoppingBag, Info, FileText, HelpCircle, MessageSquare, BookOpen, X, GraduationCap } from "lucide-react";
 import { useState } from "react";
 
 interface MobileNavProps {
@@ -16,6 +16,7 @@ export const MobileNav = ({ currentPage }: MobileNavProps) => {
   const navItems = [
     { path: "/", label: "Home", icon: Home },
     { path: "/products", label: "Products", icon: Package },
+    { path: "/diplomas", label: "Diplomas", icon: GraduationCap },
     { path: "/shop", label: "Shop", icon: ShoppingBag },
     { path: "/about", label: "About", icon: Info },
     { path: "/apply", label: "Apply", icon: FileText },
