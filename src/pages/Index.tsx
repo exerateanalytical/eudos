@@ -119,6 +119,9 @@ const Index = () => {
             <a href="#services" className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
               Services
             </a>
+            <button onClick={() => navigate("/apply")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+              Apply
+            </button>
             <a href="#about" className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
               About
             </a>

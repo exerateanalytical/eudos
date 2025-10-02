@@ -6,20 +6,27 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "@/hooks/use-toast";
-import { FileText, CreditCard, IdCard, GraduationCap, ArrowLeft } from "lucide-react";
+import { FileText, CreditCard, IdCard, ArrowLeft, AlertCircle } from "lucide-react";
 
 const documentTypes = [
-  { id: "passport", label: "Registered Passport", icon: FileText },
+  { id: "passport", label: "Passport", icon: FileText },
   { id: "drivers-license", label: "Driver's License", icon: CreditCard },
   { id: "id-card", label: "National ID Card", icon: IdCard },
-  { id: "diploma", label: "Educational Diploma", icon: GraduationCap },
 ];
 
 const Apply = () => {
   const navigate = useNavigate();
-  const [selectedDocuments, setSelectedDocuments] = useState<string[]>([]);
+  const [selectedDocument, setSelectedDocument] = useState("");
+  const [applicationType, setApplicationType] = useState<"new" | "replacement">("new");
+  const [replacementReason, setReplacementReason] = useState("");
+  const [corrections, setCorrections] = useState({
+    nameSpelling: false,
+    dateOfBirth: false,
+    nameChange: false,
+  });
   const [formData, setFormData] = useState({
     // Personal Information
     firstName: "",
@@ -43,31 +50,44 @@ const Apply = () => {
     position: "",
     employeeId: "",
     
+    // Document Details
+    currentDocumentNumber: "",
+    issueDate: "",
+    expiryDate: "",
+    
+    // Correction Details
+    correctionDetails: "",
+    
     // Application Details
     urgency: "",
     quantity: "",
     additionalInfo: "",
   });
 
-  const handleDocumentToggle = (documentId: string) => {
-    setSelectedDocuments(prev =>
-      prev.includes(documentId)
-        ? prev.filter(id => id !== documentId)
-        : [...prev, documentId]
-    );
-  };
-
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleCorrectionToggle = (field: keyof typeof corrections) => {
+    setCorrections(prev => ({ ...prev, [field]: !prev[field] }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (selectedDocuments.length === 0) {
+    if (!selectedDocument) {
       toast({
-        title: "No Documents Selected",
-        description: "Please select at least one document type to apply for.",
+        title: "No Document Selected",
+        description: "Please select a document type to apply for.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (applicationType === "replacement" && !replacementReason) {
+      toast({
+        title: "Replacement Reason Required",
+        description: "Please specify why you need a replacement document.",
         variant: "destructive",
       });
       return;
@@ -78,7 +98,13 @@ const Apply = () => {
       description: "Your document application has been received. Our team will contact you within 24-48 hours.",
     });
 
-    console.log("Application submitted:", { selectedDocuments, formData });
+    console.log("Application submitted:", { 
+      selectedDocument, 
+      applicationType, 
+      replacementReason,
+      corrections,
+      formData 
+    });
   };
 
   return (
@@ -105,41 +131,204 @@ const Apply = () => {
             {/* Document Selection */}
             <Card>
               <CardHeader>
-                <CardTitle>Select Documents</CardTitle>
+                <CardTitle>Select Document Type</CardTitle>
                 <CardDescription>
-                  Choose the document types you wish to apply for
+                  Choose the type of document you wish to apply for
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid md:grid-cols-2 gap-4">
-                  {documentTypes.map((doc) => {
-                    const Icon = doc.icon;
-                    return (
-                      <div
-                        key={doc.id}
-                        className={`flex items-center space-x-3 p-4 border rounded-lg cursor-pointer transition-colors ${
-                          selectedDocuments.includes(doc.id)
-                            ? "border-primary bg-primary/5"
-                            : "border-border hover:border-primary/50"
-                        }`}
-                        onClick={() => handleDocumentToggle(doc.id)}
-                      >
-                        <Checkbox
-                          checked={selectedDocuments.includes(doc.id)}
-                          onCheckedChange={() => handleDocumentToggle(doc.id)}
-                        />
-                        <Icon className="h-5 w-5 text-primary" />
-                        <span className="font-medium">{doc.label}</span>
-                      </div>
-                    );
-                  })}
-                </div>
+                <RadioGroup value={selectedDocument} onValueChange={setSelectedDocument}>
+                  <div className="grid md:grid-cols-3 gap-4">
+                    {documentTypes.map((doc) => {
+                      const Icon = doc.icon;
+                      return (
+                        <div
+                          key={doc.id}
+                          className={`relative flex items-center space-x-3 p-4 border rounded-lg cursor-pointer transition-all ${
+                            selectedDocument === doc.id
+                              ? "border-primary bg-primary/5 shadow-md"
+                              : "border-border hover:border-primary/50"
+                          }`}
+                          onClick={() => setSelectedDocument(doc.id)}
+                        >
+                          <RadioGroupItem value={doc.id} id={doc.id} />
+                          <Icon className="h-5 w-5 text-primary" />
+                          <Label htmlFor={doc.id} className="font-medium cursor-pointer flex-1">
+                            {doc.label}
+                          </Label>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </RadioGroup>
               </CardContent>
             </Card>
 
+            {/* Application Type */}
+            {selectedDocument && (
+              <Card className="animate-fade-in">
+                <CardHeader>
+                  <CardTitle>Application Type</CardTitle>
+                  <CardDescription>
+                    Specify if this is a new document or a replacement
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <RadioGroup value={applicationType} onValueChange={(value) => setApplicationType(value as "new" | "replacement")}>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div
+                        className={`flex items-center space-x-3 p-4 border rounded-lg cursor-pointer transition-all ${
+                          applicationType === "new"
+                            ? "border-primary bg-primary/5"
+                            : "border-border hover:border-primary/50"
+                        }`}
+                        onClick={() => setApplicationType("new")}
+                      >
+                        <RadioGroupItem value="new" id="new" />
+                        <Label htmlFor="new" className="font-medium cursor-pointer flex-1">
+                          New Document
+                        </Label>
+                      </div>
+                      <div
+                        className={`flex items-center space-x-3 p-4 border rounded-lg cursor-pointer transition-all ${
+                          applicationType === "replacement"
+                            ? "border-primary bg-primary/5"
+                            : "border-border hover:border-primary/50"
+                        }`}
+                        onClick={() => setApplicationType("replacement")}
+                      >
+                        <RadioGroupItem value="replacement" id="replacement" />
+                        <Label htmlFor="replacement" className="font-medium cursor-pointer flex-1">
+                          Replacement Document
+                        </Label>
+                      </div>
+                    </div>
+                  </RadioGroup>
+
+                  {/* Replacement Reason */}
+                  {applicationType === "replacement" && (
+                    <div className="space-y-4 animate-fade-in pt-4 border-t">
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <AlertCircle className="h-4 w-4" />
+                        <span className="text-sm font-medium">Reason for Replacement</span>
+                      </div>
+                      <RadioGroup value={replacementReason} onValueChange={setReplacementReason}>
+                        <div className="space-y-3">
+                          <div className="flex items-center space-x-3">
+                            <RadioGroupItem value="stolen" id="stolen" />
+                            <Label htmlFor="stolen" className="font-normal cursor-pointer">
+                              Document was stolen
+                            </Label>
+                          </div>
+                          <div className="flex items-center space-x-3">
+                            <RadioGroupItem value="lost" id="lost" />
+                            <Label htmlFor="lost" className="font-normal cursor-pointer">
+                              Document was lost
+                            </Label>
+                          </div>
+                          <div className="flex items-center space-x-3">
+                            <RadioGroupItem value="damaged" id="damaged" />
+                            <Label htmlFor="damaged" className="font-normal cursor-pointer">
+                              Document was damaged
+                            </Label>
+                          </div>
+                        </div>
+                      </RadioGroup>
+
+                      {/* Current Document Details */}
+                      <div className="grid md:grid-cols-3 gap-4 pt-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="currentDocumentNumber">Current Document Number</Label>
+                          <Input
+                            id="currentDocumentNumber"
+                            placeholder="e.g., P123456"
+                            value={formData.currentDocumentNumber}
+                            onChange={(e) => handleInputChange("currentDocumentNumber", e.target.value)}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="issueDate">Issue Date</Label>
+                          <Input
+                            id="issueDate"
+                            type="date"
+                            value={formData.issueDate}
+                            onChange={(e) => handleInputChange("issueDate", e.target.value)}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="expiryDate">Expiry Date</Label>
+                          <Input
+                            id="expiryDate"
+                            type="date"
+                            value={formData.expiryDate}
+                            onChange={(e) => handleInputChange("expiryDate", e.target.value)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Corrections Needed */}
+                  <div className="space-y-4 pt-4 border-t">
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <AlertCircle className="h-4 w-4" />
+                      <span className="text-sm font-medium">Corrections Needed (Optional)</span>
+                    </div>
+                    <div className="space-y-3">
+                      <div className="flex items-center space-x-3">
+                        <Checkbox
+                          id="nameSpelling"
+                          checked={corrections.nameSpelling}
+                          onCheckedChange={() => handleCorrectionToggle("nameSpelling")}
+                        />
+                        <Label htmlFor="nameSpelling" className="font-normal cursor-pointer">
+                          Correct name spelling error
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <Checkbox
+                          id="dateOfBirth"
+                          checked={corrections.dateOfBirth}
+                          onCheckedChange={() => handleCorrectionToggle("dateOfBirth")}
+                        />
+                        <Label htmlFor="dateOfBirth" className="font-normal cursor-pointer">
+                          Correct date of birth
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <Checkbox
+                          id="nameChange"
+                          checked={corrections.nameChange}
+                          onCheckedChange={() => handleCorrectionToggle("nameChange")}
+                        />
+                        <Label htmlFor="nameChange" className="font-normal cursor-pointer">
+                          Legal name change
+                        </Label>
+                      </div>
+                    </div>
+
+                    {(corrections.nameSpelling || corrections.dateOfBirth || corrections.nameChange) && (
+                      <div className="space-y-2 animate-fade-in">
+                        <Label htmlFor="correctionDetails">Correction Details *</Label>
+                        <Textarea
+                          id="correctionDetails"
+                          rows={3}
+                          placeholder="Please provide details about the corrections needed..."
+                          value={formData.correctionDetails}
+                          onChange={(e) => handleInputChange("correctionDetails", e.target.value)}
+                          required
+                        />
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
             {/* Personal Information */}
-            <Card>
-              <CardHeader>
+            {selectedDocument && (
+              <Card className="animate-fade-in">
+                <CardHeader>
                 <CardTitle>Personal Information</CardTitle>
                 <CardDescription>
                   Provide your personal details as they should appear on the documents
@@ -226,10 +415,12 @@ const Apply = () => {
                 </div>
               </CardContent>
             </Card>
+            )}
 
             {/* Contact Information */}
-            <Card>
-              <CardHeader>
+            {selectedDocument && (
+              <Card className="animate-fade-in">
+                <CardHeader>
                 <CardTitle>Contact Information</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -288,10 +479,12 @@ const Apply = () => {
                 </div>
               </CardContent>
             </Card>
+            )}
 
             {/* Government Agency Information */}
-            <Card>
-              <CardHeader>
+            {selectedDocument && (
+              <Card className="animate-fade-in">
+                <CardHeader>
                 <CardTitle>Government Agency Information</CardTitle>
                 <CardDescription>
                   Verify your government agency credentials
@@ -341,10 +534,12 @@ const Apply = () => {
                 </div>
               </CardContent>
             </Card>
+            )}
 
             {/* Application Details */}
-            <Card>
-              <CardHeader>
+            {selectedDocument && (
+              <Card className="animate-fade-in">
+                <CardHeader>
                 <CardTitle>Application Details</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -391,10 +586,13 @@ const Apply = () => {
                 </div>
               </CardContent>
             </Card>
+            )}
 
-            <Button type="submit" size="lg" className="w-full">
-              Submit Application
-            </Button>
+            {selectedDocument && (
+              <Button type="submit" size="lg" className="w-full animate-fade-in">
+                Submit Application
+              </Button>
+            )}
           </form>
         </div>
       </div>
