@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Printer, Menu, User, LayoutDashboard } from "lucide-react";
+import { Printer, Menu, User, LayoutDashboard, Home } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Session } from "@supabase/supabase-js";
@@ -42,6 +42,10 @@ export const Header = () => {
         
         {/* Desktop Navigation */}
         <nav className="hidden md:flex gap-4 lg:gap-8 items-center">
+          <button onClick={() => navigate("/")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95 flex items-center gap-1.5">
+            <Home className="h-4 w-4" />
+            Home
+          </button>
           <button onClick={() => navigate("/products")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
             Products
           </button>
@@ -87,6 +91,10 @@ export const Header = () => {
           </SheetTrigger>
           <SheetContent side="right" className="w-[280px] sm:w-[320px]">
             <nav className="flex flex-col gap-4 mt-8">
+              <button onClick={() => { navigate("/"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95 flex items-center gap-2">
+                <Home className="h-5 w-5" />
+                Home
+              </button>
               <button onClick={() => { navigate("/products"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
                 Products
               </button>
