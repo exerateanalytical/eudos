@@ -1,1 +1,4 @@
 project_id = "glsvoagtlaksuaimsppn"
+
+[functions.seed-reviews]
+verify_jwt = false

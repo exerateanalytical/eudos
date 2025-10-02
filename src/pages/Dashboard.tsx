@@ -14,6 +14,7 @@ import SecurityModule from "@/components/dashboard/SecurityModule";
 import NotificationsPanel from "@/components/dashboard/NotificationsPanel";
 import NotificationBell from "@/components/NotificationBell";
 import { ReviewModerationModule } from "@/components/dashboard/ReviewModerationModule";
+import { SeedingModule } from "@/components/dashboard/SeedingModule";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -146,7 +147,7 @@ const Dashboard = () => {
         </Card>
 
         <Tabs defaultValue="orders" className="space-y-6">
-          <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-3 lg:grid-cols-6' : 'grid-cols-2 lg:grid-cols-5'}`}>
+          <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-3 lg:grid-cols-7' : 'grid-cols-2 lg:grid-cols-5'}`}>
             <TabsTrigger value="orders" className="flex items-center gap-2">
               <Package className="h-4 w-4" />
               Orders
@@ -168,10 +169,16 @@ const Dashboard = () => {
               Security
             </TabsTrigger>
             {isAdmin && (
-              <TabsTrigger value="reviews" className="flex items-center gap-2">
-                <Eye className="h-4 w-4" />
-                Reviews
-              </TabsTrigger>
+              <>
+                <TabsTrigger value="reviews" className="flex items-center gap-2">
+                  <Eye className="h-4 w-4" />
+                  Reviews
+                </TabsTrigger>
+                <TabsTrigger value="seeding" className="flex items-center gap-2">
+                  <ShieldCheck className="h-4 w-4" />
+                  Seeding
+                </TabsTrigger>
+              </>
             )}
           </TabsList>
 
@@ -196,9 +203,14 @@ const Dashboard = () => {
           </TabsContent>
 
           {isAdmin && (
-            <TabsContent value="reviews">
-              <ReviewModerationModule />
-            </TabsContent>
+            <>
+              <TabsContent value="reviews">
+                <ReviewModerationModule />
+              </TabsContent>
+              <TabsContent value="seeding">
+                <SeedingModule />
+              </TabsContent>
+            </>
           )}
         </Tabs>
       </main>
