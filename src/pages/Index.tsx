@@ -195,55 +195,55 @@ const Index = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="relative py-12 md:py-15 px-4 overflow-hidden">
+      <section className="relative py-10 md:py-12 px-4 overflow-hidden">
         {/* Animated background gradient */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
         <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]" />
         
         {/* Floating elements */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary-glow/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-float hidden lg:block" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary-glow/10 rounded-full blur-3xl animate-float hidden lg:block" style={{ animationDelay: '2s' }} />
         
         <div className="container mx-auto relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Left side - Text content */}
             <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8 animate-fade-in">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6 animate-fade-in">
                 <Shield className="h-4 w-4 text-primary" />
-                <span className="text-sm font-medium text-primary">Licensed & Authorized • Government Agencies Only</span>
+                <span className="text-xs sm:text-sm font-medium text-primary">Licensed & Authorized • Government Agencies Only</span>
               </div>
               
-              <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6 leading-tight animate-fade-in-up">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 lg:mb-6 leading-tight animate-fade-in-up">
                 Official Government Document
                 <span className="block bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent mt-2">
                   Printing Services
                 </span>
               </h2>
               
-              <p className="text-xl md:text-2xl text-muted-foreground mb-12 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+              <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-6 lg:mb-8 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
                 Licensed facility serving government agencies worldwide with registered passports, ID cards, driver's licenses, and diplomas featuring military-grade security
               </p>
               
-              <div className="flex gap-4 flex-wrap animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+              <div className="flex gap-3 flex-wrap animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
                 <Button 
                   size="lg" 
-                  className="group relative overflow-hidden bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="group relative overflow-hidden bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 text-sm sm:text-base"
                   onClick={() => navigate("/apply")}
                 >
                   <span className="relative z-10">Apply for Documents</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-primary-glow to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </Button>
-                <Button size="lg" variant="outline" className="border-2 hover:bg-primary/5 transition-all duration-300" asChild>
+                <Button size="lg" variant="outline" className="border-2 hover:bg-primary/5 transition-all duration-300 text-sm sm:text-base" asChild>
                   <a href="#contact">Request Quote</a>
                 </Button>
-                <Button size="lg" variant="outline" className="border-2 hover:bg-primary/5 transition-all duration-300" onClick={() => navigate("/products")}>
+                <Button size="lg" variant="outline" className="border-2 hover:bg-primary/5 transition-all duration-300 text-sm sm:text-base hidden sm:inline-flex" onClick={() => navigate("/products")}>
                   View Products
                 </Button>
               </div>
             </div>
 
             {/* Right side - Security features showcase */}
-            <div className="relative h-[280px] lg:h-[340px]">
+            <div className="relative h-[250px] sm:h-[280px] lg:h-[300px] mt-8 lg:mt-0">
               {securityShowcase.map((feature, index) => {
                 const Icon = feature.icon;
                 const isActive = currentFeature === index;
@@ -260,29 +260,30 @@ const Index = () => {
                     <Card className="h-full border-2 bg-card/50 backdrop-blur-sm overflow-hidden">
                       <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-5`} />
                       
-                      <CardContent className="h-full flex flex-col items-center justify-center p-8 relative">
+                      <CardContent className="h-full flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 relative">
                         {/* Icon with animated glow */}
-                        <div className="relative mb-8">
-                          <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} blur-3xl opacity-50 animate-pulse`} />
-                          <div className={`relative p-8 rounded-3xl bg-gradient-to-br ${feature.gradient}`}>
-                            <Icon className="h-24 w-24 text-white" strokeWidth={1.5} />
+                        <div className="relative mb-4 sm:mb-6">
+                          <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} blur-2xl sm:blur-3xl opacity-50 animate-pulse`} />
+                          <div className={`relative p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-br ${feature.gradient}`}>
+                            <Icon className="h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20 text-white" strokeWidth={1.5} />
                           </div>
                         </div>
 
                         {/* Feature title */}
-                        <h3 className="text-3xl md:text-4xl font-bold text-center mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                        <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-center mb-2 sm:mb-3 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
                           {feature.title}
                         </h3>
 
                         {/* Feature description */}
-                        <p className="text-lg text-muted-foreground text-center max-w-md mb-8">
+                        <p className="text-sm sm:text-base text-muted-foreground text-center max-w-md mb-4 sm:mb-6 line-clamp-2 sm:line-clamp-none">
                           {feature.description}
                         </p>
 
                         {/* Security badge */}
-                        <div className={`inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r ${feature.gradient} text-white font-medium shadow-lg`}>
-                          <Shield className="h-5 w-5" />
-                          <span>Military-Grade Security</span>
+                        <div className={`inline-flex items-center gap-2 px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-gradient-to-r ${feature.gradient} text-white font-medium shadow-lg text-xs sm:text-sm`}>
+                          <Shield className="h-4 w-4" />
+                          <span className="hidden sm:inline">Military-Grade Security</span>
+                          <span className="sm:hidden">Secure</span>
                         </div>
                       </CardContent>
                     </Card>
@@ -291,15 +292,15 @@ const Index = () => {
               })}
 
               {/* Progress indicators */}
-              <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+              <div className="absolute -bottom-8 sm:-bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
                 {securityShowcase.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => setCurrentFeature(index)}
-                    className={`h-2 rounded-full transition-all duration-300 ${
+                    className={`h-1.5 sm:h-2 rounded-full transition-all duration-300 ${
                       currentFeature === index 
-                        ? 'w-8 bg-primary' 
-                        : 'w-2 bg-primary/30 hover:bg-primary/50'
+                        ? 'w-6 sm:w-8 bg-primary' 
+                        : 'w-1.5 sm:w-2 bg-primary/30 hover:bg-primary/50'
                     }`}
                     aria-label={`Go to feature ${index + 1}`}
                   />
