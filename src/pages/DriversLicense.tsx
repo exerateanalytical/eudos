@@ -3,10 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CreditCard, Shield, ShoppingCart } from "lucide-react";
+import { CreditCard, Shield, ShoppingCart, Search, Filter, X } from "lucide-react";
 import { MobileNav } from "@/components/MobileNav";
 import { Footer } from "@/components/Footer";
 import { EscrowForm } from "@/components/EscrowForm";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 // EU Countries
 const euCountries = [
@@ -51,6 +54,36 @@ const DriversLicense = () => {
   const navigate = useNavigate();
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
   const [selectedLicense, setSelectedLicense] = useState<any>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const regions = [
+    { id: "eu", label: "European Union", count: euCountries.length },
+    { id: "other", label: "Other Countries", count: otherCountries.length },
+  ];
+
+  const toggleRegion = (regionId: string) => {
+    setSelectedRegions(prev =>
+      prev.includes(regionId)
+        ? prev.filter(id => id !== regionId)
+        : [...prev, regionId]
+    );
+  };
+
+  const filteredLicenses = driversLicenses.filter(license => {
+    const matchesSearch = license.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         license.country.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    if (selectedRegions.length === 0) return matchesSearch;
+
+    const isEU = euCountries.includes(license.country);
+    const matchesRegion = 
+      (selectedRegions.includes("eu") && isEU) ||
+      (selectedRegions.includes("other") && !isEU);
+
+    return matchesSearch && matchesRegion;
+  });
 
   const handleOrderClick = (license: any) => {
     setSelectedLicense(license);
@@ -102,8 +135,86 @@ const DriversLicense = () => {
       {/* Driver's Licenses Grid */}
       <section className="py-12 md:py-16 px-4">
         <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {driversLicenses.map((license) => (
+          <div className="flex gap-6">
+            {/* Sidebar */}
+            <aside className={`${isSidebarOpen ? 'block' : 'hidden'} lg:block lg:w-64 flex-shrink-0`}>
+              <div className="sticky top-4 space-y-6">
+                {/* Search */}
+                <div>
+                  <h3 className="text-sm font-semibold mb-3 text-foreground">Search</h3>
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search licenses..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-9"
+                    />
+                  </div>
+                </div>
+
+                {/* Region Filter */}
+                <div>
+                  <h3 className="text-sm font-semibold mb-3 text-foreground">Region</h3>
+                  <div className="space-y-3">
+                    {regions.map((region) => (
+                      <div key={region.id} className="flex items-center gap-2">
+                        <Checkbox
+                          id={region.id}
+                          checked={selectedRegions.includes(region.id)}
+                          onCheckedChange={() => toggleRegion(region.id)}
+                        />
+                        <Label
+                          htmlFor={region.id}
+                          className="text-sm cursor-pointer flex items-center justify-between flex-1"
+                        >
+                          <span>{region.label}</span>
+                          <Badge variant="secondary" className="ml-2">
+                            {region.count}
+                          </Badge>
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Clear Filters */}
+                {(searchTerm || selectedRegions.length > 0) && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setSearchTerm("");
+                      setSelectedRegions([]);
+                    }}
+                    className="w-full"
+                  >
+                    <X className="h-4 w-4 mr-2" />
+                    Clear Filters
+                  </Button>
+                )}
+              </div>
+            </aside>
+
+            {/* Main Content */}
+            <div className="flex-1">
+              {/* Mobile Filter Toggle */}
+              <div className="lg:hidden mb-4 flex items-center justify-between">
+                <p className="text-sm text-muted-foreground">
+                  {filteredLicenses.length} license{filteredLicenses.length !== 1 ? 's' : ''} found
+                </p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                >
+                  <Filter className="h-4 w-4 mr-2" />
+                  Filters
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+            {filteredLicenses.map((license) => (
               <Card key={license.id} className="border-border/50 bg-card backdrop-blur-sm hover:border-primary/50 transition-all duration-300 hover:shadow-lg flex flex-col">
                 <CardHeader>
                   <div className="flex items-start justify-between mb-2">
@@ -177,8 +288,10 @@ const DriversLicense = () => {
                     Escrow adds 1.5% fee for buyer protection
                   </p>
                 </CardFooter>
-              </Card>
-            ))}
+                </Card>
+              ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
