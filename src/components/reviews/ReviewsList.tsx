@@ -14,7 +14,6 @@ interface ReviewsListProps {
 
 export const ReviewsList = ({ productType, productId, refreshTrigger }: ReviewsListProps) => {
   const [reviews, setReviews] = useState<any[]>([]);
-  const [replies, setReplies] = useState<Record<string, any[]>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -54,48 +53,6 @@ export const ReviewsList = ({ productType, productId, refreshTrigger }: ReviewsL
       );
 
       setReviews(reviewsWithProfiles);
-
-      // Fetch all replies for these reviews
-      if (reviewsData && reviewsData.length > 0) {
-        const reviewIds = reviewsData.map((r) => r.id);
-        const { data: repliesData, error: repliesError } = await supabase
-          .from("review_replies")
-          .select("*")
-          .in("review_id", reviewIds)
-          .order("created_at", { ascending: true });
-
-        if (repliesError) {
-          console.error("Replies fetch error:", repliesError);
-          throw repliesError;
-        }
-
-        // Fetch profile data for each reply
-        const repliesWithProfiles = await Promise.all(
-          (repliesData || []).map(async (reply) => {
-            const { data: profileData } = await supabase
-              .from("profiles")
-              .select("full_name")
-              .eq("id", reply.user_id)
-              .maybeSingle();
-            
-            return {
-              ...reply,
-              profiles: profileData || { full_name: "Anonymous User" },
-            };
-          })
-        );
-
-        // Group replies by review_id
-        const repliesByReview: Record<string, any[]> = {};
-        repliesWithProfiles.forEach((reply) => {
-          if (!repliesByReview[reply.review_id]) {
-            repliesByReview[reply.review_id] = [];
-          }
-          repliesByReview[reply.review_id].push(reply);
-        });
-
-        setReplies(repliesByReview);
-      }
     } catch (err: any) {
       console.error("Fetch reviews error:", err);
       setError(err.message);
@@ -147,12 +104,7 @@ export const ReviewsList = ({ productType, productId, refreshTrigger }: ReviewsL
   return (
     <div className="space-y-4">
       {reviews.map((review) => (
-        <ReviewCard
-          key={review.id}
-          review={review}
-          replies={replies[review.id] || []}
-          onReplyAdded={fetchReviews}
-        />
+        <ReviewCard key={review.id} review={review} />
       ))}
     </div>
   );

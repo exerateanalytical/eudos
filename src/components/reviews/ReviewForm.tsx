@@ -88,9 +88,8 @@ export const ReviewForm = ({ productType, productId, onReviewSubmitted }: Review
         <CardTitle>Write a Review</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {/* Rating Stars */}
         <div>
-          <label className="text-sm font-medium mb-2 block">Your Rating</label>
+          <label className="text-sm font-medium mb-2 block">Rating</label>
           <div className="flex gap-1">
             {[1, 2, 3, 4, 5].map((star) => (
               <button
@@ -99,7 +98,6 @@ export const ReviewForm = ({ productType, productId, onReviewSubmitted }: Review
                 onClick={() => setRating(star)}
                 onMouseEnter={() => setHoverRating(star)}
                 onMouseLeave={() => setHoverRating(0)}
-                className="transition-colors"
               >
                 <Star
                   className={`w-8 h-8 ${
@@ -113,22 +111,17 @@ export const ReviewForm = ({ productType, productId, onReviewSubmitted }: Review
           </div>
         </div>
 
-        {/* Review Text */}
         <div>
-          <label className="text-sm font-medium mb-2 block">Your Review</label>
+          <label className="text-sm font-medium mb-2 block">Review</label>
           <Textarea
-            placeholder="Share your experience with this product..."
+            placeholder="Share your experience..."
             value={reviewText}
             onChange={(e) => setReviewText(e.target.value)}
-            maxLength={2000}
-            rows={5}
+            maxLength={1000}
+            rows={4}
           />
-          <div className="text-xs text-muted-foreground mt-1">
-            {reviewText.length}/2000 characters
-          </div>
         </div>
 
-        {/* Submit Button */}
         <Button
           onClick={handleSubmit}
           disabled={isSubmitting || rating === 0 || !reviewText.trim()}
@@ -136,10 +129,6 @@ export const ReviewForm = ({ productType, productId, onReviewSubmitted }: Review
         >
           Submit Review
         </Button>
-
-        <p className="text-xs text-muted-foreground text-center">
-          Your review will be visible after admin approval
-        </p>
       </CardContent>
     </Card>
   );
