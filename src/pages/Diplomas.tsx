@@ -11,7 +11,7 @@ import { SecurityFeaturesSection } from "@/components/SecurityFeaturesSection";
 import { Slider } from "@/components/ui/slider";
 
 
-import { universitySealMap } from "@/lib/universitySeals";
+import { getUniversitySeal } from "@/lib/universitySeals";
 
 const universities = [
   { id: 1, name: "Harvard University", location: "Cambridge, MA", ranking: 1, price: "$15,000" },
@@ -801,9 +801,9 @@ const Diplomas = () => {
                     
                     {/* University Seal/Icon */}
                     <div className="w-20 h-20 bg-white rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300 shadow-sm border border-border/30">
-                      {universitySealMap[university.name] ? (
+                      {getUniversitySeal(university.name, university.type) ? (
                         <img 
-                          src={universitySealMap[university.name]} 
+                          src={getUniversitySeal(university.name, university.type)} 
                           alt={`${university.name} seal`}
                           className="w-16 h-16 object-contain"
                         />

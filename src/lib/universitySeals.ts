@@ -126,6 +126,7 @@ import ndsuSeal from "@/assets/university-seals/ndsu.png";
 import montanaStateSeal from "@/assets/university-seals/montana-state.png";
 import idahoStateSeal from "@/assets/university-seals/idaho-state.png";
 import niuSeal from "@/assets/university-seals/niu.png";
+import communityCollegeGeneric from "@/assets/university-seals/community-college-generic.png";
 
 // Canadian Universities
 import torontoSeal from "@/assets/university-seals/toronto.png";
@@ -311,4 +312,20 @@ export const universitySealMap: Record<string, string> = {
   "Ryerson University": ryersonSeal,
   "University of New Brunswick": unbSeal,
   "University of Windsor": windsorSeal,
+};
+
+// Helper function to get seal with fallback for community colleges
+export const getUniversitySeal = (universityName: string, type?: string): string | undefined => {
+  // Check if university has a specific seal
+  if (universitySealMap[universityName]) {
+    return universitySealMap[universityName];
+  }
+  
+  // Fallback for community colleges
+  if (type === "Community College" || universityName.toLowerCase().includes("community college")) {
+    return communityCollegeGeneric;
+  }
+  
+  // Return undefined if no seal found (will show fallback icon in UI)
+  return undefined;
 };

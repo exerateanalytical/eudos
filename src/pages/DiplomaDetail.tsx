@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ArrowLeft, Clock, FileText, CheckCircle, Shield, Award, Download, Mail, ShoppingCart, Coins, IdCard, BookOpen, Database } from "lucide-react";
-import { universitySealMap } from "@/lib/universitySeals";
+import { getUniversitySeal } from "@/lib/universitySeals";
 import { EscrowForm } from "@/components/EscrowForm";
 import { ReviewForm } from "@/components/reviews/ReviewForm";
 import { ReviewsList } from "@/components/reviews/ReviewsList";
@@ -198,9 +198,9 @@ const DiplomaDetail = () => {
           <div className="max-w-4xl">
             <div className="flex items-center gap-4 mb-6">
               <div className="w-20 h-20 bg-white rounded-lg flex items-center justify-center shadow-sm border border-border/30">
-                {universitySealMap[universityName] ? (
+                {getUniversitySeal(universityName) ? (
                   <img 
-                    src={universitySealMap[universityName]} 
+                    src={getUniversitySeal(universityName)} 
                     alt={`${universityName} seal`}
                     className="w-16 h-16 object-contain"
                   />
