@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Printer, ArrowLeft, FileText, CreditCard, IdCard, GraduationCap, Shield, Fingerprint, Cpu, Sparkles, Eye, Scan, Radio, Lock, FileCheck, Database } from "lucide-react";
+import { Footer } from "@/components/Footer";
 
 const products = [
   {
@@ -115,7 +116,7 @@ const Products = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-secondary/10">
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -128,14 +129,29 @@ const Products = () => {
               SecurePrint Labs
             </h1>
           </div>
-          <Button
-            variant="ghost"
-            onClick={() => navigate("/")}
-            className="gap-2"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Home
-          </Button>
+          <nav className="hidden md:flex gap-8">
+            <button onClick={() => navigate("/")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+              Home
+            </button>
+            <button onClick={() => navigate("/products")} className="text-primary font-medium">
+              Products
+            </button>
+            <button onClick={() => navigate("/about")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+              About
+            </button>
+            <button onClick={() => navigate("/apply")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+              Apply
+            </button>
+            <button onClick={() => navigate("/faq")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+              FAQ
+            </button>
+            <button onClick={() => navigate("/testimonials")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+              Testimonials
+            </button>
+            <button onClick={() => navigate("/blog")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+              Blog
+            </button>
+          </nav>
         </div>
       </header>
 
@@ -272,6 +288,8 @@ const Products = () => {
           </CardContent>
         </Card>
       </div>
+      
+      <Footer />
     </div>
   );
 };

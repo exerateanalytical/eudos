@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Shield, Award, Building2, Database, Clock, CheckCircle, Users, Globe, Lock, Sparkles, Fingerprint, Cpu, Eye, Radio, FileCheck, Scan, Printer } from "lucide-react";
+import { Footer } from "@/components/Footer";
 
 const About = () => {
   const navigate = useNavigate();
@@ -307,6 +308,8 @@ const About = () => {
           </Card>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 };

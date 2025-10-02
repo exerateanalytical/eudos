@@ -3,6 +3,7 @@ import { Printer, Star, Quote, Building2, Shield, Award } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Footer } from "@/components/Footer";
 
 const Testimonials = () => {
   const navigate = useNavigate();
@@ -257,6 +258,8 @@ const Testimonials = () => {
           </Card>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 };

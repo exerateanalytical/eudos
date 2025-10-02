@@ -9,7 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "@/hooks/use-toast";
-import { FileText, CreditCard, IdCard, ArrowLeft, AlertCircle } from "lucide-react";
+import { FileText, CreditCard, IdCard, AlertCircle } from "lucide-react";
+import { Footer } from "@/components/Footer";
 
 const documentTypes = [
   { id: "passport", label: "Passport", icon: FileText },
@@ -108,16 +109,46 @@ const Apply = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-secondary/10">
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3 group cursor-pointer" onClick={() => navigate("/")}>
+            <div className="relative">
+              <FileText className="h-8 w-8 text-primary transition-transform duration-300 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </div>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+              SecurePrint Labs
+            </h1>
+          </div>
+          <nav className="hidden md:flex gap-8">
+            <button onClick={() => navigate("/")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+              Home
+            </button>
+            <button onClick={() => navigate("/products")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+              Products
+            </button>
+            <button onClick={() => navigate("/about")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+              About
+            </button>
+            <button onClick={() => navigate("/apply")} className="text-primary font-medium">
+              Apply
+            </button>
+            <button onClick={() => navigate("/faq")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+              FAQ
+            </button>
+            <button onClick={() => navigate("/testimonials")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+              Testimonials
+            </button>
+            <button onClick={() => navigate("/blog")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+              Blog
+            </button>
+          </nav>
+        </div>
+      </header>
+
       <div className="container mx-auto px-4 py-8">
-        <Button
-          variant="ghost"
-          onClick={() => navigate("/")}
-          className="mb-6"
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Home
-        </Button>
 
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
@@ -596,6 +627,8 @@ const Apply = () => {
           </form>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 };

@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Footer } from "@/components/Footer";
 
 const Blog = () => {
   const navigate = useNavigate();
@@ -367,7 +368,7 @@ const Blog = () => {
           <div className="grid lg:grid-cols-4 gap-8">
             {/* Sidebar */}
             <aside className="lg:col-span-1">
-              <div className="sticky top-24 space-y-6">
+              <div className="lg:sticky lg:top-24 space-y-6">
                 {/* Categories */}
                 <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
                   <CardHeader>
@@ -499,6 +500,8 @@ const Blog = () => {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 };
