@@ -143,7 +143,7 @@ const Shop = () => {
   const [selectedSecurityFeatures, setSelectedSecurityFeatures] = useState<string[]>([]);
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [productsToShow, setProductsToShow] = useState(15); // 3 rows × 5 columns (max)
+  const [productsToShow, setProductsToShow] = useState(6); // 3 rows × 2 columns (mobile-first)
 
   const categories = ["Travel Documents", "Identification Cards"];
   const securityLevels = ["Military-grade", "Maximum security", "High-security"];
@@ -470,7 +470,7 @@ const Shop = () => {
                 <Button 
                   size="lg" 
                   variant="outline"
-                  onClick={() => setProductsToShow(prev => prev + 15)}
+                  onClick={() => setProductsToShow(prev => prev + 6)}
                   className="touch-manipulation active:scale-95"
                 >
                   Load More Products ({filteredProducts.length - productsToShow} remaining)
