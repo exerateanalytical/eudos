@@ -254,10 +254,10 @@ const Diplomas = () => {
                   <Button 
                     className="w-full group-hover:shadow-lg transition-all duration-300" 
                     size="lg"
-                    onClick={() => navigate(`/apply?type=diploma&university=${encodeURIComponent(university.name)}`)}
+                    onClick={() => navigate(`/diploma/${encodeURIComponent(university.name.replace(/ /g, '-').toLowerCase())}`)}
                   >
                     <ShoppingCart className="h-4 w-4 mr-2" />
-                    Order Diploma
+                    View Details
                   </Button>
                 </CardContent>
               </Card>

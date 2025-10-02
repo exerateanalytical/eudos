@@ -16,6 +16,7 @@ import BlogPost from "./pages/BlogPost";
 import Citizenship from "./pages/Citizenship";
 import CitizenshipDetail from "./pages/CitizenshipDetail";
 import Diplomas from "./pages/Diplomas";
+import DiplomaDetail from "./pages/DiplomaDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/citizenship" element={<Citizenship />} />
           <Route path="/citizenship/:country" element={<CitizenshipDetail />} />
           <Route path="/diplomas" element={<Diplomas />} />
+          <Route path="/diploma/:university" element={<DiplomaDetail />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
