@@ -7,7 +7,7 @@ import { Layout } from "./components/Layout";
 import Index from "./pages/Index";
 import Apply from "./pages/Apply";
 import Products from "./pages/Products";
-import Shop from "./pages/Shop";
+
 import ProductDetail from "./pages/ProductDetail";
 import About from "./pages/About";
 import FAQ from "./pages/FAQ";
@@ -42,7 +42,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/apply" element={<Apply />} />
             <Route path="/products" element={<Products />} />
-            <Route path="/shop" element={<Shop />} />
+            
             <Route path="/product/:productId" element={<ProductDetail />} />
             <Route path="/about" element={<About />} />
             <Route path="/faq" element={<FAQ />} />

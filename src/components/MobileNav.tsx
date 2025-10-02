@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Printer, Menu, Home, Package, ShoppingBag, FileText, X, GraduationCap, Globe, Award, CreditCard, FileCheck, User, LayoutDashboard } from "lucide-react";
+import { Printer, Menu, Home, Package, FileText, X, GraduationCap, Globe, Award, CreditCard, FileCheck, User, LayoutDashboard } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Session } from "@supabase/supabase-js";
@@ -38,7 +38,6 @@ export const MobileNav = ({ currentPage }: MobileNavProps) => {
     { path: "/citizenship", label: "Citizenship", icon: Globe },
     { path: "/diplomas", label: "Diplomas", icon: GraduationCap },
     { path: "/certifications", label: "Certifications", icon: Award },
-    { path: "/shop", label: "Shop", icon: ShoppingBag },
     { path: "/apply", label: "Apply", icon: FileText },
   ];
 
@@ -170,14 +169,6 @@ export const MobileNav = ({ currentPage }: MobileNavProps) => {
                     onClick={() => handleNavClick("/apply")}
                   >
                     Apply Now
-                  </Button>
-                  <Button
-                    className="w-full active:scale-95 touch-manipulation"
-                    size="lg"
-                    variant="outline"
-                    onClick={() => handleNavClick("/shop")}
-                  >
-                    Browse Shop
                   </Button>
                 </div>
               </div>

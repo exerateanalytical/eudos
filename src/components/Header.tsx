@@ -64,9 +64,6 @@ export const Header = () => {
           <button onClick={() => navigate("/certifications")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
             Certifications
           </button>
-          <button onClick={() => navigate("/shop")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
-            Shop
-          </button>
           <button onClick={() => navigate("/apply")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
             Apply
           </button>
@@ -112,9 +109,6 @@ export const Header = () => {
               </button>
               <button onClick={() => { navigate("/certifications"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
                 Certifications
-              </button>
-              <button onClick={() => { navigate("/shop"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
-                Shop
               </button>
               <button onClick={() => { navigate("/apply"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
                 Apply
