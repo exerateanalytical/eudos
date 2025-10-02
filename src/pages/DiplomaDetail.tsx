@@ -30,7 +30,7 @@ const DiplomaDetail = () => {
     universityName,
     price: diplomaPrice,
     deliveryTime: "2 weeks",
-    description: `Obtain an authentic ${universityName} diploma with a complete documentation package. Includes official transcript, thesis/project, student ID, and database registration.`,
+    description: `Authentic ${universityName} diploma package on premium parchment with embossed seal, holographic security, and authorized signatures. Complete package includes official transcript, 50-100 page thesis/project, laminated student ID with security features, database registration in alumni system, and notarized verification letter. Fully customizable degree type, major, GPA, and honors. Processing in 2 weeks with secure international delivery.`,
     
     packageIncludes: [
       {
