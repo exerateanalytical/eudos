@@ -93,7 +93,7 @@ const PassportDetail = () => {
     title: `${country} Passport`,
     price: "$2,500",
     processingTime: "7-10 business days",
-    description: `Premium ${country} biometric passport featuring military-grade RFID technology, encrypted biometric data, and multi-layered holograms. Registered in official government databases for seamless verification worldwide. Includes laser-engraved personalization, UV security threads, machine-readable zone, and tamper-proof binding. Express processing in 7-10 business days with secure international delivery. All security features meet international standards.`,
+    description: `Experience premium international travel documentation with our ${country} biometric passport, meticulously crafted with state-of-the-art security features. Each passport incorporates military-grade RFID technology with encrypted biometric data, multi-layered holographic overlays, and UV-reactive security threads that ensure authenticity at every checkpoint. Our passports feature laser-engraved personalization, precision machine-readable zones, tamper-proof binding, and watermarked pages that meet and exceed international standards. Fully registered in official government databases, your passport seamlessly passes all verification systems worldwide. We employ the same advanced manufacturing processes used by government facilities, ensuring reliable documentation you can trust. Express processing delivers your passport in just 7-10 business days with secure worldwide delivery, tracking, and insurance. Whether for business, education, or leisure travel, our ${country} passport opens doors to unlimited possibilities across borders with complete confidence and peace of mind.`,
     
     features: [
       "Biometric data integration",

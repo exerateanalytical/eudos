@@ -30,7 +30,7 @@ const DiplomaDetail = () => {
     universityName,
     price: diplomaPrice,
     deliveryTime: "2 weeks",
-    description: `Authentic ${universityName} diploma package on premium parchment with embossed seal, holographic security, and authorized signatures. Complete package includes official transcript, 50-100 page thesis/project, laminated student ID with security features, database registration in alumni system, and notarized verification letter. Fully customizable degree type, major, GPA, and honors. Processing in 2 weeks with secure international delivery.`,
+    description: `Obtain an authentic ${universityName} diploma with comprehensive documentation package featuring premium parchment paper, embossed university seal, holographic security strip, and authorized signatures from the President and Registrar. Your complete package includes an official academic transcript showing all coursework, grades, and GPA on security paper with university letterhead; a professionally written 50-100 page thesis or capstone project tailored to your field of study; a laminated student ID card with photo, barcode, magnetic strip, and holographic seal; permanent registration in the university's alumni database for official verification; and a notarized verification letter on university letterhead. Fully customizable with your choice of degree type (Bachelor's, Master's, PhD), major, graduation year, GPA, and honors. All documents feature authentic security elements including watermarks, microprint borders, and raised seals. Professional processing completed in 2 weeks with secure international delivery via DHL or FedEx with full tracking and insurance.`,
     
     packageIncludes: [
       {
