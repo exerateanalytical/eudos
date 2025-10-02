@@ -5,74 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ArrowLeft, Clock, FileText, CheckCircle, Shield, Award, Download, Mail, ShoppingCart, Coins, IdCard, BookOpen, Database } from "lucide-react";
-
-// Import university seals
-import harvardSeal from "@/assets/university-seals/harvard.png";
-import stanfordSeal from "@/assets/university-seals/stanford.png";
-import mitSeal from "@/assets/university-seals/mit.png";
-import berkeleySeal from "@/assets/university-seals/berkeley.png";
-import princetonSeal from "@/assets/university-seals/princeton.png";
-import yaleSeal from "@/assets/university-seals/yale.png";
-import columbiaSeal from "@/assets/university-seals/columbia.png";
-import chicagoSeal from "@/assets/university-seals/chicago.png";
-import torontoSeal from "@/assets/university-seals/toronto.png";
-import mcgillSeal from "@/assets/university-seals/mcgill.png";
-import ubcSeal from "@/assets/university-seals/ubc.png";
-import johnsHopkinsSeal from "@/assets/university-seals/johns-hopkins.png";
-import upennSeal from "@/assets/university-seals/upenn.png";
-import caltechSeal from "@/assets/university-seals/caltech.png";
-import cornellSeal from "@/assets/university-seals/cornell.png";
-import northwesternSeal from "@/assets/university-seals/northwestern.png";
-import dukeSeal from "@/assets/university-seals/duke.png";
-import michiganSeal from "@/assets/university-seals/michigan.png";
-import uclaSeal from "@/assets/university-seals/ucla.png";
-import brownSeal from "@/assets/university-seals/brown.png";
-import dartmouthSeal from "@/assets/university-seals/dartmouth.png";
-import vanderbiltSeal from "@/assets/university-seals/vanderbilt.png";
-import riceSeal from "@/assets/university-seals/rice.png";
-import cmuSeal from "@/assets/university-seals/cmu.png";
-import uscSeal from "@/assets/university-seals/usc.png";
-import georgetownSeal from "@/assets/university-seals/georgetown.png";
-import nyuSeal from "@/assets/university-seals/nyu.png";
-import mcmasterSeal from "@/assets/university-seals/mcmaster.png";
-import albertaSeal from "@/assets/university-seals/alberta.png";
-import waterlooSeal from "@/assets/university-seals/waterloo.png";
-import queensSeal from "@/assets/university-seals/queens.png";
-
-// Mapping of university names to seals
-const universitySealMap: Record<string, string> = {
-  "Harvard University": harvardSeal,
-  "Stanford University": stanfordSeal,
-  "Massachusetts Institute of Technology (MIT)": mitSeal,
-  "University of California, Berkeley": berkeleySeal,
-  "Princeton University": princetonSeal,
-  "Yale University": yaleSeal,
-  "Columbia University": columbiaSeal,
-  "University of Chicago": chicagoSeal,
-  "California Institute of Technology (Caltech)": caltechSeal,
-  "Johns Hopkins University": johnsHopkinsSeal,
-  "University of Pennsylvania": upennSeal,
-  "Cornell University": cornellSeal,
-  "University of Michigan": michiganSeal,
-  "Northwestern University": northwesternSeal,
-  "Duke University": dukeSeal,
-  "University of California, Los Angeles (UCLA)": uclaSeal,
-  "Brown University": brownSeal,
-  "Dartmouth College": dartmouthSeal,
-  "Vanderbilt University": vanderbiltSeal,
-  "Rice University": riceSeal,
-  "Carnegie Mellon University": cmuSeal,
-  "University of Southern California": uscSeal,
-  "Georgetown University": georgetownSeal,
-  "New York University": nyuSeal,
-  "University of Toronto": torontoSeal,
-  "McGill University": mcgillSeal,
-  "University of British Columbia": ubcSeal,
-  "McMaster University": mcmasterSeal,
-  "University of Alberta": albertaSeal,
-  "University of Waterloo": waterlooSeal,
-  "Queen's University": queensSeal,
-};
+import { universitySealMap } from "@/lib/universitySeals";
 import { EscrowForm } from "@/components/EscrowForm";
 import { ReviewForm } from "@/components/reviews/ReviewForm";
 import { ReviewsList } from "@/components/reviews/ReviewsList";
