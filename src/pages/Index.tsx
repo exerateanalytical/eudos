@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -7,6 +8,7 @@ import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState({
@@ -155,11 +157,16 @@ const Index = () => {
           </p>
           
           <div className="flex gap-4 justify-center flex-wrap animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-            <Button size="lg" className="group relative overflow-hidden bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300" asChild>
-              <a href="#contact">
-                <span className="relative z-10">Request Quote</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-primary-glow to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </a>
+            <Button 
+              size="lg" 
+              className="group relative overflow-hidden bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300"
+              onClick={() => navigate("/apply")}
+            >
+              <span className="relative z-10">Apply for Documents</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-primary-glow to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </Button>
+            <Button size="lg" variant="outline" className="border-2 hover:bg-primary/5 transition-all duration-300" asChild>
+              <a href="#contact">Request Quote</a>
             </Button>
             <Button size="lg" variant="outline" className="border-2 hover:bg-primary/5 transition-all duration-300" asChild>
               <a href="#services">Explore Services</a>
