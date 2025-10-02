@@ -14,7 +14,241 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      addresses: {
+        Row: {
+          address_type: string
+          city: string
+          country: string
+          created_at: string | null
+          id: string
+          is_default: boolean | null
+          state: string
+          street: string
+          updated_at: string | null
+          user_id: string
+          zip_code: string
+        }
+        Insert: {
+          address_type: string
+          city: string
+          country: string
+          created_at?: string | null
+          id?: string
+          is_default?: boolean | null
+          state: string
+          street: string
+          updated_at?: string | null
+          user_id: string
+          zip_code: string
+        }
+        Update: {
+          address_type?: string
+          city?: string
+          country?: string
+          created_at?: string | null
+          id?: string
+          is_default?: boolean | null
+          state?: string
+          street?: string
+          updated_at?: string | null
+          user_id?: string
+          zip_code?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "addresses_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      document_applications: {
+        Row: {
+          country: string
+          created_at: string | null
+          document_type: string
+          id: string
+          notes: string | null
+          status: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          country: string
+          created_at?: string | null
+          document_type: string
+          id?: string
+          notes?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          country?: string
+          created_at?: string | null
+          document_type?: string
+          id?: string
+          notes?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "document_applications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          country: string | null
+          created_at: string | null
+          escrow_fee: number | null
+          id: string
+          payment_method: string | null
+          product_name: string
+          product_type: string
+          status: string | null
+          total_amount: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          country?: string | null
+          created_at?: string | null
+          escrow_fee?: number | null
+          id?: string
+          payment_method?: string | null
+          product_name: string
+          product_type: string
+          status?: string | null
+          total_amount?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          country?: string | null
+          created_at?: string | null
+          escrow_fee?: number | null
+          id?: string
+          payment_method?: string | null
+          product_name?: string
+          product_type?: string
+          status?: string | null
+          total_amount?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pgp_keys: {
+        Row: {
+          created_at: string | null
+          id: string
+          public_key: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          public_key: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          public_key?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pgp_keys_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          email: string
+          full_name: string
+          id: string
+          phone_number: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          full_name: string
+          id: string
+          phone_number?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          phone_number?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      two_factor_auth: {
+        Row: {
+          backup_codes: string[] | null
+          created_at: string | null
+          id: string
+          is_enabled: boolean | null
+          secret_key: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          backup_codes?: string[] | null
+          created_at?: string | null
+          id?: string
+          is_enabled?: boolean | null
+          secret_key: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          backup_codes?: string[] | null
+          created_at?: string | null
+          id?: string
+          is_enabled?: boolean | null
+          secret_key?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "two_factor_auth_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
