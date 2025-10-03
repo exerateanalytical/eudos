@@ -21,7 +21,11 @@ const DiplomaDetail = () => {
   const [reviewsRefresh, setReviewsRefresh] = useState(0);
   const [activeTab, setActiveTab] = useState("package");
   
-  const universityName = university?.replace(/-/g, ' ') || "Harvard University";
+  // Convert URL parameter back to proper university name with title case
+  const universityName = university?.split('-').map(word => 
+    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+  ).join(' ') || "Harvard University";
+  
   const reviewStats = useReviewStats("diploma", university || "");
   
   const certificateImage = getDiplomaCertificate(universityName);
