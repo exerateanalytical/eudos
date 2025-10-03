@@ -301,6 +301,15 @@ import fribourgSeal from "@/assets/university-seals/fribourg.png";
 import stGallenSeal from "@/assets/university-seals/st-gallen.png";
 import usiSeal from "@/assets/university-seals/usi.png";
 
+// Belgian Universities
+import kuLeuvenSeal from "@/assets/university-seals/ku-leuven.png";
+import ghentSeal from "@/assets/university-seals/ghent.png";
+import uclouvainSeal from "@/assets/university-seals/uclouvain.png";
+import ulbSeal from "@/assets/university-seals/ulb.png";
+import vubSeal from "@/assets/university-seals/vub.png";
+import antwerpSeal from "@/assets/university-seals/antwerp.png";
+import liegeSeal from "@/assets/university-seals/liege.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -604,6 +613,15 @@ export const universitySealMap: Record<string, string> = {
   "University of Fribourg": fribourgSeal,
   "University of St. Gallen": stGallenSeal,
   "Università della Svizzera italiana": usiSeal,
+  
+  // Belgian Universities
+  "KU Leuven": kuLeuvenSeal,
+  "Ghent University": ghentSeal,
+  "UCLouvain": uclouvainSeal,
+  "Université libre de Bruxelles": ulbSeal,
+  "Vrije Universiteit Brussel": vubSeal,
+  "University of Antwerp": antwerpSeal,
+  "University of Liège": liegeSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
