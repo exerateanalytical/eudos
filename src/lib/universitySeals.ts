@@ -499,6 +499,11 @@ import yonseiSeal from "@/assets/university-seals/yonsei.png";
 import fudanSeal from "@/assets/university-seals/fudan.png";
 import ntuTaiwanSeal from "@/assets/university-seals/ntu-taiwan.png";
 
+// Additional Canadian Universities
+import nunavutArcticSeal from "@/assets/university-seals/nunavut-arctic.png";
+import auroraCollegeSeal from "@/assets/university-seals/aurora-college.png";
+import yukonSeal from "@/assets/university-seals/yukon.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -720,6 +725,9 @@ export const universitySealMap: Record<string, string> = {
   "Université Sainte-Anne": sainteAnneSeal,
   "St. Mary's University College": stmarysCalgary,
   "Newman Theological College": newmanSeal,
+  "Nunavut Arctic College": nunavutArcticSeal,
+  "Aurora College": auroraCollegeSeal,
+  "Yukon University": yukonSeal,
   
   // UK Universities
   "University of Oxford": oxfordSeal,
