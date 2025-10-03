@@ -101,6 +101,13 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "addresses_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
         ]
       }
       cms_blog_posts: {
@@ -349,6 +356,13 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "document_applications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
         ]
       }
       escrow_transactions: {
@@ -545,6 +559,13 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "orders_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
         ]
       }
       payment_methods: {
@@ -605,6 +626,13 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: true
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pgp_keys_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "public_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -701,6 +729,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "review_replies_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "public_reviews"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "review_replies_review_id_fkey"
             columns: ["review_id"]
@@ -881,6 +916,13 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "two_factor_auth_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
         ]
       }
       user_documents: {
@@ -993,7 +1035,60 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          full_name: string | null
+          id: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string | null
+        }
+        Relationships: []
+      }
+      public_reviews: {
+        Row: {
+          anonymous_user_id: string | null
+          created_at: string | null
+          id: string | null
+          product_id: string | null
+          product_type: string | null
+          rating: number | null
+          review_text: string | null
+          status: string | null
+        }
+        Insert: {
+          anonymous_user_id?: never
+          created_at?: string | null
+          id?: string | null
+          product_id?: string | null
+          product_type?: string | null
+          rating?: number | null
+          review_text?: string | null
+          status?: string | null
+        }
+        Update: {
+          anonymous_user_id?: never
+          created_at?: string | null
+          id?: string | null
+          product_id?: string | null
+          product_type?: string | null
+          rating?: number | null
+          review_text?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       create_notification: {
@@ -1011,6 +1106,10 @@ export type Database = {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      verify_2fa_code: {
+        Args: { p_code: string }
         Returns: boolean
       }
     }
