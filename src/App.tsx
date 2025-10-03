@@ -27,6 +27,7 @@ import PassportDetail from "./pages/PassportDetail";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import SecurityFeatures from "./pages/SecurityFeatures";
+import Escrow from "./pages/Escrow";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -62,6 +63,7 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/security-features" element={<SecurityFeatures />} />
+            <Route path="/escrow" element={<Escrow />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

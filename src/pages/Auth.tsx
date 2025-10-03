@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Session } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
@@ -25,6 +25,7 @@ const loginSchema = z.object({
 
 const Auth = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -34,7 +35,9 @@ const Auth = () => {
       (event, session) => {
         setSession(session);
         if (session) {
-          navigate("/dashboard");
+          const returnTo = (location.state as any)?.returnTo || "/dashboard";
+          const openForm = (location.state as any)?.openForm || false;
+          navigate(returnTo, { state: { openForm } });
         }
       }
     );
@@ -43,12 +46,14 @@ const Auth = () => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       if (session) {
-        navigate("/dashboard");
+        const returnTo = (location.state as any)?.returnTo || "/dashboard";
+        const openForm = (location.state as any)?.openForm || false;
+        navigate(returnTo, { state: { openForm } });
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, location]);
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
