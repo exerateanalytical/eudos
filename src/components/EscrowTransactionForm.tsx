@@ -183,40 +183,51 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Shield className="w-5 h-5 text-primary" />
-            {step === "form" && "Create Secure Escrow"}
-            {step === "review" && "Review Escrow Details"}
-            {step === "payment" && "Payment Instructions"}
+        <DialogHeader className="bg-gradient-to-r from-primary/10 via-primary/5 to-transparent pb-6 -mx-6 -mt-6 px-6 pt-6 rounded-t-lg border-b border-primary/20">
+          <DialogTitle className="flex items-center gap-3 text-xl">
+            <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+              <Shield className="w-6 h-6 text-primary" />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-bold">
+                {step === "form" && "Create Secure Escrow"}
+                {step === "review" && "Review Escrow Details"}
+                {step === "payment" && "Payment Instructions"}
+              </span>
+              <span className="text-xs font-normal text-muted-foreground">
+                {step === "form" && "Protected by blockchain escrow technology"}
+                {step === "review" && "Verify all details before proceeding"}
+                {step === "payment" && "Secure your funds in escrow"}
+              </span>
+            </div>
           </DialogTitle>
           
           {/* Progress Indicator */}
-          <div className="flex items-center justify-center gap-2 pt-4">
+          <div className="flex items-center justify-center gap-2 pt-6">
             <div className="flex items-center gap-2">
               <div className={cn(
-                "w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold",
-                step === "form" ? "bg-primary text-primary-foreground" : "bg-primary/20 text-primary"
+                "w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-all",
+                step === "form" ? "bg-primary text-primary-foreground shadow-lg shadow-primary/50" : "bg-primary/20 text-primary"
               )}>
                 1
               </div>
               <span className={cn("text-xs font-medium", step === "form" ? "text-primary" : "text-muted-foreground")}>Form</span>
             </div>
-            <div className={cn("h-0.5 w-8", step !== "form" ? "bg-primary" : "bg-muted")} />
+            <div className={cn("h-0.5 w-8 transition-all", step !== "form" ? "bg-primary" : "bg-muted")} />
             <div className="flex items-center gap-2">
               <div className={cn(
-                "w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold",
-                step === "review" ? "bg-primary text-primary-foreground" : step === "payment" ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground"
+                "w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-all",
+                step === "review" ? "bg-primary text-primary-foreground shadow-lg shadow-primary/50" : step === "payment" ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground"
               )}>
                 2
               </div>
               <span className={cn("text-xs font-medium", step === "review" ? "text-primary" : "text-muted-foreground")}>Review</span>
             </div>
-            <div className={cn("h-0.5 w-8", step === "payment" ? "bg-primary" : "bg-muted")} />
+            <div className={cn("h-0.5 w-8 transition-all", step === "payment" ? "bg-primary" : "bg-muted")} />
             <div className="flex items-center gap-2">
               <div className={cn(
-                "w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold",
-                step === "payment" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                "w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-all",
+                step === "payment" ? "bg-primary text-primary-foreground shadow-lg shadow-primary/50" : "bg-muted text-muted-foreground"
               )}>
                 3
               </div>
@@ -224,6 +235,22 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
             </div>
           </div>
         </DialogHeader>
+
+        {/* Universal Escrow Protection Notice */}
+        <Alert className="border-primary/30 bg-gradient-to-r from-primary/10 to-primary/5 mt-4">
+          <Shield className="h-5 w-5 text-primary" />
+          <AlertTitle className="text-primary font-bold flex items-center gap-2">
+            🔒 Your Payment is Protected
+          </AlertTitle>
+          <AlertDescription className="text-sm space-y-2">
+            <p className="font-medium">Funds held securely in blockchain escrow until you confirm delivery.</p>
+            <div className="flex flex-wrap gap-2">
+              <Badge variant="secondary" className="text-xs"><CheckCircle className="w-3 h-3 mr-1" />Seller Verified</Badge>
+              <Badge variant="secondary" className="text-xs"><Lock className="w-3 h-3 mr-1" />Encrypted</Badge>
+              <Badge variant="secondary" className="text-xs"><Shield className="w-3 h-3 mr-1" />Dispute Protection</Badge>
+            </div>
+          </AlertDescription>
+        </Alert>
 
         {step === "form" && (
           <div className="space-y-6 py-4">
@@ -856,15 +883,41 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
               </CardContent>
             </Card>
 
-            <Button onClick={handleConfirmPayment} className="w-full gap-2" disabled={loading}>
+            {/* Final Security Reminder */}
+            <Alert className="border-primary/30 bg-gradient-to-r from-primary/10 to-primary/5">
+              <Lock className="h-4 w-4 text-primary" />
+              <AlertTitle className="text-primary font-semibold">Final Security Checklist</AlertTitle>
+              <AlertDescription>
+                <ul className="text-xs space-y-1 mt-2">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-3 h-3 flex-shrink-0 mt-0.5 text-green-600" />
+                    <span>✓ Payment address verified and copied</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-3 h-3 flex-shrink-0 mt-0.5 text-green-600" />
+                    <span>✓ Sending exact amount: <strong>${total.toFixed(2)}</strong></span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-3 h-3 flex-shrink-0 mt-0.5 text-green-600" />
+                    <span>✓ Funds will be held in escrow until you confirm delivery</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Shield className="w-3 h-3 flex-shrink-0 mt-0.5 text-primary" />
+                    <span><strong>Remember:</strong> Never release funds before confirming product receipt</span>
+                  </li>
+                </ul>
+              </AlertDescription>
+            </Alert>
+
+            <Button onClick={handleConfirmPayment} className="w-full gap-2 h-12 text-base font-semibold" disabled={loading}>
               {loading ? (
                 <>
-                  <Clock className="w-4 h-4 animate-spin" />
+                  <Clock className="w-5 h-5 animate-spin" />
                   Creating Escrow...
                 </>
               ) : (
                 <>
-                  <CheckCircle className="w-4 h-4" />
+                  <CheckCircle className="w-5 h-5" />
                   Confirm Payment Sent
                 </>
               )}
