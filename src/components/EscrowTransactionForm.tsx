@@ -188,6 +188,26 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
 
         {step === "form" && (
           <div className="space-y-6 py-4">
+            {/* Transaction Parties */}
+            <div className="bg-secondary/50 p-4 rounded-lg space-y-4 border">
+              <h3 className="font-semibold flex items-center gap-2">
+                <Shield className="w-4 h-4 text-primary" />
+                Transaction Parties
+              </h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-xs text-muted-foreground">Seller (Platform)</Label>
+                  <Input value="SecurePrint Labs" readOnly className="bg-background" />
+                  <p className="text-xs text-muted-foreground">Verified seller on the platform</p>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-xs text-muted-foreground">Buyer (You)</Label>
+                  <Input value={formData.buyerName || "Loading..."} readOnly className="bg-background" />
+                  <p className="text-xs text-muted-foreground">Your account information</p>
+                </div>
+              </div>
+            </div>
+
             {/* Product Selection */}
             <div className="space-y-2">
               <Label>Product / Service *</Label>
@@ -317,9 +337,9 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
               </div>
             )}
 
-            {/* Buyer Information */}
+            {/* Buyer Contact Information */}
             <div className="space-y-4 pt-4 border-t">
-              <h3 className="font-semibold">Buyer Information</h3>
+              <h3 className="font-semibold">Your Contact Information</h3>
               <div className="space-y-2">
                 <Label htmlFor="buyerName">Full Name *</Label>
                 <Input
