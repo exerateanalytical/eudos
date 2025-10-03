@@ -461,6 +461,14 @@ import pekingSeal from "@/assets/university-seals/peking.png";
 // Hong Kong Universities
 import hkuSeal from "@/assets/university-seals/hku.png";
 
+// Australian Universities
+import melbourneSeal from "@/assets/university-seals/melbourne.png";
+import anuSeal from "@/assets/university-seals/anu.png";
+import sydneySeal from "@/assets/university-seals/sydney.png";
+import unswSeal from "@/assets/university-seals/unsw.png";
+import queenslandSeal from "@/assets/university-seals/queensland.png";
+import monashSeal from "@/assets/university-seals/monash.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -927,6 +935,16 @@ export const universitySealMap: Record<string, string> = {
   // Hong Kong Universities
   "University of Hong Kong": hkuSeal,
   "HKU": hkuSeal,
+  
+  // Australian Universities
+  "University of Melbourne": melbourneSeal,
+  "Australian National University": anuSeal,
+  "ANU": anuSeal,
+  "University of Sydney": sydneySeal,
+  "UNSW Sydney": unswSeal,
+  "UNSW": unswSeal,
+  "University of Queensland": queenslandSeal,
+  "Monash University": monashSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
