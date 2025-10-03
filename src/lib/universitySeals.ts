@@ -373,6 +373,17 @@ import masarykSeal from "@/assets/university-seals/masaryk.png";
 import corvinusSeal from "@/assets/university-seals/corvinus.png";
 import elteSeal from "@/assets/university-seals/elte.png";
 
+// Romanian Universities
+import bucharestSeal from "@/assets/university-seals/bucharest.png";
+import babesBolyaiSeal from "@/assets/university-seals/babes-bolyai.png";
+import bucharestTechSeal from "@/assets/university-seals/bucharest-tech.png";
+
+// Bulgarian Universities
+import sofiaSeal from "@/assets/university-seals/sofia.png";
+
+// Danish Universities
+import copenhagenSeal from "@/assets/university-seals/copenhagen.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -748,6 +759,17 @@ export const universitySealMap: Record<string, string> = {
   // Hungarian Universities
   "Corvinus University": corvinusSeal,
   "Eötvös Loránd University": elteSeal,
+  
+  // Romanian Universities
+  "University of Bucharest": bucharestSeal,
+  "Babeș-Bolyai University": babesBolyaiSeal,
+  "Polytechnic University of Bucharest": bucharestTechSeal,
+  
+  // Bulgarian Universities
+  "Sofia University": sofiaSeal,
+  
+  // Danish Universities
+  "University of Copenhagen": copenhagenSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
