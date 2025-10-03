@@ -258,6 +258,23 @@ import cologneSeal from "@/assets/university-seals/cologne.png";
 import tuBerlinSeal from "@/assets/university-seals/tu-berlin.png";
 import mannheimSeal from "@/assets/university-seals/mannheim.png";
 
+// French Universities
+import sorbonneSeal from "@/assets/university-seals/sorbonne.png";
+import ensParisSeal from "@/assets/university-seals/ens-paris.png";
+import polytechniqueSeal from "@/assets/university-seals/polytechnique.png";
+import sciencesPoSeal from "@/assets/university-seals/sciences-po.png";
+import parisSaclaySeal from "@/assets/university-seals/paris-saclay.png";
+import pslSeal from "@/assets/university-seals/psl.png";
+import centraleParisSeal from "@/assets/university-seals/centrale-paris.png";
+import hecParisSeal from "@/assets/university-seals/hec-paris.png";
+import inseadSeal from "@/assets/university-seals/insead.png";
+import grenobleSeal from "@/assets/university-seals/grenoble.png";
+import aixMarseilleSeal from "@/assets/university-seals/aix-marseille.png";
+import bordeauxSeal from "@/assets/university-seals/bordeaux.png";
+import strasbourgSeal from "@/assets/university-seals/strasbourg.png";
+import lyonSeal from "@/assets/university-seals/lyon.png";
+import toulouseSeal from "@/assets/university-seals/toulouse.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -518,6 +535,23 @@ export const universitySealMap: Record<string, string> = {
   "University of Cologne": cologneSeal,
   "Technical University of Berlin": tuBerlinSeal,
   "University of Mannheim": mannheimSeal,
+  
+  // French Universities
+  "Sorbonne University": sorbonneSeal,
+  "École Normale Supérieure (ENS Paris)": ensParisSeal,
+  "École Polytechnique": polytechniqueSeal,
+  "Sciences Po Paris": sciencesPoSeal,
+  "Université Paris-Saclay": parisSaclaySeal,
+  "Université PSL (Paris Sciences et Lettres)": pslSeal,
+  "École Centrale Paris": centraleParisSeal,
+  "HEC Paris": hecParisSeal,
+  "INSEAD": inseadSeal,
+  "Université Grenoble Alpes": grenobleSeal,
+  "Aix-Marseille University": aixMarseilleSeal,
+  "University of Bordeaux": bordeauxSeal,
+  "University of Strasbourg": strasbourgSeal,
+  "University of Lyon": lyonSeal,
+  "University of Toulouse": toulouseSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
