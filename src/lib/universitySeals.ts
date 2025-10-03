@@ -555,6 +555,105 @@ import mtSacSeal from "@/assets/university-seals/mt-sac.png";
 import riversideSeal from "@/assets/university-seals/riverside.png";
 import chaffeySeal from "@/assets/university-seals/chaffey.png";
 
+// US Community Colleges - Batch 4
+import sdMesaSeal from "@/assets/university-seals/sd-mesa.png";
+import mesaAzSeal from "@/assets/university-seals/mesa-az.png";
+import pimaSeal from "@/assets/university-seals/pima.png";
+import rioHondoSeal from "@/assets/university-seals/rio-hondo.png";
+import lavcSeal from "@/assets/university-seals/lavc.png";
+import sbccSeal from "@/assets/university-seals/sbcc.png";
+import sanMateoSeal from "@/assets/university-seals/san-mateo.png";
+import canadaSeal from "@/assets/university-seals/canada.png";
+import dvcSeal from "@/assets/university-seals/dvc.png";
+import fresnoSeal from "@/assets/university-seals/fresno.png";
+import bakersfieldSeal from "@/assets/university-seals/bakersfield.png";
+import modestoSeal from "@/assets/university-seals/modesto.png";
+import lbccSeal from "@/assets/university-seals/lbcc.png";
+import cabrilloSeal from "@/assets/university-seals/cabrillo.png";
+import ohloneSeal from "@/assets/university-seals/ohlone.png";
+
+// US Community Colleges - Batch 5
+import laneySeal from "@/assets/university-seals/laney.png";
+import merrittSeal from "@/assets/university-seals/merritt.png";
+import skylineSeal from "@/assets/university-seals/skyline.png";
+import westValleySeal from "@/assets/university-seals/west-valley.png";
+import evergreenSeal from "@/assets/university-seals/evergreen.png";
+import solanoSeal from "@/assets/university-seals/solano.png";
+import venturaSeal from "@/assets/university-seals/ventura.png";
+import moorparkSeal from "@/assets/university-seals/moorpark.png";
+import oxnardSeal from "@/assets/university-seals/oxnard.png";
+import hancockSeal from "@/assets/university-seals/hancock.png";
+import mpcSeal from "@/assets/university-seals/mpc.png";
+import hartnellSeal from "@/assets/university-seals/hartnell.png";
+import desertSeal from "@/assets/university-seals/desert.png";
+import antelopeValleySeal from "@/assets/university-seals/antelope-valley.png";
+import losMedanosSeal from "@/assets/university-seals/los-medanos.png";
+
+// US Community Colleges - Batch 6
+import deltaSeal from "@/assets/university-seals/delta.png";
+import butteSeal from "@/assets/university-seals/butte.png";
+import shastaSeal from "@/assets/university-seals/shasta.png";
+import sierraSeal from "@/assets/university-seals/sierra.png";
+import americanRiverSeal from "@/assets/university-seals/american-river.png";
+import sacCitySeal from "@/assets/university-seals/sac-city.png";
+import cosumnesSeal from "@/assets/university-seals/cosumnes.png";
+import sjccSeal from "@/assets/university-seals/sjcc.png";
+import ccnySeal from "@/assets/university-seals/ccny.png";
+import kingsboroughSeal from "@/assets/university-seals/kingsborough.png";
+import queensboroughSeal from "@/assets/university-seals/queensborough.png";
+import bccCunySeal from "@/assets/university-seals/bcc-cuny.png";
+import hostosSeal from "@/assets/university-seals/hostos.png";
+import westchesterCCSeal from "@/assets/university-seals/westchester-cc.png";
+import suffolkSeal from "@/assets/university-seals/suffolk.png";
+
+// US Community Colleges - Batch 7  
+import rocklandSeal from "@/assets/university-seals/rockland.png";
+import nassauSeal from "@/assets/university-seals/nassau.png";
+import monroeSeal from "@/assets/university-seals/monroe.png";
+import onondagaSeal from "@/assets/university-seals/onondaga.png";
+import hudsonValleySeal from "@/assets/university-seals/hudson-valley.png";
+import erieSeal from "@/assets/university-seals/erie.png";
+import corningSeal from "@/assets/university-seals/corning.png";
+import fingerLakesSeal from "@/assets/university-seals/finger-lakes.png";
+import schenectadySeal from "@/assets/university-seals/schenectady.png";
+import tompkinsSeal from "@/assets/university-seals/tompkins.png";
+import dutchessSeal from "@/assets/university-seals/dutchess.png";
+import mohawkValleySeal from "@/assets/university-seals/mohawk-valley.png";
+
+// Canadian Colleges - Batch 8
+import humberSeal from "@/assets/university-seals/humber.png";
+import senecaSeal from "@/assets/university-seals/seneca.png";
+import georgeBrownSeal from "@/assets/university-seals/george-brown.png";
+import centennialSeal from "@/assets/university-seals/centennial.png";
+import sheridanSeal from "@/assets/university-seals/sheridan.png";
+import algonquinSeal from "@/assets/university-seals/algonquin.png";
+import fanshaweSeal from "@/assets/university-seals/fanshawe.png";
+import conestogaSeal from "@/assets/university-seals/conestoga.png";
+import durhamCollegeSeal from "@/assets/university-seals/durham.png";
+import mohawkSeal from "@/assets/university-seals/mohawk.png";
+import stClairSeal from "@/assets/university-seals/st-clair.png";
+import niagaraSeal from "@/assets/university-seals/niagara.png";
+import georgianSeal from "@/assets/university-seals/georgian.png";
+import flemingSeal from "@/assets/university-seals/fleming.png";
+import loyalistSeal from "@/assets/university-seals/loyalist.png";
+
+// Canadian Colleges - Batch 9
+import stLawrenceSeal from "@/assets/university-seals/st-lawrence.png";
+import cambrianSeal from "@/assets/university-seals/cambrian.png";
+import canadoreSeal from "@/assets/university-seals/canadore.png";
+import confederationSeal from "@/assets/university-seals/confederation.png";
+import northernCollegeSeal from "@/assets/university-seals/northern-college.png";
+import cnaSeal from "@/assets/university-seals/cna.png";
+import marineInstituteSeal from "@/assets/university-seals/marine-institute.png";
+import nbccSeal from "@/assets/university-seals/nbcc.png";
+import ccnbSeal from "@/assets/university-seals/ccnb.png";
+import hollandSeal from "@/assets/university-seals/holland.png";
+import nsccSeal from "@/assets/university-seals/nscc.png";
+import steFoySeal from "@/assets/university-seals/ste-foy.png";
+import garneauSeal from "@/assets/university-seals/garneau.png";
+import dawsonSeal from "@/assets/university-seals/dawson.png";
+import vanierSeal from "@/assets/university-seals/vanier.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -826,6 +925,95 @@ export const universitySealMap: Record<string, string> = {
   "Mt. San Antonio College": mtSacSeal,
   "Riverside City College": riversideSeal,
   "Chaffey College": chaffeySeal,
+  "San Diego Mesa College": sdMesaSeal,
+  "Mesa Community College": mesaAzSeal,
+  "Pima Community College": pimaSeal,
+  "Rio Hondo College": rioHondoSeal,
+  "Los Angeles Valley College": lavcSeal,
+  "Santa Barbara City College": sbccSeal,
+  "College of San Mateo": sanMateoSeal,
+  "Cañada College": canadaSeal,
+  "Diablo Valley College": dvcSeal,
+  "Fresno City College": fresnoSeal,
+  "Bakersfield College": bakersfieldSeal,
+  "Modesto Junior College": modestoSeal,
+  "Long Beach City College": lbccSeal,
+  "Cabrillo College": cabrilloSeal,
+  "Ohlone College": ohloneSeal,
+  "Laney College": laneySeal,
+  "Merritt College": merrittSeal,
+  "Skyline College": skylineSeal,
+  "West Valley College": westValleySeal,
+  "Evergreen Valley College": evergreenSeal,
+  "Solano Community College": solanoSeal,
+  "Ventura College": venturaSeal,
+  "Moorpark College": moorparkSeal,
+  "Oxnard College": oxnardSeal,
+  "Allan Hancock College": hancockSeal,
+  "Monterey Peninsula College": mpcSeal,
+  "Hartnell College": hartnellSeal,
+  "College of the Desert": desertSeal,
+  "Antelope Valley College": antelopeValleySeal,
+  "Los Medanos College": losMedanosSeal,
+  "San Joaquin Delta College": deltaSeal,
+  "Butte College": butteSeal,
+  "Shasta College": shastaSeal,
+  "Sierra College": sierraSeal,
+  "American River College": americanRiverSeal,
+  "Sacramento City College": sacCitySeal,
+  "Cosumnes River College": cosumnesSeal,
+  "San Jose City College": sjccSeal,
+  "City College of New York – CUNY": ccnySeal,
+  "Kingsborough Community College – CUNY": kingsboroughSeal,
+  "Queensborough Community College – CUNY": queensboroughSeal,
+  "Bronx Community College – CUNY": bccCunySeal,
+  "Hostos Community College – CUNY": hostosSeal,
+  "Westchester Community College": westchesterCCSeal,
+  "Suffolk County Community College": suffolkSeal,
+  "Rockland Community College": rocklandSeal,
+  "Nassau Community College": nassauSeal,
+  "Monroe Community College": monroeSeal,
+  "Onondaga Community College": onondagaSeal,
+  "Hudson Valley Community College": hudsonValleySeal,
+  "Erie Community College": erieSeal,
+  "Corning Community College": corningSeal,
+  "Finger Lakes Community College": fingerLakesSeal,
+  "Schenectady County Community College": schenectadySeal,
+  "Tompkins Cortland Community College": tompkinsSeal,
+  "Dutchess Community College": dutchessSeal,
+  "Mohawk Valley Community College": mohawkValleySeal,
+  
+  // Canadian Colleges
+  "Humber College": humberSeal,
+  "Seneca College": senecaSeal,
+  "George Brown College": georgeBrownSeal,
+  "Centennial College": centennialSeal,
+  "Sheridan College": sheridanSeal,
+  "Algonquin College": algonquinSeal,
+  "Fanshawe College": fanshaweSeal,
+  "Conestoga College": conestogaSeal,
+  "Durham College": durhamCollegeSeal,
+  "Mohawk College": mohawkSeal,
+  "St. Clair College": stClairSeal,
+  "Niagara College": niagaraSeal,
+  "Georgian College": georgianSeal,
+  "Fleming College": flemingSeal,
+  "Loyalist College": loyalistSeal,
+  "St. Lawrence College": stLawrenceSeal,
+  "Cambrian College": cambrianSeal,
+  "Canadore College": canadoreSeal,
+  "Confederation College": confederationSeal,
+  "Northern College": northernCollegeSeal,
+  "College of the North Atlantic": cnaSeal,
+  "Marine Institute": marineInstituteSeal,
+  "New Brunswick Community College (NBCC)": nbccSeal,
+  "Collège communautaire du Nouveau-Brunswick (CCNB)": ccnbSeal,
+  "Holland College": hollandSeal,
+  "Nova Scotia Community College (NSCC)": nsccSeal,
+  "Cégep de Sainte-Foy": steFoySeal,
+  "Cégep de Garneau": garneauSeal,
+  "Dawson College": dawsonSeal,
+  "Vanier College": vanierSeal,
   
   // UK Universities
   "University of Oxford": oxfordSeal,
