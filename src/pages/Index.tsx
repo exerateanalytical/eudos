@@ -1,45 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { FileText, Shield, Clock, CheckCircle, Printer, Building2, Award, Users, Sparkles, CreditCard, GraduationCap, Fingerprint, Cpu, Eye, Radio, Lock, Scan, FileCheck, Database, BookOpen, ShoppingBag } from "lucide-react";
+import { FileText, Shield, Clock, CheckCircle, Printer, Building2, Award, Sparkles, CreditCard, GraduationCap, Fingerprint, Cpu, Eye, Radio, Lock, Scan, FileCheck, Database, BookOpen, ShoppingBag } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import { z } from "zod";
 import { SecurityFeaturesSection } from "@/components/SecurityFeaturesSection";
-
-const contactFormSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters").max(100),
-  position: z.string().min(2, "Position is required").max(100),
-  agency: z.string().min(2, "Agency is required").max(200),
-  department: z.string().min(2, "Department is required").max(100),
-  email: z.string().email("Invalid email address").max(255),
-  phone: z.string().min(10, "Phone number must be at least 10 digits").max(20),
-  documentType: z.string().min(1, "Please select a document type"),
-  quantity: z.string().min(1, "Quantity is required").max(50),
-  urgency: z.string().min(1, "Please select urgency level"),
-  specifications: z.string().min(10, "Please provide detailed specifications").max(2000),
-});
 
 const Index = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
   const [isVisible, setIsVisible] = useState(false);
   const [currentFeature, setCurrentFeature] = useState(0);
-  const [formData, setFormData] = useState({
-    name: "",
-    position: "",
-    agency: "",
-    department: "",
-    email: "",
-    phone: "",
-    documentType: "",
-    quantity: "",
-    urgency: "",
-    specifications: ""
-  });
 
   useEffect(() => {
     setIsVisible(true);
@@ -53,64 +22,6 @@ const Index = () => {
       clearInterval(interval);
     };
   }, []);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    try {
-      // Validate form data
-      contactFormSchema.parse(formData);
-
-      // Save to database
-      const { error } = await supabase.from("contact_inquiries").insert({
-        name: formData.name,
-        position: formData.position,
-        agency: formData.agency,
-        department: formData.department,
-        email: formData.email,
-        phone: formData.phone,
-        document_type: formData.documentType,
-        quantity: formData.quantity,
-        urgency: formData.urgency,
-        specifications: formData.specifications,
-      });
-
-      if (error) throw error;
-
-      toast({
-        title: "Inquiry Submitted Successfully",
-        description: "Our government liaison team will contact you within 24 hours with a secure communication channel.",
-      });
-      
-      // Reset form
-      setFormData({ 
-        name: "", 
-        position: "", 
-        agency: "", 
-        department: "", 
-        email: "", 
-        phone: "", 
-        documentType: "",
-        quantity: "",
-        urgency: "",
-        specifications: ""
-      });
-    } catch (error: any) {
-      if (error instanceof z.ZodError) {
-        toast({
-          title: "Validation Error",
-          description: error.issues[0].message,
-          variant: "destructive",
-        });
-      } else {
-        toast({
-          title: "Error",
-          description: error.message || "Failed to submit inquiry. Please try again.",
-          variant: "destructive",
-        });
-      }
-    }
-  };
 
   const securityShowcase = [
     {
@@ -274,9 +185,6 @@ const Index = () => {
                 >
                   <span className="relative z-10">Apply Now</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-primary-glow to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </Button>
-                <Button size="default" variant="outline" className="border-2 hover:bg-primary/5 transition-all duration-300 text-xs sm:text-sm md:text-base active:scale-95 touch-manipulation" asChild>
-                  <a href="#contact">Get Quote</a>
                 </Button>
                 <Button size="default" variant="outline" className="border-2 hover:bg-primary/5 transition-all duration-300 text-xs sm:text-sm md:text-base active:scale-95 touch-manipulation hidden sm:inline-flex" onClick={() => navigate("/shop")}>
                   <ShoppingBag className="mr-2 h-4 w-4" />
@@ -553,171 +461,6 @@ const Index = () => {
       {/* Security Features Section */}
       <SecurityFeaturesSection />
 
-      {/* Contact Section */}
-      <section id="contact" className="py-24 px-4 bg-gradient-to-b from-background to-secondary/20">
-        <div className="container mx-auto max-w-4xl">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-              <Shield className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium text-primary">Secure Government Inquiry</span>
-            </div>
-            
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Licensed government agencies and authorized organizations only. All inquiries are handled with strict confidentiality.
-            </p>
-          </div>
-          
-          <Card className="shadow-2xl border-border/50 bg-card/50 backdrop-blur-sm">
-            <CardContent className="pt-8">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Contact Person Details */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-                    <Users className="h-5 w-5 text-primary" />
-                    Contact Person Information
-                  </h3>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <Input
-                      placeholder="Full Name *"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      required
-                      className="border-border/50 focus:border-primary transition-colors duration-300"
-                    />
-                    <Input
-                      placeholder="Official Position/Title *"
-                      value={formData.position}
-                      onChange={(e) => setFormData({ ...formData, position: e.target.value })}
-                      required
-                      className="border-border/50 focus:border-primary transition-colors duration-300"
-                    />
-                  </div>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <Input
-                      type="email"
-                      placeholder="Official Email Address *"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      required
-                      className="border-border/50 focus:border-primary transition-colors duration-300"
-                    />
-                    <Input
-                      type="tel"
-                      placeholder="Direct Phone Number *"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      required
-                      className="border-border/50 focus:border-primary transition-colors duration-300"
-                    />
-                  </div>
-                </div>
-
-                {/* Agency Details */}
-                <div className="space-y-4 pt-4 border-t border-border/50">
-                  <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-                    <Building2 className="h-5 w-5 text-primary" />
-                    Agency Information
-                  </h3>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <Input
-                      placeholder="Government Agency/Organization *"
-                      value={formData.agency}
-                      onChange={(e) => setFormData({ ...formData, agency: e.target.value })}
-                      required
-                      className="border-border/50 focus:border-primary transition-colors duration-300"
-                    />
-                    <Input
-                      placeholder="Department/Division *"
-                      value={formData.department}
-                      onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                      required
-                      className="border-border/50 focus:border-primary transition-colors duration-300"
-                    />
-                  </div>
-                </div>
-
-                {/* Document Requirements */}
-                <div className="space-y-4 pt-4 border-t border-border/50">
-                  <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-                    <FileCheck className="h-5 w-5 text-primary" />
-                    Document Requirements
-                  </h3>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <select
-                        value={formData.documentType}
-                        onChange={(e) => setFormData({ ...formData, documentType: e.target.value })}
-                        required
-                        className="w-full px-3 py-2 rounded-md border border-border/50 bg-background text-foreground focus:border-primary focus:outline-none transition-colors duration-300"
-                      >
-                        <option value="">Select Document Type *</option>
-                        <option value="passports">Registered Passports</option>
-                        <option value="drivers-license">Driver's Licenses</option>
-                        <option value="id-cards">National ID Cards</option>
-                        <option value="diplomas">Official Diplomas</option>
-                        <option value="multiple">Multiple Document Types</option>
-                        <option value="other">Other Government Documents</option>
-                      </select>
-                    </div>
-                    <Input
-                      placeholder="Estimated Quantity *"
-                      value={formData.quantity}
-                      onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
-                      required
-                      className="border-border/50 focus:border-primary transition-colors duration-300"
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <select
-                      value={formData.urgency}
-                      onChange={(e) => setFormData({ ...formData, urgency: e.target.value })}
-                      required
-                      className="w-full px-3 py-2 rounded-md border border-border/50 bg-background text-foreground focus:border-primary focus:outline-none transition-colors duration-300"
-                    >
-                      <option value="">Project Urgency *</option>
-                      <option value="standard">Standard (4-6 weeks)</option>
-                      <option value="expedited">Expedited (2-3 weeks)</option>
-                      <option value="urgent">Urgent (1 week)</option>
-                      <option value="emergency">Emergency (72 hours)</option>
-                    </select>
-                  </div>
-
-                  <Textarea
-                    placeholder="Detailed specifications, security requirements, and any special considerations... *"
-                    value={formData.specifications}
-                    onChange={(e) => setFormData({ ...formData, specifications: e.target.value })}
-                    required
-                    rows={6}
-                    className="border-border/50 focus:border-primary transition-colors duration-300 resize-none"
-                  />
-                </div>
-
-                {/* Security Notice */}
-                <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 flex gap-3">
-                  <Lock className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                  <div className="text-sm text-muted-foreground">
-                    <p className="font-medium text-foreground mb-1">Confidential Processing</p>
-                    <p>All inquiries are processed through secure channels. Our government liaison team will contact you within 24 hours to establish encrypted communication and verify authorization.</p>
-                  </div>
-                </div>
-                
-                <Button 
-                  type="submit" 
-                  className="w-full group relative overflow-hidden bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300" 
-                  size="lg"
-                >
-                  <span className="relative z-10 flex items-center justify-center gap-2">
-                    <Shield className="h-5 w-5" />
-                    Submit Secure Inquiry
-                  </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary-glow to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
 
       <style>{`
         .bg-grid-pattern {
