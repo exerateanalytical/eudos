@@ -484,6 +484,13 @@ import technionSeal from "@/assets/university-seals/technion.png";
 import aubSeal from "@/assets/university-seals/aub.png";
 import kaustSeal from "@/assets/university-seals/kaust.png";
 
+// African Universities
+import capeTownSeal from "@/assets/university-seals/cape-town.png";
+import witsSeal from "@/assets/university-seals/wits.png";
+import stellenboschSeal from "@/assets/university-seals/stellenbosch.png";
+import cairoSeal from "@/assets/university-seals/cairo.png";
+import nairobiSeal from "@/assets/university-seals/nairobi.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -987,6 +994,15 @@ export const universitySealMap: Record<string, string> = {
   "AUB": aubSeal,
   "KAUST": kaustSeal,
   "King Abdullah University of Science and Technology": kaustSeal,
+  
+  // African Universities
+  "University of Cape Town": capeTownSeal,
+  "UCT": capeTownSeal,
+  "University of the Witwatersrand": witsSeal,
+  "Wits": witsSeal,
+  "Stellenbosch University": stellenboschSeal,
+  "Cairo University": cairoSeal,
+  "University of Nairobi": nairobiSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
