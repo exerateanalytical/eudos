@@ -418,6 +418,38 @@ export type Database = {
           },
         ]
       }
+      inquiry_replies: {
+        Row: {
+          admin_id: string
+          created_at: string | null
+          id: string
+          inquiry_id: string
+          message: string
+        }
+        Insert: {
+          admin_id: string
+          created_at?: string | null
+          id?: string
+          inquiry_id: string
+          message: string
+        }
+        Update: {
+          admin_id?: string
+          created_at?: string | null
+          id?: string
+          inquiry_id?: string
+          message?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inquiry_replies_inquiry_id_fkey"
+            columns: ["inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "contact_inquiries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       loyalty_points: {
         Row: {
           created_at: string
@@ -846,6 +878,44 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      ticket_replies: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_staff_reply: boolean | null
+          message: string
+          ticket_id: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_staff_reply?: boolean | null
+          message: string
+          ticket_id: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_staff_reply?: boolean | null
+          message?: string
+          ticket_id?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ticket_replies_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "support_tickets"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       transactions: {
         Row: {

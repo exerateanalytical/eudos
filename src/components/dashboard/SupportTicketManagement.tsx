@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Headphones, Eye } from "lucide-react";
+import { Headphones, Eye, Trash2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -101,6 +101,34 @@ export function SupportTicketManagement() {
     setDetailModalOpen(true);
   };
 
+  const handleDeleteTicket = async (ticketId: string, subject: string) => {
+    if (!confirm(`Are you sure you want to delete ticket "${subject}"? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from("support_tickets")
+        .delete()
+        .eq("id", ticketId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Support ticket deleted successfully",
+      });
+
+      fetchTickets();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   const columns = [
     {
       key: "subject",
@@ -155,10 +183,19 @@ export function SupportTicketManagement() {
       key: "actions",
       label: "Actions",
       render: (row: SupportTicket) => (
-        <Button size="sm" variant="outline" onClick={() => handleViewTicket(row)}>
-          <Eye className="h-4 w-4 mr-1" />
-          View
-        </Button>
+        <div className="flex gap-2">
+          <Button size="sm" variant="outline" onClick={() => handleViewTicket(row)}>
+            <Eye className="h-4 w-4 mr-1" />
+            View
+          </Button>
+          <Button 
+            size="sm" 
+            variant="destructive"
+            onClick={() => handleDeleteTicket(row.id, row.subject)}
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
       ),
     },
   ];

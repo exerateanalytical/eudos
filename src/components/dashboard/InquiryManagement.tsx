@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { MessageSquare, Eye } from "lucide-react";
+import { MessageSquare, Eye, Trash2 } from "lucide-react";
 import { InquiryDetailModal } from "./InquiryDetailModal";
 import {
   Select,
@@ -82,6 +82,34 @@ export function InquiryManagement() {
     }
   };
 
+  const handleDeleteInquiry = async (inquiryId: string, name: string) => {
+    if (!confirm(`Are you sure you want to delete inquiry from "${name}"? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from("contact_inquiries")
+        .delete()
+        .eq("id", inquiryId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Inquiry deleted successfully",
+      });
+
+      fetchInquiries();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   const columns = [
     {
       key: "name",
@@ -134,17 +162,26 @@ export function InquiryManagement() {
       key: "actions",
       label: "Actions",
       render: (row: Inquiry) => (
-        <Button 
-          size="sm" 
-          variant="outline"
-          onClick={() => {
-            setSelectedInquiry(row);
-            setDetailModalOpen(true);
-          }}
-        >
-          <Eye className="h-4 w-4 mr-1" />
-          View
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            size="sm" 
+            variant="outline"
+            onClick={() => {
+              setSelectedInquiry(row);
+              setDetailModalOpen(true);
+            }}
+          >
+            <Eye className="h-4 w-4 mr-1" />
+            View
+          </Button>
+          <Button 
+            size="sm" 
+            variant="destructive"
+            onClick={() => handleDeleteInquiry(row.id, row.name)}
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
       ),
     },
   ];

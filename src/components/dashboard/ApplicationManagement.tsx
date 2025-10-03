@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { FileText, Eye } from "lucide-react";
+import { FileText, Eye, Trash2 } from "lucide-react";
 import { ApplicationDetailModal } from "./ApplicationDetailModal";
 import {
   Select,
@@ -76,6 +76,34 @@ export function ApplicationManagement() {
     }
   };
 
+  const handleDeleteApplication = async (appId: string, docType: string) => {
+    if (!confirm(`Are you sure you want to delete this ${docType} application? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from("document_applications")
+        .delete()
+        .eq("id", appId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Application deleted successfully",
+      });
+
+      fetchApplications();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   const columns = [
     {
       key: "document_type",
@@ -117,17 +145,26 @@ export function ApplicationManagement() {
       key: "actions",
       label: "Actions",
       render: (row: Application) => (
-        <Button 
-          size="sm" 
-          variant="outline"
-          onClick={() => {
-            setSelectedApplication(row);
-            setDetailModalOpen(true);
-          }}
-        >
-          <Eye className="h-4 w-4 mr-1" />
-          Review
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            size="sm" 
+            variant="outline"
+            onClick={() => {
+              setSelectedApplication(row);
+              setDetailModalOpen(true);
+            }}
+          >
+            <Eye className="h-4 w-4 mr-1" />
+            Review
+          </Button>
+          <Button 
+            size="sm" 
+            variant="destructive"
+            onClick={() => handleDeleteApplication(row.id, row.document_type)}
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
       ),
     },
   ];

@@ -60,6 +60,35 @@ export function UserManagement() {
     return data?.role || "user";
   };
 
+  const handleDeleteUser = async (userId: string, userName: string) => {
+    if (!confirm(`Are you sure you want to delete user "${userName}"? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      // Delete user data (cascading will handle related records)
+      const { error } = await supabase
+        .from("profiles")
+        .delete()
+        .eq("id", userId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "User deleted successfully",
+      });
+
+      fetchUsers();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   const columns = [
     {
       key: "full_name",
@@ -113,6 +142,13 @@ export function UserManagement() {
             >
               <Shield className="h-4 w-4 mr-1" />
               Edit Role
+            </Button>
+            <Button 
+              size="sm" 
+              variant="destructive"
+              onClick={() => handleDeleteUser(row.id, row.full_name)}
+            >
+              Delete
             </Button>
           </div>
         );

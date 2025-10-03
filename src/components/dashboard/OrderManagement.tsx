@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { ShoppingCart, Eye } from "lucide-react";
+import { ShoppingCart, Eye, Trash2 } from "lucide-react";
 import { OrderDetailModal } from "./OrderDetailModal";
 import {
   Select,
@@ -79,6 +79,34 @@ export function OrderManagement() {
     }
   };
 
+  const handleDeleteOrder = async (orderId: string, productName: string) => {
+    if (!confirm(`Are you sure you want to delete the order for "${productName}"? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from("orders")
+        .delete()
+        .eq("id", orderId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Order deleted successfully",
+      });
+
+      fetchOrders();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
       pending: "secondary",
@@ -139,17 +167,26 @@ export function OrderManagement() {
       key: "actions",
       label: "Actions",
       render: (row: Order) => (
-        <Button 
-          size="sm" 
-          variant="outline"
-          onClick={() => {
-            setSelectedOrder(row);
-            setDetailModalOpen(true);
-          }}
-        >
-          <Eye className="h-4 w-4 mr-1" />
-          View
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            size="sm" 
+            variant="outline"
+            onClick={() => {
+              setSelectedOrder(row);
+              setDetailModalOpen(true);
+            }}
+          >
+            <Eye className="h-4 w-4 mr-1" />
+            View
+          </Button>
+          <Button 
+            size="sm" 
+            variant="destructive"
+            onClick={() => handleDeleteOrder(row.id, row.product_name)}
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
       ),
     },
   ];
