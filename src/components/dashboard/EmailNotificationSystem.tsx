@@ -35,26 +35,45 @@ export function EmailNotificationSystem() {
         if (error) throw error;
         recipients = data.map(p => p.email);
       } else if (recipientType === "role" && selectedRole) {
-        const { data, error } = await supabase
+        const { data: roleUsers, error } = await supabase
           .from("user_roles")
-          .select("user_id, profiles!inner(email)")
+          .select("user_id")
           .eq("role", selectedRole as "admin" | "moderator" | "user");
         
         if (error) throw error;
-        recipients = data.map((r: any) => r.profiles.email);
+
+        if (roleUsers && roleUsers.length > 0) {
+          const userIds = roleUsers.map(r => r.user_id);
+          const { data: users, error: profileError } = await supabase
+            .from("profiles")
+            .select("email")
+            .in("id", userIds);
+
+          if (profileError) throw profileError;
+          recipients = users?.map(u => u.email) || [];
+        }
       } else {
         recipients = [recipientEmail];
       }
 
-      // Create notifications for users
-      const notifications = recipients.map(email => ({
-        user_id: null, // Will need to map email to user_id in real implementation
-        title: subject,
-        message: message,
-        type: "info" as const
-      }));
+      if (recipients.length === 0) {
+        toast.error("No recipients found");
+        setSending(false);
+        return;
+      }
 
-      toast.success(`Email notifications prepared for ${recipients.length} recipient(s)`);
+      // Call the edge function to send emails
+      const { data, error } = await supabase.functions.invoke("send-admin-email", {
+        body: {
+          recipients,
+          subject,
+          message,
+        },
+      });
+
+      if (error) throw error;
+
+      toast.success(`Email sent to ${data.sent} recipient(s)${data.failed > 0 ? `, ${data.failed} failed` : ''}`);
       
       // Reset form
       setSubject("");

@@ -6,7 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
-import { Settings, Save, Shield, Mail, CreditCard } from "lucide-react";
+import { Settings, Save, Shield, CreditCard, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface SystemConfig {
   siteName: string;
@@ -37,23 +38,80 @@ export function SystemSettings() {
     paymentPublicKey: "",
   });
 
+  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    // Load settings from localStorage or backend
-    const savedConfig = localStorage.getItem("systemConfig");
-    if (savedConfig) {
-      setConfig(JSON.parse(savedConfig));
-    }
+    fetchSettings();
   }, []);
+
+  const fetchSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("system_settings")
+        .select("*");
+
+      if (error) throw error;
+
+      if (data) {
+        const newConfig = { ...config };
+        data.forEach((setting) => {
+          const value = setting.setting_value as any;
+          
+          switch (setting.setting_key) {
+            case 'site_name':
+              newConfig.siteName = value.value || newConfig.siteName;
+              break;
+            case 'contact_email':
+              newConfig.contactEmail = value.value || newConfig.contactEmail;
+              break;
+            case 'maintenance_mode':
+              newConfig.maintenanceMode = value.enabled || false;
+              break;
+            case 'enable_2fa':
+              newConfig.enableTwoFactor = value.enabled || false;
+              break;
+            case 'session_timeout':
+              newConfig.sessionTimeout = value.minutes || 30;
+              break;
+            case 'password_min_length':
+              newConfig.minPasswordLength = value.value || 8;
+              break;
+          }
+        });
+        setConfig(newConfig);
+      }
+    } catch (error: any) {
+      console.error("Failed to load settings:", error);
+      toast.error("Failed to load settings");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateSetting = async (key: string, value: any) => {
+    const { error } = await supabase
+      .from("system_settings")
+      .update({ setting_value: value, updated_at: new Date().toISOString() })
+      .eq("setting_key", key);
+
+    if (error) throw error;
+  };
 
   const handleSave = async () => {
     setSaving(true);
     try {
-      // Save to localStorage (in production, save to database)
-      localStorage.setItem("systemConfig", JSON.stringify(config));
+      await Promise.all([
+        updateSetting('site_name', { value: config.siteName }),
+        updateSetting('contact_email', { value: config.contactEmail }),
+        updateSetting('maintenance_mode', { enabled: config.maintenanceMode }),
+        updateSetting('enable_2fa', { enabled: config.enableTwoFactor }),
+        updateSetting('session_timeout', { minutes: config.sessionTimeout }),
+        updateSetting('password_min_length', { value: config.minPasswordLength }),
+      ]);
       toast.success("Settings saved successfully");
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Failed to save settings:", error);
       toast.error("Failed to save settings");
     } finally {
       setSaving(false);
@@ -63,6 +121,14 @@ export function SystemSettings() {
   const updateConfig = (key: keyof SystemConfig, value: any) => {
     setConfig(prev => ({ ...prev, [key]: value }));
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -222,7 +288,7 @@ export function SystemSettings() {
 
       <div className="flex justify-end">
         <Button onClick={handleSave} disabled={saving} size="lg">
-          <Save className="h-4 w-4 mr-2" />
+          {saving ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
           {saving ? "Saving..." : "Save Settings"}
         </Button>
       </div>
