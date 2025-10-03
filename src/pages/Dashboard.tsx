@@ -27,16 +27,7 @@ const SettingsHub = lazy(() => import("@/components/dashboard/SettingsHub").then
 const NotificationsPanel = lazy(() => import("@/components/dashboard/NotificationsPanel"));
 const ProfileModule = lazy(() => import("@/components/dashboard/ProfileModule"));
 const SecurityModule = lazy(() => import("@/components/dashboard/SecurityModule"));
-const ReviewModerationModule = lazy(() => import("@/components/dashboard/ReviewModerationModule").then(m => ({ default: m.ReviewModerationModule })));
-const AdminAnalytics = lazy(() => import("@/components/dashboard/AdminAnalytics").then(m => ({ default: m.AdminAnalytics })));
 const SeedingModule = lazy(() => import("@/components/dashboard/SeedingModule").then(m => ({ default: m.SeedingModule })));
-const UserManagement = lazy(() => import("@/components/dashboard/UserManagement").then(m => ({ default: m.UserManagement })));
-const ProductManagement = lazy(() => import("@/components/dashboard/ProductManagement").then(m => ({ default: m.ProductManagement })));
-const OrderManagement = lazy(() => import("@/components/dashboard/OrderManagement").then(m => ({ default: m.OrderManagement })));
-const ApplicationManagement = lazy(() => import("@/components/dashboard/ApplicationManagement").then(m => ({ default: m.ApplicationManagement })));
-const PaymentManagement = lazy(() => import("@/components/dashboard/PaymentManagement").then(m => ({ default: m.PaymentManagement })));
-const InquiryManagement = lazy(() => import("@/components/dashboard/InquiryManagement").then(m => ({ default: m.InquiryManagement })));
-const BlogManagement = lazy(() => import("@/components/dashboard/BlogManagement").then(m => ({ default: m.BlogManagement })));
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -239,16 +230,7 @@ const Dashboard = () => {
                     <Route path="security" element={<SecurityModule userId={user?.id!} />} />
                     {isAdmin && (
                       <>
-                        <Route path="reviews" element={<ReviewModerationModule />} />
-                        <Route path="analytics" element={<AdminAnalytics userId={user?.id!} />} />
                         <Route path="seeding" element={<SeedingModule />} />
-                        <Route path="admin/users" element={<UserManagement />} />
-                        <Route path="admin/products" element={<ProductManagement />} />
-                        <Route path="admin/orders" element={<OrderManagement />} />
-                        <Route path="admin/applications" element={<ApplicationManagement />} />
-                        <Route path="admin/payments" element={<PaymentManagement />} />
-                        <Route path="admin/inquiries" element={<InquiryManagement />} />
-                        <Route path="admin/blog" element={<BlogManagement />} />
                       </>
                     )}
                   </Routes>

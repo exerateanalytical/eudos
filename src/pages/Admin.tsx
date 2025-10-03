@@ -1,0 +1,158 @@
+import { useState, useEffect, lazy, Suspense } from "react";
+import { useNavigate, Routes, Route, useLocation } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { User, Session } from "@supabase/supabase-js";
+import { Button } from "@/components/ui/button";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { toast } from "sonner";
+import { LogOut, LayoutDashboard, Shield } from "lucide-react";
+import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { DashboardLoadingSkeleton } from "@/components/dashboard/DashboardLoadingSkeleton";
+
+const UserManagement = lazy(() => import("@/components/dashboard/UserManagement").then(m => ({ default: m.UserManagement })));
+const ProductManagement = lazy(() => import("@/components/dashboard/ProductManagement").then(m => ({ default: m.ProductManagement })));
+const OrderManagement = lazy(() => import("@/components/dashboard/OrderManagement").then(m => ({ default: m.OrderManagement })));
+const ApplicationManagement = lazy(() => import("@/components/dashboard/ApplicationManagement").then(m => ({ default: m.ApplicationManagement })));
+const PaymentManagement = lazy(() => import("@/components/dashboard/PaymentManagement").then(m => ({ default: m.PaymentManagement })));
+const InquiryManagement = lazy(() => import("@/components/dashboard/InquiryManagement").then(m => ({ default: m.InquiryManagement })));
+const BlogManagement = lazy(() => import("@/components/dashboard/BlogManagement").then(m => ({ default: m.BlogManagement })));
+const ReviewModerationModule = lazy(() => import("@/components/dashboard/ReviewModerationModule").then(m => ({ default: m.ReviewModerationModule })));
+const AdminAnalytics = lazy(() => import("@/components/dashboard/AdminAnalytics").then(m => ({ default: m.AdminAnalytics })));
+
+const Admin = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+        if (!session) {
+          navigate("/auth");
+        }
+      }
+    );
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      if (!session) {
+        navigate("/auth");
+      }
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
+  useEffect(() => {
+    if (!user) return;
+
+    const checkAdminStatus = async () => {
+      const { data, error } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user.id)
+        .in("role", ["admin", "moderator"])
+        .maybeSingle();
+
+      if (!error && data) {
+        setIsAdmin(true);
+      } else {
+        toast.error("Access denied. Admin privileges required.");
+        navigate("/dashboard");
+      }
+    };
+
+    checkAdminStatus();
+  }, [user, navigate]);
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast.error("Error logging out");
+    } else {
+      toast.success("Logged out successfully");
+      navigate("/auth");
+    }
+  };
+
+  useEffect(() => {
+    const paths = location.pathname.split("/").filter(Boolean);
+    const pageName = paths[paths.length - 1] || "Admin Panel";
+    const formattedName = pageName.charAt(0).toUpperCase() + pageName.slice(1);
+    document.title = `${formattedName} - Admin Panel`;
+  }, [location.pathname]);
+
+  if (loading || !isAdmin) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="text-muted-foreground">Loading admin panel...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full bg-gradient-to-br from-background to-accent/20">
+        <AdminSidebar />
+        
+        <div className="flex-1 flex flex-col">
+          {/* Header */}
+          <header className="sticky top-0 z-10 border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/90">
+            <div className="flex h-16 items-center justify-between px-4 md:px-6">
+              <div className="flex items-center gap-2 md:gap-4">
+                <SidebarTrigger />
+                <div className="flex items-center gap-2">
+                  <Shield className="h-6 w-6 text-primary" />
+                  <h1 className="text-xl md:text-2xl font-bold">Admin Panel</h1>
+                </div>
+              </div>
+              
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" onClick={() => navigate("/dashboard")}>
+                  <LayoutDashboard className="mr-0 md:mr-2 h-4 w-4" />
+                  <span className="hidden md:inline">User Dashboard</span>
+                </Button>
+                
+                <Button variant="outline" size="sm" onClick={handleLogout}>
+                  <LogOut className="mr-0 md:mr-2 h-4 w-4" />
+                  <span className="hidden md:inline">Logout</span>
+                </Button>
+              </div>
+            </div>
+          </header>
+
+          {/* Main Content */}
+          <main className="flex-1 px-4 md:px-6 py-6 overflow-auto">
+            <Suspense fallback={<DashboardLoadingSkeleton />}>
+              <div className="animate-fade-in">
+                <Routes>
+                  <Route path="/" element={<AdminAnalytics userId={user?.id!} />} />
+                  <Route path="users" element={<UserManagement />} />
+                  <Route path="products" element={<ProductManagement />} />
+                  <Route path="orders" element={<OrderManagement />} />
+                  <Route path="applications" element={<ApplicationManagement />} />
+                  <Route path="payments" element={<PaymentManagement />} />
+                  <Route path="inquiries" element={<InquiryManagement />} />
+                  <Route path="blog" element={<BlogManagement />} />
+                  <Route path="reviews" element={<ReviewModerationModule />} />
+                </Routes>
+              </div>
+            </Suspense>
+          </main>
+        </div>
+      </div>
+    </SidebarProvider>
+  );
+};
+
+export default Admin;

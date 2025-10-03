@@ -28,6 +28,7 @@ import Passports from "./pages/Passports";
 import PassportDetail from "./pages/PassportDetail";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
+import Admin from "./pages/Admin";
 import SecurityFeatures from "./pages/SecurityFeatures";
 import Escrow from "./pages/Escrow";
 import NotFound from "./pages/NotFound";
@@ -68,6 +69,7 @@ const App = () => (
             <Route path="/passports/:passportId" element={<PassportDetail />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/dashboard/*" element={<Dashboard />} />
+            <Route path="/admin/*" element={<Admin />} />
             <Route path="/security-features" element={<SecurityFeatures />} />
             <Route path="/escrow" element={<Escrow />} />
             <Route path="/403" element={<Forbidden />} />
