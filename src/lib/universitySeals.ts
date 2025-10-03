@@ -442,6 +442,25 @@ import turkuSeal from "@/assets/university-seals/turku.png";
 // Icelandic Universities
 import icelandSeal from "@/assets/university-seals/iceland.png";
 
+// Japanese Universities
+import tokyoSeal from "@/assets/university-seals/tokyo.png";
+import kyotoSeal from "@/assets/university-seals/kyoto.png";
+
+// Korean Universities
+import seoulSeal from "@/assets/university-seals/seoul.png";
+import kaistSeal from "@/assets/university-seals/kaist.png";
+
+// Singaporean Universities
+import nusSeal from "@/assets/university-seals/nus.png";
+import ntuSeal from "@/assets/university-seals/ntu.png";
+
+// Chinese Universities
+import tsinghuaSeal from "@/assets/university-seals/tsinghua.png";
+import pekingSeal from "@/assets/university-seals/peking.png";
+
+// Hong Kong Universities
+import hkuSeal from "@/assets/university-seals/hku.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -886,6 +905,28 @@ export const universitySealMap: Record<string, string> = {
   
   // Icelandic Universities
   "University of Iceland": icelandSeal,
+  
+  // Japanese Universities
+  "University of Tokyo": tokyoSeal,
+  "Kyoto University": kyotoSeal,
+  
+  // Korean Universities
+  "Seoul National University": seoulSeal,
+  "KAIST": kaistSeal,
+  
+  // Singaporean Universities
+  "National University of Singapore": nusSeal,
+  "NUS": nusSeal,
+  "Nanyang Technological University": ntuSeal,
+  "NTU": ntuSeal,
+  
+  // Chinese Universities
+  "Tsinghua University": tsinghuaSeal,
+  "Peking University": pekingSeal,
+  
+  // Hong Kong Universities
+  "University of Hong Kong": hkuSeal,
+  "HKU": hkuSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
