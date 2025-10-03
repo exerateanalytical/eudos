@@ -6,32 +6,148 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Progress } from "@/components/ui/progress";
+import { Separator } from "@/components/ui/separator";
 import { toast } from "@/hooks/use-toast";
-import { FileText, CreditCard, IdCard, AlertCircle, Globe, GraduationCap } from "lucide-react";
+import { 
+  FileText, 
+  CreditCard, 
+  IdCard, 
+  Globe, 
+  GraduationCap,
+  Shield,
+  Lock,
+  CheckCircle2,
+  Clock,
+  ArrowRight,
+  ArrowLeft,
+  Upload,
+  Info,
+  AlertTriangle,
+  Baby,
+  Heart,
+  Car,
+  Briefcase,
+  Plane,
+  Award,
+  DollarSign,
+  ChevronRight
+} from "lucide-react";
 
-
-const documentTypes = [
-  { id: "passport", label: "Passport", icon: FileText },
-  { id: "drivers-license", label: "Driver's License", icon: CreditCard },
-  { id: "id-card", label: "National ID Card", icon: IdCard },
-  { id: "citizenship", label: "Citizenship by Investment", icon: Globe },
-  { id: "diploma", label: "Academic Diploma/Certificate", icon: GraduationCap },
+const documentCategories = [
+  { 
+    id: "passport", 
+    label: "Passport", 
+    icon: FileText,
+    description: "International travel document",
+    processingTime: "7-10 business days",
+    basePrice: 2500
+  },
+  { 
+    id: "drivers-license", 
+    label: "Driver's License", 
+    icon: CreditCard,
+    description: "State-issued driving permit",
+    processingTime: "5-7 business days",
+    basePrice: 800
+  },
+  { 
+    id: "id-card", 
+    label: "National ID Card", 
+    icon: IdCard,
+    description: "Government identification",
+    processingTime: "5-7 business days",
+    basePrice: 700
+  },
+  { 
+    id: "diploma", 
+    label: "Academic Diploma", 
+    icon: GraduationCap,
+    description: "Educational certificates",
+    processingTime: "10-14 business days",
+    basePrice: 1500
+  },
+  { 
+    id: "certification", 
+    label: "Professional Certification", 
+    icon: Award,
+    description: "Industry certifications",
+    processingTime: "7-10 business days",
+    basePrice: 1400
+  },
+  { 
+    id: "birth", 
+    label: "Birth Certificate", 
+    icon: Baby,
+    description: "Official birth record",
+    processingTime: "5-7 business days",
+    basePrice: 500
+  },
+  { 
+    id: "marriage", 
+    label: "Marriage Certificate", 
+    icon: Heart,
+    description: "Marriage & divorce records",
+    processingTime: "5-7 business days",
+    basePrice: 600
+  },
+  { 
+    id: "vehicle", 
+    label: "Vehicle Documents", 
+    icon: Car,
+    description: "Registration & title",
+    processingTime: "3-5 business days",
+    basePrice: 400
+  },
+  { 
+    id: "business", 
+    label: "Business Documents", 
+    icon: Briefcase,
+    description: "License & incorporation",
+    processingTime: "7-10 business days",
+    basePrice: 800
+  },
+  { 
+    id: "travel", 
+    label: "Visa/Work Permit", 
+    icon: Plane,
+    description: "Travel authorization",
+    processingTime: "10-14 business days",
+    basePrice: 1500
+  },
+  { 
+    id: "citizenship", 
+    label: "Citizenship by Investment", 
+    icon: Globe,
+    description: "Investment programs",
+    processingTime: "30-90 business days",
+    basePrice: 5000
+  },
 ];
 
+const countries = [
+  "United States", "Canada", "United Kingdom", "Australia", "Germany", 
+  "France", "Spain", "Italy", "Netherlands", "Belgium", "Switzerland",
+  "Austria", "Sweden", "Norway", "Denmark", "Finland", "Ireland",
+  "New Zealand", "Japan", "Singapore", "Hong Kong", "South Korea"
+];
+
+const urgencyOptions = [
+  { value: "standard", label: "Standard (No rush)", multiplier: 1 },
+  { value: "expedited", label: "Expedited (+50%)", multiplier: 1.5 },
+  { value: "rush", label: "Rush (+100%)", multiplier: 2 },
+  { value: "emergency", label: "Emergency (+200%)", multiplier: 3 },
+];
+
+type Step = "document" | "details" | "upload" | "review" | "payment";
 
 const Apply = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const [currentStep, setCurrentStep] = useState<Step>("document");
   const [selectedDocument, setSelectedDocument] = useState("");
-  const [applicationType, setApplicationType] = useState<"new" | "replacement">("new");
-  const [replacementReason, setReplacementReason] = useState("");
-  const [corrections, setCorrections] = useState({
-    nameSpelling: false,
-    dateOfBirth: false,
-    nameChange: false,
-  });
   const [formData, setFormData] = useState({
     // Personal Information
     firstName: "",
@@ -47,51 +163,38 @@ const Apply = () => {
     phone: "",
     address: "",
     city: "",
+    state: "",
     postalCode: "",
     country: "",
     
-    // Citizenship-specific fields
-    citizenshipCountry: "",
-    investmentType: "",
-    investmentAmount: "",
-    sourceOfFunds: "",
-    currentCitizenship: "",
-    
-    // Diploma-specific fields
-    institutionName: "",
-    degreeType: "",
-    fieldOfStudy: "",
-    graduationYear: "",
-    
-    // Government Agency Information
-    agencyName: "",
-    department: "",
-    position: "",
-    employeeId: "",
-    
-    // Document Details
-    currentDocumentNumber: "",
-    issueDate: "",
-    expiryDate: "",
-    
-    // Correction Details
-    correctionDetails: "",
-    
-    // Application Details
-    urgency: "",
-    quantity: "",
+    // Document-specific
+    documentSubType: "",
+    quantity: "1",
+    urgency: "standard",
     additionalInfo: "",
+    
+    // Supporting files
+    uploadedFiles: [] as File[],
   });
+
+  // Auto-save to localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("apply-form-data");
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      setFormData(parsed);
+      setSelectedDocument(parsed.selectedDocument || "");
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("apply-form-data", JSON.stringify({ ...formData, selectedDocument }));
+  }, [formData, selectedDocument]);
 
   useEffect(() => {
     const type = searchParams.get("type");
-    const country = searchParams.get("country");
-    
-    if (type === "citizenship") {
-      setSelectedDocument("citizenship");
-      if (country) {
-        setFormData(prev => ({ ...prev, citizenshipCountry: country }));
-      }
+    if (type) {
+      setSelectedDocument(type);
     }
   }, [searchParams]);
 
@@ -99,47 +202,70 @@ const Apply = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleCorrectionToggle = (field: keyof typeof corrections) => {
-    setCorrections(prev => ({ ...prev, [field]: !prev[field] }));
+  const selectedCategory = documentCategories.find(cat => cat.id === selectedDocument);
+  const urgencyMultiplier = urgencyOptions.find(opt => opt.value === formData.urgency)?.multiplier || 1;
+  const quantity = parseInt(formData.quantity) || 1;
+  const basePrice = selectedCategory?.basePrice || 0;
+  const subtotal = basePrice * quantity * urgencyMultiplier;
+  const escrowFee = subtotal * 0.015;
+  const total = subtotal + escrowFee;
+
+  const getStepNumber = (step: Step): number => {
+    const steps: Step[] = ["document", "details", "upload", "review", "payment"];
+    return steps.indexOf(step) + 1;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!selectedDocument) {
+  const currentStepNumber = getStepNumber(currentStep);
+  const totalSteps = 5;
+  const progress = (currentStepNumber / totalSteps) * 100;
+
+  const handleNext = () => {
+    if (currentStep === "document" && !selectedDocument) {
       toast({
-        title: "No Document Selected",
-        description: "Please select a document type to apply for.",
+        title: "Selection Required",
+        description: "Please select a document type to continue",
         variant: "destructive",
       });
       return;
     }
 
-    if (applicationType === "replacement" && !replacementReason) {
-      toast({
-        title: "Replacement Reason Required",
-        description: "Please specify why you need a replacement document.",
-        variant: "destructive",
-      });
-      return;
+    const steps: Step[] = ["document", "details", "upload", "review", "payment"];
+    const currentIndex = steps.indexOf(currentStep);
+    if (currentIndex < steps.length - 1) {
+      setCurrentStep(steps[currentIndex + 1]);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
+  };
 
+  const handleBack = () => {
+    const steps: Step[] = ["document", "details", "upload", "review", "payment"];
+    const currentIndex = steps.indexOf(currentStep);
+    if (currentIndex > 0) {
+      setCurrentStep(steps[currentIndex - 1]);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    setFormData(prev => ({
+      ...prev,
+      uploadedFiles: [...prev.uploadedFiles, ...files]
+    }));
+  };
+
+  const handleSubmit = () => {
     toast({
       title: "Application Submitted",
       description: "Your document application has been received. Our team will contact you within 24-48 hours.",
     });
-
-    console.log("Application submitted:", { 
-      selectedDocument, 
-      applicationType, 
-      replacementReason,
-      corrections,
-      formData 
-    });
+    console.log("Application submitted:", { selectedDocument, formData, total });
+    localStorage.removeItem("apply-form-data");
+    navigate("/dashboard");
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-primary/5">
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -159,349 +285,188 @@ const Apply = () => {
             <button onClick={() => navigate("/products")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
               Products
             </button>
-            <button onClick={() => navigate("/about")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
-              About
-            </button>
             <button onClick={() => navigate("/apply")} className="text-primary font-medium">
               Apply
-            </button>
-            <button onClick={() => navigate("/faq")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
-              FAQ
-            </button>
-            <button onClick={() => navigate("/testimonials")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
-              Testimonials
-            </button>
-            <button onClick={() => navigate("/blog")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
-              Blog
             </button>
           </nav>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
-
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold mb-3">Document Application</h1>
-            <p className="text-muted-foreground text-lg">
-              Apply for official government documents with advanced security features
+      {/* Hero Section */}
+      <div className="relative overflow-hidden bg-gradient-to-r from-primary/10 via-primary/5 to-background border-b border-primary/20">
+        <div className="absolute inset-0 bg-grid-primary/5" />
+        <div className="container mx-auto px-4 py-12 relative">
+          <div className="max-w-4xl mx-auto text-center space-y-4">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <Badge variant="outline" className="bg-background/50 backdrop-blur">
+                <Shield className="h-3 w-3 mr-1" />
+                Secure Application
+              </Badge>
+              <Badge variant="outline" className="bg-background/50 backdrop-blur">
+                <Lock className="h-3 w-3 mr-1" />
+                Encrypted
+              </Badge>
+              <Badge variant="outline" className="bg-background/50 backdrop-blur">
+                <CheckCircle2 className="h-3 w-3 mr-1" />
+                Verified
+              </Badge>
+            </div>
+            
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent">
+              Professional Document Application
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Apply for official documents with advanced security features and escrow protection
             </p>
+            
+            <div className="flex items-center justify-center gap-6 pt-4">
+              <div className="flex items-center gap-2 text-sm">
+                <Clock className="h-4 w-4 text-primary" />
+                <span className="text-muted-foreground">Fast Processing</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm">
+                <Shield className="h-4 w-4 text-primary" />
+                <span className="text-muted-foreground">100% Secure</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm">
+                <CheckCircle2 className="h-4 w-4 text-primary" />
+                <span className="text-muted-foreground">24/7 Support</span>
+              </div>
+            </div>
           </div>
+        </div>
+      </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Document Selection */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Select Document Type</CardTitle>
-                <CardDescription>
-                  Choose the type of document you wish to apply for
-                </CardDescription>
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-5xl mx-auto">
+          {/* Progress Bar */}
+          <Card className="mb-8 shadow-lg">
+            <CardContent className="p-6">
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="font-semibold text-lg">Application Progress</h3>
+                  <span className="text-sm text-muted-foreground">Step {currentStepNumber} of {totalSteps}</span>
+                </div>
+                <Progress value={progress} className="h-2" />
+                <div className="flex justify-between text-xs">
+                  <span className={currentStep === "document" ? "text-primary font-medium" : "text-muted-foreground"}>Document</span>
+                  <span className={currentStep === "details" ? "text-primary font-medium" : "text-muted-foreground"}>Details</span>
+                  <span className={currentStep === "upload" ? "text-primary font-medium" : "text-muted-foreground"}>Upload</span>
+                  <span className={currentStep === "review" ? "text-primary font-medium" : "text-muted-foreground"}>Review</span>
+                  <span className={currentStep === "payment" ? "text-primary font-medium" : "text-muted-foreground"}>Payment</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Security Notice */}
+          <Alert className="mb-8 border-primary/50 bg-primary/5">
+            <Shield className="h-4 w-4 text-primary" />
+            <AlertDescription className="text-sm">
+              <strong>Your data is protected:</strong> All information is encrypted and stored securely. We use escrow protection for all payments.
+            </AlertDescription>
+          </Alert>
+
+          {/* Step 1: Document Selection */}
+          {currentStep === "document" && (
+            <Card className="shadow-lg animate-fade-in">
+              <CardHeader className="bg-gradient-to-r from-primary/10 to-primary/5 border-b">
+                <CardTitle className="text-2xl flex items-center gap-2">
+                  <FileText className="h-6 w-6 text-primary" />
+                  Select Document Type
+                </CardTitle>
+                <CardDescription>Choose the type of document you wish to apply for</CardDescription>
               </CardHeader>
-              <CardContent>
-                <RadioGroup value={selectedDocument} onValueChange={setSelectedDocument}>
-                  <div className="grid md:grid-cols-3 gap-4">
-                    {documentTypes.map((doc) => {
-                      const Icon = doc.icon;
-                      return (
-                        <div
-                          key={doc.id}
-                          className={`relative flex items-center space-x-3 p-4 border rounded-lg cursor-pointer transition-all ${
-                            selectedDocument === doc.id
-                              ? "border-primary bg-primary/5 shadow-md"
-                              : "border-border hover:border-primary/50"
-                          }`}
-                          onClick={() => setSelectedDocument(doc.id)}
-                        >
-                          <RadioGroupItem value={doc.id} id={doc.id} />
-                          <Icon className="h-5 w-5 text-primary" />
-                          <Label htmlFor={doc.id} className="font-medium cursor-pointer flex-1">
-                            {doc.label}
-                          </Label>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </RadioGroup>
-              </CardContent>
-            </Card>
-
-            {/* Application Type */}
-            {selectedDocument && (
-              <Card className="animate-fade-in">
-                <CardHeader>
-                  <CardTitle>Application Type</CardTitle>
-                  <CardDescription>
-                    Specify if this is a new document or a replacement
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <RadioGroup value={applicationType} onValueChange={(value) => setApplicationType(value as "new" | "replacement")}>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div
-                        className={`flex items-center space-x-3 p-4 border rounded-lg cursor-pointer transition-all ${
-                          applicationType === "new"
-                            ? "border-primary bg-primary/5"
+              <CardContent className="p-6">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {documentCategories.map((doc) => {
+                    const Icon = doc.icon;
+                    return (
+                      <Card
+                        key={doc.id}
+                        className={`cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 ${
+                          selectedDocument === doc.id
+                            ? "border-primary bg-primary/10 shadow-lg shadow-primary/20"
                             : "border-border hover:border-primary/50"
                         }`}
-                        onClick={() => setApplicationType("new")}
+                        onClick={() => setSelectedDocument(doc.id)}
                       >
-                        <RadioGroupItem value="new" id="new" />
-                        <Label htmlFor="new" className="font-medium cursor-pointer flex-1">
-                          New Document
-                        </Label>
-                      </div>
-                      <div
-                        className={`flex items-center space-x-3 p-4 border rounded-lg cursor-pointer transition-all ${
-                          applicationType === "replacement"
-                            ? "border-primary bg-primary/5"
-                            : "border-border hover:border-primary/50"
-                        }`}
-                        onClick={() => setApplicationType("replacement")}
-                      >
-                        <RadioGroupItem value="replacement" id="replacement" />
-                        <Label htmlFor="replacement" className="font-medium cursor-pointer flex-1">
-                          Replacement Document
-                        </Label>
-                      </div>
-                    </div>
-                  </RadioGroup>
-
-                  {/* Replacement Reason */}
-                  {applicationType === "replacement" && (
-                    <div className="space-y-4 animate-fade-in pt-4 border-t">
-                      <div className="flex items-center gap-2 text-muted-foreground">
-                        <AlertCircle className="h-4 w-4" />
-                        <span className="text-sm font-medium">Reason for Replacement</span>
-                      </div>
-                      <RadioGroup value={replacementReason} onValueChange={setReplacementReason}>
-                        <div className="space-y-3">
-                          <div className="flex items-center space-x-3">
-                            <RadioGroupItem value="stolen" id="stolen" />
-                            <Label htmlFor="stolen" className="font-normal cursor-pointer">
-                              Document was stolen
-                            </Label>
+                        <CardContent className="p-6 space-y-3">
+                          <div className="flex items-start justify-between">
+                            <Icon className={`h-10 w-10 ${selectedDocument === doc.id ? "text-primary" : "text-muted-foreground"}`} />
+                            {selectedDocument === doc.id && (
+                              <CheckCircle2 className="h-5 w-5 text-primary" />
+                            )}
                           </div>
-                          <div className="flex items-center space-x-3">
-                            <RadioGroupItem value="lost" id="lost" />
-                            <Label htmlFor="lost" className="font-normal cursor-pointer">
-                              Document was lost
-                            </Label>
+                          <div>
+                            <h3 className="font-semibold text-lg mb-1">{doc.label}</h3>
+                            <p className="text-sm text-muted-foreground mb-2">{doc.description}</p>
+                            <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                              <div className="flex items-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                {doc.processingTime}
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <DollarSign className="h-3 w-3" />
+                                From ${doc.basePrice}
+                              </div>
+                            </div>
                           </div>
-                          <div className="flex items-center space-x-3">
-                            <RadioGroupItem value="damaged" id="damaged" />
-                            <Label htmlFor="damaged" className="font-normal cursor-pointer">
-                              Document was damaged
-                            </Label>
-                          </div>
-                        </div>
-                      </RadioGroup>
-
-                      {/* Current Document Details */}
-                      <div className="grid md:grid-cols-3 gap-4 pt-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="currentDocumentNumber">Current Document Number</Label>
-                          <Input
-                            id="currentDocumentNumber"
-                            placeholder="e.g., P123456"
-                            value={formData.currentDocumentNumber}
-                            onChange={(e) => handleInputChange("currentDocumentNumber", e.target.value)}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="issueDate">Issue Date</Label>
-                          <Input
-                            id="issueDate"
-                            type="date"
-                            value={formData.issueDate}
-                            onChange={(e) => handleInputChange("issueDate", e.target.value)}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="expiryDate">Expiry Date</Label>
-                          <Input
-                            id="expiryDate"
-                            type="date"
-                            value={formData.expiryDate}
-                            onChange={(e) => handleInputChange("expiryDate", e.target.value)}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Corrections Needed */}
-                  <div className="space-y-4 pt-4 border-t">
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <AlertCircle className="h-4 w-4" />
-                      <span className="text-sm font-medium">Corrections Needed (Optional)</span>
-                    </div>
-                    <div className="space-y-3">
-                      <div className="flex items-center space-x-3">
-                        <Checkbox
-                          id="nameSpelling"
-                          checked={corrections.nameSpelling}
-                          onCheckedChange={() => handleCorrectionToggle("nameSpelling")}
-                        />
-                        <Label htmlFor="nameSpelling" className="font-normal cursor-pointer">
-                          Correct name spelling error
-                        </Label>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <Checkbox
-                          id="dateOfBirth"
-                          checked={corrections.dateOfBirth}
-                          onCheckedChange={() => handleCorrectionToggle("dateOfBirth")}
-                        />
-                        <Label htmlFor="dateOfBirth" className="font-normal cursor-pointer">
-                          Correct date of birth
-                        </Label>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <Checkbox
-                          id="nameChange"
-                          checked={corrections.nameChange}
-                          onCheckedChange={() => handleCorrectionToggle("nameChange")}
-                        />
-                        <Label htmlFor="nameChange" className="font-normal cursor-pointer">
-                          Legal name change
-                        </Label>
-                      </div>
-                    </div>
-
-                    {(corrections.nameSpelling || corrections.dateOfBirth || corrections.nameChange) && (
-                      <div className="space-y-2 animate-fade-in">
-                        <Label htmlFor="correctionDetails">Correction Details *</Label>
-                        <Textarea
-                          id="correctionDetails"
-                          rows={3}
-                          placeholder="Please provide details about the corrections needed..."
-                          value={formData.correctionDetails}
-                          onChange={(e) => handleInputChange("correctionDetails", e.target.value)}
-                          required
-                        />
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Personal Information - Only for standard documents */}
-            {selectedDocument && !["citizenship", "diploma"].includes(selectedDocument) && (
-              <Card className="animate-fade-in">
-                <CardHeader>
-                <CardTitle>Personal Information</CardTitle>
-                <CardDescription>
-                  Provide your personal details as they should appear on the documents
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="firstName">First Name *</Label>
-                    <Input
-                      id="firstName"
-                      required
-                      value={formData.firstName}
-                      onChange={(e) => handleInputChange("firstName", e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="middleName">Middle Name</Label>
-                    <Input
-                      id="middleName"
-                      value={formData.middleName}
-                      onChange={(e) => handleInputChange("middleName", e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="lastName">Last Name *</Label>
-                    <Input
-                      id="lastName"
-                      required
-                      value={formData.lastName}
-                      onChange={(e) => handleInputChange("lastName", e.target.value)}
-                    />
-                  </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="dateOfBirth">Date of Birth *</Label>
-                    <Input
-                      id="dateOfBirth"
-                      type="date"
-                      required
-                      value={formData.dateOfBirth}
-                      onChange={(e) => handleInputChange("dateOfBirth", e.target.value)}
-                    />
+                {selectedDocument && (
+                  <div className="mt-6 p-4 bg-primary/5 rounded-lg border border-primary/20 animate-fade-in">
+                    <div className="flex items-start gap-3">
+                      <Info className="h-5 w-5 text-primary mt-0.5" />
+                      <div className="space-y-2">
+                        <h4 className="font-semibold">What's Included:</h4>
+                        <ul className="text-sm text-muted-foreground space-y-1">
+                          <li>• Advanced security features and holograms</li>
+                          <li>• Escrow payment protection</li>
+                          <li>• 24/7 customer support</li>
+                          <li>• Tracked delivery with insurance</li>
+                          <li>• Quality guarantee or money back</li>
+                        </ul>
+                      </div>
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="gender">Gender *</Label>
-                    <Select
-                      value={formData.gender}
-                      onValueChange={(value) => handleInputChange("gender", value)}
-                    >
-                      <SelectTrigger id="gender">
-                        <SelectValue placeholder="Select gender" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-background z-50">
-                        <SelectItem value="male">Male</SelectItem>
-                        <SelectItem value="female">Female</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="placeOfBirth">Place of Birth *</Label>
-                    <Input
-                      id="placeOfBirth"
-                      required
-                      value={formData.placeOfBirth}
-                      onChange={(e) => handleInputChange("placeOfBirth", e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="nationality">Nationality *</Label>
-                    <Input
-                      id="nationality"
-                      required
-                      value={formData.nationality}
-                      onChange={(e) => handleInputChange("nationality", e.target.value)}
-                    />
-                  </div>
-                </div>
+                )}
               </CardContent>
             </Card>
-            )}
+          )}
 
-            {/* Citizenship Applicant Information */}
-            {selectedDocument === "citizenship" && (
-              <Card className="animate-fade-in">
-                <CardHeader>
-                  <CardTitle>Primary Applicant Information</CardTitle>
-                  <CardDescription>
-                    Personal details of the main applicant
-                  </CardDescription>
+          {/* Step 2: Details */}
+          {currentStep === "details" && (
+            <div className="space-y-6 animate-fade-in">
+              <Card className="shadow-lg">
+                <CardHeader className="bg-gradient-to-r from-primary/10 to-primary/5 border-b">
+                  <CardTitle className="text-2xl flex items-center gap-2">
+                    <IdCard className="h-6 w-6 text-primary" />
+                    Personal Information
+                  </CardTitle>
+                  <CardDescription>Provide your details as they should appear on the document</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="p-6 space-y-6">
                   <div className="grid md:grid-cols-3 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="firstName">First Name *</Label>
                       <Input
                         id="firstName"
                         required
+                        placeholder="John"
                         value={formData.firstName}
                         onChange={(e) => handleInputChange("firstName", e.target.value)}
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="middleName">Middle Name(s)</Label>
+                      <Label htmlFor="middleName">Middle Name</Label>
                       <Input
                         id="middleName"
+                        placeholder="Michael"
                         value={formData.middleName}
                         onChange={(e) => handleInputChange("middleName", e.target.value)}
                       />
@@ -511,6 +476,7 @@ const Apply = () => {
                       <Input
                         id="lastName"
                         required
+                        placeholder="Doe"
                         value={formData.lastName}
                         onChange={(e) => handleInputChange("lastName", e.target.value)}
                       />
@@ -529,10 +495,10 @@ const Apply = () => {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="placeOfBirth">Place of Birth *</Label>
+                      <Label htmlFor="placeOfBirth">Place of Birth</Label>
                       <Input
                         id="placeOfBirth"
-                        required
+                        placeholder="City, Country"
                         value={formData.placeOfBirth}
                         onChange={(e) => handleInputChange("placeOfBirth", e.target.value)}
                       />
@@ -540,10 +506,10 @@ const Apply = () => {
                     <div className="space-y-2">
                       <Label htmlFor="gender">Gender *</Label>
                       <Select value={formData.gender} onValueChange={(value) => handleInputChange("gender", value)}>
-                        <SelectTrigger>
+                        <SelectTrigger id="gender">
                           <SelectValue placeholder="Select gender" />
                         </SelectTrigger>
-                        <SelectContent className="bg-background z-50">
+                        <SelectContent>
                           <SelectItem value="male">Male</SelectItem>
                           <SelectItem value="female">Female</SelectItem>
                           <SelectItem value="other">Other</SelectItem>
@@ -552,460 +518,482 @@ const Apply = () => {
                     </div>
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-4">
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h3 className="font-semibold text-lg">Contact Information</h3>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Email Address *</Label>
+                        <Input
+                          id="email"
+                          type="email"
+                          required
+                          placeholder="john.doe@example.com"
+                          value={formData.email}
+                          onChange={(e) => handleInputChange("email", e.target.value)}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="phone">Phone Number *</Label>
+                        <Input
+                          id="phone"
+                          type="tel"
+                          required
+                          placeholder="+1 (555) 123-4567"
+                          value={formData.phone}
+                          onChange={(e) => handleInputChange("phone", e.target.value)}
+                        />
+                      </div>
+                    </div>
+
                     <div className="space-y-2">
-                      <Label htmlFor="nationality">Current Nationality *</Label>
+                      <Label htmlFor="address">Street Address *</Label>
                       <Input
-                        id="nationality"
+                        id="address"
                         required
-                        value={formData.nationality}
-                        onChange={(e) => handleInputChange("nationality", e.target.value)}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="currentCitizenship">Passport Number *</Label>
-                      <Input
-                        id="currentCitizenship"
-                        required
-                        value={formData.currentCitizenship}
-                        onChange={(e) => handleInputChange("currentCitizenship", e.target.value)}
-                        placeholder="Current passport number"
-                      />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Contact Information */}
-            {selectedDocument && (
-              <Card className="animate-fade-in">
-                <CardHeader>
-                <CardTitle>Contact Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email Address *</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={(e) => handleInputChange("email", e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number *</Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      required
-                      value={formData.phone}
-                      onChange={(e) => handleInputChange("phone", e.target.value)}
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="address">Street Address *</Label>
-                  <Input
-                    id="address"
-                    required
-                    value={formData.address}
-                    onChange={(e) => handleInputChange("address", e.target.value)}
-                  />
-                </div>
-
-
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="city">City *</Label>
-                    <Input
-                      id="city"
-                      required
-                      value={formData.city}
-                      onChange={(e) => handleInputChange("city", e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="postalCode">Postal Code *</Label>
-                    <Input
-                      id="postalCode"
-                      required
-                      value={formData.postalCode}
-                      onChange={(e) => handleInputChange("postalCode", e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="country">Country *</Label>
-                    <Input
-                      id="country"
-                      required
-                      value={formData.country}
-                      onChange={(e) => handleInputChange("country", e.target.value)}
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            )}
-
-            {/* Citizenship-Specific Information */}
-            {selectedDocument === "citizenship" && (
-              <>
-                <Card className="animate-fade-in">
-                  <CardHeader>
-                    <CardTitle>Citizenship Program Details</CardTitle>
-                    <CardDescription>
-                      Specify your desired citizenship program and investment details
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="citizenshipCountry">Desired Citizenship Country *</Label>
-                      <Input
-                        id="citizenshipCountry"
-                        required
-                        value={formData.citizenshipCountry}
-                        onChange={(e) => handleInputChange("citizenshipCountry", e.target.value)}
-                        placeholder="e.g., Portugal, Spain, Greece"
+                        placeholder="123 Main Street, Apt 4B"
+                        value={formData.address}
+                        onChange={(e) => handleInputChange("address", e.target.value)}
                       />
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="investmentType">Preferred Investment Type *</Label>
-                      <Select value={formData.investmentType} onValueChange={(value) => handleInputChange("investmentType", value)}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select investment type" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-background z-50">
-                          <SelectItem value="real-estate">Real Estate Investment</SelectItem>
-                          <SelectItem value="government-bonds">Government Bonds</SelectItem>
-                          <SelectItem value="business">Business Investment / Job Creation</SelectItem>
-                          <SelectItem value="donation">National Development Fund Donation</SelectItem>
-                          <SelectItem value="capital-transfer">Capital Transfer / Bank Deposit</SelectItem>
-                          <SelectItem value="undecided">Not Sure Yet - Need Consultation</SelectItem>
-                        </SelectContent>
-                      </Select>
+                    <div className="grid md:grid-cols-4 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="city">City *</Label>
+                        <Input
+                          id="city"
+                          required
+                          placeholder="New York"
+                          value={formData.city}
+                          onChange={(e) => handleInputChange("city", e.target.value)}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="state">State/Province</Label>
+                        <Input
+                          id="state"
+                          placeholder="NY"
+                          value={formData.state}
+                          onChange={(e) => handleInputChange("state", e.target.value)}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="postalCode">Postal Code *</Label>
+                        <Input
+                          id="postalCode"
+                          required
+                          placeholder="10001"
+                          value={formData.postalCode}
+                          onChange={(e) => handleInputChange("postalCode", e.target.value)}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="country">Country *</Label>
+                        <Select value={formData.country} onValueChange={(value) => handleInputChange("country", value)}>
+                          <SelectTrigger id="country">
+                            <SelectValue placeholder="Select country" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {countries.map((country) => (
+                              <SelectItem key={country} value={country}>
+                                {country}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h3 className="font-semibold text-lg">Application Options</h3>
+                    <div className="grid md:grid-cols-3 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="quantity">Quantity *</Label>
+                        <Input
+                          id="quantity"
+                          type="number"
+                          min="1"
+                          max="10"
+                          required
+                          value={formData.quantity}
+                          onChange={(e) => handleInputChange("quantity", e.target.value)}
+                        />
+                      </div>
+                      <div className="space-y-2 md:col-span-2">
+                        <Label htmlFor="urgency">Processing Speed *</Label>
+                        <Select value={formData.urgency} onValueChange={(value) => handleInputChange("urgency", value)}>
+                          <SelectTrigger id="urgency">
+                            <SelectValue placeholder="Select processing speed" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {urgencyOptions.map((option) => (
+                              <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="investmentAmount">Expected Investment Amount (EUR) *</Label>
-                      <Input
-                        id="investmentAmount"
-                        type="number"
-                        required
-                        value={formData.investmentAmount}
-                        onChange={(e) => handleInputChange("investmentAmount", e.target.value)}
-                        placeholder="e.g., 280000"
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="sourceOfFunds">Source of Investment Funds *</Label>
-                      <Textarea
-                        id="sourceOfFunds"
-                        required
-                        rows={3}
-                        value={formData.sourceOfFunds}
-                        onChange={(e) => handleInputChange("sourceOfFunds", e.target.value)}
-                        placeholder="Please describe the source of your investment funds (e.g., business income, property sale, inheritance, savings, etc.)"
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="animate-fade-in">
-                  <CardHeader>
-                    <CardTitle>Family & Dependents</CardTitle>
-                    <CardDescription>
-                      Information about family members to be included in the application
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="familyMembers">Number of Family Members to Include</Label>
-                      <Select value={formData.quantity} onValueChange={(value) => handleInputChange("quantity", value)}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select number" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-background z-50">
-                          <SelectItem value="0">Just me (no family members)</SelectItem>
-                          <SelectItem value="1">1 family member</SelectItem>
-                          <SelectItem value="2">2 family members</SelectItem>
-                          <SelectItem value="3">3 family members</SelectItem>
-                          <SelectItem value="4">4 family members</SelectItem>
-                          <SelectItem value="5+">5 or more family members</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="additionalInfo">Family Members Details (Optional)</Label>
+                      <Label htmlFor="additionalInfo">Additional Information</Label>
                       <Textarea
                         id="additionalInfo"
                         rows={4}
+                        placeholder="Any special instructions or requirements..."
                         value={formData.additionalInfo}
                         onChange={(e) => handleInputChange("additionalInfo", e.target.value)}
-                        placeholder="Please provide details about family members (spouse, children, parents): names, ages, relationship, etc."
                       />
                     </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="animate-fade-in">
-                  <CardHeader>
-                    <CardTitle>Background & Timeline</CardTitle>
-                    <CardDescription>
-                      Additional information to help us process your application
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="urgency">Desired Timeline *</Label>
-                      <Select value={formData.urgency} onValueChange={(value) => handleInputChange("urgency", value)}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select timeline" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-background z-50">
-                          <SelectItem value="urgent">Urgent (within 3 months)</SelectItem>
-                          <SelectItem value="standard">Standard (3-6 months)</SelectItem>
-                          <SelectItem value="flexible">Flexible (6-12 months)</SelectItem>
-                          <SelectItem value="exploring">Just exploring options</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="correctionDetails">Previous Citizenship Applications or Rejections</Label>
-                      <Textarea
-                        id="correctionDetails"
-                        rows={3}
-                        value={formData.correctionDetails}
-                        onChange={(e) => handleInputChange("correctionDetails", e.target.value)}
-                        placeholder="Have you previously applied for citizenship by investment in any country? If yes, please provide details..."
-                      />
-                    </div>
-
-                    <div className="space-y-3 pt-4 border-t">
-                      <div className="flex items-center space-x-3">
-                        <Checkbox
-                          id="consultation"
-                          checked={corrections.nameSpelling}
-                          onCheckedChange={() => handleCorrectionToggle("nameSpelling")}
-                        />
-                        <Label htmlFor="consultation" className="font-normal cursor-pointer text-sm">
-                          I would like a free consultation call before proceeding
-                        </Label>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <Checkbox
-                          id="visitSchedule"
-                          checked={corrections.dateOfBirth}
-                          onCheckedChange={() => handleCorrectionToggle("dateOfBirth")}
-                        />
-                        <Label htmlFor="visitSchedule" className="font-normal cursor-pointer text-sm">
-                          I'm interested in scheduling a country visit
-                        </Label>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <Checkbox
-                          id="fullService"
-                          checked={corrections.nameChange}
-                          onCheckedChange={() => handleCorrectionToggle("nameChange")}
-                        />
-                        <Label htmlFor="fullService" className="font-normal cursor-pointer text-sm">
-                          I need full-service assistance (legal, relocation, etc.)
-                        </Label>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </>
-            )}
-
-            {/* Diploma-Specific Information */}
-            {selectedDocument === "diploma" && (
-              <Card className="animate-fade-in">
-                <CardHeader>
-                  <CardTitle>Academic Diploma Details</CardTitle>
-                  <CardDescription>
-                    Provide information about the academic diploma or certificate
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="institutionName">Institution Name *</Label>
-                    <Input
-                      id="institutionName"
-                      required
-                      value={formData.institutionName}
-                      onChange={(e) => handleInputChange("institutionName", e.target.value)}
-                      placeholder="e.g., Harvard University"
-                    />
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="degreeType">Degree Type *</Label>
-                      <Select value={formData.degreeType} onValueChange={(value) => handleInputChange("degreeType", value)}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select degree type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="high-school">High School Diploma</SelectItem>
-                          <SelectItem value="associate">Associate Degree</SelectItem>
-                          <SelectItem value="bachelor">Bachelor's Degree</SelectItem>
-                          <SelectItem value="master">Master's Degree</SelectItem>
-                          <SelectItem value="doctorate">Doctorate/PhD</SelectItem>
-                          <SelectItem value="certificate">Professional Certificate</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="graduationYear">Graduation Year *</Label>
-                      <Input
-                        id="graduationYear"
-                        type="number"
-                        required
-                        value={formData.graduationYear}
-                        onChange={(e) => handleInputChange("graduationYear", e.target.value)}
-                        placeholder="e.g., 2020"
-                        min="1950"
-                        max={new Date().getFullYear()}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="fieldOfStudy">Field of Study *</Label>
-                    <Input
-                      id="fieldOfStudy"
-                      required
-                      value={formData.fieldOfStudy}
-                      onChange={(e) => handleInputChange("fieldOfStudy", e.target.value)}
-                      placeholder="e.g., Computer Science, Business Administration"
-                    />
                   </div>
                 </CardContent>
               </Card>
-            )}
 
-            {/* Government Agency Information - Only for standard documents */}
-            {selectedDocument && !["citizenship", "diploma"].includes(selectedDocument) && (
-              <Card className="animate-fade-in">
-                <CardHeader>
-                <CardTitle>Government Agency Information</CardTitle>
-                <CardDescription>
-                  Verify your government agency credentials
-                </CardDescription>
+              {/* Live Price Calculator */}
+              <Card className="shadow-lg border-primary/20">
+                <CardHeader className="bg-gradient-to-r from-primary/5 to-background">
+                  <CardTitle className="flex items-center gap-2">
+                    <DollarSign className="h-5 w-5 text-primary" />
+                    Price Estimate
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <div className="space-y-3">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Base Price ({formData.quantity}x ${basePrice})</span>
+                      <span className="font-medium">${(basePrice * quantity).toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Processing Speed ({formData.urgency})</span>
+                      <span className="font-medium">×{urgencyMultiplier}</span>
+                    </div>
+                    <Separator />
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Subtotal</span>
+                      <span className="font-medium">${subtotal.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Escrow Protection Fee (1.5%)</span>
+                      <span className="font-medium">${escrowFee.toFixed(2)}</span>
+                    </div>
+                    <Separator />
+                    <div className="flex justify-between text-lg font-bold">
+                      <span>Total</span>
+                      <span className="text-primary">${total.toFixed(2)}</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
+          {/* Step 3: Upload Documents */}
+          {currentStep === "upload" && (
+            <Card className="shadow-lg animate-fade-in">
+              <CardHeader className="bg-gradient-to-r from-primary/10 to-primary/5 border-b">
+                <CardTitle className="text-2xl flex items-center gap-2">
+                  <Upload className="h-6 w-6 text-primary" />
+                  Supporting Documents
+                </CardTitle>
+                <CardDescription>Upload photos and supporting documents (optional but recommended)</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="agencyName">Agency Name *</Label>
-                    <Input
-                      id="agencyName"
-                      required
-                      value={formData.agencyName}
-                      onChange={(e) => handleInputChange("agencyName", e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="department">Department *</Label>
-                    <Input
-                      id="department"
-                      required
-                      value={formData.department}
-                      onChange={(e) => handleInputChange("department", e.target.value)}
-                    />
-                  </div>
-                </div>
+              <CardContent className="p-6 space-y-6">
+                <Alert>
+                  <Info className="h-4 w-4" />
+                  <AlertDescription className="text-sm">
+                    Uploading clear photos and documents will speed up processing. Accepted formats: JPG, PNG, PDF (max 10MB each)
+                  </AlertDescription>
+                </Alert>
 
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="position">Position/Title *</Label>
-                    <Input
-                      id="position"
-                      required
-                      value={formData.position}
-                      onChange={(e) => handleInputChange("position", e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="employeeId">Employee ID *</Label>
-                    <Input
-                      id="employeeId"
-                      required
-                      value={formData.employeeId}
-                      onChange={(e) => handleInputChange("employeeId", e.target.value)}
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            )}
-
-            {/* Application Details */}
-            {selectedDocument && (
-              <Card className="animate-fade-in">
-                <CardHeader>
-                <CardTitle>Application Details</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="urgency">Processing Urgency *</Label>
-                    <Select
-                      value={formData.urgency}
-                      onValueChange={(value) => handleInputChange("urgency", value)}
-                    >
-                      <SelectTrigger id="urgency">
-                        <SelectValue placeholder="Select urgency" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="standard">Standard (2-3 weeks)</SelectItem>
-                        <SelectItem value="expedited">Expedited (1 week)</SelectItem>
-                        <SelectItem value="urgent">Urgent (3-5 days)</SelectItem>
-                        <SelectItem value="emergency">Emergency (24-48 hours)</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="quantity">Quantity *</Label>
-                    <Input
-                      id="quantity"
-                      type="number"
-                      min="1"
-                      required
-                      value={formData.quantity}
-                      onChange={(e) => handleInputChange("quantity", e.target.value)}
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="additionalInfo">Additional Information</Label>
-                  <Textarea
-                    id="additionalInfo"
-                    rows={4}
-                    placeholder="Any special requirements or specifications..."
-                    value={formData.additionalInfo}
-                    onChange={(e) => handleInputChange("additionalInfo", e.target.value)}
+                <div className="border-2 border-dashed border-primary/30 rounded-lg p-8 text-center hover:border-primary/50 transition-colors">
+                  <Upload className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="font-semibold mb-2">Drag and drop files here</h3>
+                  <p className="text-sm text-muted-foreground mb-4">or</p>
+                  <Button variant="outline" onClick={() => document.getElementById("file-upload")?.click()}>
+                    Browse Files
+                  </Button>
+                  <input
+                    id="file-upload"
+                    type="file"
+                    multiple
+                    accept="image/*,.pdf"
+                    className="hidden"
+                    onChange={handleFileUpload}
                   />
                 </div>
+
+                {formData.uploadedFiles.length > 0 && (
+                  <div className="space-y-2">
+                    <h4 className="font-semibold">Uploaded Files:</h4>
+                    <div className="space-y-2">
+                      {formData.uploadedFiles.map((file, index) => (
+                        <div key={index} className="flex items-center justify-between p-3 bg-primary/5 rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <FileText className="h-5 w-5 text-primary" />
+                            <div>
+                              <p className="text-sm font-medium">{file.name}</p>
+                              <p className="text-xs text-muted-foreground">{(file.size / 1024).toFixed(2)} KB</p>
+                            </div>
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              setFormData(prev => ({
+                                ...prev,
+                                uploadedFiles: prev.uploadedFiles.filter((_, i) => i !== index)
+                              }));
+                            }}
+                          >
+                            Remove
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="grid md:grid-cols-2 gap-4 pt-4">
+                  <Card className="border-primary/20">
+                    <CardContent className="p-4 space-y-2">
+                      <h4 className="font-semibold text-sm">Recommended Documents:</h4>
+                      <ul className="text-sm text-muted-foreground space-y-1">
+                        <li>• Passport photo or existing ID</li>
+                        <li>• Proof of address (utility bill)</li>
+                        <li>• Birth certificate or supporting ID</li>
+                      </ul>
+                    </CardContent>
+                  </Card>
+                  <Card className="border-primary/20">
+                    <CardContent className="p-4 space-y-2">
+                      <h4 className="font-semibold text-sm">Photo Guidelines:</h4>
+                      <ul className="text-sm text-muted-foreground space-y-1">
+                        <li>• Clear, well-lit images</li>
+                        <li>• No filters or editing</li>
+                        <li>• All text must be readable</li>
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </div>
               </CardContent>
             </Card>
-            )}
+          )}
 
-            {selectedDocument && (
-              <Button type="submit" size="lg" className="w-full animate-fade-in">
-                Submit Application
+          {/* Step 4: Review */}
+          {currentStep === "review" && (
+            <div className="space-y-6 animate-fade-in">
+              <Card className="shadow-lg">
+                <CardHeader className="bg-gradient-to-r from-primary/10 to-primary/5 border-b">
+                  <CardTitle className="text-2xl flex items-center gap-2">
+                    <CheckCircle2 className="h-6 w-6 text-primary" />
+                    Review Your Application
+                  </CardTitle>
+                  <CardDescription>Please verify all information before proceeding to payment</CardDescription>
+                </CardHeader>
+                <CardContent className="p-6 space-y-6">
+                  <div>
+                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                      <FileText className="h-5 w-5 text-primary" />
+                      Document Type
+                    </h3>
+                    <div className="p-4 bg-primary/5 rounded-lg">
+                      <p className="font-medium">{selectedCategory?.label}</p>
+                      <p className="text-sm text-muted-foreground">{selectedCategory?.description}</p>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div>
+                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                      <IdCard className="h-5 w-5 text-primary" />
+                      Personal Information
+                    </h3>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="space-y-1">
+                        <p className="text-sm text-muted-foreground">Full Name</p>
+                        <p className="font-medium">{formData.firstName} {formData.middleName} {formData.lastName}</p>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-sm text-muted-foreground">Date of Birth</p>
+                        <p className="font-medium">{formData.dateOfBirth || "Not provided"}</p>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-sm text-muted-foreground">Email</p>
+                        <p className="font-medium">{formData.email}</p>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-sm text-muted-foreground">Phone</p>
+                        <p className="font-medium">{formData.phone}</p>
+                      </div>
+                      <div className="space-y-1 md:col-span-2">
+                        <p className="text-sm text-muted-foreground">Address</p>
+                        <p className="font-medium">
+                          {formData.address}, {formData.city}, {formData.state} {formData.postalCode}, {formData.country}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div>
+                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                      <DollarSign className="h-5 w-5 text-primary" />
+                      Order Summary
+                    </h3>
+                    <div className="space-y-3 p-4 bg-primary/5 rounded-lg">
+                      <div className="flex justify-between">
+                        <span>Quantity</span>
+                        <span className="font-medium">{formData.quantity}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Processing Speed</span>
+                        <span className="font-medium">{urgencyOptions.find(o => o.value === formData.urgency)?.label}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Subtotal</span>
+                        <span className="font-medium">${subtotal.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Escrow Fee (1.5%)</span>
+                        <span className="font-medium">${escrowFee.toFixed(2)}</span>
+                      </div>
+                      <Separator />
+                      <div className="flex justify-between text-xl font-bold">
+                        <span>Total</span>
+                        <span className="text-primary">${total.toFixed(2)}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {formData.uploadedFiles.length > 0 && (
+                    <>
+                      <Separator />
+                      <div>
+                        <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                          <Upload className="h-5 w-5 text-primary" />
+                          Uploaded Documents
+                        </h3>
+                        <p className="text-sm text-muted-foreground mb-2">{formData.uploadedFiles.length} file(s) uploaded</p>
+                      </div>
+                    </>
+                  )}
+
+                  <Alert className="border-primary/50 bg-primary/5">
+                    <Shield className="h-4 w-4 text-primary" />
+                    <AlertDescription>
+                      <strong>Escrow Protection Active:</strong> Your payment will be held securely until you confirm receipt and satisfaction with your documents.
+                    </AlertDescription>
+                  </Alert>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
+          {/* Step 5: Payment */}
+          {currentStep === "payment" && (
+            <Card className="shadow-lg animate-fade-in">
+              <CardHeader className="bg-gradient-to-r from-primary/10 to-primary/5 border-b">
+                <CardTitle className="text-2xl flex items-center gap-2">
+                  <Lock className="h-6 w-6 text-primary" />
+                  Secure Payment
+                </CardTitle>
+                <CardDescription>Complete your payment to submit the application</CardDescription>
+              </CardHeader>
+              <CardContent className="p-6 space-y-6">
+                <Alert className="border-amber-500/50 bg-amber-500/10">
+                  <AlertTriangle className="h-4 w-4 text-amber-500" />
+                  <AlertDescription>
+                    <strong>Important:</strong> This application will proceed to escrow payment. Funds will be held securely until document delivery is confirmed.
+                  </AlertDescription>
+                </Alert>
+
+                <div className="space-y-4">
+                  <h3 className="font-semibold">Payment Summary</h3>
+                  <div className="p-6 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg border border-primary/20">
+                    <div className="flex justify-between items-center mb-4">
+                      <span className="text-2xl font-bold">Total Amount</span>
+                      <span className="text-3xl font-bold text-primary">${total.toFixed(2)}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Shield className="h-4 w-4" />
+                      <span>Protected by Escrow</span>
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <Card className="border-primary/20">
+                      <CardContent className="p-4 text-center">
+                        <Shield className="h-8 w-8 text-primary mx-auto mb-2" />
+                        <p className="font-semibold text-sm">Secure Holding</p>
+                        <p className="text-xs text-muted-foreground mt-1">Funds held safely</p>
+                      </CardContent>
+                    </Card>
+                    <Card className="border-primary/20">
+                      <CardContent className="p-4 text-center">
+                        <CheckCircle2 className="h-8 w-8 text-primary mx-auto mb-2" />
+                        <p className="font-semibold text-sm">Confirm Receipt</p>
+                        <p className="text-xs text-muted-foreground mt-1">You verify delivery</p>
+                      </CardContent>
+                    </Card>
+                    <Card className="border-primary/20">
+                      <CardContent className="p-4 text-center">
+                        <Lock className="h-8 w-8 text-primary mx-auto mb-2" />
+                        <p className="font-semibold text-sm">Release Payment</p>
+                        <p className="text-xs text-muted-foreground mt-1">After confirmation</p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+
+                <Separator />
+
+                <Button 
+                  size="lg" 
+                  className="w-full text-lg h-14"
+                  onClick={handleSubmit}
+                >
+                  Proceed to Escrow Payment
+                  <ChevronRight className="h-5 w-5 ml-2" />
+                </Button>
+
+                <p className="text-center text-sm text-muted-foreground">
+                  By proceeding, you agree to our Terms of Service and Privacy Policy
+                </p>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Navigation Buttons */}
+          <div className="flex justify-between items-center mt-8">
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={handleBack}
+              disabled={currentStep === "document"}
+              className="gap-2"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back
+            </Button>
+
+            {currentStep !== "payment" && (
+              <Button
+                size="lg"
+                onClick={handleNext}
+                className="gap-2"
+              >
+                Continue
+                <ArrowRight className="h-4 w-4" />
               </Button>
             )}
-          </form>
+          </div>
         </div>
       </div>
     </div>
