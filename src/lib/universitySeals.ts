@@ -218,6 +218,16 @@ import sainteAnneSeal from "@/assets/university-seals/sainte-anne.png";
 import stmarysCalgary from "@/assets/university-seals/stmarys-calgary.png";
 import newmanSeal from "@/assets/university-seals/newman.png";
 import canadianCollegeGeneric from "@/assets/university-seals/canadian-college-generic.png";
+import kingsUniversityCollegeWesternSeal from "@/assets/university-seals/kings-university-college-western.png";
+import huronUniversityCollegeSeal from "@/assets/university-seals/huron-university-college.png";
+import bresciaUniversityCollegeSeal from "@/assets/university-seals/brescia-university-college.png";
+import stPaulsUniversityCollegeSeal from "@/assets/university-seals/st-pauls-university-college.png";
+import renisonUniversityCollegeSeal from "@/assets/university-seals/renison-university-college.png";
+import conradGrebelUniversityCollegeSeal from "@/assets/university-seals/conrad-grebel-university-college.png";
+import campionCollegeReginaSeal from "@/assets/university-seals/campion-college-regina.png";
+import stMarksCollegeVancouverSeal from "@/assets/university-seals/st-marks-college-vancouver.png";
+import corpusChristiCollegeVancouverSeal from "@/assets/university-seals/corpus-christi-college-vancouver.png";
+import dominicanUniversityCollegeSeal from "@/assets/university-seals/dominican-university-college.png";
 
 // UK Universities
 import oxfordSeal from "@/assets/university-seals/oxford.png";
@@ -909,9 +919,10 @@ export const universitySealMap: Record<string, string> = {
   "University of King's College": kingsSeal,
   "Toronto Metropolitan University": tmuSeal,
   "Algoma University": algomaSeal,
-  "Huron University College": huronSeal,
-  "Brescia University College": bresciaSeal,
-  "King's University College at Western": kingsUwoSeal,
+  "Huron University College": huronUniversityCollegeSeal,
+  "Brescia University College": bresciaUniversityCollegeSeal,
+  "King's University College": kingsUniversityCollegeWesternSeal,
+  "King's University College at Western": kingsUniversityCollegeWesternSeal,
   "Université de Moncton": monctonSeal,
   "St. Thomas University": stuSeal,
   "Trinity Western University": twuSeal,
@@ -926,7 +937,7 @@ export const universitySealMap: Record<string, string> = {
   "Ambrose University": ambroseSeal,
   "First Nations University of Canada": fnunivSeal,
   "St. Thomas More College": stmSeal,
-  "Campion College": campionSeal,
+  "Campion College": campionCollegeReginaSeal,
   "Luther College": lutherSeal,
   "TÉLUQ": teluqSeal,
   "Université Sainte-Anne": sainteAnneSeal,
@@ -1421,6 +1432,17 @@ export const universitySealMap: Record<string, string> = {
   "Fudan University": fudanSeal,
   "National Taiwan University": ntuTaiwanSeal,
   "NTU Taiwan": ntuTaiwanSeal,
+  
+  // Additional Canadian Affiliated Colleges (Waterloo & Regina affiliated)
+  "St. Paul's University College": stPaulsUniversityCollegeSeal,
+  "Renison University College": renisonUniversityCollegeSeal,
+  "Conrad Grebel University College": conradGrebelUniversityCollegeSeal,
+  
+  // Additional Canadian Colleges (Vancouver & Ottawa)
+  "St. Mark's College": stMarksCollegeVancouverSeal,
+  "Corpus Christi College": corpusChristiCollegeVancouverSeal,
+  "Dominican University College": dominicanUniversityCollegeSeal,
+  "Collège Universitaire Dominicain": dominicanUniversityCollegeSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
