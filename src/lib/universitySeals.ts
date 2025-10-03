@@ -504,6 +504,57 @@ import nunavutArcticSeal from "@/assets/university-seals/nunavut-arctic.png";
 import auroraCollegeSeal from "@/assets/university-seals/aurora-college.png";
 import yukonSeal from "@/assets/university-seals/yukon.png";
 
+// US Community Colleges - Batch 1
+import paloVerdeSeal from "@/assets/university-seals/palo-verde.png";
+import imperialValleySeal from "@/assets/university-seals/imperial-valley.png";
+import cuyamacaSeal from "@/assets/university-seals/cuyamaca.png";
+import grossmontSeal from "@/assets/university-seals/grossmont.png";
+import miracostaSeal from "@/assets/university-seals/miracosta.png";
+import palomarSeal from "@/assets/university-seals/palomar.png";
+import southwesternCollegeSeal from "@/assets/university-seals/southwestern-college.png";
+import citrusSeal from "@/assets/university-seals/citrus.png";
+import elacSeal from "@/assets/university-seals/elac.png";
+import glendaleCCSeal from "@/assets/university-seals/glendale-cc.png";
+import laccSeal from "@/assets/university-seals/lacc.png";
+import lahcSeal from "@/assets/university-seals/lahc.png";
+import lamissionSeal from "@/assets/university-seals/lamission.png";
+import pierceSeal from "@/assets/university-seals/pierce.png";
+import lascSeal from "@/assets/university-seals/lasc.png";
+
+// US Community Colleges - Batch 2
+import pasadenaCCSeal from "@/assets/university-seals/pasadena-cc.png";
+import valenciaCollegeSeal from "@/assets/university-seals/valencia-college.png";
+import austinCCSeal from "@/assets/university-seals/austin-cc.png";
+import kirkwoodCCSeal from "@/assets/university-seals/kirkwood-cc.png";
+import slccSeal from "@/assets/university-seals/slcc.png";
+import bmccCunySeal from "@/assets/university-seals/bmcc-cuny.png";
+import portlandCCSeal from "@/assets/university-seals/portland-cc.png";
+import laguardiaCunySeal from "@/assets/university-seals/laguardia-cuny.png";
+import elCaminoSeal from "@/assets/university-seals/el-camino.png";
+import deAnzaSeal from "@/assets/university-seals/de-anza.png";
+import foothillSeal from "@/assets/university-seals/foothill.png";
+import montgomeryCollegeSeal from "@/assets/university-seals/montgomery-college.png";
+import dupageSeal from "@/assets/university-seals/dupage.png";
+import ivyTechSeal from "@/assets/university-seals/ivy-tech.png";
+import sinclairSeal from "@/assets/university-seals/sinclair.png";
+
+// US Community Colleges - Batch 3
+import macombSeal from "@/assets/university-seals/macomb.png";
+import washtenawSeal from "@/assets/university-seals/washtenaw.png";
+import nctcSeal from "@/assets/university-seals/nctc.png";
+import tarrantSeal from "@/assets/university-seals/tarrant.png";
+import hillsboroughSeal from "@/assets/university-seals/hillsborough.png";
+import browardSeal from "@/assets/university-seals/broward.png";
+import palmBeachSeal from "@/assets/university-seals/palm-beach.png";
+import orangeCoastSeal from "@/assets/university-seals/orange-coast.png";
+import saddlebackSeal from "@/assets/university-seals/saddleback.png";
+import cypressSeal from "@/assets/university-seals/cypress.png";
+import cerritosSeal from "@/assets/university-seals/cerritos.png";
+import fullertonSeal from "@/assets/university-seals/fullerton.png";
+import mtSacSeal from "@/assets/university-seals/mt-sac.png";
+import riversideSeal from "@/assets/university-seals/riverside.png";
+import chaffeySeal from "@/assets/university-seals/chaffey.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -728,6 +779,53 @@ export const universitySealMap: Record<string, string> = {
   "Nunavut Arctic College": nunavutArcticSeal,
   "Aurora College": auroraCollegeSeal,
   "Yukon University": yukonSeal,
+  
+  // US Community Colleges
+  "Palo Verde College": paloVerdeSeal,
+  "Imperial Valley College": imperialValleySeal,
+  "Cuyamaca College": cuyamacaSeal,
+  "Grossmont College": grossmontSeal,
+  "MiraCosta College": miracostaSeal,
+  "Palomar College": palomarSeal,
+  "Southwestern College": southwesternCollegeSeal,
+  "Citrus College": citrusSeal,
+  "East Los Angeles College": elacSeal,
+  "Glendale Community College": glendaleCCSeal,
+  "Los Angeles City College": laccSeal,
+  "Los Angeles Harbor College": lahcSeal,
+  "Los Angeles Mission College": lamissionSeal,
+  "Los Angeles Pierce College": pierceSeal,
+  "Los Angeles Southwest College": lascSeal,
+  "Pasadena City College": pasadenaCCSeal,
+  "Valencia College": valenciaCollegeSeal,
+  "Austin Community College": austinCCSeal,
+  "Kirkwood Community College": kirkwoodCCSeal,
+  "Salt Lake Community College": slccSeal,
+  "Borough of Manhattan Community College – CUNY": bmccCunySeal,
+  "Portland Community College": portlandCCSeal,
+  "LaGuardia Community College – CUNY": laguardiaCunySeal,
+  "El Camino College": elCaminoSeal,
+  "De Anza College": deAnzaSeal,
+  "Foothill College": foothillSeal,
+  "Montgomery College": montgomeryCollegeSeal,
+  "College of DuPage": dupageSeal,
+  "Ivy Tech Community College": ivyTechSeal,
+  "Sinclair Community College": sinclairSeal,
+  "Macomb Community College": macombSeal,
+  "Washtenaw Community College": washtenawSeal,
+  "North Central Texas College": nctcSeal,
+  "Tarrant County College": tarrantSeal,
+  "Hillsborough Community College": hillsboroughSeal,
+  "Broward College": browardSeal,
+  "Palm Beach State College": palmBeachSeal,
+  "Orange Coast College": orangeCoastSeal,
+  "Saddleback College": saddlebackSeal,
+  "Cypress College": cypressSeal,
+  "Cerritos College": cerritosSeal,
+  "Fullerton College": fullertonSeal,
+  "Mt. San Antonio College": mtSacSeal,
+  "Riverside City College": riversideSeal,
+  "Chaffey College": chaffeySeal,
   
   // UK Universities
   "University of Oxford": oxfordSeal,
