@@ -364,6 +364,15 @@ import warsawTechSeal from "@/assets/university-seals/warsaw-tech.png";
 import aghKrakowSeal from "@/assets/university-seals/agh-krakow.png";
 import adamMickiewiczSeal from "@/assets/university-seals/adam-mickiewicz.png";
 
+// Czech Universities
+import charlesSeal from "@/assets/university-seals/charles.png";
+import czechTechSeal from "@/assets/university-seals/czech-tech.png";
+import masarykSeal from "@/assets/university-seals/masaryk.png";
+
+// Hungarian Universities
+import corvinusSeal from "@/assets/university-seals/corvinus.png";
+import elteSeal from "@/assets/university-seals/elte.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -730,6 +739,15 @@ export const universitySealMap: Record<string, string> = {
   "Warsaw University of Technology": warsawTechSeal,
   "AGH University of Science and Technology": aghKrakowSeal,
   "Adam Mickiewicz University": adamMickiewiczSeal,
+  
+  // Czech Universities
+  "Charles University": charlesSeal,
+  "Czech Technical University": czechTechSeal,
+  "Masaryk University": masarykSeal,
+  
+  // Hungarian Universities
+  "Corvinus University": corvinusSeal,
+  "Eötvös Loránd University": elteSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
