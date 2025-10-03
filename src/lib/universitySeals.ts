@@ -491,6 +491,14 @@ import stellenboschSeal from "@/assets/university-seals/stellenbosch.png";
 import cairoSeal from "@/assets/university-seals/cairo.png";
 import nairobiSeal from "@/assets/university-seals/nairobi.png";
 
+// Additional Notable Universities
+import iitBombaySeal from "@/assets/university-seals/iit-bombay.png";
+import iiscBangaloreSeal from "@/assets/university-seals/iisc-bangalore.png";
+import aucklandSeal from "@/assets/university-seals/auckland.png";
+import yonseiSeal from "@/assets/university-seals/yonsei.png";
+import fudanSeal from "@/assets/university-seals/fudan.png";
+import ntuTaiwanSeal from "@/assets/university-seals/ntu-taiwan.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -1003,6 +1011,17 @@ export const universitySealMap: Record<string, string> = {
   "Stellenbosch University": stellenboschSeal,
   "Cairo University": cairoSeal,
   "University of Nairobi": nairobiSeal,
+  
+  // Additional Notable Universities
+  "IIT Bombay": iitBombaySeal,
+  "Indian Institute of Technology Bombay": iitBombaySeal,
+  "IISc Bangalore": iiscBangaloreSeal,
+  "Indian Institute of Science": iiscBangaloreSeal,
+  "University of Auckland": aucklandSeal,
+  "Yonsei University": yonseiSeal,
+  "Fudan University": fudanSeal,
+  "National Taiwan University": ntuTaiwanSeal,
+  "NTU Taiwan": ntuTaiwanSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
