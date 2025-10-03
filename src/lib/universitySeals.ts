@@ -289,6 +289,18 @@ import maastrichtSeal from "@/assets/university-seals/maastricht.png";
 import vuAmsterdamSeal from "@/assets/university-seals/vu-amsterdam.png";
 import tilburgSeal from "@/assets/university-seals/tilburg.png";
 
+// Swiss Universities
+import ethZurichSeal from "@/assets/university-seals/eth-zurich.png";
+import epflSeal from "@/assets/university-seals/epfl.png";
+import zurichSeal from "@/assets/university-seals/zurich.png";
+import genevaSeal from "@/assets/university-seals/geneva.png";
+import baselSeal from "@/assets/university-seals/basel.png";
+import bernSeal from "@/assets/university-seals/bern.png";
+import lausanneSeal from "@/assets/university-seals/lausanne.png";
+import fribourgSeal from "@/assets/university-seals/fribourg.png";
+import stGallenSeal from "@/assets/university-seals/st-gallen.png";
+import usiSeal from "@/assets/university-seals/usi.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -580,6 +592,18 @@ export const universitySealMap: Record<string, string> = {
   "Maastricht University": maastrichtSeal,
   "VU Amsterdam": vuAmsterdamSeal,
   "Tilburg University": tilburgSeal,
+  
+  // Swiss Universities
+  "ETH Zurich": ethZurichSeal,
+  "EPFL (École Polytechnique Fédérale de Lausanne)": epflSeal,
+  "University of Zurich": zurichSeal,
+  "University of Geneva": genevaSeal,
+  "University of Basel": baselSeal,
+  "University of Bern": bernSeal,
+  "University of Lausanne": lausanneSeal,
+  "University of Fribourg": fribourgSeal,
+  "University of St. Gallen": stGallenSeal,
+  "Università della Svizzera italiana": usiSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
