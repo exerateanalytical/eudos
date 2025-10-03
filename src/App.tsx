@@ -61,7 +61,7 @@ const App = () => (
             <Route path="/passports" element={<Passports />} />
             <Route path="/passports/:passportId" element={<PassportDetail />} />
             <Route path="/auth" element={<Auth />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard/*" element={<Dashboard />} />
             <Route path="/security-features" element={<SecurityFeatures />} />
             <Route path="/escrow" element={<Escrow />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

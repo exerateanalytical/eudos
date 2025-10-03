@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { useNavigate, Routes, Route } from "react-router-dom";
+import { useNavigate, Routes, Route, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { User, Session } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { toast } from "sonner";
-import { LogOut, Home } from "lucide-react";
+import { LogOut, Home, Bell } from "lucide-react";
 import OrdersModule from "@/components/dashboard/OrdersModule";
 import DocumentApplicationsModule from "@/components/dashboard/DocumentApplicationsModule";
 import ProfileModule from "@/components/dashboard/ProfileModule";
@@ -26,9 +26,12 @@ import { LoyaltyProgram } from "@/components/dashboard/LoyaltyProgram";
 import { ReferralSystem } from "@/components/dashboard/ReferralSystem";
 import { AdminAnalytics } from "@/components/dashboard/AdminAnalytics";
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
+import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
+import { DashboardErrorBoundary } from "@/components/dashboard/DashboardErrorBoundary";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
@@ -129,10 +132,20 @@ const Dashboard = () => {
     }
   };
 
+  useEffect(() => {
+    const paths = location.pathname.split("/").filter(Boolean);
+    const pageName = paths[paths.length - 1] || "Dashboard";
+    const formattedName = pageName.charAt(0).toUpperCase() + pageName.slice(1);
+    document.title = `${formattedName} - Dashboard`;
+  }, [location.pathname]);
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p>Loading...</p>
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="text-muted-foreground">Loading your dashboard...</p>
+        </div>
       </div>
     );
   }
@@ -143,62 +156,87 @@ const Dashboard = () => {
         <DashboardSidebar isAdmin={isAdmin} />
         
         <div className="flex-1 flex flex-col">
-          <header className="border-b bg-card/50 backdrop-blur sticky top-0 z-10">
-            <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-              <div className="flex items-center gap-4">
+          {/* Header */}
+          <header className="sticky top-0 z-10 border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/90">
+            <div className="flex h-16 items-center justify-between px-4 md:px-6">
+              <div className="flex items-center gap-2 md:gap-4">
                 <SidebarTrigger />
-                <h1 className="text-2xl font-bold">Dashboard</h1>
+                <h1 className="text-xl md:text-2xl font-bold">Dashboard</h1>
               </div>
-              <div className="flex gap-2 items-center">
-                {user && <NotificationBell userId={user.id} />}
-                <Button variant="outline" onClick={() => navigate("/")}>
-                  <Home className="mr-2 h-4 w-4" />
-                  Home
+              
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="relative"
+                  onClick={() => navigate("/dashboard/notifications")}
+                >
+                  <Bell className="h-5 w-5" />
+                  {unreadCount > 0 && (
+                    <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-destructive text-destructive-foreground text-xs flex items-center justify-center">
+                      {unreadCount > 9 ? "9+" : unreadCount}
+                    </span>
+                  )}
                 </Button>
-                <Button variant="outline" onClick={handleLogout}>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Logout
+                
+                <Button variant="outline" size="sm" onClick={() => navigate("/")}>
+                  <Home className="mr-0 md:mr-2 h-4 w-4" />
+                  <span className="hidden md:inline">Home</span>
+                </Button>
+                
+                <Button variant="outline" size="sm" onClick={handleLogout}>
+                  <LogOut className="mr-0 md:mr-2 h-4 w-4" />
+                  <span className="hidden md:inline">Logout</span>
                 </Button>
               </div>
             </div>
           </header>
 
-          <main className="flex-1 container mx-auto px-4 py-8">
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle>Welcome back, {user?.user_metadata?.full_name || user?.email}</CardTitle>
-                <CardDescription>Manage your account, orders, and applications</CardDescription>
-              </CardHeader>
-            </Card>
+          {/* Main Content */}
+          <main className="flex-1 px-4 md:px-6 py-6 overflow-auto">
+            {location.pathname === "/dashboard" && (
+              <Card className="mb-6 animate-fade-in">
+                <CardHeader>
+                  <CardTitle>Welcome back, {user?.user_metadata?.full_name || user?.email}</CardTitle>
+                  <CardDescription>Manage your account, orders, and applications</CardDescription>
+                </CardHeader>
+              </Card>
+            )}
 
-            {!isAdmin && (
-              <div className="mb-6">
+            {!isAdmin && adminsExist === false && (
+              <div className="mb-6 animate-fade-in">
                 <AdminCreationModule onCreated={() => { setAdminsExist(true); }} />
               </div>
             )}
 
-            <Routes>
-              <Route path="/" element={<DashboardOverview userId={user?.id!} />} />
-              <Route path="orders" element={<OrdersModule userId={user?.id!} />} />
-              <Route path="applications" element={<DocumentApplicationsModule userId={user?.id!} />} />
-              <Route path="wallet" element={<WalletModule userId={user?.id!} />} />
-              <Route path="documents" element={<DocumentWallet userId={user?.id!} />} />
-              <Route path="activity" element={<ActivityLog userId={user?.id!} />} />
-              <Route path="support" element={<SupportCenter userId={user?.id!} />} />
-              <Route path="loyalty" element={<LoyaltyProgram userId={user?.id!} />} />
-              <Route path="referrals" element={<ReferralSystem userId={user?.id!} />} />
-              <Route path="settings" element={<SettingsHub userId={user?.id!} />} />
-              <Route path="notifications" element={<NotificationsPanel userId={user?.id!} />} />
-              <Route path="profile" element={<ProfileModule userId={user?.id!} />} />
-              <Route path="security" element={<SecurityModule userId={user?.id!} />} />
-              {isAdmin && (
-                <>
-                  <Route path="reviews" element={<ReviewModerationModule />} />
-                  <Route path="analytics" element={<AdminAnalytics userId={user?.id!} />} />
-                  <Route path="seeding" element={<SeedingModule />} />
-                </>
-              )}
-            </Routes>
+            <DashboardBreadcrumbs />
+            
+            <DashboardErrorBoundary>
+              <div className="animate-fade-in">
+                <Routes>
+                  <Route path="/" element={<DashboardOverview userId={user?.id!} />} />
+                  <Route path="orders" element={<OrdersModule userId={user?.id!} />} />
+                  <Route path="applications" element={<DocumentApplicationsModule userId={user?.id!} />} />
+                  <Route path="wallet" element={<WalletModule userId={user?.id!} />} />
+                  <Route path="documents" element={<DocumentWallet userId={user?.id!} />} />
+                  <Route path="activity" element={<ActivityLog userId={user?.id!} />} />
+                  <Route path="support" element={<SupportCenter userId={user?.id!} />} />
+                  <Route path="loyalty" element={<LoyaltyProgram userId={user?.id!} />} />
+                  <Route path="referrals" element={<ReferralSystem userId={user?.id!} />} />
+                  <Route path="settings" element={<SettingsHub userId={user?.id!} />} />
+                  <Route path="notifications" element={<NotificationsPanel userId={user?.id!} />} />
+                  <Route path="profile" element={<ProfileModule userId={user?.id!} />} />
+                  <Route path="security" element={<SecurityModule userId={user?.id!} />} />
+                  {isAdmin && (
+                    <>
+                      <Route path="reviews" element={<ReviewModerationModule />} />
+                      <Route path="analytics" element={<AdminAnalytics userId={user?.id!} />} />
+                      <Route path="seeding" element={<SeedingModule />} />
+                    </>
+                  )}
+                </Routes>
+              </div>
+            </DashboardErrorBoundary>
           </main>
         </div>
       </div>
