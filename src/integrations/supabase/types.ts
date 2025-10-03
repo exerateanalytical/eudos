@@ -103,6 +103,162 @@ export type Database = {
           },
         ]
       }
+      cms_blog_posts: {
+        Row: {
+          author_id: string | null
+          canonical_url: string | null
+          category: string | null
+          content: string
+          created_at: string | null
+          excerpt: string | null
+          featured_image: string | null
+          id: string
+          published_at: string | null
+          seo_description: string | null
+          seo_keywords: string | null
+          seo_title: string | null
+          slug: string
+          status: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          author_id?: string | null
+          canonical_url?: string | null
+          category?: string | null
+          content: string
+          created_at?: string | null
+          excerpt?: string | null
+          featured_image?: string | null
+          id?: string
+          published_at?: string | null
+          seo_description?: string | null
+          seo_keywords?: string | null
+          seo_title?: string | null
+          slug: string
+          status?: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          author_id?: string | null
+          canonical_url?: string | null
+          category?: string | null
+          content?: string
+          created_at?: string | null
+          excerpt?: string | null
+          featured_image?: string | null
+          id?: string
+          published_at?: string | null
+          seo_description?: string | null
+          seo_keywords?: string | null
+          seo_title?: string | null
+          slug?: string
+          status?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      cms_pages: {
+        Row: {
+          canonical_url: string | null
+          content: string
+          created_at: string | null
+          id: string
+          seo_description: string | null
+          seo_keywords: string | null
+          seo_title: string | null
+          slug: string
+          status: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          canonical_url?: string | null
+          content: string
+          created_at?: string | null
+          id?: string
+          seo_description?: string | null
+          seo_keywords?: string | null
+          seo_title?: string | null
+          slug: string
+          status?: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          canonical_url?: string | null
+          content?: string
+          created_at?: string | null
+          id?: string
+          seo_description?: string | null
+          seo_keywords?: string | null
+          seo_title?: string | null
+          slug?: string
+          status?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      cms_products: {
+        Row: {
+          canonical_url: string | null
+          category_type: string
+          country: string | null
+          created_at: string | null
+          description: string
+          features: Json | null
+          id: string
+          image_url: string | null
+          name: string
+          price: number | null
+          seo_description: string | null
+          seo_keywords: string | null
+          seo_title: string | null
+          slug: string
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          canonical_url?: string | null
+          category_type: string
+          country?: string | null
+          created_at?: string | null
+          description: string
+          features?: Json | null
+          id?: string
+          image_url?: string | null
+          name: string
+          price?: number | null
+          seo_description?: string | null
+          seo_keywords?: string | null
+          seo_title?: string | null
+          slug: string
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          canonical_url?: string | null
+          category_type?: string
+          country?: string | null
+          created_at?: string | null
+          description?: string
+          features?: Json | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          price?: number | null
+          seo_description?: string | null
+          seo_keywords?: string | null
+          seo_title?: string | null
+          slug?: string
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       contact_inquiries: {
         Row: {
           agency: string

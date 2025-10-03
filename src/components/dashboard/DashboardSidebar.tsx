@@ -16,6 +16,10 @@ import {
   Eye,
   BarChart3,
   Database,
+  Users,
+  ShoppingCart,
+  DollarSign,
+  MessageSquare,
 } from "lucide-react";
 import {
   Sidebar,
@@ -56,6 +60,16 @@ const adminItems = [
   { title: "Reviews", url: "/dashboard/reviews", icon: Eye },
   { title: "Analytics", url: "/dashboard/analytics", icon: BarChart3 },
   { title: "Seeding", url: "/dashboard/seeding", icon: Database },
+];
+
+const adminPanelItems = [
+  { title: "Users", url: "/dashboard/admin/users", icon: Users },
+  { title: "Products", url: "/dashboard/admin/products", icon: Package },
+  { title: "Orders", url: "/dashboard/admin/orders", icon: ShoppingCart },
+  { title: "Applications", url: "/dashboard/admin/applications", icon: FileText },
+  { title: "Payments", url: "/dashboard/admin/payments", icon: DollarSign },
+  { title: "Inquiries", url: "/dashboard/admin/inquiries", icon: MessageSquare },
+  { title: "Blog", url: "/dashboard/admin/blog", icon: FileText },
 ];
 
 export function DashboardSidebar({ isAdmin }: DashboardSidebarProps) {
@@ -116,30 +130,57 @@ export function DashboardSidebar({ isAdmin }: DashboardSidebarProps) {
         </SidebarGroup>
 
         {isAdmin && (
-          <SidebarGroup>
-            <SidebarGroupLabel>Admin</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {adminItems.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <NavLink 
-                        to={item.url}
-                        className={({ isActive }) =>
-                          isActive 
-                            ? "bg-primary text-primary-foreground font-semibold shadow-sm" 
-                            : "hover:bg-accent/50 transition-colors"
-                        }
-                      >
-                        <item.icon className="h-4 w-4" />
-                        {open && <span>{item.title}</span>}
-                      </NavLink>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
+          <>
+            <SidebarGroup>
+              <SidebarGroupLabel>Admin</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {adminItems.map((item) => (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton asChild>
+                        <NavLink 
+                          to={item.url}
+                          className={({ isActive }) =>
+                            isActive 
+                              ? "bg-primary text-primary-foreground font-semibold shadow-sm" 
+                              : "hover:bg-accent/50 transition-colors"
+                          }
+                        >
+                          <item.icon className="h-4 w-4" />
+                          {open && <span>{item.title}</span>}
+                        </NavLink>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            <SidebarGroup>
+              <SidebarGroupLabel>Admin Panel</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {adminPanelItems.map((item) => (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton asChild>
+                        <NavLink 
+                          to={item.url}
+                          className={({ isActive }) =>
+                            isActive 
+                              ? "bg-primary text-primary-foreground font-semibold shadow-sm" 
+                              : "hover:bg-accent/50 transition-colors"
+                          }
+                        >
+                          <item.icon className="h-4 w-4" />
+                          {open && <span>{item.title}</span>}
+                        </NavLink>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </>
         )}
       </SidebarContent>
     </Sidebar>
