@@ -53,9 +53,18 @@ const Escrow = () => {
           <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
             Protect Your Crypto Transactions
           </h1>
-          <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground mb-4 max-w-3xl mx-auto">
             Our escrow service ensures secure transactions between buyers and sellers. Funds are held safely until both parties fulfill their obligations.
           </p>
+          
+          {/* Fee Notice */}
+          <div className="inline-flex items-center gap-2 px-6 py-3 bg-amber-500/10 border border-amber-500/20 rounded-lg mb-8">
+            <AlertCircle className="w-5 h-5 text-amber-500" />
+            <p className="text-sm font-medium text-amber-600 dark:text-amber-400">
+              Service fee: <span className="font-bold">1.5%</span> deducted from seller upon completion
+            </p>
+          </div>
+
           <Button size="lg" onClick={handleCreateEscrow} className="gap-2">
             Create Escrow <ArrowRight className="w-4 h-4" />
           </Button>
@@ -204,6 +213,86 @@ const Escrow = () => {
         </div>
       </section>
 
+      {/* Fee Structure Section */}
+      <section className="py-16 px-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Simple, Transparent Pricing</h2>
+            <p className="text-muted-foreground">No hidden fees, just secure transactions</p>
+          </div>
+
+          <Card className="border-2 border-primary/20 shadow-lg">
+            <CardHeader className="text-center pb-8">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4 mx-auto">
+                <Wallet className="w-8 h-8 text-primary" />
+              </div>
+              <CardTitle className="text-4xl font-bold mb-2">1.5%</CardTitle>
+              <CardDescription className="text-lg">Escrow Service Fee</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="bg-secondary/50 p-6 rounded-lg space-y-4">
+                <h3 className="font-semibold text-lg mb-3">How it works:</h3>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="font-medium">Buyer pays full amount</p>
+                      <p className="text-sm text-muted-foreground">You send the total transaction amount including the 1.5% fee</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="font-medium">Funds held securely</p>
+                      <p className="text-sm text-muted-foreground">Money stays in escrow until buyer confirms delivery</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="font-medium">Seller receives payment minus fee</p>
+                      <p className="text-sm text-muted-foreground">1.5% is deducted when funds are released to the seller</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t pt-6">
+                <h3 className="font-semibold mb-3">Example Transaction:</h3>
+                <div className="space-y-2 bg-primary/5 p-4 rounded-lg">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Product Price:</span>
+                    <span className="font-semibold">$1,000.00</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Escrow Fee (1.5%):</span>
+                    <span className="font-semibold text-primary">+ $15.00</span>
+                  </div>
+                  <div className="border-t pt-2 mt-2 flex justify-between text-lg">
+                    <span className="font-bold">Buyer Pays:</span>
+                    <span className="font-bold text-primary">$1,015.00</span>
+                  </div>
+                  <div className="flex justify-between pt-2 border-t">
+                    <span className="font-bold">Seller Receives:</span>
+                    <span className="font-bold">$1,000.00</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
+                <div className="text-sm">
+                  <p className="font-medium text-blue-600 dark:text-blue-400 mb-1">Why we charge a fee?</p>
+                  <p className="text-blue-600/80 dark:text-blue-400/80">
+                    The 1.5% fee covers secure wallet infrastructure, smart contract audits, dispute resolution services, and 24/7 transaction monitoring to ensure your funds are always protected.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
       {/* FAQ Section */}
       <section className="py-16 px-4">
         <div className="max-w-4xl mx-auto">
@@ -223,7 +312,7 @@ const Escrow = () => {
             <AccordionItem value="item-2">
               <AccordionTrigger>What are the fees?</AccordionTrigger>
               <AccordionContent>
-                We charge a flat 1.5% escrow service fee on the transaction amount. This fee is deducted when funds are released to the seller. There are no hidden charges.
+                We charge a flat 1.5% escrow service fee on the transaction amount. This fee is added to your total payment as a buyer and deducted when funds are released to the seller. For example, on a $1,000 purchase, you'll pay $1,015 total, and the seller receives $1,000. There are no hidden charges or additional fees.
               </AccordionContent>
             </AccordionItem>
 
