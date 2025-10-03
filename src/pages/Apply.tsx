@@ -11,6 +11,12 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "@/hooks/use-toast";
+import { IdentityDocumentForm } from "@/components/apply/IdentityDocumentForm";
+import { EducationalDocumentForm } from "@/components/apply/EducationalDocumentForm";
+import { GovernmentDocumentForm } from "@/components/apply/GovernmentDocumentForm";
+import { VehicleDocumentForm } from "@/components/apply/VehicleDocumentForm";
+import { BusinessDocumentForm } from "@/components/apply/BusinessDocumentForm";
+import { TravelDocumentForm } from "@/components/apply/TravelDocumentForm";
 import { 
   FileText, 
   CreditCard, 
@@ -604,6 +610,57 @@ const Apply = () => {
                         </Select>
                       </div>
                     </div>
+                  </div>
+
+                  <Separator />
+
+                  {/* Document-Specific Form Fields */}
+                  <div className="space-y-4">
+                    <h3 className="font-semibold text-lg">Document-Specific Information</h3>
+                    {["passport", "drivers-license", "id-card"].includes(selectedDocument) && (
+                      <IdentityDocumentForm
+                        documentType={selectedDocument}
+                        formData={formData}
+                        onInputChange={handleInputChange}
+                        countries={countries}
+                      />
+                    )}
+                    {["diploma", "certification"].includes(selectedDocument) && (
+                      <EducationalDocumentForm
+                        documentType={selectedDocument}
+                        formData={formData}
+                        onInputChange={handleInputChange}
+                        countries={countries}
+                      />
+                    )}
+                    {["birth", "marriage"].includes(selectedDocument) && (
+                      <GovernmentDocumentForm
+                        documentType={selectedDocument}
+                        formData={formData}
+                        onInputChange={handleInputChange}
+                        countries={countries}
+                      />
+                    )}
+                    {selectedDocument === "vehicle" && (
+                      <VehicleDocumentForm
+                        formData={formData}
+                        onInputChange={handleInputChange}
+                      />
+                    )}
+                    {selectedDocument === "business" && (
+                      <BusinessDocumentForm
+                        formData={formData}
+                        onInputChange={handleInputChange}
+                        countries={countries}
+                      />
+                    )}
+                    {selectedDocument === "travel" && (
+                      <TravelDocumentForm
+                        formData={formData}
+                        onInputChange={handleInputChange}
+                        countries={countries}
+                      />
+                    )}
                   </div>
 
                   <Separator />
