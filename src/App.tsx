@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "./components/Layout";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 import Index from "./pages/Index";
 import Apply from "./pages/Apply";
 import Products from "./pages/Products";
@@ -29,6 +30,8 @@ import Dashboard from "./pages/Dashboard";
 import SecurityFeatures from "./pages/SecurityFeatures";
 import Escrow from "./pages/Escrow";
 import NotFound from "./pages/NotFound";
+import Forbidden from "./pages/Forbidden";
+import ServerError from "./pages/ServerError";
 
 const queryClient = new QueryClient();
 
@@ -38,8 +41,9 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Layout>
-          <Routes>
+        <ErrorBoundary>
+          <Layout>
+            <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/apply" element={<Apply />} />
             <Route path="/products" element={<Products />} />
@@ -64,10 +68,13 @@ const App = () => (
             <Route path="/dashboard/*" element={<Dashboard />} />
             <Route path="/security-features" element={<SecurityFeatures />} />
             <Route path="/escrow" element={<Escrow />} />
+            <Route path="/403" element={<Forbidden />} />
+            <Route path="/500" element={<ServerError />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Layout>
+            </Routes>
+          </Layout>
+        </ErrorBoundary>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
