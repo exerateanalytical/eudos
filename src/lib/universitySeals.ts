@@ -427,6 +427,21 @@ import ljubljanaSeal from "@/assets/university-seals/ljubljana.png";
 // Croatian Universities
 import zagrebSeal from "@/assets/university-seals/zagreb.png";
 
+// More Danish Universities
+import aarhusSeal from "@/assets/university-seals/aarhus.png";
+
+// More Norwegian Universities
+import bergenSeal from "@/assets/university-seals/bergen.png";
+
+// More Swedish Universities
+import gothenburgSeal from "@/assets/university-seals/gothenburg.png";
+
+// More Finnish Universities
+import turkuSeal from "@/assets/university-seals/turku.png";
+
+// Icelandic Universities
+import icelandSeal from "@/assets/university-seals/iceland.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -856,6 +871,21 @@ export const universitySealMap: Record<string, string> = {
   
   // Croatian Universities
   "University of Zagreb": zagrebSeal,
+  
+  // More Danish Universities
+  "Aarhus University": aarhusSeal,
+  
+  // More Norwegian Universities
+  "University of Bergen": bergenSeal,
+  
+  // More Swedish Universities
+  "University of Gothenburg": gothenburgSeal,
+  
+  // More Finnish Universities
+  "University of Turku": turkuSeal,
+  
+  // Icelandic Universities
+  "University of Iceland": icelandSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
