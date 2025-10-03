@@ -12,6 +12,8 @@ import {
   Headphones,
   BookOpen,
   Star,
+  Activity,
+  FileCode,
 } from "lucide-react";
 import {
   Sidebar,
@@ -86,6 +88,18 @@ const adminItems = [
     url: "/admin/reviews", 
     icon: Star,
     gradient: "from-violet-500 to-purple-500"
+  },
+  { 
+    title: "Pages", 
+    url: "/admin/pages", 
+    icon: FileCode,
+    gradient: "from-cyan-500 to-blue-500"
+  },
+  { 
+    title: "Activity Logs", 
+    url: "/admin/activity", 
+    icon: Activity,
+    gradient: "from-slate-500 to-gray-500"
   },
 ];
 
