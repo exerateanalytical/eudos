@@ -469,6 +469,14 @@ import unswSeal from "@/assets/university-seals/unsw.png";
 import queenslandSeal from "@/assets/university-seals/queensland.png";
 import monashSeal from "@/assets/university-seals/monash.png";
 
+// Latin American Universities
+import saoPauloSeal from "@/assets/university-seals/sao-paulo.png";
+import unamSeal from "@/assets/university-seals/unam.png";
+import buenosAiresSeal from "@/assets/university-seals/buenos-aires.png";
+import pucChileSeal from "@/assets/university-seals/puc-chile.png";
+import unicampSeal from "@/assets/university-seals/unicamp.png";
+import tecMonterreySeal from "@/assets/university-seals/tec-monterrey.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -945,6 +953,21 @@ export const universitySealMap: Record<string, string> = {
   "UNSW": unswSeal,
   "University of Queensland": queenslandSeal,
   "Monash University": monashSeal,
+  
+  // Latin American Universities
+  "University of São Paulo": saoPauloSeal,
+  "USP": saoPauloSeal,
+  "UNAM": unamSeal,
+  "National Autonomous University of Mexico": unamSeal,
+  "University of Buenos Aires": buenosAiresSeal,
+  "UBA": buenosAiresSeal,
+  "Pontifical Catholic University of Chile": pucChileSeal,
+  "PUC Chile": pucChileSeal,
+  "University of Campinas": unicampSeal,
+  "UNICAMP": unicampSeal,
+  "Tecnológico de Monterrey": tecMonterreySeal,
+  "ITESM": tecMonterreySeal,
+  "Tec de Monterrey": tecMonterreySeal,
 };
 
 // Helper function to get seal with fallback for community colleges
