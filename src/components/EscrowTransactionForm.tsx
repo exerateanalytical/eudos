@@ -14,11 +14,16 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { Check, Copy, Shield, ArrowRight, Search, CheckCircle } from "lucide-react";
+import { Check, Copy, Shield, ArrowRight, Search, CheckCircle, Info, Lock, AlertTriangle, Clock, FileCheck, Package, Headphones } from "lucide-react";
 import { escrowProducts, searchProducts, getProductById, type EscrowProduct } from "@/lib/escrowProducts";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Card, CardContent } from "@/components/ui/card";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Badge } from "@/components/ui/badge";
 
 interface EscrowTransactionFormProps {
   open: boolean;
@@ -33,6 +38,7 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
   const [userProfile, setUserProfile] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [comboboxOpen, setComboboxOpen] = useState(false);
+  const [whyEscrowOpen, setWhyEscrowOpen] = useState(false);
   
   const [formData, setFormData] = useState({
     selectedProduct: null as EscrowProduct | null,
@@ -184,6 +190,39 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
             {step === "review" && "Review Escrow Details"}
             {step === "payment" && "Payment Instructions"}
           </DialogTitle>
+          
+          {/* Progress Indicator */}
+          <div className="flex items-center justify-center gap-2 pt-4">
+            <div className="flex items-center gap-2">
+              <div className={cn(
+                "w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold",
+                step === "form" ? "bg-primary text-primary-foreground" : "bg-primary/20 text-primary"
+              )}>
+                1
+              </div>
+              <span className={cn("text-xs font-medium", step === "form" ? "text-primary" : "text-muted-foreground")}>Form</span>
+            </div>
+            <div className={cn("h-0.5 w-8", step !== "form" ? "bg-primary" : "bg-muted")} />
+            <div className="flex items-center gap-2">
+              <div className={cn(
+                "w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold",
+                step === "review" ? "bg-primary text-primary-foreground" : step === "payment" ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground"
+              )}>
+                2
+              </div>
+              <span className={cn("text-xs font-medium", step === "review" ? "text-primary" : "text-muted-foreground")}>Review</span>
+            </div>
+            <div className={cn("h-0.5 w-8", step === "payment" ? "bg-primary" : "bg-muted")} />
+            <div className="flex items-center gap-2">
+              <div className={cn(
+                "w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold",
+                step === "payment" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+              )}>
+                3
+              </div>
+              <span className={cn("text-xs font-medium", step === "payment" ? "text-primary" : "text-muted-foreground")}>Payment</span>
+            </div>
+          </div>
         </DialogHeader>
 
         {step === "form" && (
@@ -207,6 +246,24 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
                 </div>
               </div>
             </div>
+
+            {/* Fee Information Alert */}
+            <Alert className="border-primary/30 bg-primary/5">
+              <Info className="h-4 w-4 text-primary" />
+              <AlertTitle className="text-primary font-semibold">Escrow Service Fee</AlertTitle>
+              <AlertDescription className="space-y-2">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Badge variant="secondary" className="font-semibold">1.5% Fee</Badge>
+                  <span className="text-sm">added to your total payment</span>
+                </div>
+                <p className="text-sm">The 1.5% fee covers secure escrow services. The seller receives the full product price - you pay the protection fee.</p>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  <Badge variant="outline" className="text-xs"><Lock className="w-3 h-3 mr-1" />Secure Holding</Badge>
+                  <Badge variant="outline" className="text-xs"><Shield className="w-3 h-3 mr-1" />Fraud Protection</Badge>
+                  <Badge variant="outline" className="text-xs"><Headphones className="w-3 h-3 mr-1" />24/7 Support</Badge>
+                </div>
+              </AlertDescription>
+            </Alert>
 
             {/* Product Selection */}
             <div className="space-y-2">
@@ -349,22 +406,114 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
               />
             </div>
 
-            {/* Price Summary */}
+            {/* Enhanced Price Summary */}
             {formData.selectedProduct && (
-              <div className="bg-secondary/50 p-4 rounded-lg space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Subtotal ({formData.quantity}x ${formData.selectedProduct.price}):</span>
-                  <span>${subtotal.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between text-sm text-muted-foreground">
-                  <span>Escrow Fee ({escrowFeePercentage}%):</span>
-                  <span>${fee.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between font-bold text-lg pt-2 border-t">
-                  <span>Total:</span>
-                  <span className="text-primary">${total.toFixed(2)}</span>
-                </div>
-              </div>
+              <Card className="border-primary/20">
+                <CardContent className="p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-semibold flex items-center gap-2">
+                      <Package className="w-4 h-4 text-primary" />
+                      Price Summary
+                    </h4>
+                    <Badge variant="secondary" className="text-xs">Secure Payment</Badge>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="flex items-center gap-2">
+                        <FileCheck className="w-4 h-4 text-muted-foreground" />
+                        Subtotal ({formData.quantity}x ${formData.selectedProduct.price})
+                      </span>
+                      <span className="font-medium">${subtotal.toFixed(2)}</span>
+                    </div>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="flex justify-between text-sm text-muted-foreground cursor-help">
+                            <span className="flex items-center gap-2">
+                              <Shield className="w-4 h-4" />
+                              Escrow Fee ({escrowFeePercentage}%)
+                              <Info className="w-3 h-3" />
+                            </span>
+                            <span>${fee.toFixed(2)}</span>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent className="max-w-xs">
+                          <p className="text-xs font-semibold mb-1">What's included:</p>
+                          <ul className="text-xs space-y-1">
+                            <li>• Secure fund holding</li>
+                            <li>• Dispute resolution</li>
+                            <li>• 24/7 transaction monitoring</li>
+                            <li>• Fraud protection</li>
+                          </ul>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    <div className="flex justify-between font-bold text-lg pt-2 border-t">
+                      <span>Total Payment:</span>
+                      <span className="text-primary">${total.toFixed(2)}</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Why Use Escrow Collapsible */}
+            {formData.selectedProduct && (
+              <Collapsible open={whyEscrowOpen} onOpenChange={setWhyEscrowOpen}>
+                <CollapsibleTrigger asChild>
+                  <Button variant="outline" className="w-full justify-between">
+                    <span className="flex items-center gap-2">
+                      <Shield className="w-4 h-4" />
+                      Why Use Escrow?
+                    </span>
+                    <ArrowRight className={cn("w-4 h-4 transition-transform", whyEscrowOpen && "rotate-90")} />
+                  </Button>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="mt-2">
+                  <Card>
+                    <CardContent className="p-4 space-y-3">
+                      <div className="grid sm:grid-cols-2 gap-3">
+                        <div className="flex items-start gap-2">
+                          <div className="w-8 h-8 rounded-full bg-green-100 dark:bg-green-950 flex items-center justify-center flex-shrink-0">
+                            <Lock className="w-4 h-4 text-green-600 dark:text-green-400" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold">No Auto-release</p>
+                            <p className="text-xs text-muted-foreground">You control when funds are released</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-950 flex items-center justify-center flex-shrink-0">
+                            <Shield className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold">Full Refund Protection</p>
+                            <p className="text-xs text-muted-foreground">100% money back if terms not met</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-950 flex items-center justify-center flex-shrink-0">
+                            <Lock className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold">Encrypted Transactions</p>
+                            <p className="text-xs text-muted-foreground">Military-grade security</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <div className="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-950 flex items-center justify-center flex-shrink-0">
+                            <CheckCircle className="w-4 h-4 text-orange-600 dark:text-orange-400" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold">Verified Seller</p>
+                            <p className="text-xs text-muted-foreground">Platform-verified merchants only</p>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </CollapsibleContent>
+              </Collapsible>
             )}
 
             <Button onClick={handleSubmit} className="w-full gap-2" disabled={!formData.selectedProduct}>
@@ -375,28 +524,99 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
 
         {step === "review" && (
           <div className="space-y-6 py-4">
-            {/* Escrow Protection Notice */}
-            <div className="bg-green-50 dark:bg-green-950/20 border-2 border-green-500/30 p-4 rounded-lg">
-              <div className="flex items-start gap-3">
-                <Shield className="w-6 h-6 text-green-600 dark:text-green-400 flex-shrink-0 mt-1" />
-                <div className="space-y-2">
-                  <h3 className="font-bold text-green-700 dark:text-green-300">Escrow Protection</h3>
-                  <p className="text-sm text-green-700 dark:text-green-300">
-                    Your payment will be held in escrow until you confirm delivery. The vendor will only receive payment after successful completion.
-                  </p>
-                  <div className="flex flex-wrap gap-3 mt-3">
-                    <div className="flex items-center gap-2 text-xs font-medium text-green-700 dark:text-green-300">
-                      <CheckCircle className="w-4 h-4" />
-                      <span>No Auto-release</span>
+            {/* Enhanced Escrow Protection Notice */}
+            <Card className="border-2 border-green-500/30 bg-green-50 dark:bg-green-950/20">
+              <CardContent className="p-4 space-y-4">
+                <div className="flex items-start gap-3">
+                  <Shield className="w-6 h-6 text-green-600 dark:text-green-400 flex-shrink-0 mt-1" />
+                  <div className="space-y-3 flex-1">
+                    <h3 className="font-bold text-green-700 dark:text-green-300">Escrow Protection Active</h3>
+                    <p className="text-sm text-green-700 dark:text-green-300">
+                      Your payment will be held in escrow until you confirm delivery. The vendor will only receive payment after successful completion.
+                    </p>
+                    
+                    {/* Timeline */}
+                    <div className="bg-white/50 dark:bg-black/20 rounded-lg p-3 space-y-2">
+                      <p className="text-xs font-semibold text-green-700 dark:text-green-300 mb-2">Escrow Process Timeline:</p>
+                      <div className="space-y-2 text-xs text-green-700 dark:text-green-300">
+                        <div className="flex items-center gap-2">
+                          <div className="w-5 h-5 rounded-full bg-green-600 dark:bg-green-400 flex items-center justify-center text-white dark:text-black font-bold text-xs">1</div>
+                          <span>Payment secured in escrow (0-30 min)</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="w-5 h-5 rounded-full bg-green-600 dark:bg-green-400 flex items-center justify-center text-white dark:text-black font-bold text-xs">2</div>
+                          <span>Seller prepares your order ({formData.selectedProduct?.delivery})</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="w-5 h-5 rounded-full bg-green-600 dark:bg-green-400 flex items-center justify-center text-white dark:text-black font-bold text-xs">3</div>
+                          <span>You verify delivery and confirm receipt</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="w-5 h-5 rounded-full bg-green-600 dark:bg-green-400 flex items-center justify-center text-white dark:text-black font-bold text-xs">4</div>
+                          <span>Funds released to seller</span>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2 text-xs font-medium text-green-700 dark:text-green-300">
-                      <CheckCircle className="w-4 h-4" />
-                      <span>Dispute protection</span>
+
+                    {/* Your Rights */}
+                    <div className="bg-white/50 dark:bg-black/20 rounded-lg p-3">
+                      <p className="text-xs font-semibold text-green-700 dark:text-green-300 mb-2">Your Rights:</p>
+                      <ul className="text-xs text-green-700 dark:text-green-300 space-y-1">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-3 h-3 flex-shrink-0 mt-0.5" />
+                          <span>Right to verify product before release</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-3 h-3 flex-shrink-0 mt-0.5" />
+                          <span>Right to dispute if issues arise</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-3 h-3 flex-shrink-0 mt-0.5" />
+                          <span>Right to full refund if terms not met</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                      <Badge variant="secondary" className="bg-green-600/20 text-green-700 dark:text-green-300 border-green-600/30">
+                        <Lock className="w-3 h-3 mr-1" />
+                        No Auto-release
+                      </Badge>
+                      <Badge variant="secondary" className="bg-green-600/20 text-green-700 dark:text-green-300 border-green-600/30">
+                        <Shield className="w-3 h-3 mr-1" />
+                        Dispute Protection
+                      </Badge>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
+
+            {/* Important Reminders */}
+            <Alert className="border-amber-500/30 bg-amber-50 dark:bg-amber-950/20">
+              <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+              <AlertTitle className="text-amber-700 dark:text-amber-300 font-semibold">Important Reminders</AlertTitle>
+              <AlertDescription>
+                <ul className="text-sm text-amber-700 dark:text-amber-300 space-y-2 mt-2">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                    <span><strong>Never release funds</strong> before confirming delivery</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                    <span><strong>Verify product</strong> matches description exactly</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                    <span><strong>Contact support</strong> immediately if any issues arise</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                    <span><strong>Keep all communication</strong> documented for protection</span>
+                  </li>
+                </ul>
+              </AlertDescription>
+            </Alert>
 
             {/* Transaction Details */}
             <div className="bg-secondary/50 p-4 rounded-lg space-y-3">
@@ -435,16 +655,35 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
               )}
 
               <div className="pt-3 border-t space-y-2">
-                <div className="flex justify-between">
+                <div className="flex justify-between text-sm">
                   <span>Subtotal:</span>
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span className="font-medium">${subtotal.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between text-muted-foreground">
-                  <span>Escrow Fee (1.5%):</span>
-                  <span>${fee.toFixed(2)}</span>
-                </div>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="flex justify-between text-sm text-muted-foreground cursor-help">
+                        <span className="flex items-center gap-1">
+                          Escrow Fee (1.5%)
+                          <Info className="w-3 h-3" />
+                        </span>
+                        <span>${fee.toFixed(2)}</span>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs">
+                      <p className="text-xs font-semibold mb-1">Fee Breakdown:</p>
+                      <ul className="text-xs space-y-1">
+                        <li>• Security & encryption: 40%</li>
+                        <li>• Dispute handling: 30%</li>
+                        <li>• Platform maintenance: 20%</li>
+                        <li>• 24/7 support: 10%</li>
+                      </ul>
+                      <p className="text-xs mt-2 pt-2 border-t">Much lower than traditional payment processors while providing superior protection.</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
                 <div className="flex justify-between font-bold text-lg">
-                  <span>Total:</span>
+                  <span>Total Payment:</span>
                   <span className="text-primary">${total.toFixed(2)}</span>
                 </div>
               </div>
@@ -463,39 +702,172 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
 
         {step === "payment" && (
           <div className="space-y-6 py-4">
-            <div className="bg-primary/10 p-4 rounded-lg space-y-2">
-              <p className="font-semibold flex items-center gap-2">
-                <Shield className="w-4 h-4" />
-                Send Payment to Escrow Wallet
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Transfer ${total.toFixed(2)} worth of cryptocurrency to the address below
-              </p>
-            </div>
+            {/* Security Warnings */}
+            <Alert className="border-red-500/30 bg-red-50 dark:bg-red-950/20">
+              <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-400" />
+              <AlertTitle className="text-red-700 dark:text-red-300 font-semibold">Critical Security Warning</AlertTitle>
+              <AlertDescription>
+                <ul className="text-sm text-red-700 dark:text-red-300 space-y-1 mt-2">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                    <span><strong>Only send payment</strong> to the displayed address below</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                    <span><strong>Verify the address carefully</strong> before sending</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                    <span><strong>SecurePrint Labs will never</strong> ask for payment elsewhere</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                    <span><strong>Screenshot this address</strong> for your records</span>
+                  </li>
+                </ul>
+              </AlertDescription>
+            </Alert>
+
+            <Card className="border-primary/20">
+              <CardContent className="p-4 space-y-3">
+                <div className="flex items-center gap-2">
+                  <Shield className="w-5 h-5 text-primary" />
+                  <h3 className="font-semibold">Send Payment to Escrow Wallet</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Transfer <span className="font-bold text-primary">${total.toFixed(2)}</span> worth of cryptocurrency to the address below
+                </p>
+                <div className="flex gap-2 flex-wrap">
+                  <Badge variant="outline"><Lock className="w-3 h-3 mr-1" />Encrypted</Badge>
+                  <Badge variant="outline"><Shield className="w-3 h-3 mr-1" />Blockchain Secured</Badge>
+                </div>
+              </CardContent>
+            </Card>
 
             <div className="space-y-2">
-              <Label>Escrow Wallet Address</Label>
+              <Label className="flex items-center gap-2">
+                <Lock className="w-4 h-4 text-primary" />
+                Escrow Wallet Address
+              </Label>
               <div className="flex gap-2">
-                <Input value={escrowWalletAddress} readOnly className="font-mono text-sm" />
+                <Input value={escrowWalletAddress} readOnly className="font-mono text-sm font-semibold" />
                 <Button variant="outline" size="icon" onClick={copyToClipboard}>
                   {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                 </Button>
               </div>
+              <p className="text-xs text-muted-foreground">Accepted: BTC, ETH, USDT, USDC</p>
             </div>
 
-            <div className="bg-secondary/50 p-4 rounded-lg space-y-2">
-              <p className="font-semibold">Payment Instructions:</p>
-              <ol className="text-sm space-y-1 list-decimal list-inside">
-                <li>Copy the escrow wallet address above</li>
-                <li>Open your crypto wallet (BTC, ETH, USDT, or USDC)</li>
-                <li>Send exactly ${total.toFixed(2)} worth of crypto to the address</li>
-                <li>Click "Confirm Payment Sent" below</li>
-                <li>Wait for blockchain confirmation (5-30 minutes)</li>
-              </ol>
-            </div>
+            <Card>
+              <CardContent className="p-4 space-y-3">
+                <p className="font-semibold flex items-center gap-2">
+                  <FileCheck className="w-4 h-4" />
+                  Payment Instructions:
+                </p>
+                <ol className="text-sm space-y-2 list-decimal list-inside">
+                  <li>Copy the escrow wallet address above</li>
+                  <li>Open your crypto wallet (BTC, ETH, USDT, or USDC)</li>
+                  <li>Send exactly <strong>${total.toFixed(2)}</strong> worth of crypto to the address</li>
+                  <li>Click "Confirm Payment Sent" below</li>
+                  <li>Wait for blockchain confirmation (5-30 minutes)</li>
+                </ol>
+              </CardContent>
+            </Card>
 
-            <Button onClick={handleConfirmPayment} className="w-full" disabled={loading}>
-              {loading ? "Creating Escrow..." : "Confirm Payment Sent"}
+            {/* What Happens Next */}
+            <Card className="border-blue-500/30 bg-blue-50 dark:bg-blue-950/20">
+              <CardContent className="p-4 space-y-3">
+                <h3 className="font-semibold text-blue-700 dark:text-blue-300 flex items-center gap-2">
+                  <Clock className="w-5 h-5" />
+                  What Happens Next
+                </h3>
+                <div className="space-y-2">
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-blue-600 dark:bg-blue-400 flex items-center justify-center text-white dark:text-black font-bold text-xs flex-shrink-0">1</div>
+                    <div>
+                      <p className="text-sm font-medium text-blue-700 dark:text-blue-300">Blockchain Confirmation</p>
+                      <p className="text-xs text-blue-600 dark:text-blue-400">5-30 minutes</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-blue-600 dark:bg-blue-400 flex items-center justify-center text-white dark:text-black font-bold text-xs flex-shrink-0">2</div>
+                    <div>
+                      <p className="text-sm font-medium text-blue-700 dark:text-blue-300">Order Processing Begins</p>
+                      <p className="text-xs text-blue-600 dark:text-blue-400">Seller is notified</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-blue-600 dark:bg-blue-400 flex items-center justify-center text-white dark:text-black font-bold text-xs flex-shrink-0">3</div>
+                    <div>
+                      <p className="text-sm font-medium text-blue-700 dark:text-blue-300">Seller Prepares Product</p>
+                      <p className="text-xs text-blue-600 dark:text-blue-400">{formData.selectedProduct?.delivery}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-blue-600 dark:bg-blue-400 flex items-center justify-center text-white dark:text-black font-bold text-xs flex-shrink-0">4</div>
+                    <div>
+                      <p className="text-sm font-medium text-blue-700 dark:text-blue-300">Delivery Tracking Provided</p>
+                      <p className="text-xs text-blue-600 dark:text-blue-400">You'll receive updates via email</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-blue-600 dark:bg-blue-400 flex items-center justify-center text-white dark:text-black font-bold text-xs flex-shrink-0">5</div>
+                    <div>
+                      <p className="text-sm font-medium text-blue-700 dark:text-blue-300">You Confirm Delivery</p>
+                      <p className="text-xs text-blue-600 dark:text-blue-400">Verify and release funds</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-green-600 dark:bg-green-400 flex items-center justify-center text-white dark:text-black font-bold text-xs flex-shrink-0">✓</div>
+                    <div>
+                      <p className="text-sm font-medium text-blue-700 dark:text-blue-300">Funds Released to Seller</p>
+                      <p className="text-xs text-blue-600 dark:text-blue-400">Transaction complete</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Support & Protection Notice */}
+            <Card className="border-primary/30 bg-primary/5">
+              <CardContent className="p-4 space-y-2">
+                <div className="flex items-center gap-2">
+                  <Headphones className="w-5 h-5 text-primary" />
+                  <h3 className="font-semibold">Support & Protection</h3>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-2 text-sm">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-green-600" />
+                    <span>24/7 Support Available</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Shield className="w-4 h-4 text-blue-600" />
+                    <span>Escrow Guarantee Active</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-orange-600" />
+                    <span>~24hr Dispute Resolution</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Lock className="w-4 h-4 text-purple-600" />
+                    <span>Full Refund Protection</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Button onClick={handleConfirmPayment} className="w-full gap-2" disabled={loading}>
+              {loading ? (
+                <>
+                  <Clock className="w-4 h-4 animate-spin" />
+                  Creating Escrow...
+                </>
+              ) : (
+                <>
+                  <CheckCircle className="w-4 h-4" />
+                  Confirm Payment Sent
+                </>
+              )}
             </Button>
 
             <p className="text-xs text-center text-muted-foreground">
