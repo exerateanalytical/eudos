@@ -240,6 +240,7 @@ export function InquiryManagement() {
           open={detailModalOpen}
           onOpenChange={setDetailModalOpen}
           inquiry={selectedInquiry}
+          onInquiryUpdated={fetchInquiries}
         />
       )}
     </div>
