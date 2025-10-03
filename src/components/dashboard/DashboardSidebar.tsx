@@ -75,7 +75,9 @@ export function DashboardSidebar({ isAdmin }: DashboardSidebarProps) {
                       to={item.url} 
                       end={item.end}
                       className={({ isActive }) =>
-                        isActive ? "bg-accent text-accent-foreground" : ""
+                        isActive 
+                          ? "bg-primary text-primary-foreground font-semibold shadow-sm" 
+                          : "hover:bg-accent/50 transition-colors"
                       }
                     >
                       <item.icon className="h-4 w-4" />
@@ -98,7 +100,9 @@ export function DashboardSidebar({ isAdmin }: DashboardSidebarProps) {
                     <NavLink 
                       to={item.url}
                       className={({ isActive }) =>
-                        isActive ? "bg-accent text-accent-foreground" : ""
+                        isActive 
+                          ? "bg-primary text-primary-foreground font-semibold shadow-sm" 
+                          : "hover:bg-accent/50 transition-colors"
                       }
                     >
                       <item.icon className="h-4 w-4" />
@@ -122,7 +126,9 @@ export function DashboardSidebar({ isAdmin }: DashboardSidebarProps) {
                       <NavLink 
                         to={item.url}
                         className={({ isActive }) =>
-                          isActive ? "bg-accent text-accent-foreground" : ""
+                          isActive 
+                            ? "bg-primary text-primary-foreground font-semibold shadow-sm" 
+                            : "hover:bg-accent/50 transition-colors"
                         }
                       >
                         <item.icon className="h-4 w-4" />

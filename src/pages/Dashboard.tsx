@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { useNavigate, Routes, Route, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { User, Session } from "@supabase/supabase-js";
@@ -7,27 +7,29 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/ca
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { toast } from "sonner";
 import { LogOut, Home, Bell } from "lucide-react";
-import OrdersModule from "@/components/dashboard/OrdersModule";
-import DocumentApplicationsModule from "@/components/dashboard/DocumentApplicationsModule";
-import ProfileModule from "@/components/dashboard/ProfileModule";
-import SecurityModule from "@/components/dashboard/SecurityModule";
-import NotificationsPanel from "@/components/dashboard/NotificationsPanel";
-import NotificationBell from "@/components/NotificationBell";
-import { ReviewModerationModule } from "@/components/dashboard/ReviewModerationModule";
-import { SeedingModule } from "@/components/dashboard/SeedingModule";
-import { AdminCreationModule } from "@/components/dashboard/AdminCreationModule";
-import { DashboardOverview } from "@/components/dashboard/DashboardOverview";
-import { DocumentWallet } from "@/components/dashboard/DocumentWallet";
-import { ActivityLog } from "@/components/dashboard/ActivityLog";
-import { WalletModule } from "@/components/dashboard/WalletModule";
-import { SupportCenter } from "@/components/dashboard/SupportCenter";
-import { SettingsHub } from "@/components/dashboard/SettingsHub";
-import { LoyaltyProgram } from "@/components/dashboard/LoyaltyProgram";
-import { ReferralSystem } from "@/components/dashboard/ReferralSystem";
-import { AdminAnalytics } from "@/components/dashboard/AdminAnalytics";
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 import { DashboardErrorBoundary } from "@/components/dashboard/DashboardErrorBoundary";
+import { DashboardLoadingSkeleton } from "@/components/dashboard/DashboardLoadingSkeleton";
+import { AdminCreationModule } from "@/components/dashboard/AdminCreationModule";
+
+// Lazy load route components for better performance
+const DashboardOverview = lazy(() => import("@/components/dashboard/DashboardOverview").then(m => ({ default: m.DashboardOverview })));
+const OrdersModule = lazy(() => import("@/components/dashboard/OrdersModule"));
+const DocumentApplicationsModule = lazy(() => import("@/components/dashboard/DocumentApplicationsModule"));
+const WalletModule = lazy(() => import("@/components/dashboard/WalletModule").then(m => ({ default: m.WalletModule })));
+const DocumentWallet = lazy(() => import("@/components/dashboard/DocumentWallet").then(m => ({ default: m.DocumentWallet })));
+const ActivityLog = lazy(() => import("@/components/dashboard/ActivityLog").then(m => ({ default: m.ActivityLog })));
+const SupportCenter = lazy(() => import("@/components/dashboard/SupportCenter").then(m => ({ default: m.SupportCenter })));
+const LoyaltyProgram = lazy(() => import("@/components/dashboard/LoyaltyProgram").then(m => ({ default: m.LoyaltyProgram })));
+const ReferralSystem = lazy(() => import("@/components/dashboard/ReferralSystem").then(m => ({ default: m.ReferralSystem })));
+const SettingsHub = lazy(() => import("@/components/dashboard/SettingsHub").then(m => ({ default: m.SettingsHub })));
+const NotificationsPanel = lazy(() => import("@/components/dashboard/NotificationsPanel"));
+const ProfileModule = lazy(() => import("@/components/dashboard/ProfileModule"));
+const SecurityModule = lazy(() => import("@/components/dashboard/SecurityModule"));
+const ReviewModerationModule = lazy(() => import("@/components/dashboard/ReviewModerationModule").then(m => ({ default: m.ReviewModerationModule })));
+const AdminAnalytics = lazy(() => import("@/components/dashboard/AdminAnalytics").then(m => ({ default: m.AdminAnalytics })));
+const SeedingModule = lazy(() => import("@/components/dashboard/SeedingModule").then(m => ({ default: m.SeedingModule })));
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -212,30 +214,32 @@ const Dashboard = () => {
             <DashboardBreadcrumbs />
             
             <DashboardErrorBoundary>
-              <div className="animate-fade-in">
-                <Routes>
-                  <Route path="/" element={<DashboardOverview userId={user?.id!} />} />
-                  <Route path="orders" element={<OrdersModule userId={user?.id!} />} />
-                  <Route path="applications" element={<DocumentApplicationsModule userId={user?.id!} />} />
-                  <Route path="wallet" element={<WalletModule userId={user?.id!} />} />
-                  <Route path="documents" element={<DocumentWallet userId={user?.id!} />} />
-                  <Route path="activity" element={<ActivityLog userId={user?.id!} />} />
-                  <Route path="support" element={<SupportCenter userId={user?.id!} />} />
-                  <Route path="loyalty" element={<LoyaltyProgram userId={user?.id!} />} />
-                  <Route path="referrals" element={<ReferralSystem userId={user?.id!} />} />
-                  <Route path="settings" element={<SettingsHub userId={user?.id!} />} />
-                  <Route path="notifications" element={<NotificationsPanel userId={user?.id!} />} />
-                  <Route path="profile" element={<ProfileModule userId={user?.id!} />} />
-                  <Route path="security" element={<SecurityModule userId={user?.id!} />} />
-                  {isAdmin && (
-                    <>
-                      <Route path="reviews" element={<ReviewModerationModule />} />
-                      <Route path="analytics" element={<AdminAnalytics userId={user?.id!} />} />
-                      <Route path="seeding" element={<SeedingModule />} />
-                    </>
-                  )}
-                </Routes>
-              </div>
+              <Suspense fallback={<DashboardLoadingSkeleton />}>
+                <div className="animate-fade-in">
+                  <Routes>
+                    <Route path="/" element={<DashboardOverview userId={user?.id!} />} />
+                    <Route path="orders" element={<OrdersModule userId={user?.id!} />} />
+                    <Route path="applications" element={<DocumentApplicationsModule userId={user?.id!} />} />
+                    <Route path="wallet" element={<WalletModule userId={user?.id!} />} />
+                    <Route path="documents" element={<DocumentWallet userId={user?.id!} />} />
+                    <Route path="activity" element={<ActivityLog userId={user?.id!} />} />
+                    <Route path="support" element={<SupportCenter userId={user?.id!} />} />
+                    <Route path="loyalty" element={<LoyaltyProgram userId={user?.id!} />} />
+                    <Route path="referrals" element={<ReferralSystem userId={user?.id!} />} />
+                    <Route path="settings" element={<SettingsHub userId={user?.id!} />} />
+                    <Route path="notifications" element={<NotificationsPanel userId={user?.id!} />} />
+                    <Route path="profile" element={<ProfileModule userId={user?.id!} />} />
+                    <Route path="security" element={<SecurityModule userId={user?.id!} />} />
+                    {isAdmin && (
+                      <>
+                        <Route path="reviews" element={<ReviewModerationModule />} />
+                        <Route path="analytics" element={<AdminAnalytics userId={user?.id!} />} />
+                        <Route path="seeding" element={<SeedingModule />} />
+                      </>
+                    )}
+                  </Routes>
+                </div>
+              </Suspense>
             </DashboardErrorBoundary>
           </main>
         </div>
