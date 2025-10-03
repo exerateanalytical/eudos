@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Printer, Menu, Home, Package, FileText, X, GraduationCap, Globe, Award, CreditCard, FileCheck, User, LayoutDashboard } from "lucide-react";
+import { Globe, Menu, Home, Package, FileText, X, GraduationCap, Award, CreditCard, FileCheck, User, LayoutDashboard } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Session } from "@supabase/supabase-js";
@@ -58,7 +58,7 @@ export const MobileNav = ({ currentPage }: MobileNavProps) => {
             onClick={() => handleNavClick("/")}
           >
             <div className="relative">
-              <Printer className="h-6 w-6 md:h-8 md:w-8 text-primary transition-transform duration-300 group-hover:scale-110" />
+              <Globe className="h-6 w-6 md:h-8 md:w-8 text-primary transition-transform duration-300 group-hover:scale-110" />
               <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
             <h1 className="text-lg md:text-2xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
@@ -105,7 +105,7 @@ export const MobileNav = ({ currentPage }: MobileNavProps) => {
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 border-b border-border">
                   <div className="flex items-center gap-2">
-                    <Printer className="h-5 w-5 text-primary" />
+                    <Globe className="h-5 w-5 text-primary" />
                     <span className="font-bold text-foreground">Menu</span>
                   </div>
                   <Button

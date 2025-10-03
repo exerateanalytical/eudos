@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Printer, Mail, Phone, MapPin, Shield } from "lucide-react";
+import { Globe, Mail, Phone, MapPin, Shield } from "lucide-react";
 
 export const Footer = () => {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ export const Footer = () => {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <Printer className="h-6 w-6 text-primary" />
+              <Globe className="h-6 w-6 text-primary" />
               <h3 className="text-lg font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
                 SecurePrint Labs
               </h3>

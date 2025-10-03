@@ -14,7 +14,7 @@ export const SEO = ({
   description, 
   keywords, 
   canonicalUrl,
-  ogImage = "https://lovable.dev/opengraph-image-p98pqg.png",
+  ogImage = "/og-image.png",
   noindex = false
 }: SEOProps) => {
   const fullTitle = `${title} | SecureDoc Solutions`;
