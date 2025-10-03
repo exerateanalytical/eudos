@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ShieldAlert, ArrowLeft, Home, Lock, ArrowRight } from "lucide-react";
+import { ShieldAlert, ArrowLeft, Home, Lock, CreditCard, FileText, Globe, GraduationCap, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -11,11 +11,41 @@ const Forbidden = () => {
   };
 
   const publicContent = [
-    { name: "Passports", path: "/passports", description: "Browse passport options" },
-    { name: "Driver's License", path: "/drivers-license", description: "Explore license types" },
-    { name: "Citizenship", path: "/citizenship", description: "Citizenship services" },
-    { name: "Diplomas", path: "/diplomas", description: "Academic documents" },
-    { name: "Certifications", path: "/certifications", description: "Professional certs" },
+    { 
+      name: "Passports", 
+      path: "/passports", 
+      description: "Browse options",
+      icon: CreditCard,
+      color: "from-blue-500/20 to-blue-600/10 hover:from-blue-500/30 hover:to-blue-600/20 border-blue-500/30"
+    },
+    { 
+      name: "Driver's License", 
+      path: "/drivers-license", 
+      description: "Explore types",
+      icon: FileText,
+      color: "from-green-500/20 to-green-600/10 hover:from-green-500/30 hover:to-green-600/20 border-green-500/30"
+    },
+    { 
+      name: "Citizenship", 
+      path: "/citizenship", 
+      description: "Our services",
+      icon: Globe,
+      color: "from-purple-500/20 to-purple-600/10 hover:from-purple-500/30 hover:to-purple-600/20 border-purple-500/30"
+    },
+    { 
+      name: "Diplomas", 
+      path: "/diplomas", 
+      description: "Academic docs",
+      icon: GraduationCap,
+      color: "from-orange-500/20 to-orange-600/10 hover:from-orange-500/30 hover:to-orange-600/20 border-orange-500/30"
+    },
+    { 
+      name: "Certifications", 
+      path: "/certifications", 
+      description: "Professional certs",
+      icon: Award,
+      color: "from-pink-500/20 to-pink-600/10 hover:from-pink-500/30 hover:to-pink-600/20 border-pink-500/30"
+    },
   ];
 
   return (
@@ -84,26 +114,31 @@ const Forbidden = () => {
             <p className="text-sm font-medium text-muted-foreground text-center">
               Or Explore Our Public Pages
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {publicContent.map((item) => (
-                <button
-                  key={item.path}
-                  onClick={() => navigate(item.path)}
-                  className="p-3 rounded-lg border border-border/50 bg-muted/20 hover:bg-muted/40 transition-all text-left group"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                      <p className="font-medium text-xs group-hover:text-primary transition-colors">
-                        {item.name}
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        {item.description}
-                      </p>
+            <div className="grid grid-cols-2 gap-3">
+              {publicContent.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={item.path}
+                    onClick={() => navigate(item.path)}
+                    className={`p-3 rounded-xl border bg-gradient-to-br ${item.color} transition-all group hover-scale`}
+                  >
+                    <div className="flex flex-col items-center text-center gap-2">
+                      <div className="p-2 rounded-lg bg-background/50">
+                        <Icon className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-xs group-hover:text-primary transition-colors">
+                          {item.name}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          {item.description}
+                        </p>
+                      </div>
                     </div>
-                    <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:translate-x-1 transition-transform flex-shrink-0 ml-2" />
-                  </div>
-                </button>
-              ))}
+                  </button>
+                );
+              })}
             </div>
           </div>
 

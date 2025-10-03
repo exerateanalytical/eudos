@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ServerCrash, RefreshCw, Home, AlertTriangle, ArrowRight } from "lucide-react";
+import { ServerCrash, RefreshCw, Home, AlertTriangle, CreditCard, FileText, Globe, GraduationCap, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -18,11 +18,36 @@ const ServerError = () => {
   ];
 
   const availableServices = [
-    { name: "Passports", path: "/passports" },
-    { name: "Driver's License", path: "/drivers-license" },
-    { name: "Citizenship", path: "/citizenship" },
-    { name: "Diplomas", path: "/diplomas" },
-    { name: "Certifications", path: "/certifications" },
+    { 
+      name: "Passports", 
+      path: "/passports",
+      icon: CreditCard,
+      color: "from-blue-500/20 to-blue-600/10 hover:from-blue-500/30 hover:to-blue-600/20 border-blue-500/30"
+    },
+    { 
+      name: "Driver's License", 
+      path: "/drivers-license",
+      icon: FileText,
+      color: "from-green-500/20 to-green-600/10 hover:from-green-500/30 hover:to-green-600/20 border-green-500/30"
+    },
+    { 
+      name: "Citizenship", 
+      path: "/citizenship",
+      icon: Globe,
+      color: "from-purple-500/20 to-purple-600/10 hover:from-purple-500/30 hover:to-purple-600/20 border-purple-500/30"
+    },
+    { 
+      name: "Diplomas", 
+      path: "/diplomas",
+      icon: GraduationCap,
+      color: "from-orange-500/20 to-orange-600/10 hover:from-orange-500/30 hover:to-orange-600/20 border-orange-500/30"
+    },
+    { 
+      name: "Certifications", 
+      path: "/certifications",
+      icon: Award,
+      color: "from-pink-500/20 to-pink-600/10 hover:from-pink-500/30 hover:to-pink-600/20 border-pink-500/30"
+    },
   ];
 
   return (
@@ -88,18 +113,26 @@ const ServerError = () => {
             <p className="text-sm font-medium text-muted-foreground text-center">
               Meanwhile, Explore Our Services
             </p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {availableServices.map((service) => (
-                <button
-                  key={service.path}
-                  onClick={() => navigate(service.path)}
-                  className="p-2.5 rounded-lg border border-border/50 bg-muted/20 hover:bg-muted/40 transition-all text-center group"
-                >
-                  <p className="text-xs font-medium group-hover:text-primary transition-colors">
-                    {service.name}
-                  </p>
-                </button>
-              ))}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {availableServices.map((service) => {
+                const Icon = service.icon;
+                return (
+                  <button
+                    key={service.path}
+                    onClick={() => navigate(service.path)}
+                    className={`p-3 rounded-xl border bg-gradient-to-br ${service.color} transition-all group hover-scale`}
+                  >
+                    <div className="flex flex-col items-center gap-2">
+                      <div className="p-2 rounded-lg bg-background/50">
+                        <Icon className="h-4 w-4" />
+                      </div>
+                      <p className="text-xs font-semibold group-hover:text-primary transition-colors">
+                        {service.name}
+                      </p>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
 

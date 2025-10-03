@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Home, ArrowLeft, LayoutDashboard, Search } from "lucide-react";
+import { Home, ArrowLeft, LayoutDashboard, Search, CreditCard, FileText, Globe, GraduationCap, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
@@ -33,11 +33,41 @@ const NotFound = () => {
   ];
 
   const suggestedContent = [
-    { name: "Passports", path: "/passports", description: "Authentic passport documents" },
-    { name: "Driver's License", path: "/drivers-license", description: "Valid driver's licenses" },
-    { name: "Citizenship", path: "/citizenship", description: "Citizenship documentation" },
-    { name: "Diplomas", path: "/diplomas", description: "Academic certificates" },
-    { name: "Certifications", path: "/certifications", description: "Professional certifications" },
+    { 
+      name: "Passports", 
+      path: "/passports", 
+      description: "Authentic passport documents",
+      icon: CreditCard,
+      color: "from-blue-500/20 to-blue-600/10 hover:from-blue-500/30 hover:to-blue-600/20 border-blue-500/30"
+    },
+    { 
+      name: "Driver's License", 
+      path: "/drivers-license", 
+      description: "Valid driver's licenses",
+      icon: FileText,
+      color: "from-green-500/20 to-green-600/10 hover:from-green-500/30 hover:to-green-600/20 border-green-500/30"
+    },
+    { 
+      name: "Citizenship", 
+      path: "/citizenship", 
+      description: "Citizenship documentation",
+      icon: Globe,
+      color: "from-purple-500/20 to-purple-600/10 hover:from-purple-500/30 hover:to-purple-600/20 border-purple-500/30"
+    },
+    { 
+      name: "Diplomas", 
+      path: "/diplomas", 
+      description: "Academic certificates",
+      icon: GraduationCap,
+      color: "from-orange-500/20 to-orange-600/10 hover:from-orange-500/30 hover:to-orange-600/20 border-orange-500/30"
+    },
+    { 
+      name: "Certifications", 
+      path: "/certifications", 
+      description: "Professional certifications",
+      icon: Award,
+      color: "from-pink-500/20 to-pink-600/10 hover:from-pink-500/30 hover:to-pink-600/20 border-pink-500/30"
+    },
   ];
 
   return (
@@ -106,26 +136,31 @@ const NotFound = () => {
             <p className="text-sm font-medium text-muted-foreground text-center">
               You Might Be Looking For
             </p>
-            <div className="space-y-2">
-              {suggestedContent.map((item) => (
-                <button
-                  key={item.path}
-                  onClick={() => navigate(item.path)}
-                  className="w-full p-3 rounded-lg border border-border/50 bg-muted/20 hover:bg-muted/40 transition-all text-left group hover-scale"
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium text-sm group-hover:text-primary transition-colors">
-                        {item.name}
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        {item.description}
-                      </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {suggestedContent.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={item.path}
+                    onClick={() => navigate(item.path)}
+                    className={`p-4 rounded-xl border bg-gradient-to-br ${item.color} transition-all group hover-scale`}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="flex-shrink-0 p-2 rounded-lg bg-background/50">
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <div className="flex-1 text-left">
+                        <p className="font-semibold text-sm group-hover:text-primary transition-colors">
+                          {item.name}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {item.description}
+                        </p>
+                      </div>
                     </div>
-                    <ArrowLeft className="h-4 w-4 text-muted-foreground rotate-180 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </button>
-              ))}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
