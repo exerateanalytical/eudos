@@ -384,6 +384,18 @@ import sofiaSeal from "@/assets/university-seals/sofia.png";
 // Danish Universities
 import copenhagenSeal from "@/assets/university-seals/copenhagen.png";
 
+// Swedish Universities
+import lundSeal from "@/assets/university-seals/lund.png";
+import uppsalaSeal from "@/assets/university-seals/uppsala.png";
+import kthSeal from "@/assets/university-seals/kth.png";
+
+// Finnish Universities
+import helsinkiSeal from "@/assets/university-seals/helsinki.png";
+import aaltoSeal from "@/assets/university-seals/aalto.png";
+
+// Norwegian Universities
+import osloSeal from "@/assets/university-seals/oslo.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -770,6 +782,18 @@ export const universitySealMap: Record<string, string> = {
   
   // Danish Universities
   "University of Copenhagen": copenhagenSeal,
+  
+  // Swedish Universities
+  "Lund University": lundSeal,
+  "Uppsala University": uppsalaSeal,
+  "KTH Royal Institute of Technology": kthSeal,
+  
+  // Finnish Universities
+  "University of Helsinki": helsinkiSeal,
+  "Aalto University": aaltoSeal,
+  
+  // Norwegian Universities
+  "University of Oslo": osloSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
