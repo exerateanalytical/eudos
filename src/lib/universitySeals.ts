@@ -324,6 +324,20 @@ import bocconiSeal from "@/assets/university-seals/bocconi.png";
 import santannaPisaSeal from "@/assets/university-seals/santanna-pisa.png";
 import scuolaNormaleSeal from "@/assets/university-seals/scuola-normale.png";
 
+// Spanish Universities
+import barcelonaSeal from "@/assets/university-seals/barcelona.png";
+import complutenseMadridSeal from "@/assets/university-seals/complutense-madrid.png";
+import autonomaMadridSeal from "@/assets/university-seals/autonoma-madrid.png";
+import autonomaBarcelonaSeal from "@/assets/university-seals/autonoma-barcelona.png";
+import pompeuFabraSeal from "@/assets/university-seals/pompeu-fabra.png";
+import carlosIIISeal from "@/assets/university-seals/carlos-iii.png";
+import valenciaSeal from "@/assets/university-seals/valencia.png";
+import granadaSeal from "@/assets/university-seals/granada.png";
+import sevilleSeal from "@/assets/university-seals/seville.png";
+import ieBusinessSeal from "@/assets/university-seals/ie-business.png";
+import esadeSeal from "@/assets/university-seals/esade.png";
+import ieseSeal from "@/assets/university-seals/iese.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -650,6 +664,20 @@ export const universitySealMap: Record<string, string> = {
   "Bocconi University": bocconiSeal,
   "Sant'Anna School of Advanced Studies": santannaPisaSeal,
   "Scuola Normale Superiore di Pisa": scuolaNormaleSeal,
+  
+  // Spanish Universities
+  "University of Barcelona": barcelonaSeal,
+  "Complutense University of Madrid": complutenseMadridSeal,
+  "Autonomous University of Madrid": autonomaMadridSeal,
+  "Autonomous University of Barcelona": autonomaBarcelonaSeal,
+  "Pompeu Fabra University": pompeuFabraSeal,
+  "Carlos III University of Madrid": carlosIIISeal,
+  "University of Valencia": valenciaSeal,
+  "University of Granada": granadaSeal,
+  "University of Seville": sevilleSeal,
+  "IE Business School": ieBusinessSeal,
+  "ESADE Business School": esadeSeal,
+  "IESE Business School": ieseSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
