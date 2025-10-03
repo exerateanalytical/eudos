@@ -11,6 +11,7 @@ import { ReviewForm } from "@/components/reviews/ReviewForm";
 import { ReviewsList } from "@/components/reviews/ReviewsList";
 import { ReviewStatsCard } from "@/components/reviews/ReviewStatsCard";
 import { useReviewStats } from "@/hooks/useReviewStats";
+import { SEO } from "@/components/SEO";
 
 // Import EU logo images
 import euAT from "@/assets/drivers-license/eu-at.png";
@@ -44,6 +45,7 @@ import euSE from "@/assets/drivers-license/eu-se.png";
 const DriverLicenseDetail = () => {
   const { licenseId } = useParams();
   const navigate = useNavigate();
+  const baseUrl = window.location.origin;
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
   const [reviewsRefresh, setReviewsRefresh] = useState(0);
   const [activeTab, setActiveTab] = useState("features");
@@ -195,6 +197,12 @@ const DriverLicenseDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title={`${licenseData.title} - Driver's License Verification | SecureDoc Solutions`}
+        description={`${licenseData.description} Professional license verification with security features. Price: ${licenseData.price}.`}
+        keywords={`${licenseData.country} driver's license, license verification, DMV verification, driving credentials`}
+        canonicalUrl={`${baseUrl}/drivers-license/${licenseId}`}
+      />
       {/* Hero Section */}
       <section className="pt-20 pb-12 px-4 bg-gradient-to-b from-primary/5 to-background">
         <div className="container mx-auto max-w-6xl">

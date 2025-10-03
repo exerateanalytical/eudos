@@ -12,10 +12,12 @@ import { ReviewsList } from "@/components/reviews/ReviewsList";
 import { ReviewStatsCard } from "@/components/reviews/ReviewStatsCard";
 import { useReviewStats } from "@/hooks/useReviewStats";
 import { useState, useEffect } from "react";
+import { SEO } from "@/components/SEO";
 
 const DiplomaDetail = () => {
   const { university } = useParams();
   const navigate = useNavigate();
+  const baseUrl = window.location.origin;
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
   const [reviewsRefresh, setReviewsRefresh] = useState(0);
   const [activeTab, setActiveTab] = useState("package");
@@ -182,6 +184,12 @@ const DiplomaDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title={`${universityName} Diploma - Academic Credentials | SecureDoc Solutions`}
+        description={`Get verified ${universityName} diploma with complete documentation package. Includes official transcript, security features, and database registration. Price: ${diplomaPrice}.`}
+        keywords={`${universityName} diploma, degree verification, academic credentials, university diploma, transcript verification`}
+        canonicalUrl={`${baseUrl}/diplomas/${university}`}
+      />
       {/* Hero Section */}
       <section className="relative py-12 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-background" />

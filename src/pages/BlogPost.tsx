@@ -3,6 +3,7 @@ import { Printer, Calendar, User, ArrowLeft, Share2, BookmarkPlus, Tag } from "l
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { SEO } from "@/components/SEO";
 
 
 // Blog post data (in a real app, this would come from a CMS or API)
@@ -316,6 +317,7 @@ Our team can help you evaluate your needs and implement the right solution for y
 const BlogPost = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const baseUrl = window.location.origin;
   
   const post = id ? blogPostsData[id] : null;
 
@@ -333,6 +335,12 @@ const BlogPost = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title={`${post.title} | SecureDoc Solutions Blog`}
+        description={post.content.substring(0, 155)}
+        keywords={post.tags.join(", ")}
+        canonicalUrl={`${baseUrl}/blog/${id}`}
+      />
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">

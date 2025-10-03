@@ -7,9 +7,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Award, Clock, Shield, CheckCircle, FileCheck, Globe, Bitcoin, Mail, Phone, MapPin, ExternalLink, ArrowLeft, ShoppingCart, Coins } from "lucide-react";
 import { EscrowForm } from "@/components/EscrowForm";
+import { SEO } from "@/components/SEO";
 
 const CertificationDetail = () => {
   const { certificationName } = useParams<{ certificationName: string }>();
+  const baseUrl = window.location.origin;
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
 
   // Decode the certification name from URL
@@ -132,6 +134,12 @@ const CertificationDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title={`${certificationData.name} - Professional Certification | SecureDoc Solutions`}
+        description={`Get your ${certificationData.name} certification with complete documentation, verification support, and lifetime validity. ${certificationData.description}`}
+        keywords={`${certificationData.name}, professional certification, certification verification, career credentials`}
+        canonicalUrl={`${baseUrl}/certifications/${certificationName}`}
+      />
       {/* Hero Section */}
       <section className="pt-20 pb-12 px-4 bg-gradient-to-b from-primary/5 to-background">
         <div className="container mx-auto max-w-6xl">

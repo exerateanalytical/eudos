@@ -8,11 +8,13 @@ import { ArrowLeft, CheckCircle, Clock, FileText, Users, TrendingUp, Shield, Awa
 import { EscrowForm } from "@/components/EscrowForm";
 import { toast } from "@/hooks/use-toast";
 import { useState } from "react";
+import { SEO } from "@/components/SEO";
 
 
 const CitizenshipDetail = () => {
   const { country } = useParams();
   const navigate = useNavigate();
+  const baseUrl = window.location.origin;
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
 
   const generateBrochure = () => {
@@ -400,6 +402,12 @@ const CitizenshipDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title={`${countryData.name} Citizenship Program - Immigration Services | SecureDoc Solutions`}
+        description={`${countryData.description} Processing time: ${countryData.processingTime}. Investment from ${countryData.minInvestment}.`}
+        keywords={`${countryData.name} citizenship, immigration services, citizenship by investment, residence permit, ${countryData.name} passport`}
+        canonicalUrl={`${baseUrl}/citizenship/${country}`}
+      />
       {/* Hero Section */}
       <section className="relative py-12 px-4 overflow-hidden">
         <div className={`absolute inset-0 bg-gradient-to-br ${countryData.gradient} opacity-10`} />

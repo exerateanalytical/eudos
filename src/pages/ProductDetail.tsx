@@ -12,6 +12,7 @@ import {
   Database, CheckCircle2, Package, Truck, HeadphonesIcon, Globe,
   Calendar, Award, Star, Coins
 } from "lucide-react";
+import { SEO } from "@/components/SEO";
 
 // Product data (same as Shop page)
 const euCountries = [
@@ -137,6 +138,7 @@ const products = generateCountryProducts();
 const ProductDetail = () => {
   const navigate = useNavigate();
   const { productId } = useParams();
+  const baseUrl = window.location.origin;
   const [quantity, setQuantity] = useState(1);
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
   
@@ -186,6 +188,12 @@ const ProductDetail = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <SEO 
+        title={`${product.title} - ${product.category} | SecureDoc Solutions`}
+        description={`${product.description} Professional document verification with advanced security. Price: ${product.price}.`}
+        keywords={`${product.title}, ${product.category}, document verification, security features`}
+        canonicalUrl={`${baseUrl}/product/${productId}`}
+      />
       <div className="container mx-auto px-4 py-6 md:py-12">
         {/* Back Button */}
         <Button 

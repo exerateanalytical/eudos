@@ -11,6 +11,7 @@ import { ReviewForm } from "@/components/reviews/ReviewForm";
 import { ReviewsList } from "@/components/reviews/ReviewsList";
 import { ReviewStatsCard } from "@/components/reviews/ReviewStatsCard";
 import { useReviewStats } from "@/hooks/useReviewStats";
+import { SEO } from "@/components/SEO";
 
 // Import coat of arms images
 import austriaCoA from "@/assets/coat-of-arms/austria.png";
@@ -85,6 +86,7 @@ const coatOfArmsMap: Record<string, string> = {
 const PassportDetail = () => {
   const { passportId } = useParams();
   const navigate = useNavigate();
+  const baseUrl = window.location.origin;
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
   const [reviewsRefresh, setReviewsRefresh] = useState(0);
   const [activeTab, setActiveTab] = useState("features");
@@ -217,6 +219,12 @@ const PassportDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title={`${passportData.title} - Biometric Passport | SecureDoc Solutions`}
+        description={`${passportData.description.substring(0, 155)}...`}
+        keywords={`${country} passport, biometric passport, passport verification, RFID passport, travel documents`}
+        canonicalUrl={`${baseUrl}/passports/${passportId}`}
+      />
       {/* Hero Section */}
       <section className="pt-20 pb-12 px-4 bg-gradient-to-b from-primary/5 to-background">
         <div className="container mx-auto max-w-6xl">
