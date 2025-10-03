@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Routes, Route } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { User, Session } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { toast } from "sonner";
-import { LogOut, ShieldCheck, FileText, Package, User as UserIcon, Lock, Home, Bell, Eye } from "lucide-react";
+import { LogOut, Home } from "lucide-react";
 import OrdersModule from "@/components/dashboard/OrdersModule";
 import DocumentApplicationsModule from "@/components/dashboard/DocumentApplicationsModule";
 import ProfileModule from "@/components/dashboard/ProfileModule";
@@ -26,6 +25,7 @@ import { SettingsHub } from "@/components/dashboard/SettingsHub";
 import { LoyaltyProgram } from "@/components/dashboard/LoyaltyProgram";
 import { ReferralSystem } from "@/components/dashboard/ReferralSystem";
 import { AdminAnalytics } from "@/components/dashboard/AdminAnalytics";
+import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -37,7 +37,6 @@ const Dashboard = () => {
   const [adminsExist, setAdminsExist] = useState<boolean | null>(null);
 
   useEffect(() => {
-    // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setSession(session);
@@ -48,7 +47,6 @@ const Dashboard = () => {
       }
     );
 
-    // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
@@ -100,7 +98,6 @@ const Dashboard = () => {
 
     fetchUnreadCount();
 
-    // Realtime subscription for unread count
     const channel = supabase
       .channel('notifications-count')
       .on(
@@ -141,132 +138,71 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-accent/20">
-      <header className="border-b bg-card/50 backdrop-blur">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Dashboard</h1>
-          <div className="flex gap-2 items-center">
-            {user && <NotificationBell userId={user.id} />}
-            <Button variant="outline" onClick={() => navigate("/")}>
-              <Home className="mr-2 h-4 w-4" />
-              Home
-            </Button>
-            <Button variant="outline" onClick={handleLogout}>
-              <LogOut className="mr-2 h-4 w-4" />
-              Logout
-            </Button>
-          </div>
-        </div>
-      </header>
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full bg-gradient-to-br from-background to-accent/20">
+        <DashboardSidebar isAdmin={isAdmin} />
+        
+        <div className="flex-1 flex flex-col">
+          <header className="border-b bg-card/50 backdrop-blur sticky top-0 z-10">
+            <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+              <div className="flex items-center gap-4">
+                <SidebarTrigger />
+                <h1 className="text-2xl font-bold">Dashboard</h1>
+              </div>
+              <div className="flex gap-2 items-center">
+                {user && <NotificationBell userId={user.id} />}
+                <Button variant="outline" onClick={() => navigate("/")}>
+                  <Home className="mr-2 h-4 w-4" />
+                  Home
+                </Button>
+                <Button variant="outline" onClick={handleLogout}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Logout
+                </Button>
+              </div>
+            </div>
+          </header>
 
-      <main className="container mx-auto px-4 py-8">
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle>Welcome back, {user?.user_metadata?.full_name || user?.email}</CardTitle>
-            <CardDescription>Manage your account, orders, and applications</CardDescription>
-          </CardHeader>
-        </Card>
+          <main className="flex-1 container mx-auto px-4 py-8">
+            <Card className="mb-6">
+              <CardHeader>
+                <CardTitle>Welcome back, {user?.user_metadata?.full_name || user?.email}</CardTitle>
+                <CardDescription>Manage your account, orders, and applications</CardDescription>
+              </CardHeader>
+            </Card>
 
-        { !isAdmin && (
-          <div className="mb-6">
-            <AdminCreationModule onCreated={() => { setAdminsExist(true); }} />
-          </div>
-        )}
+            {!isAdmin && (
+              <div className="mb-6">
+                <AdminCreationModule onCreated={() => { setAdminsExist(true); }} />
+              </div>
+            )}
 
-        <Tabs defaultValue="overview" className="space-y-6">
-          <ScrollArea className="w-full">
-            <TabsList className="inline-flex w-max gap-1 p-1">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="orders">Orders</TabsTrigger>
-              <TabsTrigger value="documents">Applications</TabsTrigger>
-              <TabsTrigger value="wallet">Wallet</TabsTrigger>
-              <TabsTrigger value="document-wallet">Documents</TabsTrigger>
-              <TabsTrigger value="activity">Activity</TabsTrigger>
-              <TabsTrigger value="support">Support</TabsTrigger>
-              <TabsTrigger value="loyalty">Loyalty</TabsTrigger>
-              <TabsTrigger value="referrals">Referrals</TabsTrigger>
-              <TabsTrigger value="settings">Settings</TabsTrigger>
-              <TabsTrigger value="notifications">Notifications</TabsTrigger>
-              <TabsTrigger value="profile">Profile</TabsTrigger>
-              <TabsTrigger value="security">Security</TabsTrigger>
+            <Routes>
+              <Route path="/" element={<DashboardOverview userId={user?.id!} />} />
+              <Route path="/orders" element={<OrdersModule userId={user?.id!} />} />
+              <Route path="/applications" element={<DocumentApplicationsModule userId={user?.id!} />} />
+              <Route path="/wallet" element={<WalletModule userId={user?.id!} />} />
+              <Route path="/documents" element={<DocumentWallet userId={user?.id!} />} />
+              <Route path="/activity" element={<ActivityLog userId={user?.id!} />} />
+              <Route path="/support" element={<SupportCenter userId={user?.id!} />} />
+              <Route path="/loyalty" element={<LoyaltyProgram userId={user?.id!} />} />
+              <Route path="/referrals" element={<ReferralSystem userId={user?.id!} />} />
+              <Route path="/settings" element={<SettingsHub userId={user?.id!} />} />
+              <Route path="/notifications" element={<NotificationsPanel userId={user?.id!} />} />
+              <Route path="/profile" element={<ProfileModule userId={user?.id!} />} />
+              <Route path="/security" element={<SecurityModule userId={user?.id!} />} />
               {isAdmin && (
                 <>
-                  <TabsTrigger value="reviews">Reviews</TabsTrigger>
-                  <TabsTrigger value="analytics">Analytics</TabsTrigger>
-                  <TabsTrigger value="seeding">Seeding</TabsTrigger>
+                  <Route path="/reviews" element={<ReviewModerationModule />} />
+                  <Route path="/analytics" element={<AdminAnalytics userId={user?.id!} />} />
+                  <Route path="/seeding" element={<SeedingModule />} />
                 </>
               )}
-            </TabsList>
-          </ScrollArea>
-
-          <TabsContent value="overview">
-            <DashboardOverview userId={user?.id!} />
-          </TabsContent>
-
-          <TabsContent value="orders">
-            <OrdersModule userId={user?.id!} />
-          </TabsContent>
-
-          <TabsContent value="documents">
-            <DocumentApplicationsModule userId={user?.id!} />
-          </TabsContent>
-
-          <TabsContent value="wallet">
-            <WalletModule userId={user?.id!} />
-          </TabsContent>
-
-          <TabsContent value="document-wallet">
-            <DocumentWallet userId={user?.id!} />
-          </TabsContent>
-
-          <TabsContent value="activity">
-            <ActivityLog userId={user?.id!} />
-          </TabsContent>
-
-          <TabsContent value="notifications">
-            <NotificationsPanel userId={user?.id!} />
-          </TabsContent>
-
-          <TabsContent value="profile">
-            <ProfileModule userId={user?.id!} />
-          </TabsContent>
-
-          <TabsContent value="security">
-            <SecurityModule userId={user?.id!} />
-          </TabsContent>
-
-          <TabsContent value="support">
-            <SupportCenter userId={user?.id!} />
-          </TabsContent>
-
-          <TabsContent value="settings">
-            <SettingsHub userId={user?.id!} />
-          </TabsContent>
-
-          <TabsContent value="loyalty">
-            <LoyaltyProgram userId={user?.id!} />
-          </TabsContent>
-
-          <TabsContent value="referrals">
-            <ReferralSystem userId={user?.id!} />
-          </TabsContent>
-
-          {isAdmin && (
-            <>
-              <TabsContent value="reviews">
-                <ReviewModerationModule />
-              </TabsContent>
-              <TabsContent value="analytics">
-                <AdminAnalytics userId={user?.id!} />
-              </TabsContent>
-              <TabsContent value="seeding">
-                <SeedingModule />
-              </TabsContent>
-            </>
-          )}
-        </Tabs>
-      </main>
-    </div>
+            </Routes>
+          </main>
+        </div>
+      </div>
+    </SidebarProvider>
   );
 };
 
