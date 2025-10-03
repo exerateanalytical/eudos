@@ -350,6 +350,13 @@ import athensSeal from "@/assets/university-seals/athens.png";
 import aristotleThessalonikiSeal from "@/assets/university-seals/aristotle-thessaloniki.png";
 import ntuaSeal from "@/assets/university-seals/ntua.png";
 
+// Austrian Universities
+import viennaSeal from "@/assets/university-seals/vienna.png";
+import tuWienSeal from "@/assets/university-seals/tu-wien.png";
+import grazSeal from "@/assets/university-seals/graz.png";
+import innsbruckSeal from "@/assets/university-seals/innsbruck.png";
+import wuViennaSeal from "@/assets/university-seals/wu-vienna.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -702,6 +709,13 @@ export const universitySealMap: Record<string, string> = {
   "National and Kapodistrian University of Athens": athensSeal,
   "Aristotle University of Thessaloniki": aristotleThessalonikiSeal,
   "National Technical University of Athens": ntuaSeal,
+  
+  // Austrian Universities
+  "University of Vienna": viennaSeal,
+  "TU Wien": tuWienSeal,
+  "University of Graz": grazSeal,
+  "University of Innsbruck": innsbruckSeal,
+  "WU Vienna": wuViennaSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
