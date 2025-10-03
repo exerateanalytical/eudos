@@ -102,28 +102,30 @@ const Admin = () => {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-gradient-to-br from-background to-accent/20">
+      <div className="min-h-screen flex w-full bg-gradient-to-br from-purple-50/50 via-blue-50/30 to-cyan-50/50 dark:from-slate-950 dark:via-purple-950/20 dark:to-blue-950/20">
         <AdminSidebar />
         
         <div className="flex-1 flex flex-col">
           {/* Header */}
-          <header className="sticky top-0 z-10 border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/90">
+          <header className="sticky top-0 z-10 border-b-2 border-primary/20 bg-gradient-to-r from-card/95 via-primary/5 to-card/95 backdrop-blur-xl supports-[backdrop-filter]:bg-card/80 shadow-lg">
             <div className="flex h-16 items-center justify-between px-4 md:px-6">
               <div className="flex items-center gap-2 md:gap-4">
                 <SidebarTrigger />
-                <div className="flex items-center gap-2">
-                  <Shield className="h-6 w-6 text-primary" />
-                  <h1 className="text-xl md:text-2xl font-bold">Admin Panel</h1>
+                <div className="flex items-center gap-3 animate-fade-in">
+                  <div className="p-2 bg-gradient-to-br from-primary to-primary/60 rounded-lg shadow-lg animate-pulse">
+                    <Shield className="h-6 w-6 text-primary-foreground" />
+                  </div>
+                  <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-primary via-purple-500 to-primary bg-clip-text text-transparent">Admin Panel</h1>
                 </div>
               </div>
               
               <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" onClick={() => navigate("/dashboard")}>
+                <Button variant="outline" size="sm" onClick={() => navigate("/dashboard")} className="hover-scale border-primary/20">
                   <LayoutDashboard className="mr-0 md:mr-2 h-4 w-4" />
                   <span className="hidden md:inline">User Dashboard</span>
                 </Button>
                 
-                <Button variant="outline" size="sm" onClick={handleLogout}>
+                <Button variant="outline" size="sm" onClick={handleLogout} className="hover-scale border-destructive/20 hover:bg-destructive/10">
                   <LogOut className="mr-0 md:mr-2 h-4 w-4" />
                   <span className="hidden md:inline">Logout</span>
                 </Button>
@@ -134,7 +136,7 @@ const Admin = () => {
           {/* Main Content */}
           <main className="flex-1 px-4 md:px-6 py-6 overflow-auto">
             <Suspense fallback={<DashboardLoadingSkeleton />}>
-              <div className="animate-fade-in">
+              <div className="animate-fade-in space-y-6">
                 <Routes>
                   <Route path="/" element={<AdminAnalytics userId={user?.id!} />} />
                   <Route path="users" element={<UserManagement />} />

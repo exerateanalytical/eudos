@@ -60,22 +60,22 @@ export function DashboardSidebar({ isAdmin }: DashboardSidebarProps) {
   const { open } = useSidebar();
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="border-r-2 border-primary/10 bg-gradient-to-b from-background via-accent/5 to-background">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Dashboard</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-primary font-semibold">Dashboard</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
-              {userItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
+            <SidebarMenu className="space-y-1">
+              {userItems.map((item, index) => (
+                <SidebarMenuItem key={item.title} className="animate-fade-in" style={{ animationDelay: `${index * 30}ms` }}>
                   <SidebarMenuButton asChild>
                     <NavLink 
                       to={item.url} 
                       end={item.end}
                       className={({ isActive }) =>
                         isActive 
-                          ? "bg-primary text-primary-foreground font-semibold shadow-sm" 
-                          : "hover:bg-accent/50 transition-colors"
+                          ? "bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-semibold shadow-lg hover-scale transition-all duration-300" 
+                          : "hover:bg-accent/50 transition-all duration-300 hover-scale"
                       }
                     >
                       <item.icon className="h-4 w-4" />
@@ -89,18 +89,18 @@ export function DashboardSidebar({ isAdmin }: DashboardSidebarProps) {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel>Account</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-primary font-semibold">Account</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
-              {accountItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
+            <SidebarMenu className="space-y-1">
+              {accountItems.map((item, index) => (
+                <SidebarMenuItem key={item.title} className="animate-fade-in" style={{ animationDelay: `${(userItems.length + index) * 30}ms` }}>
                   <SidebarMenuButton asChild>
                     <NavLink 
                       to={item.url}
                       className={({ isActive }) =>
                         isActive 
-                          ? "bg-primary text-primary-foreground font-semibold shadow-sm" 
-                          : "hover:bg-accent/50 transition-colors"
+                          ? "bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-semibold shadow-lg hover-scale transition-all duration-300" 
+                          : "hover:bg-accent/50 transition-all duration-300 hover-scale"
                       }
                     >
                       <item.icon className="h-4 w-4" />
@@ -115,18 +115,21 @@ export function DashboardSidebar({ isAdmin }: DashboardSidebarProps) {
 
         {isAdmin && (
           <SidebarGroup>
-            <SidebarGroupLabel>Admin</SidebarGroupLabel>
+            <SidebarGroupLabel className="text-primary font-semibold flex items-center gap-2">
+              <Shield className="h-4 w-4" />
+              Admin
+            </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu>
-                {adminItems.map((item) => (
-                  <SidebarMenuItem key={item.title}>
+              <SidebarMenu className="space-y-1">
+                {adminItems.map((item, index) => (
+                  <SidebarMenuItem key={item.title} className="animate-fade-in" style={{ animationDelay: `${(userItems.length + accountItems.length + index) * 30}ms` }}>
                     <SidebarMenuButton asChild>
                       <NavLink 
                         to={item.url}
                         className={({ isActive }) =>
                           isActive 
-                            ? "bg-primary text-primary-foreground font-semibold shadow-sm" 
-                            : "hover:bg-accent/50 transition-colors"
+                            ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold shadow-lg hover-scale transition-all duration-300" 
+                            : "hover:bg-accent/50 transition-all duration-300 hover-scale"
                         }
                       >
                         <item.icon className="h-4 w-4" />

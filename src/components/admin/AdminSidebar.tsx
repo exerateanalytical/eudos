@@ -8,6 +8,7 @@ import {
   DollarSign,
   MessageSquare,
   Eye,
+  Sparkles,
 } from "lucide-react";
 import {
   Sidebar,
@@ -22,41 +23,109 @@ import {
 } from "@/components/ui/sidebar";
 
 const adminItems = [
-  { title: "Analytics", url: "/admin", icon: BarChart3, end: true },
-  { title: "Users", url: "/admin/users", icon: Users },
-  { title: "Products", url: "/admin/products", icon: Package },
-  { title: "Orders", url: "/admin/orders", icon: ShoppingCart },
-  { title: "Applications", url: "/admin/applications", icon: FileText },
-  { title: "Payments", url: "/admin/payments", icon: DollarSign },
-  { title: "Inquiries", url: "/admin/inquiries", icon: MessageSquare },
-  { title: "Blog Posts", url: "/admin/blog", icon: FileText },
-  { title: "Reviews", url: "/admin/reviews", icon: Eye },
+  { 
+    title: "Analytics", 
+    url: "/admin", 
+    icon: BarChart3, 
+    end: true,
+    gradient: "from-blue-500 to-cyan-500"
+  },
+  { 
+    title: "Users", 
+    url: "/admin/users", 
+    icon: Users,
+    gradient: "from-purple-500 to-pink-500"
+  },
+  { 
+    title: "Products", 
+    url: "/admin/products", 
+    icon: Package,
+    gradient: "from-green-500 to-emerald-500"
+  },
+  { 
+    title: "Orders", 
+    url: "/admin/orders", 
+    icon: ShoppingCart,
+    gradient: "from-orange-500 to-red-500"
+  },
+  { 
+    title: "Applications", 
+    url: "/admin/applications", 
+    icon: FileText,
+    gradient: "from-indigo-500 to-purple-500"
+  },
+  { 
+    title: "Payments", 
+    url: "/admin/payments", 
+    icon: DollarSign,
+    gradient: "from-yellow-500 to-orange-500"
+  },
+  { 
+    title: "Inquiries", 
+    url: "/admin/inquiries", 
+    icon: MessageSquare,
+    gradient: "from-teal-500 to-cyan-500"
+  },
+  { 
+    title: "Blog Posts", 
+    url: "/admin/blog", 
+    icon: FileText,
+    gradient: "from-rose-500 to-pink-500"
+  },
+  { 
+    title: "Reviews", 
+    url: "/admin/reviews", 
+    icon: Eye,
+    gradient: "from-violet-500 to-purple-500"
+  },
 ];
 
 export function AdminSidebar() {
   const { open } = useSidebar();
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="border-r-2 border-primary/20 bg-gradient-to-b from-background via-accent/5 to-background">
       <SidebarContent>
+        <div className="p-4 mb-2 animate-fade-in">
+          <div className="flex items-center gap-2 justify-center">
+            <div className="p-2 bg-gradient-to-br from-primary to-primary/60 rounded-lg shadow-lg">
+              <Sparkles className="h-6 w-6 text-primary-foreground" />
+            </div>
+            {open && (
+              <div>
+                <h2 className="font-bold text-lg bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                  Admin Panel
+                </h2>
+                <p className="text-xs text-muted-foreground">Manage Everything</p>
+              </div>
+            )}
+          </div>
+        </div>
+
         <SidebarGroup>
-          <SidebarGroupLabel>Admin Panel</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-primary font-semibold">Management</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
-              {adminItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
+            <SidebarMenu className="space-y-1">
+              {adminItems.map((item, index) => (
+                <SidebarMenuItem key={item.title} className="animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
                   <SidebarMenuButton asChild>
                     <NavLink 
                       to={item.url} 
                       end={item.end}
                       className={({ isActive }) =>
                         isActive 
-                          ? "bg-primary text-primary-foreground font-semibold shadow-sm" 
-                          : "hover:bg-accent/50 transition-colors"
+                          ? `bg-gradient-to-r ${item.gradient} text-white font-semibold shadow-lg hover-scale transition-all duration-300` 
+                          : "hover:bg-accent/50 transition-all duration-300 hover-scale"
                       }
                     >
-                      <item.icon className="h-4 w-4" />
-                      {open && <span>{item.title}</span>}
+                      {({ isActive }) => (
+                        <>
+                          <div className={`p-1 rounded-md ${isActive ? 'bg-white/20' : `bg-gradient-to-br ${item.gradient}`}`}>
+                            <item.icon className={`h-4 w-4 ${isActive ? 'text-white' : 'text-white'}`} />
+                          </div>
+                          {open && <span className="ml-1">{item.title}</span>}
+                        </>
+                      )}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
