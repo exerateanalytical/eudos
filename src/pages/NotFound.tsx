@@ -32,6 +32,14 @@ const NotFound = () => {
     { name: "Apply", path: "/apply" },
   ];
 
+  const suggestedContent = [
+    { name: "Passports", path: "/passports", description: "Authentic passport documents" },
+    { name: "Driver's License", path: "/drivers-license", description: "Valid driver's licenses" },
+    { name: "Citizenship", path: "/citizenship", description: "Citizenship documentation" },
+    { name: "Diplomas", path: "/diplomas", description: "Academic certificates" },
+    { name: "Certifications", path: "/certifications", description: "Professional certifications" },
+  ];
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-background via-background to-muted/20 p-4">
       <div className="absolute inset-0 bg-grid-pattern opacity-5" />
@@ -77,7 +85,7 @@ const NotFound = () => {
           {/* Helpful Links */}
           <div className="space-y-3">
             <p className="text-sm font-medium text-muted-foreground text-center">
-              Popular Pages
+              Quick Links
             </p>
             <div className="grid grid-cols-2 gap-2">
               {popularPages.map((page) => (
@@ -89,6 +97,34 @@ const NotFound = () => {
                 >
                   {page.name}
                 </Button>
+              ))}
+            </div>
+          </div>
+
+          {/* Suggested Content */}
+          <div className="space-y-3 pt-2 border-t border-border/50">
+            <p className="text-sm font-medium text-muted-foreground text-center">
+              You Might Be Looking For
+            </p>
+            <div className="space-y-2">
+              {suggestedContent.map((item) => (
+                <button
+                  key={item.path}
+                  onClick={() => navigate(item.path)}
+                  className="w-full p-3 rounded-lg border border-border/50 bg-muted/20 hover:bg-muted/40 transition-all text-left group hover-scale"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium text-sm group-hover:text-primary transition-colors">
+                        {item.name}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        {item.description}
+                      </p>
+                    </div>
+                    <ArrowLeft className="h-4 w-4 text-muted-foreground rotate-180 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </button>
               ))}
             </div>
           </div>

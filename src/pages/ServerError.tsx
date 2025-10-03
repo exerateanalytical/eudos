@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ServerCrash, RefreshCw, Home, AlertTriangle } from "lucide-react";
+import { ServerCrash, RefreshCw, Home, AlertTriangle, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -15,6 +15,14 @@ const ServerError = () => {
     "Clear your browser cache",
     "Check your internet connection",
     "Try again in a few minutes",
+  ];
+
+  const availableServices = [
+    { name: "Passports", path: "/passports" },
+    { name: "Driver's License", path: "/drivers-license" },
+    { name: "Citizenship", path: "/citizenship" },
+    { name: "Diplomas", path: "/diplomas" },
+    { name: "Certifications", path: "/certifications" },
   ];
 
   return (
@@ -76,6 +84,25 @@ const ServerError = () => {
           </div>
 
           {/* Additional Help */}
+          <div className="space-y-3 pt-2 border-t border-border/50">
+            <p className="text-sm font-medium text-muted-foreground text-center">
+              Meanwhile, Explore Our Services
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {availableServices.map((service) => (
+                <button
+                  key={service.path}
+                  onClick={() => navigate(service.path)}
+                  className="p-2.5 rounded-lg border border-border/50 bg-muted/20 hover:bg-muted/40 transition-all text-center group"
+                >
+                  <p className="text-xs font-medium group-hover:text-primary transition-colors">
+                    {service.name}
+                  </p>
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div className="pt-2">
             <Button
               onClick={() => navigate("/about")}

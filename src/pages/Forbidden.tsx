@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ShieldAlert, ArrowLeft, Home, Lock } from "lucide-react";
+import { ShieldAlert, ArrowLeft, Home, Lock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -9,6 +9,14 @@ const Forbidden = () => {
   const handleGoBack = () => {
     navigate(-1);
   };
+
+  const publicContent = [
+    { name: "Passports", path: "/passports", description: "Browse passport options" },
+    { name: "Driver's License", path: "/drivers-license", description: "Explore license types" },
+    { name: "Citizenship", path: "/citizenship", description: "Citizenship services" },
+    { name: "Diplomas", path: "/diplomas", description: "Academic documents" },
+    { name: "Certifications", path: "/certifications", description: "Professional certs" },
+  ];
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-background via-background to-destructive/5 p-4">
@@ -49,7 +57,7 @@ const Forbidden = () => {
           </div>
 
           {/* Additional Options */}
-          <div className="space-y-3 pt-2">
+          <div className="space-y-3 pt-2 border-t border-border/50">
             <p className="text-sm font-medium text-muted-foreground text-center">
               Need Access?
             </p>
@@ -68,6 +76,34 @@ const Forbidden = () => {
               >
                 Contact Support
               </Button>
+            </div>
+          </div>
+
+          {/* Public Content Available */}
+          <div className="space-y-3 pt-2 border-t border-border/50">
+            <p className="text-sm font-medium text-muted-foreground text-center">
+              Or Explore Our Public Pages
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {publicContent.map((item) => (
+                <button
+                  key={item.path}
+                  onClick={() => navigate(item.path)}
+                  className="p-3 rounded-lg border border-border/50 bg-muted/20 hover:bg-muted/40 transition-all text-left group"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <p className="font-medium text-xs group-hover:text-primary transition-colors">
+                        {item.name}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        {item.description}
+                      </p>
+                    </div>
+                    <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:translate-x-1 transition-transform flex-shrink-0 ml-2" />
+                  </div>
+                </button>
+              ))}
             </div>
           </div>
 
