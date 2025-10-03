@@ -310,6 +310,20 @@ import vubSeal from "@/assets/university-seals/vub.png";
 import antwerpSeal from "@/assets/university-seals/antwerp.png";
 import liegeSeal from "@/assets/university-seals/liege.png";
 
+// Italian Universities
+import bolognaSeal from "@/assets/university-seals/bologna.png";
+import sapienzaRomeSeal from "@/assets/university-seals/sapienza-rome.png";
+import milanSeal from "@/assets/university-seals/milan.png";
+import paduaSeal from "@/assets/university-seals/padua.png";
+import pisaSeal from "@/assets/university-seals/pisa.png";
+import florenceSeal from "@/assets/university-seals/florence.png";
+import turinSeal from "@/assets/university-seals/turin.png";
+import naplesFedericoIISeal from "@/assets/university-seals/naples-federico-ii.png";
+import politecnicoMilanoSeal from "@/assets/university-seals/politecnico-milano.png";
+import bocconiSeal from "@/assets/university-seals/bocconi.png";
+import santannaPisaSeal from "@/assets/university-seals/santanna-pisa.png";
+import scuolaNormaleSeal from "@/assets/university-seals/scuola-normale.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -622,6 +636,20 @@ export const universitySealMap: Record<string, string> = {
   "Vrije Universiteit Brussel": vubSeal,
   "University of Antwerp": antwerpSeal,
   "University of Liège": liegeSeal,
+  
+  // Italian Universities
+  "University of Bologna": bolognaSeal,
+  "Sapienza University of Rome": sapienzaRomeSeal,
+  "University of Milan": milanSeal,
+  "University of Padua": paduaSeal,
+  "University of Pisa": pisaSeal,
+  "University of Florence": florenceSeal,
+  "University of Turin": turinSeal,
+  "University of Naples Federico II": naplesFedericoIISeal,
+  "Politecnico di Milano": politecnicoMilanoSeal,
+  "Bocconi University": bocconiSeal,
+  "Sant'Anna School of Advanced Studies": santannaPisaSeal,
+  "Scuola Normale Superiore di Pisa": scuolaNormaleSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
