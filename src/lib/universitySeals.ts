@@ -477,6 +477,13 @@ import pucChileSeal from "@/assets/university-seals/puc-chile.png";
 import unicampSeal from "@/assets/university-seals/unicamp.png";
 import tecMonterreySeal from "@/assets/university-seals/tec-monterrey.png";
 
+// Middle Eastern Universities
+import hebrewJerusalemSeal from "@/assets/university-seals/hebrew-jerusalem.png";
+import telAvivSeal from "@/assets/university-seals/tel-aviv.png";
+import technionSeal from "@/assets/university-seals/technion.png";
+import aubSeal from "@/assets/university-seals/aub.png";
+import kaustSeal from "@/assets/university-seals/kaust.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -968,6 +975,18 @@ export const universitySealMap: Record<string, string> = {
   "Tecnológico de Monterrey": tecMonterreySeal,
   "ITESM": tecMonterreySeal,
   "Tec de Monterrey": tecMonterreySeal,
+  
+  // Middle Eastern Universities
+  "Hebrew University of Jerusalem": hebrewJerusalemSeal,
+  "Hebrew University": hebrewJerusalemSeal,
+  "Tel Aviv University": telAvivSeal,
+  "TAU": telAvivSeal,
+  "Technion": technionSeal,
+  "Technion - Israel Institute of Technology": technionSeal,
+  "American University of Beirut": aubSeal,
+  "AUB": aubSeal,
+  "KAUST": kaustSeal,
+  "King Abdullah University of Science and Technology": kaustSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
