@@ -16,6 +16,10 @@ import NotificationBell from "@/components/NotificationBell";
 import { ReviewModerationModule } from "@/components/dashboard/ReviewModerationModule";
 import { SeedingModule } from "@/components/dashboard/SeedingModule";
 import { AdminCreationModule } from "@/components/dashboard/AdminCreationModule";
+import { DashboardOverview } from "@/components/dashboard/DashboardOverview";
+import { DocumentWallet } from "@/components/dashboard/DocumentWallet";
+import { ActivityLog } from "@/components/dashboard/ActivityLog";
+import { WalletModule } from "@/components/dashboard/WalletModule";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -163,8 +167,12 @@ const Dashboard = () => {
           </div>
         )}
 
-        <Tabs defaultValue="orders" className="space-y-6">
-          <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-3 lg:grid-cols-7' : 'grid-cols-2 lg:grid-cols-5'}`}>
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-4 lg:grid-cols-10' : 'grid-cols-4 lg:grid-cols-8'}`}>
+            <TabsTrigger value="overview" className="flex items-center gap-2">
+              <Home className="h-4 w-4" />
+              Overview
+            </TabsTrigger>
             <TabsTrigger value="orders" className="flex items-center gap-2">
               <Package className="h-4 w-4" />
               Orders
@@ -172,6 +180,18 @@ const Dashboard = () => {
             <TabsTrigger value="documents" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               Applications
+            </TabsTrigger>
+            <TabsTrigger value="wallet" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              Wallet
+            </TabsTrigger>
+            <TabsTrigger value="document-wallet" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              Documents
+            </TabsTrigger>
+            <TabsTrigger value="activity" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              Activity
             </TabsTrigger>
             <TabsTrigger value="notifications" className="flex items-center gap-2">
               <Bell className="h-4 w-4" />
@@ -199,12 +219,28 @@ const Dashboard = () => {
             )}
           </TabsList>
 
+          <TabsContent value="overview">
+            <DashboardOverview userId={user?.id!} />
+          </TabsContent>
+
           <TabsContent value="orders">
             <OrdersModule userId={user?.id!} />
           </TabsContent>
 
           <TabsContent value="documents">
             <DocumentApplicationsModule userId={user?.id!} />
+          </TabsContent>
+
+          <TabsContent value="wallet">
+            <WalletModule userId={user?.id!} />
+          </TabsContent>
+
+          <TabsContent value="document-wallet">
+            <DocumentWallet userId={user?.id!} />
+          </TabsContent>
+
+          <TabsContent value="activity">
+            <ActivityLog userId={user?.id!} />
           </TabsContent>
 
           <TabsContent value="notifications">
