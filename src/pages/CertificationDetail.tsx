@@ -8,7 +8,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Award, Clock, Shield, CheckCircle, FileCheck, Globe, Bitcoin, Mail, Phone, MapPin, ExternalLink, ArrowLeft, ShoppingCart, Coins } from "lucide-react";
 import { EscrowForm } from "@/components/EscrowForm";
 import { CertificationIcon } from "@/components/CertificationIcon";
-import { getCategoryColors } from "@/lib/certificationIcons";
+import { getCategoryColors } from "@/lib/certificationLogos";
 
 const CertificationDetail = () => {
   const { certificationName } = useParams<{ certificationName: string }>();

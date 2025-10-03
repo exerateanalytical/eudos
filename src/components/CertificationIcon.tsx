@@ -1,4 +1,5 @@
-import { getCertificationIcon, getCategoryColors } from "@/lib/certificationIcons";
+import { getCertificationLogo, getCategoryColors } from "@/lib/certificationLogos";
+import { getCertificationIcon } from "@/lib/certificationIcons";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
@@ -17,13 +18,14 @@ export const CertificationIcon = ({
   showTooltip = false,
   className
 }: CertificationIconProps) => {
+  const logo = getCertificationLogo(provider);
   const Icon = getCertificationIcon(provider);
   const colors = getCategoryColors(category);
 
   const sizeClasses = {
-    sm: "w-10 h-10 p-2",
-    md: "w-12 h-12 p-2.5",
-    lg: "w-16 h-16 p-3"
+    sm: "w-10 h-10",
+    md: "w-12 h-12",
+    lg: "w-16 h-16"
   };
 
   const iconSizes = {
@@ -32,16 +34,24 @@ export const CertificationIcon = ({
     lg: 36
   };
 
-  const iconElement = (
+  const containerElement = (
     <div
       className={cn(
-        "rounded-lg bg-gradient-to-br transition-all duration-300 hover:scale-110 hover:shadow-lg flex items-center justify-center",
+        "rounded-lg bg-gradient-to-br transition-all duration-300 hover:scale-110 hover:shadow-lg flex items-center justify-center overflow-hidden",
         colors.gradient,
         sizeClasses[size],
         className
       )}
     >
-      <Icon className={cn(colors.icon)} size={iconSizes[size]} strokeWidth={1.5} />
+      {logo ? (
+        <img 
+          src={logo} 
+          alt={`${provider} logo`}
+          className="w-full h-full object-contain p-2"
+        />
+      ) : (
+        <Icon className={cn(colors.icon, "p-2")} size={iconSizes[size]} strokeWidth={1.5} />
+      )}
     </div>
   );
 
@@ -50,7 +60,7 @@ export const CertificationIcon = ({
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            {iconElement}
+            {containerElement}
           </TooltipTrigger>
           <TooltipContent>
             <p className="font-medium">{provider}</p>
@@ -60,5 +70,5 @@ export const CertificationIcon = ({
     );
   }
 
-  return iconElement;
+  return containerElement;
 };

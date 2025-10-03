@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { SecurityFeaturesSection } from "@/components/SecurityFeaturesSection";
 import { CertificationIcon } from "@/components/CertificationIcon";
-import { getCategoryColors } from "@/lib/certificationIcons";
+import { getCategoryColors } from "@/lib/certificationLogos";
 
 const certifications = [
   // Project Management & Business (20)
