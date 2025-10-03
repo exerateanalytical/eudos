@@ -338,6 +338,18 @@ import ieBusinessSeal from "@/assets/university-seals/ie-business.png";
 import esadeSeal from "@/assets/university-seals/esade.png";
 import ieseSeal from "@/assets/university-seals/iese.png";
 
+// Portuguese Universities
+import lisbonSeal from "@/assets/university-seals/lisbon.png";
+import portoSeal from "@/assets/university-seals/porto.png";
+import novaLisbonSeal from "@/assets/university-seals/nova-lisbon.png";
+import catolicaSeal from "@/assets/university-seals/catolica.png";
+import coimbraSeal from "@/assets/university-seals/coimbra.png";
+
+// Greek Universities
+import athensSeal from "@/assets/university-seals/athens.png";
+import aristotleThessalonikiSeal from "@/assets/university-seals/aristotle-thessaloniki.png";
+import ntuaSeal from "@/assets/university-seals/ntua.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -678,6 +690,18 @@ export const universitySealMap: Record<string, string> = {
   "IE Business School": ieBusinessSeal,
   "ESADE Business School": esadeSeal,
   "IESE Business School": ieseSeal,
+  
+  // Portuguese Universities
+  "University of Lisbon": lisbonSeal,
+  "University of Porto": portoSeal,
+  "NOVA University Lisbon": novaLisbonSeal,
+  "Católica Portuguesa": catolicaSeal,
+  "University of Coimbra": coimbraSeal,
+  
+  // Greek Universities
+  "National and Kapodistrian University of Athens": athensSeal,
+  "Aristotle University of Thessaloniki": aristotleThessalonikiSeal,
+  "National Technical University of Athens": ntuaSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
