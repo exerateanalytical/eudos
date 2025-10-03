@@ -61,7 +61,7 @@ const Escrow = () => {
           <div className="inline-flex items-center gap-2 px-6 py-3 bg-amber-500/10 border border-amber-500/20 rounded-lg mb-8">
             <AlertCircle className="w-5 h-5 text-amber-500" />
             <p className="text-sm font-medium text-amber-600 dark:text-amber-400">
-              Service fee: <span className="font-bold">1.5%</span> deducted from seller upon completion
+              Service fee: <span className="font-bold">1.5%</span> added to your payment (buyers pay the fee)
             </p>
           </div>
 
@@ -107,7 +107,7 @@ const Escrow = () => {
               {
                 step: "4",
                 title: "Payment Released",
-                description: "Seller receives payment minus 1.5% escrow service fee",
+                description: "Seller receives full payment - buyer paid the 1.5% escrow fee",
                 icon: Lock,
               },
             ].map((step) => (
@@ -227,7 +227,7 @@ const Escrow = () => {
                 <Wallet className="w-8 h-8 text-primary" />
               </div>
               <CardTitle className="text-4xl font-bold mb-2">1.5%</CardTitle>
-              <CardDescription className="text-lg">Escrow Service Fee</CardDescription>
+              <CardDescription className="text-lg">Added to buyer's payment</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="bg-secondary/50 p-6 rounded-lg space-y-4">
@@ -236,22 +236,22 @@ const Escrow = () => {
                   <div className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-medium">Buyer pays full amount</p>
-                      <p className="text-sm text-muted-foreground">You send the total transaction amount including the 1.5% fee</p>
+                      <p className="font-medium">Buyer pays product price + 1.5% fee</p>
+                      <p className="text-sm text-muted-foreground">You pay the total including the escrow service fee</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="font-medium">Funds held securely</p>
-                      <p className="text-sm text-muted-foreground">Money stays in escrow until buyer confirms delivery</p>
+                      <p className="text-sm text-muted-foreground">Full amount stays in escrow until buyer confirms delivery</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-medium">Seller receives payment minus fee</p>
-                      <p className="text-sm text-muted-foreground">1.5% is deducted when funds are released to the seller</p>
+                      <p className="font-medium">Seller receives full product price</p>
+                      <p className="text-sm text-muted-foreground">Seller gets 100% of the product price - no deductions</p>
                     </div>
                   </div>
                 </div>
@@ -274,7 +274,11 @@ const Escrow = () => {
                   </div>
                   <div className="flex justify-between pt-2 border-t">
                     <span className="font-bold">Seller Receives:</span>
-                    <span className="font-bold">$1,000.00</span>
+                    <span className="font-bold text-green-600 dark:text-green-400">$1,000.00</span>
+                  </div>
+                  <div className="flex justify-between text-sm text-muted-foreground">
+                    <span>Escrow Service Fee:</span>
+                    <span>$15.00</span>
                   </div>
                 </div>
               </div>
@@ -282,9 +286,9 @@ const Escrow = () => {
               <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 flex items-start gap-3">
                 <AlertCircle className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
                 <div className="text-sm">
-                  <p className="font-medium text-blue-600 dark:text-blue-400 mb-1">Why we charge a fee?</p>
+                  <p className="font-medium text-blue-600 dark:text-blue-400 mb-1">Why buyers pay the fee?</p>
                   <p className="text-blue-600/80 dark:text-blue-400/80">
-                    The 1.5% fee covers secure wallet infrastructure, smart contract audits, dispute resolution services, and 24/7 transaction monitoring to ensure your funds are always protected.
+                    The 1.5% fee covers secure wallet infrastructure, smart contract audits, dispute resolution services, and 24/7 transaction monitoring. This ensures sellers receive their full payment while your transaction remains fully protected.
                   </p>
                 </div>
               </div>
@@ -312,7 +316,7 @@ const Escrow = () => {
             <AccordionItem value="item-2">
               <AccordionTrigger>What are the fees?</AccordionTrigger>
               <AccordionContent>
-                We charge a flat 1.5% escrow service fee on the transaction amount. This fee is added to your total payment as a buyer and deducted when funds are released to the seller. For example, on a $1,000 purchase, you'll pay $1,015 total, and the seller receives $1,000. There are no hidden charges or additional fees.
+                We charge a flat 1.5% escrow service fee that is added to the product price. As a buyer, you pay the product price plus 1.5%. For example, on a $1,000 purchase, you'll pay $1,015 total. The seller receives the full $1,000 product price with no deductions. This ensures sellers get their complete payment while the escrow service is funded by a small buyer fee.
               </AccordionContent>
             </AccordionItem>
 
