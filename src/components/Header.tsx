@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Printer, Menu, User, LayoutDashboard, Home } from "lucide-react";
+import { Printer, Menu, User, LayoutDashboard, Home, Shield } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Session } from "@supabase/supabase-js";
@@ -67,6 +67,10 @@ export const Header = () => {
           <button onClick={() => navigate("/apply")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
             Apply
           </button>
+          <button onClick={() => navigate("/escrow")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95 flex items-center gap-1.5">
+            <Shield className="h-4 w-4" />
+            Escrow
+          </button>
           {session ? (
             <Button onClick={() => navigate("/dashboard")} variant="default" size="sm" className="active:scale-95">
               <LayoutDashboard className="mr-2 h-4 w-4" />
@@ -112,6 +116,10 @@ export const Header = () => {
               </button>
               <button onClick={() => { navigate("/apply"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
                 Apply
+              </button>
+              <button onClick={() => { navigate("/escrow"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95 flex items-center gap-2">
+                <Shield className="h-5 w-5" />
+                Escrow
               </button>
               <div className="pt-4 mt-4 border-t border-border space-y-2">
                 {session ? (
