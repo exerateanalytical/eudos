@@ -7,6 +7,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Award, Clock, Shield, CheckCircle, FileCheck, Globe, Bitcoin, Mail, Phone, MapPin, ExternalLink, ArrowLeft, ShoppingCart, Coins } from "lucide-react";
 import { EscrowForm } from "@/components/EscrowForm";
+import { CertificationIcon } from "@/components/CertificationIcon";
+import { getCategoryColors } from "@/lib/certificationIcons";
 
 const CertificationDetail = () => {
   const { certificationName } = useParams<{ certificationName: string }>();
@@ -25,8 +27,44 @@ const CertificationDetail = () => {
     return "$3,500";
   };
 
+  // Extract provider and category from certification name
+  const getProviderFromName = (name: string): string => {
+    if (name.includes("PMP") || name.includes("PMI")) return "PMI";
+    if (name.includes("AWS") || name.includes("Amazon")) return "Amazon";
+    if (name.includes("Azure") || name.includes("Microsoft")) return "Microsoft";
+    if (name.includes("Google Cloud")) return "Google";
+    if (name.includes("CISSP") || name.includes("CCSP")) return "ISC2";
+    if (name.includes("CISA") || name.includes("CISM")) return "ISACA";
+    if (name.includes("CFA")) return "CFA Institute";
+    if (name.includes("CPA")) return "AICPA";
+    if (name.includes("PRINCE2")) return "AXELOS";
+    if (name.includes("CCNA") || name.includes("CCNP") || name.includes("CCIE")) return "Cisco";
+    if (name.includes("CompTIA")) return "CompTIA";
+    if (name.includes("CEH")) return "EC-Council";
+    if (name.includes("OSCP")) return "Offensive Security";
+    if (name.includes("Scrum")) return "Scrum Alliance";
+    return "Various";
+  };
+
+  const getCategoryFromName = (name: string): string => {
+    if (name.includes("PMP") || name.includes("PRINCE2") || name.includes("Scrum") || name.includes("Agile")) return "Project Management & Business";
+    if (name.includes("AWS") || name.includes("Azure") || name.includes("Cloud") || name.includes("CISSP") || name.includes("CompTIA") || name.includes("CEH") || name.includes("CCNA")) return "IT & Cloud Computing";
+    if (name.includes("CFA") || name.includes("CPA") || name.includes("ACCA")) return "Finance & Accounting";
+    if (name.includes("NCLEX") || name.includes("USMLE") || name.includes("Medical")) return "Healthcare & Medical";
+    if (name.includes("IELTS") || name.includes("TOEFL") || name.includes("Language")) return "Language & Communication";
+    if (name.includes("Data Science") || name.includes("AI") || name.includes("Machine Learning") || name.includes("Blockchain")) return "Emerging Tech & AI";
+    if (name.includes("Engineer") || name.includes("PE ") || name.includes("LEED")) return "Engineering & Trades";
+    if (name.includes("Marketing") || name.includes("Google Analytics") || name.includes("SEO")) return "Digital Marketing";
+    return "Other Professional";
+  };
+
+  const provider = getProviderFromName(decodedName);
+  const category = getCategoryFromName(decodedName);
+
   const certificationData = {
     name: decodedName,
+    provider,
+    category,
     price: getPriceForCertification(decodedName),
     deliveryTime: "14-21 Business Days",
     description: "Comprehensive certification package with all documentation, verification support, and lifetime validity.",
@@ -142,10 +180,28 @@ const CertificationDetail = () => {
           
           <div className="grid md:grid-cols-2 gap-8 items-start">
             <div>
-              <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
-                <Award className="w-3 h-3 mr-1" />
-                Professional Certification
-              </Badge>
+              <div className="flex items-center gap-3 mb-4">
+                <CertificationIcon 
+                  provider={certificationData.provider} 
+                  category={certificationData.category}
+                  size="lg"
+                />
+                <div className="flex flex-col gap-2">
+                  <Badge 
+                    variant="outline" 
+                    className={getCategoryColors(certificationData.category).badge}
+                  >
+                    {certificationData.provider}
+                  </Badge>
+                  <Badge 
+                    variant="outline" 
+                    className={getCategoryColors(certificationData.category).badge}
+                  >
+                    <Award className="w-3 h-3 mr-1" />
+                    {certificationData.category}
+                  </Badge>
+                </div>
+              </div>
               <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
                 {certificationData.name}
               </h1>
