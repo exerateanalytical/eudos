@@ -1,463 +1,217 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Printer, FileText, CreditCard, IdCard, GraduationCap, Shield, Fingerprint, Cpu, Sparkles, Eye, Scan, Radio, Lock, FileCheck, Database, Filter, X } from "lucide-react";
+import { CreditCard, FileText, Globe, GraduationCap, Award, Shield, ArrowRight, Sparkles, Lock, CheckCircle } from "lucide-react";
 
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { SecurityFeaturesSection } from "@/components/SecurityFeaturesSection";
-
-const products = [
+const categories = [
   {
-    id: "passport",
-    title: "Registered Passport",
-    description: "Fully registered biometric passports with embedded chips and advanced security features",
-    icon: FileText,
-    gradient: "from-blue-500 to-cyan-500",
-    category: "Travel Documents",
-    securityLevel: "Military-grade",
-    features: [
-      "Biometric data integration",
-      "RFID/NFC embedded chip",
-      "Multi-layer holograms",
-      "UV security features",
-      "Machine-readable zone (MRZ)",
-      "Laser engraved personalization",
-      "Watermarks & security threads",
-      "Government database registration",
-    ],
-    specifications: [
-      { label: "Pages", value: "32 or 64 pages" },
-      { label: "Validity", value: "5 or 10 years" },
-      { label: "Chip Type", value: "RFID contactless" },
-      { label: "Security Level", value: "Military-grade" },
-    ],
-  },
-  {
-    id: "drivers-license",
-    title: "Driver's License",
-    description: "Secure driver's licenses with biometric data and tamper-proof features",
+    name: "Passports",
+    path: "/passports",
+    description: "Authentic biometric passports with embedded chips and advanced security features",
     icon: CreditCard,
-    gradient: "from-purple-500 to-pink-500",
-    category: "Identification Cards",
-    securityLevel: "High-security",
-    features: [
-      "Biometric photo & fingerprint",
-      "Ghost image technology",
-      "Microtext printing",
-      "UV ink patterns",
-      "Laser engraving",
-      "Barcode & magnetic stripe",
-      "Holographic overlay",
-      "Tamper-evident design",
-    ],
-    specifications: [
-      { label: "Format", value: "ID-1 card (CR80)" },
-      { label: "Validity", value: "3-10 years" },
-      { label: "Material", value: "Polycarbonate" },
-      { label: "Security Level", value: "High-security" },
-    ],
+    gradient: "from-blue-500/20 to-blue-600/10 hover:from-blue-500/30 hover:to-blue-600/20",
+    borderColor: "border-blue-500/30 hover:border-blue-500/50",
+    iconBg: "bg-blue-500",
+    features: ["Biometric Integration", "RFID Chip", "Global Recognition", "10-Year Validity"],
+    badge: "Most Popular",
+    badgeColor: "bg-blue-500/10 text-blue-600 border-blue-500/20",
   },
   {
-    id: "id-card",
-    title: "National ID Card",
-    description: "Government-issued ID cards with RFID technology and holographic security",
-    icon: IdCard,
-    gradient: "from-green-500 to-emerald-500",
-    category: "Identification Cards",
-    securityLevel: "Maximum security",
-    features: [
-      "RFID chip with encrypted data",
-      "Biometric facial recognition",
-      "Fingerprint storage",
-      "Holographic security overlay",
-      "Invisible UV features",
-      "Microtext & guilloche patterns",
-      "Laser-etched details",
-      "Database verification system",
-    ],
-    specifications: [
-      { label: "Format", value: "ID-1 card (CR80)" },
-      { label: "Validity", value: "5-15 years" },
-      { label: "Chip Type", value: "Contactless smart chip" },
-      { label: "Security Level", value: "Maximum security" },
-    ],
+    name: "Driver's License",
+    path: "/drivers-license",
+    description: "Valid driver's licenses with biometric data and tamper-proof security features",
+    icon: FileText,
+    gradient: "from-green-500/20 to-green-600/10 hover:from-green-500/30 hover:to-green-600/20",
+    borderColor: "border-green-500/30 hover:border-green-500/50",
+    iconBg: "bg-green-500",
+    features: ["Holographic Overlay", "UV Security", "Magnetic Stripe", "Laser Engraving"],
+    badge: "Fast Processing",
+    badgeColor: "bg-green-500/10 text-green-600 border-green-500/20",
   },
   {
-    id: "diploma",
-    title: "Official Diploma",
-    description: "Authenticated educational certificates with advanced anti-forgery protection",
+    name: "Citizenship",
+    path: "/citizenship",
+    description: "Complete citizenship documentation packages for various countries worldwide",
+    icon: Globe,
+    gradient: "from-purple-500/20 to-purple-600/10 hover:from-purple-500/30 hover:to-purple-600/20",
+    borderColor: "border-purple-500/30 hover:border-purple-500/50",
+    iconBg: "bg-purple-500",
+    features: ["Legal Documentation", "Government Approved", "Multiple Countries", "Full Support"],
+    badge: "Premium Service",
+    badgeColor: "bg-purple-500/10 text-purple-600 border-purple-500/20",
+  },
+  {
+    name: "Diplomas",
+    path: "/diplomas",
+    description: "Authenticated academic certificates from recognized universities and institutions",
     icon: GraduationCap,
-    gradient: "from-orange-500 to-red-500",
-    category: "Certificates",
-    securityLevel: "Anti-forgery",
-    features: [
-      "Multi-tone watermarks",
-      "Security threads",
-      "UV reactive elements",
-      "Embossed seals",
-      "Microtext printing",
-      "Intaglio printing",
-      "Serial numbering",
-      "Verification QR codes",
-    ],
-    specifications: [
-      { label: "Size", value: "A4 or custom" },
-      { label: "Material", value: "Security paper" },
-      { label: "Printing", value: "Offset & intaglio" },
-      { label: "Security Level", value: "Anti-forgery" },
-    ],
+    gradient: "from-orange-500/20 to-orange-600/10 hover:from-orange-500/30 hover:to-orange-600/20",
+    borderColor: "border-orange-500/30 hover:border-orange-500/50",
+    iconBg: "bg-orange-500",
+    features: ["Official Seals", "Watermarks", "Verification Codes", "Accredited Institutions"],
+    badge: "Verified",
+    badgeColor: "bg-orange-500/10 text-orange-600 border-orange-500/20",
+  },
+  {
+    name: "Certifications",
+    path: "/certifications",
+    description: "Professional certifications and licenses for various industries and specializations",
+    icon: Award,
+    gradient: "from-pink-500/20 to-pink-600/10 hover:from-pink-500/30 hover:to-pink-600/20",
+    borderColor: "border-pink-500/30 hover:border-pink-500/50",
+    iconBg: "bg-pink-500",
+    features: ["Industry Standard", "Professional Grade", "Quick Turnaround", "Authentic Credentials"],
+    badge: "In Demand",
+    badgeColor: "bg-pink-500/10 text-pink-600 border-pink-500/20",
   },
 ];
 
-const securityIcons = [
-  { icon: Fingerprint, label: "Biometric" },
-  { icon: Cpu, label: "RFID Chip" },
-  { icon: Sparkles, label: "Hologram" },
-  { icon: Eye, label: "UV Features" },
-  { icon: Scan, label: "Microtext" },
-  { icon: Radio, label: "Laser Engraved" },
-  { icon: FileCheck, label: "Watermarks" },
-  { icon: Lock, label: "Tamper-Proof" },
-  { icon: Database, label: "DB Registered" },
+const securityFeatures = [
+  { icon: Shield, label: "Military-Grade Security" },
+  { icon: Lock, label: "Tamper-Proof Technology" },
+  { icon: CheckCircle, label: "Government Standards" },
+  { icon: Sparkles, label: "Premium Quality Materials" },
 ];
 
 const Products = () => {
   const navigate = useNavigate();
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [selectedSecurityLevels, setSelectedSecurityLevels] = useState<string[]>([]);
-  const [selectedSecurityFeatures, setSelectedSecurityFeatures] = useState<string[]>([]);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const categories = ["Travel Documents", "Identification Cards", "Certificates"];
-  const securityLevels = ["Military-grade", "Maximum security", "High-security", "Anti-forgery"];
-
-  const toggleCategory = (category: string) => {
-    setSelectedCategories(prev =>
-      prev.includes(category)
-        ? prev.filter(c => c !== category)
-        : [...prev, category]
-    );
-  };
-
-  const toggleSecurityLevel = (level: string) => {
-    setSelectedSecurityLevels(prev =>
-      prev.includes(level)
-        ? prev.filter(l => l !== level)
-        : [...prev, level]
-    );
-  };
-
-  const toggleSecurityFeature = (feature: string) => {
-    setSelectedSecurityFeatures(prev =>
-      prev.includes(feature)
-        ? prev.filter(f => f !== feature)
-        : [...prev, feature]
-    );
-  };
-
-  const clearFilters = () => {
-    setSelectedCategories([]);
-    setSelectedSecurityLevels([]);
-    setSelectedSecurityFeatures([]);
-  };
-
-  const filteredProducts = products.filter(product => {
-    const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(product.category);
-    const matchesSecurityLevel = selectedSecurityLevels.length === 0 || selectedSecurityLevels.includes(product.securityLevel);
-    const matchesSecurityFeatures = selectedSecurityFeatures.length === 0 || 
-      selectedSecurityFeatures.some(feature => 
-        product.features.some(f => f.toLowerCase().includes(feature.toLowerCase()))
-      );
-    return matchesCategory && matchesSecurityLevel && matchesSecurityFeatures;
-  });
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <div className="container mx-auto px-4 py-6 md:py-12">
-        {/* Page Header */}
-        <div className="text-center mb-8 md:mb-12 animate-fade-in">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-primary/10 border border-primary/20 mb-4 md:mb-6">
-            <Shield className="h-3 w-3 md:h-4 md:w-4 text-primary" />
-            <span className="text-xs md:text-sm font-medium text-primary">Government-Grade Security Documents</span>
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-12 md:py-20">
+        {/* Hero Section */}
+        <div className="text-center mb-16 animate-fade-in">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
+            <Shield className="h-4 w-4 text-primary" />
+            <span className="text-sm font-medium text-primary">Premium Document Services</span>
           </div>
           
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 px-4">
-            Our Product Catalog
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+            Explore Our Document Categories
           </h1>
-          <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
-            Explore our range of secure government documents featuring military-grade security features and biometric technology
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+            Choose from our comprehensive range of secure government documents and certifications, 
+            all featuring advanced security features and biometric technology.
           </p>
         </div>
 
-        {/* Mobile Filter Toggle */}
-        <div className="lg:hidden mb-6">
-          <Button 
-            variant="outline" 
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="w-full"
-          >
-            <Filter className="mr-2 h-4 w-4" />
-            {sidebarOpen ? "Hide Filters" : "Show Filters"}
-          </Button>
+        {/* Security Features Banner */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16 animate-fade-in">
+          {securityFeatures.map((feature, index) => {
+            const Icon = feature.icon;
+            return (
+              <div
+                key={index}
+                className="p-4 rounded-xl border border-border/50 bg-muted/20 text-center"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <Icon className="h-6 w-6 mx-auto mb-2 text-primary" />
+                <p className="text-xs font-medium text-muted-foreground">{feature.label}</p>
+              </div>
+            );
+          })}
         </div>
 
-        {/* Main Content with Sidebar */}
-        <div className="grid lg:grid-cols-4 gap-8">
-          {/* Sidebar */}
-          <aside className={`lg:col-span-1 ${sidebarOpen ? 'block' : 'hidden lg:block'}`}>
-            <div className="lg:sticky lg:top-24 space-y-6">
-              <Card className="border-border/50 bg-card backdrop-blur-sm">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="flex items-center gap-2">
-                      <Filter className="h-5 w-5 text-primary" />
-                      Filters
+        {/* Categories Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+          {categories.map((category, index) => {
+            const Icon = category.icon;
+            return (
+              <Card
+                key={category.path}
+                className={`overflow-hidden border-2 ${category.borderColor} bg-gradient-to-br ${category.gradient} transition-all duration-300 hover:shadow-xl hover-scale animate-fade-in group cursor-pointer`}
+                style={{ animationDelay: `${index * 0.1}s` }}
+                onClick={() => navigate(category.path)}
+              >
+                <CardHeader className="space-y-4">
+                  <div className="flex items-start justify-between">
+                    <div className={`p-3 rounded-xl ${category.iconBg} shadow-lg group-hover:scale-110 transition-transform`}>
+                      <Icon className="h-6 w-6 text-white" />
+                    </div>
+                    <Badge className={`${category.badgeColor} border`}>
+                      {category.badge}
+                    </Badge>
+                  </div>
+                  
+                  <div>
+                    <CardTitle className="text-2xl mb-2 group-hover:text-primary transition-colors">
+                      {category.name}
                     </CardTitle>
-                    {(selectedCategories.length > 0 || selectedSecurityLevels.length > 0 || selectedSecurityFeatures.length > 0) && (
-                      <Button variant="ghost" size="sm" onClick={clearFilters}>
-                        Clear All
-                      </Button>
-                    )}
+                    <CardDescription className="text-sm leading-relaxed">
+                      {category.description}
+                    </CardDescription>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-6">
-                  {/* Categories Filter */}
-                  <div>
-                    <h3 className="font-semibold mb-3 text-foreground">Document Type</h3>
-                    <div className="space-y-3">
-                      {categories.map((category) => (
-                        <div key={category} className="flex items-center space-x-2">
-                          <Checkbox
-                            id={`category-${category}`}
-                            checked={selectedCategories.includes(category)}
-                            onCheckedChange={() => toggleCategory(category)}
-                          />
-                          <Label
-                            htmlFor={`category-${category}`}
-                            className="text-sm font-normal cursor-pointer"
-                          >
-                            {category}
-                          </Label>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
 
-                  {/* Security Level Filter */}
-                  <div className="pt-4 border-t border-border/50">
-                    <h3 className="font-semibold mb-3 text-foreground">Security Level</h3>
-                    <div className="space-y-3">
-                      {securityLevels.map((level) => (
-                        <div key={level} className="flex items-center space-x-2">
-                          <Checkbox
-                            id={`level-${level}`}
-                            checked={selectedSecurityLevels.includes(level)}
-                            onCheckedChange={() => toggleSecurityLevel(level)}
-                          />
-                          <Label
-                            htmlFor={`level-${level}`}
-                            className="text-sm font-normal cursor-pointer"
-                          >
-                            {level}
-                          </Label>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Security Features Filter */}
-                  <div className="pt-4 border-t border-border/50">
-                    <h3 className="font-semibold mb-3 text-foreground">Security Features</h3>
-                    <div className="space-y-3">
-                      {securityIcons.map((feature) => (
-                        <div key={feature.label} className="flex items-center space-x-2">
-                          <Checkbox
-                            id={`feature-${feature.label}`}
-                            checked={selectedSecurityFeatures.includes(feature.label)}
-                            onCheckedChange={() => toggleSecurityFeature(feature.label)}
-                          />
-                          <Label
-                            htmlFor={`feature-${feature.label}`}
-                            className="text-sm font-normal cursor-pointer flex items-center gap-2"
-                          >
-                            <feature.icon className="h-4 w-4 text-primary" />
-                            {feature.label}
-                          </Label>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Active Filters Summary */}
-                  {(selectedCategories.length > 0 || selectedSecurityLevels.length > 0 || selectedSecurityFeatures.length > 0) && (
-                    <div className="pt-4 border-t border-border/50">
-                      <h3 className="font-semibold mb-2 text-foreground">Active Filters</h3>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedCategories.map(cat => (
-                          <Badge key={cat} variant="secondary" className="cursor-pointer" onClick={() => toggleCategory(cat)}>
-                            {cat} <X className="ml-1 h-3 w-3" />
-                          </Badge>
-                        ))}
-                        {selectedSecurityLevels.map(level => (
-                          <Badge key={level} variant="secondary" className="cursor-pointer" onClick={() => toggleSecurityLevel(level)}>
-                            {level} <X className="ml-1 h-3 w-3" />
-                          </Badge>
-                        ))}
-                        {selectedSecurityFeatures.map(feature => (
-                          <Badge key={feature} variant="secondary" className="cursor-pointer" onClick={() => toggleSecurityFeature(feature)}>
-                            {feature} <X className="ml-1 h-3 w-3" />
-                          </Badge>
-                        ))}
+                <CardContent className="space-y-4">
+                  {/* Features List */}
+                  <div className="space-y-2">
+                    {category.features.map((feature, idx) => (
+                      <div key={idx} className="flex items-center gap-2 text-sm">
+                        <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
+                        <span className="text-muted-foreground">{feature}</span>
                       </div>
-                    </div>
-                  )}
+                    ))}
+                  </div>
+
+                  {/* CTA Button */}
+                  <Button 
+                    className="w-full group-hover:shadow-lg transition-shadow"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(category.path);
+                    }}
+                  >
+                    Explore {category.name}
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </Button>
                 </CardContent>
               </Card>
-            </div>
-          </aside>
+            );
+          })}
+        </div>
 
-          {/* Products Grid */}
-          <div className="lg:col-span-3">
-            {/* Results Count */}
-            <div className="mb-6">
-              <p className="text-muted-foreground">
-                Showing {filteredProducts.length} of {products.length} products
-              </p>
-            </div>
-
-            {/* Products */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-12">
-              {filteredProducts.map((product, index) => {
-                const Icon = product.icon;
-                return (
-                  <Card
-                    key={product.id}
-                    className="overflow-hidden hover:shadow-2xl transition-all duration-300 border-2 animate-fade-in"
-                    style={{ animationDelay: `${index * 0.1}s` }}
-                  >
-                    <CardHeader className="relative overflow-hidden pb-4 md:pb-6">
-                      <div className={`absolute inset-0 bg-gradient-to-br ${product.gradient} opacity-10`} />
-                      <div className="relative flex flex-col sm:flex-row items-start gap-3 md:gap-4">
-                        <div className={`p-3 md:p-4 rounded-xl bg-gradient-to-br ${product.gradient}`}>
-                          <Icon className="h-6 w-6 md:h-8 md:w-8 text-white" />
-                        </div>
-                        <div className="flex-1">
-                          <CardTitle className="text-xl md:text-2xl mb-2">{product.title}</CardTitle>
-                          <CardDescription className="text-sm md:text-base">
-                            {product.description}
-                          </CardDescription>
-                          <div className="mt-2 md:mt-3">
-                            <Badge variant="secondary" className="text-xs">{product.category}</Badge>
-                          </div>
-                        </div>
-                      </div>
-                    </CardHeader>
-
-                    <CardContent className="space-y-4 md:space-y-6">
-                      <div>
-                        <h4 className="font-semibold mb-2 md:mb-3 flex items-center gap-2 text-sm md:text-base">
-                          <Shield className="h-3 w-3 md:h-4 md:w-4 text-primary" />
-                          Key Features
-                        </h4>
-                        <ul className="grid gap-1.5 md:gap-2">
-                          {product.features.map((feature, idx) => (
-                            <li key={idx} className="flex items-start gap-2 text-xs md:text-sm">
-                              <span className="text-primary mt-0.5">✓</span>
-                              <span className="text-muted-foreground">{feature}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div className="pt-3 md:pt-4 border-t border-border/50">
-                        <h4 className="font-semibold mb-2 md:mb-3 text-sm md:text-base">Specifications</h4>
-                        <div className="grid grid-cols-2 gap-2 md:gap-3">
-                          {product.specifications.map((spec, idx) => (
-                            <div key={idx} className="text-xs md:text-sm">
-                              <div className="text-muted-foreground text-xs">{spec.label}</div>
-                              <div className="font-medium">{spec.value}</div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </CardContent>
-
-                    <CardFooter className="bg-secondary/20 p-3 md:p-6">
-                      <Button 
-                        className="w-full text-sm md:text-base" 
-                        size="sm"
-                        onClick={() => navigate("/apply")}
-                      >
-                        <span className="hidden sm:inline">Apply for {product.title}</span>
-                        <span className="sm:hidden">Apply Now</span>
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                );
-              })}
-            </div>
-
-            {filteredProducts.length === 0 && (
-              <Card className="p-12 text-center border-border/50 bg-card/50 mb-12">
-                <Shield className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-xl font-semibold mb-2">No Products Found</h3>
-                <p className="text-muted-foreground mb-6">
-                  Try adjusting your filters to see more products
-                </p>
-                <Button variant="outline" onClick={clearFilters}>
-                  Clear All Filters
-                </Button>
-              </Card>
-            )}
-
-            {/* Security Features Overview */}
-            <div className="mb-8 md:mb-12">
-              <h2 className="text-xl md:text-2xl font-bold text-center mb-6 md:mb-8">Advanced Security Features</h2>
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-9 gap-2 md:gap-4">
-                {securityIcons.map((item, index) => {
-                  const Icon = item.icon;
-                  return (
-                    <div
-                      key={index}
-                      className="flex flex-col items-center gap-1.5 md:gap-2 p-2 md:p-4 rounded-lg border border-border hover:border-primary/50 transition-all hover:shadow-lg animate-scale-in"
-                      style={{ animationDelay: `${index * 0.05}s` }}
-                    >
-                      <div className="p-2 md:p-3 rounded-full bg-primary/10">
-                        <Icon className="h-4 w-4 md:h-6 md:w-6 text-primary" />
-                      </div>
-                      <span className="text-[10px] md:text-xs font-medium text-center leading-tight">{item.label}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Call to Action */}
-            <Card className="bg-gradient-to-br from-primary/10 to-primary-glow/10 border-primary/20">
-              <CardHeader className="text-center p-4 md:p-6">
-                <CardTitle className="text-2xl md:text-3xl mb-2 md:mb-3">Ready to Get Started?</CardTitle>
-                <CardDescription className="text-sm md:text-base lg:text-lg">
-                  Our licensed facility is ready to serve your government agency with the highest quality secure documents
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex justify-center gap-3 md:gap-4 flex-wrap p-4 md:p-6 pt-0">
-                <Button size="default" className="text-sm md:text-base" onClick={() => navigate("/apply")}>
-                  Start Application
-                </Button>
-                <Button size="default" variant="outline" className="text-sm md:text-base" onClick={() => navigate("/#contact")}>
-                  Contact Sales
-                </Button>
-              </CardContent>
-            </Card>
+        {/* Bottom CTA Section */}
+        <div className="text-center bg-gradient-to-br from-primary/10 via-primary/5 to-background border border-primary/20 rounded-2xl p-8 md:p-12 animate-fade-in">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">
+            Ready to Get Started?
+          </h2>
+          <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+            Our team is ready to help you with your document needs. Start your application process today 
+            or contact us for personalized assistance.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" onClick={() => navigate("/apply")} className="group">
+              Start Your Application
+              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </Button>
+            <Button size="lg" variant="outline" onClick={() => navigate("/about")}>
+              Learn More About Us
+            </Button>
           </div>
         </div>
-      </div>
 
-      {/* Security Features Section */}
-      <SecurityFeaturesSection />
+        {/* FAQ Teaser */}
+        <div className="mt-12 text-center">
+          <p className="text-sm text-muted-foreground">
+            Have questions?{" "}
+            <button
+              onClick={() => navigate("/faq")}
+              className="text-primary hover:underline font-medium"
+            >
+              Visit our FAQ page
+            </button>
+            {" "}or{" "}
+            <button
+              onClick={() => navigate("/about")}
+              className="text-primary hover:underline font-medium"
+            >
+              contact our support team
+            </button>
+          </p>
+        </div>
+      </div>
     </div>
   );
 };
