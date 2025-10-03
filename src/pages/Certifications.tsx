@@ -9,8 +9,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { SecurityFeaturesSection } from "@/components/SecurityFeaturesSection";
-import { CertificationIcon } from "@/components/CertificationIcon";
-import { getCategoryColors } from "@/lib/certificationLogos";
 
 const certifications = [
   // Project Management & Business (20)
@@ -423,10 +421,7 @@ const Certifications = () => {
                   
                   <CardHeader className="relative">
                     <div className="flex items-start justify-between mb-3">
-                      <Badge 
-                        variant="outline" 
-                        className={getCategoryColors(cert.category).badge}
-                      >
+                      <Badge variant="secondary" className="text-xs font-bold">
                         {cert.category}
                       </Badge>
                       <Badge className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-lg text-sm font-bold px-3 py-1">
@@ -435,19 +430,8 @@ const Certifications = () => {
                     </div>
                     
                     {/* Certification Icon */}
-                    <div className="flex items-center gap-3 mb-3">
-                      <CertificationIcon 
-                        provider={cert.provider} 
-                        category={cert.category}
-                        size="md"
-                        showTooltip
-                      />
-                      <Badge 
-                        variant="outline" 
-                        className={getCategoryColors(cert.category).badge}
-                      >
-                        {cert.provider}
-                      </Badge>
+                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                      <Award className="h-6 w-6 text-primary" />
                     </div>
                     
                     <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors duration-300">
@@ -457,7 +441,7 @@ const Certifications = () => {
                   
                   <CardContent className="relative">
                     <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4 pb-4 border-b">
-                      <Award className="w-4 h-4 text-primary" />
+                      <div className="w-2 h-2 bg-primary rounded-full" />
                       <span className="font-medium">{cert.provider}</span>
                     </div>
                     
