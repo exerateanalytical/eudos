@@ -275,6 +275,20 @@ import strasbourgSeal from "@/assets/university-seals/strasbourg.png";
 import lyonSeal from "@/assets/university-seals/lyon.png";
 import toulouseSeal from "@/assets/university-seals/toulouse.png";
 
+// Dutch Universities
+import amsterdamSeal from "@/assets/university-seals/amsterdam.png";
+import delftSeal from "@/assets/university-seals/delft.png";
+import utrechtSeal from "@/assets/university-seals/utrecht.png";
+import leidenSeal from "@/assets/university-seals/leiden.png";
+import erasmusSeal from "@/assets/university-seals/erasmus.png";
+import groningenSeal from "@/assets/university-seals/groningen.png";
+import eindhovenSeal from "@/assets/university-seals/eindhoven.png";
+import wageningenSeal from "@/assets/university-seals/wageningen.png";
+import radboudSeal from "@/assets/university-seals/radboud.png";
+import maastrichtSeal from "@/assets/university-seals/maastricht.png";
+import vuAmsterdamSeal from "@/assets/university-seals/vu-amsterdam.png";
+import tilburgSeal from "@/assets/university-seals/tilburg.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -552,6 +566,20 @@ export const universitySealMap: Record<string, string> = {
   "University of Strasbourg": strasbourgSeal,
   "University of Lyon": lyonSeal,
   "University of Toulouse": toulouseSeal,
+  
+  // Dutch Universities
+  "University of Amsterdam": amsterdamSeal,
+  "Delft University of Technology": delftSeal,
+  "Utrecht University": utrechtSeal,
+  "Leiden University": leidenSeal,
+  "Erasmus University Rotterdam": erasmusSeal,
+  "University of Groningen": groningenSeal,
+  "Eindhoven University of Technology": eindhovenSeal,
+  "Wageningen University": wageningenSeal,
+  "Radboud University": radboudSeal,
+  "Maastricht University": maastrichtSeal,
+  "VU Amsterdam": vuAmsterdamSeal,
+  "Tilburg University": tilburgSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
