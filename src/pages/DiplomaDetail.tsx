@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ArrowLeft, Clock, FileText, CheckCircle, Shield, Award, Download, Mail, ShoppingCart, Coins, IdCard, BookOpen, Database } from "lucide-react";
 import { getUniversitySeal } from "@/lib/universitySeals";
+import { getDiplomaCertificate } from "@/lib/diplomaCertificates";
 import { EscrowForm } from "@/components/EscrowForm";
 import { ReviewForm } from "@/components/reviews/ReviewForm";
 import { ReviewsList } from "@/components/reviews/ReviewsList";
@@ -22,6 +23,9 @@ const DiplomaDetail = () => {
   
   const universityName = university?.replace(/-/g, ' ') || "Harvard University";
   const reviewStats = useReviewStats("diploma", university || "");
+  
+  const certificateImage = getDiplomaCertificate(universityName);
+  const universitySeal = getUniversitySeal(universityName);
 
   // Check for ?tab=reviews query param and scroll to reviews
   useEffect(() => {
@@ -195,109 +199,149 @@ const DiplomaDetail = () => {
             Back to Universities
           </Button>
 
-          <div className="max-w-4xl">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-20 h-20 bg-white rounded-lg flex items-center justify-center shadow-sm border border-border/30">
-                {getUniversitySeal(universityName) ? (
-                  <img 
-                    src={getUniversitySeal(universityName)} 
-                    alt={`${universityName} seal`}
-                    className="w-16 h-16 object-contain"
-                  />
-                ) : (
-                  <Award className="h-10 w-10 text-primary" />
-                )}
-              </div>
-              <div>
-                <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-2">
-                  {diplomaData.universityName}
-                </h1>
-                <div className="flex gap-2 flex-wrap">
-                  <Badge variant="secondary">Complete Package</Badge>
-                  <Badge variant="secondary">2 Week Delivery</Badge>
-                  <Badge variant="secondary">Database Registration</Badge>
+          <div className="grid lg:grid-cols-5 gap-8 max-w-7xl">
+            {/* Left Column - Main Content */}
+            <div className="lg:col-span-3">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-20 h-20 bg-white rounded-lg flex items-center justify-center shadow-sm border border-border/30">
+                  {universitySeal ? (
+                    <img 
+                      src={universitySeal} 
+                      alt={`${universityName} seal`}
+                      className="w-16 h-16 object-contain"
+                    />
+                  ) : (
+                    <Award className="h-10 w-10 text-primary" />
+                  )}
+                </div>
+                <div>
+                  <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-2">
+                    {diplomaData.universityName}
+                  </h1>
+                  <div className="flex gap-2 flex-wrap">
+                    <Badge variant="secondary">Complete Package</Badge>
+                    <Badge variant="secondary">2 Week Delivery</Badge>
+                    <Badge variant="secondary">Database Registration</Badge>
+                  </div>
                 </div>
               </div>
+
+              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                {diplomaData.description}
+              </p>
+
+              <div className="grid sm:grid-cols-3 gap-4 mb-8">
+                <Card>
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-3">
+                      <Award className="h-5 w-5 text-primary" />
+                      <div>
+                        <p className="text-sm text-muted-foreground">Price</p>
+                        <p className="font-bold text-lg">{diplomaData.price}</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-3">
+                      <Clock className="h-5 w-5 text-primary" />
+                      <div>
+                        <p className="text-sm text-muted-foreground">Delivery</p>
+                        <p className="font-bold text-lg">{diplomaData.deliveryTime}</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-3">
+                      <FileText className="h-5 w-5 text-primary" />
+                      <div>
+                        <p className="text-sm text-muted-foreground">Items</p>
+                        <p className="font-bold text-lg">6 Documents</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="flex gap-4 flex-wrap">
+                <Button 
+                  size="lg"
+                  onClick={() => navigate(`/apply?type=diploma&university=${diplomaData.universityName}`)}
+                >
+                  <ShoppingCart className="h-4 w-4 mr-2" />
+                  Buy Now
+                </Button>
+
+                <Button 
+                  size="lg"
+                  variant="outline"
+                  onClick={() => setShowCryptoEscrow(true)}
+                >
+                  <Coins className="h-4 w-4 mr-2" />
+                  Pay with Crypto Escrow (+1.5% fee)
+                </Button>
+
+                <EscrowForm
+                  open={showCryptoEscrow}
+                  onOpenChange={setShowCryptoEscrow}
+                  productName={diplomaData.universityName}
+                  productPrice={diplomaData.price}
+                  deliveryTime={diplomaData.deliveryTime}
+                />
+
+                <Button 
+                  size="lg"
+                  variant="outline"
+                  onClick={() => window.location.href = "mailto:support@secureprintlabs.com"}
+                >
+                  <Mail className="h-4 w-4 mr-2" />
+                  Contact Support
+                </Button>
+              </div>
+              <p className="text-sm text-muted-foreground mt-4">
+                Choose standard ordering or crypto escrow with buyer protection. Escrow adds a 1.5% fee for secure fund holding until delivery.
+              </p>
             </div>
 
-            <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-              {diplomaData.description}
-            </p>
-
-            <div className="grid sm:grid-cols-3 gap-4 mb-8">
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="flex items-center gap-3">
-                    <Award className="h-5 w-5 text-primary" />
+            {/* Right Column - Certificate/Seal Display */}
+            <div className="lg:col-span-2">
+              <Card className="sticky top-4">
+                <CardContent className="p-6">
+                  {certificateImage ? (
                     <div>
-                      <p className="text-sm text-muted-foreground">Price</p>
-                      <p className="font-bold text-lg">{diplomaData.price}</p>
+                      <p className="text-sm text-muted-foreground mb-3 font-medium">Sample Certificate</p>
+                      <img 
+                        src={certificateImage}
+                        alt={`${universityName} diploma certificate`}
+                        className="w-full rounded-lg shadow-lg border border-border/50"
+                      />
+                      <p className="text-xs text-muted-foreground mt-3 text-center italic">
+                        Preview of authentic diploma design
+                      </p>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="flex items-center gap-3">
-                    <Clock className="h-5 w-5 text-primary" />
-                    <div>
-                      <p className="text-sm text-muted-foreground">Delivery</p>
-                      <p className="font-bold text-lg">{diplomaData.deliveryTime}</p>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center p-8">
+                      {universitySeal && (
+                        <>
+                          <p className="text-sm text-muted-foreground mb-4 font-medium">Official University Seal</p>
+                          <img 
+                            src={universitySeal}
+                            alt={`${universityName} seal`}
+                            className="w-48 h-48 object-contain mb-4"
+                          />
+                        </>
+                      )}
+                      <p className="text-sm text-center text-muted-foreground">
+                        {universitySeal ? `Official ${universityName} Seal` : 'University Credentials'}
+                      </p>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="flex items-center gap-3">
-                    <FileText className="h-5 w-5 text-primary" />
-                    <div>
-                      <p className="text-sm text-muted-foreground">Items</p>
-                      <p className="font-bold text-lg">6 Documents</p>
-                    </div>
-                  </div>
+                  )}
                 </CardContent>
               </Card>
             </div>
-
-            <div className="flex gap-4 flex-wrap">
-              <Button 
-                size="lg"
-                onClick={() => navigate(`/apply?type=diploma&university=${diplomaData.universityName}`)}
-              >
-                <ShoppingCart className="h-4 w-4 mr-2" />
-                Buy Now
-              </Button>
-
-              <Button 
-                size="lg"
-                variant="outline"
-                onClick={() => setShowCryptoEscrow(true)}
-              >
-                <Coins className="h-4 w-4 mr-2" />
-                Pay with Crypto Escrow (+1.5% fee)
-              </Button>
-
-              <EscrowForm
-                open={showCryptoEscrow}
-                onOpenChange={setShowCryptoEscrow}
-                productName={diplomaData.universityName}
-                productPrice={diplomaData.price}
-                deliveryTime={diplomaData.deliveryTime}
-              />
-
-              <Button 
-                size="lg"
-                variant="outline"
-                onClick={() => window.location.href = "mailto:support@secureprintlabs.com"}
-              >
-                <Mail className="h-4 w-4 mr-2" />
-                Contact Support
-              </Button>
-            </div>
-            <p className="text-sm text-muted-foreground mt-4">
-              Choose standard ordering or crypto escrow with buyer protection. Escrow adds a 1.5% fee for secure fund holding until delivery.
-            </p>
           </div>
         </div>
       </section>
