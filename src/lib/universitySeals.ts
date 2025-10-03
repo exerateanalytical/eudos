@@ -396,6 +396,19 @@ import aaltoSeal from "@/assets/university-seals/aalto.png";
 // Norwegian Universities
 import osloSeal from "@/assets/university-seals/oslo.png";
 
+// Irish Universities
+import trinityDublinSeal from "@/assets/university-seals/trinity-dublin.png";
+import ucdSeal from "@/assets/university-seals/ucd.png";
+
+// Luxembourg Universities
+import luxembourgSeal from "@/assets/university-seals/luxembourg.png";
+
+// Maltese Universities
+import maltaSeal from "@/assets/university-seals/malta.png";
+
+// Cypriot Universities
+import cyprusSeal from "@/assets/university-seals/cyprus.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -794,6 +807,19 @@ export const universitySealMap: Record<string, string> = {
   
   // Norwegian Universities
   "University of Oslo": osloSeal,
+  
+  // Irish Universities
+  "Trinity College Dublin": trinityDublinSeal,
+  "University College Dublin": ucdSeal,
+  
+  // Luxembourg Universities
+  "University of Luxembourg": luxembourgSeal,
+  
+  // Maltese Universities
+  "University of Malta": maltaSeal,
+  
+  // Cypriot Universities
+  "University of Cyprus": cyprusSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
