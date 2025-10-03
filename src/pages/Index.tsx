@@ -561,7 +561,7 @@ const Index = () => {
               <Shield className="h-4 w-4 text-primary" />
               <span className="text-sm font-medium text-primary">Secure Government Inquiry</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Submit Official Inquiry</h2>
+            
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Licensed government agencies and authorized organizations only. All inquiries are handled with strict confidentiality.
             </p>
