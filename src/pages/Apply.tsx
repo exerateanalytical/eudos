@@ -125,9 +125,9 @@ const documentCategories = [
   },
   { 
     id: "citizenship", 
-    label: "Citizenship by Investment", 
+    label: "Citizenship", 
     icon: Globe,
-    description: "Investment programs",
+    description: "Citizenship programs",
     processingTime: "30-90 business days",
     basePrice: 5000
   },
@@ -277,21 +277,21 @@ const Apply = () => {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3 group cursor-pointer" onClick={() => navigate("/")}>
             <div className="relative">
-              <FileText className="h-8 w-8 text-primary transition-transform duration-300 group-hover:scale-110" />
-              <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <FileText className="h-8 w-8 text-blue-600 transition-transform duration-300 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-blue-600/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">
               SecurePrint Labs
             </h1>
           </div>
           <nav className="hidden md:flex gap-8">
-            <button onClick={() => navigate("/")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+            <button onClick={() => navigate("/")} className="text-foreground/80 hover:text-blue-600 transition-colors duration-300 font-medium">
               Home
             </button>
-            <button onClick={() => navigate("/products")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium">
+            <button onClick={() => navigate("/products")} className="text-foreground/80 hover:text-blue-600 transition-colors duration-300 font-medium">
               Products
             </button>
-            <button onClick={() => navigate("/apply")} className="text-primary font-medium">
+            <button onClick={() => navigate("/apply")} className="text-blue-600 font-medium">
               Apply
             </button>
           </nav>
@@ -299,44 +299,44 @@ const Apply = () => {
       </header>
 
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-primary/10 via-primary/5 to-background border-b border-primary/20">
-        <div className="absolute inset-0 bg-grid-primary/5" />
+      <div className="relative overflow-hidden bg-gradient-to-r from-blue-50 via-blue-100/50 to-background border-b border-blue-200">
+        <div className="absolute inset-0 bg-grid-blue-500/5" />
         <div className="container mx-auto px-4 py-12 relative">
           <div className="max-w-4xl mx-auto text-center space-y-4">
             <div className="flex items-center justify-center gap-2 mb-4">
-              <Badge variant="outline" className="bg-background/50 backdrop-blur">
+              <Badge variant="outline" className="bg-background/50 backdrop-blur border-blue-600 text-blue-600">
                 <Shield className="h-3 w-3 mr-1" />
                 Secure Application
               </Badge>
-              <Badge variant="outline" className="bg-background/50 backdrop-blur">
+              <Badge variant="outline" className="bg-background/50 backdrop-blur border-blue-600 text-blue-600">
                 <Lock className="h-3 w-3 mr-1" />
                 Encrypted
               </Badge>
-              <Badge variant="outline" className="bg-background/50 backdrop-blur">
+              <Badge variant="outline" className="bg-background/50 backdrop-blur border-blue-600 text-blue-600">
                 <CheckCircle2 className="h-3 w-3 mr-1" />
                 Verified
               </Badge>
             </div>
             
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent">
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 bg-clip-text text-transparent">
               Professional Document Application
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-xl text-blue-600 max-w-2xl mx-auto">
               Apply for official documents with advanced security features and escrow protection
             </p>
             
             <div className="flex items-center justify-center gap-6 pt-4">
               <div className="flex items-center gap-2 text-sm">
-                <Clock className="h-4 w-4 text-primary" />
-                <span className="text-muted-foreground">Fast Processing</span>
+                <Clock className="h-4 w-4 text-blue-600" />
+                <span className="text-blue-600">Fast Processing</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
-                <Shield className="h-4 w-4 text-primary" />
-                <span className="text-muted-foreground">100% Secure</span>
+                <Shield className="h-4 w-4 text-blue-600" />
+                <span className="text-blue-600">100% Secure</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
-                <CheckCircle2 className="h-4 w-4 text-primary" />
-                <span className="text-muted-foreground">24/7 Support</span>
+                <CheckCircle2 className="h-4 w-4 text-blue-600" />
+                <span className="text-blue-600">24/7 Support</span>
               </div>
             </div>
           </div>
@@ -350,25 +350,25 @@ const Apply = () => {
             <CardContent className="p-6">
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <h3 className="font-semibold text-lg">Application Progress</h3>
-                  <span className="text-sm text-muted-foreground">Step {currentStepNumber} of {totalSteps}</span>
+                  <h3 className="font-semibold text-lg text-blue-600">Application Progress</h3>
+                  <span className="text-sm text-blue-500">Step {currentStepNumber} of {totalSteps}</span>
                 </div>
                 <Progress value={progress} className="h-2" />
                 <div className="flex justify-between text-xs">
-                  <span className={currentStep === "document" ? "text-primary font-medium" : "text-muted-foreground"}>Document</span>
-                  <span className={currentStep === "details" ? "text-primary font-medium" : "text-muted-foreground"}>Details</span>
-                  <span className={currentStep === "upload" ? "text-primary font-medium" : "text-muted-foreground"}>Upload</span>
-                  <span className={currentStep === "review" ? "text-primary font-medium" : "text-muted-foreground"}>Review</span>
-                  <span className={currentStep === "payment" ? "text-primary font-medium" : "text-muted-foreground"}>Payment</span>
+                  <span className={currentStep === "document" ? "text-blue-600 font-medium" : "text-blue-400"}>Document</span>
+                  <span className={currentStep === "details" ? "text-blue-600 font-medium" : "text-blue-400"}>Details</span>
+                  <span className={currentStep === "upload" ? "text-blue-600 font-medium" : "text-blue-400"}>Upload</span>
+                  <span className={currentStep === "review" ? "text-blue-600 font-medium" : "text-blue-400"}>Review</span>
+                  <span className={currentStep === "payment" ? "text-blue-600 font-medium" : "text-blue-400"}>Payment</span>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           {/* Security Notice */}
-          <Alert className="mb-8 border-primary/50 bg-primary/5">
-            <Shield className="h-4 w-4 text-primary" />
-            <AlertDescription className="text-sm">
+          <Alert className="mb-8 border-blue-200 bg-blue-50">
+            <Shield className="h-4 w-4 text-blue-600" />
+            <AlertDescription className="text-sm text-blue-600">
               <strong>Your data is protected:</strong> All information is encrypted and stored securely. We use escrow protection for all payments.
             </AlertDescription>
           </Alert>
@@ -376,13 +376,13 @@ const Apply = () => {
           {/* Step 1: Document Selection */}
           {currentStep === "document" && (
             <Card className="shadow-lg animate-fade-in">
-              <CardHeader className="bg-gradient-to-r from-primary/10 to-primary/5 border-b">
-                <CardTitle className="text-2xl flex items-center gap-2">
-                  <FileText className="h-6 w-6 text-primary" />
-                  Select Document Type
-                </CardTitle>
-                <CardDescription>Choose the type of document you wish to apply for</CardDescription>
-              </CardHeader>
+                <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100 border-b">
+                  <CardTitle className="text-2xl flex items-center gap-2">
+                    <FileText className="h-6 w-6 text-blue-600" />
+                    <span className="text-blue-600">Select Document Type</span>
+                  </CardTitle>
+                  <CardDescription className="text-blue-500">Choose the type of document you wish to apply for</CardDescription>
+                </CardHeader>
               <CardContent className="p-6">
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {documentCategories.map((doc) => {
@@ -399,22 +399,18 @@ const Apply = () => {
                       >
                         <CardContent className="p-6 space-y-3">
                           <div className="flex items-start justify-between">
-                            <Icon className={`h-10 w-10 ${selectedDocument === doc.id ? "text-primary" : "text-muted-foreground"}`} />
+                            <Icon className={`h-10 w-10 ${selectedDocument === doc.id ? "text-blue-600" : "text-blue-500"}`} />
                             {selectedDocument === doc.id && (
-                              <CheckCircle2 className="h-5 w-5 text-primary" />
+                              <CheckCircle2 className="h-5 w-5 text-blue-600" />
                             )}
                           </div>
                           <div>
-                            <h3 className="font-semibold text-lg mb-1">{doc.label}</h3>
-                            <p className="text-sm text-muted-foreground mb-2">{doc.description}</p>
-                            <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                            <h3 className="font-semibold text-lg mb-1 text-blue-600">{doc.label}</h3>
+                            <p className="text-sm text-blue-500 mb-2">{doc.description}</p>
+                            <div className="flex items-center gap-4 text-xs text-blue-500">
                               <div className="flex items-center gap-1">
                                 <Clock className="h-3 w-3" />
                                 {doc.processingTime}
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <DollarSign className="h-3 w-3" />
-                                From ${doc.basePrice}
                               </div>
                             </div>
                           </div>
@@ -425,12 +421,12 @@ const Apply = () => {
                 </div>
 
                 {selectedDocument && (
-                  <div className="mt-6 p-4 bg-primary/5 rounded-lg border border-primary/20 animate-fade-in">
+                  <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200 animate-fade-in">
                     <div className="flex items-start gap-3">
-                      <Info className="h-5 w-5 text-primary mt-0.5" />
+                      <Info className="h-5 w-5 text-blue-600 mt-0.5" />
                       <div className="space-y-2">
-                        <h4 className="font-semibold">What's Included:</h4>
-                        <ul className="text-sm text-muted-foreground space-y-1">
+                        <h4 className="font-semibold text-blue-600">What's Included:</h4>
+                        <ul className="text-sm text-blue-600 space-y-1">
                           <li>• Advanced security features and holograms</li>
                           <li>• Escrow payment protection</li>
                           <li>• 24/7 customer support</li>
@@ -449,12 +445,12 @@ const Apply = () => {
           {currentStep === "details" && (
             <div className="space-y-6 animate-fade-in">
               <Card className="shadow-lg">
-                <CardHeader className="bg-gradient-to-r from-primary/10 to-primary/5 border-b">
+                <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100 border-b">
                   <CardTitle className="text-2xl flex items-center gap-2">
-                    <IdCard className="h-6 w-6 text-primary" />
-                    Personal Information
+                    <IdCard className="h-6 w-6 text-blue-600" />
+                    <span className="text-blue-600">Personal Information</span>
                   </CardTitle>
-                  <CardDescription>Provide your details as they should appear on the document</CardDescription>
+                  <CardDescription className="text-blue-500">Provide your details as they should appear on the document</CardDescription>
                 </CardHeader>
                 <CardContent className="p-6 space-y-6">
                   <div className="grid md:grid-cols-3 gap-4">
@@ -712,11 +708,11 @@ const Apply = () => {
               </Card>
 
               {/* Live Price Calculator */}
-              <Card className="shadow-lg border-primary/20">
-                <CardHeader className="bg-gradient-to-r from-primary/5 to-background">
+              <Card className="shadow-lg border-blue-200">
+                <CardHeader className="bg-gradient-to-r from-blue-50 to-background">
                   <CardTitle className="flex items-center gap-2">
-                    <DollarSign className="h-5 w-5 text-primary" />
-                    Price Estimate
+                    <DollarSign className="h-5 w-5 text-blue-600" />
+                    <span className="text-blue-600">Price Estimate</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6">
@@ -740,8 +736,8 @@ const Apply = () => {
                     </div>
                     <Separator />
                     <div className="flex justify-between text-lg font-bold">
-                      <span>Total</span>
-                      <span className="text-primary">${total.toFixed(2)}</span>
+                      <span className="text-blue-600">Total</span>
+                      <span className="text-blue-600">${total.toFixed(2)}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -752,23 +748,23 @@ const Apply = () => {
           {/* Step 3: Upload Documents */}
           {currentStep === "upload" && (
             <Card className="shadow-lg animate-fade-in">
-              <CardHeader className="bg-gradient-to-r from-primary/10 to-primary/5 border-b">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100 border-b">
                 <CardTitle className="text-2xl flex items-center gap-2">
-                  <Upload className="h-6 w-6 text-primary" />
-                  Supporting Documents
+                  <Upload className="h-6 w-6 text-blue-600" />
+                  <span className="text-blue-600">Supporting Documents</span>
                 </CardTitle>
-                <CardDescription>Upload photos and supporting documents (optional but recommended)</CardDescription>
+                <CardDescription className="text-blue-500">Upload photos and supporting documents (optional but recommended)</CardDescription>
               </CardHeader>
               <CardContent className="p-6 space-y-6">
                 <Alert>
-                  <Info className="h-4 w-4" />
-                  <AlertDescription className="text-sm">
+                  <Info className="h-4 w-4 text-blue-600" />
+                  <AlertDescription className="text-sm text-blue-600">
                     Uploading clear photos and documents will speed up processing. Accepted formats: JPG, PNG, PDF (max 10MB each)
                   </AlertDescription>
                 </Alert>
 
-                <div className="border-2 border-dashed border-primary/30 rounded-lg p-8 text-center hover:border-primary/50 transition-colors">
-                  <Upload className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <div className="border-2 border-dashed border-blue-300 rounded-lg p-8 text-center hover:border-blue-500 transition-colors">
+                  <Upload className="h-12 w-12 text-blue-500 mx-auto mb-4" />
                   <h3 className="font-semibold mb-2">Drag and drop files here</h3>
                   <p className="text-sm text-muted-foreground mb-4">or</p>
                   <Button variant="outline" onClick={() => document.getElementById("file-upload")?.click()}>
@@ -789,9 +785,9 @@ const Apply = () => {
                     <h4 className="font-semibold">Uploaded Files:</h4>
                     <div className="space-y-2">
                       {formData.uploadedFiles.map((file, index) => (
-                        <div key={index} className="flex items-center justify-between p-3 bg-primary/5 rounded-lg">
+                        <div key={index} className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
                           <div className="flex items-center gap-3">
-                            <FileText className="h-5 w-5 text-primary" />
+                            <FileText className="h-5 w-5 text-blue-600" />
                             <div>
                               <p className="text-sm font-medium">{file.name}</p>
                               <p className="text-xs text-muted-foreground">{(file.size / 1024).toFixed(2)} KB</p>
@@ -816,20 +812,20 @@ const Apply = () => {
                 )}
 
                 <div className="grid md:grid-cols-2 gap-4 pt-4">
-                  <Card className="border-primary/20">
+                  <Card className="border-blue-200">
                     <CardContent className="p-4 space-y-2">
-                      <h4 className="font-semibold text-sm">Recommended Documents:</h4>
-                      <ul className="text-sm text-muted-foreground space-y-1">
+                      <h4 className="font-semibold text-sm text-blue-600">Recommended Documents:</h4>
+                      <ul className="text-sm text-blue-500 space-y-1">
                         <li>• Passport photo or existing ID</li>
                         <li>• Proof of address (utility bill)</li>
                         <li>• Birth certificate or supporting ID</li>
                       </ul>
                     </CardContent>
                   </Card>
-                  <Card className="border-primary/20">
+                  <Card className="border-blue-200">
                     <CardContent className="p-4 space-y-2">
-                      <h4 className="font-semibold text-sm">Photo Guidelines:</h4>
-                      <ul className="text-sm text-muted-foreground space-y-1">
+                      <h4 className="font-semibold text-sm text-blue-600">Photo Guidelines:</h4>
+                      <ul className="text-sm text-blue-500 space-y-1">
                         <li>• Clear, well-lit images</li>
                         <li>• No filters or editing</li>
                         <li>• All text must be readable</li>
@@ -845,20 +841,20 @@ const Apply = () => {
           {currentStep === "review" && (
             <div className="space-y-6 animate-fade-in">
               <Card className="shadow-lg">
-                <CardHeader className="bg-gradient-to-r from-primary/10 to-primary/5 border-b">
+                <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100 border-b">
                   <CardTitle className="text-2xl flex items-center gap-2">
-                    <CheckCircle2 className="h-6 w-6 text-primary" />
-                    Review Your Application
+                    <CheckCircle2 className="h-6 w-6 text-blue-600" />
+                    <span className="text-blue-600">Review Your Application</span>
                   </CardTitle>
-                  <CardDescription>Please verify all information before proceeding to payment</CardDescription>
+                  <CardDescription className="text-blue-500">Please verify all information before proceeding to payment</CardDescription>
                 </CardHeader>
                 <CardContent className="p-6 space-y-6">
                   <div>
-                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
-                      <FileText className="h-5 w-5 text-primary" />
+                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2 text-blue-600">
+                      <FileText className="h-5 w-5 text-blue-600" />
                       Document Type
                     </h3>
-                    <div className="p-4 bg-primary/5 rounded-lg">
+                    <div className="p-4 bg-blue-50 rounded-lg">
                       <p className="font-medium">{selectedCategory?.label}</p>
                       <p className="text-sm text-muted-foreground">{selectedCategory?.description}</p>
                     </div>
@@ -867,8 +863,8 @@ const Apply = () => {
                   <Separator />
 
                   <div>
-                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
-                      <IdCard className="h-5 w-5 text-primary" />
+                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2 text-blue-600">
+                      <IdCard className="h-5 w-5 text-blue-600" />
                       Personal Information
                     </h3>
                     <div className="grid md:grid-cols-2 gap-4">
@@ -900,11 +896,11 @@ const Apply = () => {
                   <Separator />
 
                   <div>
-                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
-                      <DollarSign className="h-5 w-5 text-primary" />
+                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2 text-blue-600">
+                      <DollarSign className="h-5 w-5 text-blue-600" />
                       Order Summary
                     </h3>
-                    <div className="space-y-3 p-4 bg-primary/5 rounded-lg">
+                    <div className="space-y-3 p-4 bg-blue-50 rounded-lg">
                       <div className="flex justify-between">
                         <span>Quantity</span>
                         <span className="font-medium">{formData.quantity}</span>
@@ -923,8 +919,8 @@ const Apply = () => {
                       </div>
                       <Separator />
                       <div className="flex justify-between text-xl font-bold">
-                        <span>Total</span>
-                        <span className="text-primary">${total.toFixed(2)}</span>
+                        <span className="text-blue-600">Total</span>
+                        <span className="text-blue-600">${total.toFixed(2)}</span>
                       </div>
                     </div>
                   </div>
@@ -933,8 +929,8 @@ const Apply = () => {
                     <>
                       <Separator />
                       <div>
-                        <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
-                          <Upload className="h-5 w-5 text-primary" />
+                        <h3 className="font-semibold text-lg mb-4 flex items-center gap-2 text-blue-600">
+                          <Upload className="h-5 w-5 text-blue-600" />
                           Uploaded Documents
                         </h3>
                         <p className="text-sm text-muted-foreground mb-2">{formData.uploadedFiles.length} file(s) uploaded</p>
@@ -942,9 +938,9 @@ const Apply = () => {
                     </>
                   )}
 
-                  <Alert className="border-primary/50 bg-primary/5">
-                    <Shield className="h-4 w-4 text-primary" />
-                    <AlertDescription>
+                  <Alert className="border-blue-200 bg-blue-50">
+                    <Shield className="h-4 w-4 text-blue-600" />
+                    <AlertDescription className="text-blue-600">
                       <strong>Escrow Protection Active:</strong> Your payment will be held securely until you confirm receipt and satisfaction with your documents.
                     </AlertDescription>
                   </Alert>
@@ -956,12 +952,12 @@ const Apply = () => {
           {/* Step 5: Payment */}
           {currentStep === "payment" && (
             <Card className="shadow-lg animate-fade-in">
-              <CardHeader className="bg-gradient-to-r from-primary/10 to-primary/5 border-b">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100 border-b">
                 <CardTitle className="text-2xl flex items-center gap-2">
-                  <Lock className="h-6 w-6 text-primary" />
-                  Secure Payment
+                  <Lock className="h-6 w-6 text-blue-600" />
+                  <span className="text-blue-600">Secure Payment</span>
                 </CardTitle>
-                <CardDescription>Complete your payment to submit the application</CardDescription>
+                <CardDescription className="text-blue-500">Complete your payment to submit the application</CardDescription>
               </CardHeader>
               <CardContent className="p-6 space-y-6">
                 <Alert className="border-amber-500/50 bg-amber-500/10">
@@ -973,37 +969,37 @@ const Apply = () => {
 
                 <div className="space-y-4">
                   <h3 className="font-semibold">Payment Summary</h3>
-                  <div className="p-6 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg border border-primary/20">
+                  <div className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg border border-blue-200">
                     <div className="flex justify-between items-center mb-4">
-                      <span className="text-2xl font-bold">Total Amount</span>
-                      <span className="text-3xl font-bold text-primary">${total.toFixed(2)}</span>
+                      <span className="text-2xl font-bold text-blue-600">Total Amount</span>
+                      <span className="text-3xl font-bold text-blue-600">${total.toFixed(2)}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2 text-sm text-blue-500">
                       <Shield className="h-4 w-4" />
                       <span>Protected by Escrow</span>
                     </div>
                   </div>
 
                   <div className="grid md:grid-cols-3 gap-4">
-                    <Card className="border-primary/20">
+                    <Card className="border-blue-200">
                       <CardContent className="p-4 text-center">
-                        <Shield className="h-8 w-8 text-primary mx-auto mb-2" />
-                        <p className="font-semibold text-sm">Secure Holding</p>
-                        <p className="text-xs text-muted-foreground mt-1">Funds held safely</p>
+                        <Shield className="h-8 w-8 text-blue-600 mx-auto mb-2" />
+                        <p className="font-semibold text-sm text-blue-600">Secure Holding</p>
+                        <p className="text-xs text-blue-500 mt-1">Funds held safely</p>
                       </CardContent>
                     </Card>
-                    <Card className="border-primary/20">
+                    <Card className="border-blue-200">
                       <CardContent className="p-4 text-center">
-                        <CheckCircle2 className="h-8 w-8 text-primary mx-auto mb-2" />
-                        <p className="font-semibold text-sm">Confirm Receipt</p>
-                        <p className="text-xs text-muted-foreground mt-1">You verify delivery</p>
+                        <CheckCircle2 className="h-8 w-8 text-blue-600 mx-auto mb-2" />
+                        <p className="font-semibold text-sm text-blue-600">Confirm Receipt</p>
+                        <p className="text-xs text-blue-500 mt-1">You verify delivery</p>
                       </CardContent>
                     </Card>
-                    <Card className="border-primary/20">
+                    <Card className="border-blue-200">
                       <CardContent className="p-4 text-center">
-                        <Lock className="h-8 w-8 text-primary mx-auto mb-2" />
-                        <p className="font-semibold text-sm">Release Payment</p>
-                        <p className="text-xs text-muted-foreground mt-1">After confirmation</p>
+                        <Lock className="h-8 w-8 text-blue-600 mx-auto mb-2" />
+                        <p className="font-semibold text-sm text-blue-600">Release Payment</p>
+                        <p className="text-xs text-blue-500 mt-1">After confirmation</p>
                       </CardContent>
                     </Card>
                   </div>
@@ -1013,7 +1009,7 @@ const Apply = () => {
 
                 <Button 
                   size="lg" 
-                  className="w-full text-lg h-14"
+                  className="w-full text-lg h-14 bg-blue-600 hover:bg-blue-700"
                   onClick={handleSubmit}
                 >
                   Proceed to Escrow Payment
@@ -1034,7 +1030,7 @@ const Apply = () => {
               size="lg"
               onClick={handleBack}
               disabled={currentStep === "document"}
-              className="gap-2"
+              className="gap-2 border-blue-600 text-blue-600 hover:bg-blue-50"
             >
               <ArrowLeft className="h-4 w-4" />
               Back
@@ -1044,7 +1040,7 @@ const Apply = () => {
               <Button
                 size="lg"
                 onClick={handleNext}
-                className="gap-2"
+                className="gap-2 bg-blue-600 hover:bg-blue-700"
               >
                 Continue
                 <ArrowRight className="h-4 w-4" />
