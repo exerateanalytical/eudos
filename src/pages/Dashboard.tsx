@@ -179,23 +179,23 @@ const Dashboard = () => {
 
             <Routes>
               <Route path="/" element={<DashboardOverview userId={user?.id!} />} />
-              <Route path="/orders" element={<OrdersModule userId={user?.id!} />} />
-              <Route path="/applications" element={<DocumentApplicationsModule userId={user?.id!} />} />
-              <Route path="/wallet" element={<WalletModule userId={user?.id!} />} />
-              <Route path="/documents" element={<DocumentWallet userId={user?.id!} />} />
-              <Route path="/activity" element={<ActivityLog userId={user?.id!} />} />
-              <Route path="/support" element={<SupportCenter userId={user?.id!} />} />
-              <Route path="/loyalty" element={<LoyaltyProgram userId={user?.id!} />} />
-              <Route path="/referrals" element={<ReferralSystem userId={user?.id!} />} />
-              <Route path="/settings" element={<SettingsHub userId={user?.id!} />} />
-              <Route path="/notifications" element={<NotificationsPanel userId={user?.id!} />} />
-              <Route path="/profile" element={<ProfileModule userId={user?.id!} />} />
-              <Route path="/security" element={<SecurityModule userId={user?.id!} />} />
+              <Route path="orders" element={<OrdersModule userId={user?.id!} />} />
+              <Route path="applications" element={<DocumentApplicationsModule userId={user?.id!} />} />
+              <Route path="wallet" element={<WalletModule userId={user?.id!} />} />
+              <Route path="documents" element={<DocumentWallet userId={user?.id!} />} />
+              <Route path="activity" element={<ActivityLog userId={user?.id!} />} />
+              <Route path="support" element={<SupportCenter userId={user?.id!} />} />
+              <Route path="loyalty" element={<LoyaltyProgram userId={user?.id!} />} />
+              <Route path="referrals" element={<ReferralSystem userId={user?.id!} />} />
+              <Route path="settings" element={<SettingsHub userId={user?.id!} />} />
+              <Route path="notifications" element={<NotificationsPanel userId={user?.id!} />} />
+              <Route path="profile" element={<ProfileModule userId={user?.id!} />} />
+              <Route path="security" element={<SecurityModule userId={user?.id!} />} />
               {isAdmin && (
                 <>
-                  <Route path="/reviews" element={<ReviewModerationModule />} />
-                  <Route path="/analytics" element={<AdminAnalytics userId={user?.id!} />} />
-                  <Route path="/seeding" element={<SeedingModule />} />
+                  <Route path="reviews" element={<ReviewModerationModule />} />
+                  <Route path="analytics" element={<AdminAnalytics userId={user?.id!} />} />
+                  <Route path="seeding" element={<SeedingModule />} />
                 </>
               )}
             </Routes>
