@@ -234,6 +234,15 @@ const DiplomaDetail = () => {
                 {diplomaData.description}
               </p>
 
+              {/* Legal Disclaimer */}
+              <div className="mb-6 p-4 bg-muted/50 rounded-lg border border-border/50">
+                <p className="text-sm text-muted-foreground">
+                  <span className="font-semibold">Note:</span> Certificate images shown are samples for reference only. 
+                  We serve as an authorized intermediary to facilitate diploma replacement requests directly with the university's registrar office. 
+                  All diplomas are issued officially by the respective institution.
+                </p>
+              </div>
+
               <div className="grid sm:grid-cols-3 gap-4 mb-8">
                 <Card>
                   <CardContent className="pt-6">
