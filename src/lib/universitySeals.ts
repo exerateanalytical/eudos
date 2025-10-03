@@ -654,6 +654,63 @@ import garneauSeal from "@/assets/university-seals/garneau.png";
 import dawsonSeal from "@/assets/university-seals/dawson.png";
 import vanierSeal from "@/assets/university-seals/vanier.png";
 
+// Canadian Colleges - Batch 10
+import johnAbbottSeal from "@/assets/university-seals/john-abbott.png";
+import andreLaurendeauSeal from "@/assets/university-seals/andre-laurendeau.png";
+import vieuxMontrealSeal from "@/assets/university-seals/vieux-montreal.png";
+import marieVictorinSeal from "@/assets/university-seals/marie-victorin.png";
+import lasalleSeal from "@/assets/university-seals/lasalle.png";
+import herzingSeal from "@/assets/university-seals/herzing.png";
+import bcitSeal from "@/assets/university-seals/bcit.png";
+import douglasSeal from "@/assets/university-seals/douglas.png";
+import langaraSeal from "@/assets/university-seals/langara.png";
+import kwantlenCollegeSeal from "@/assets/university-seals/kwantlen.png";
+import camosunSeal from "@/assets/university-seals/camosun.png";
+import rockiesSeal from "@/assets/university-seals/rockies.png";
+import okanaganCollegeSeal from "@/assets/university-seals/okanagan-college.png";
+import selkirkSeal from "@/assets/university-seals/selkirk.png";
+import naitSeal from "@/assets/university-seals/nait.png";
+
+// Canadian Colleges - Batch 11
+import cdiSeal from "@/assets/university-seals/cdi.png";
+import vccSeal from "@/assets/university-seals/vcc.png";
+import northernLightsSeal from "@/assets/university-seals/northern-lights.png";
+import northIslandSeal from "@/assets/university-seals/north-island.png";
+import coastMountainSeal from "@/assets/university-seals/coast-mountain.png";
+import saitSeal from "@/assets/university-seals/sait.png";
+import bowValleySeal from "@/assets/university-seals/bow-valley.png";
+import medicineHatSeal from "@/assets/university-seals/medicine-hat.png";
+import lethbridgeCollegeSeal from "@/assets/university-seals/lethbridge-college.png";
+import norquestSeal from "@/assets/university-seals/norquest.png";
+import redDeerSeal from "@/assets/university-seals/red-deer.png";
+import saskPolySeal from "@/assets/university-seals/sask-poly.png";
+import parklandSeal from "@/assets/university-seals/parkland.png";
+
+// Canadian Colleges - Batch 12
+import carltonTrailSeal from "@/assets/university-seals/carlton-trail.png";
+import southeastSeal from "@/assets/university-seals/southeast.png";
+import northwestCollegeSeal from "@/assets/university-seals/northwest-college.png";
+import greatPlainsSeal from "@/assets/university-seals/great-plains.png";
+import lakelandSeal from "@/assets/university-seals/lakeland.png";
+import oldsSeal from "@/assets/university-seals/olds.png";
+import mittSeal from "@/assets/university-seals/mitt.png";
+import assiniboineSeal from "@/assets/university-seals/assiniboine.png";
+import redRiverSeal from "@/assets/university-seals/red-river.png";
+import ahuntsicSeal from "@/assets/university-seals/ahuntsic.png";
+import maisonneuveSeal from "@/assets/university-seals/maisonneuve.png";
+import rosemontSeal from "@/assets/university-seals/rosemont.png";
+import lionelGroulxSeal from "@/assets/university-seals/lionel-groulx.png";
+import montmorencySeal from "@/assets/university-seals/montmorency.png";
+import outaouaisSeal from "@/assets/university-seals/outaouais.png";
+
+// Additional Canadian Universities
+import adlerSeal from "@/assets/university-seals/adler.png";
+import providenceSeal from "@/assets/university-seals/providence.png";
+import stStephensSeal from "@/assets/university-seals/st-stephens.png";
+import vstSeal from "@/assets/university-seals/vst.png";
+import kingswoodSeal from "@/assets/university-seals/kingswood.png";
+import horizonSeal from "@/assets/university-seals/horizon.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -1014,6 +1071,54 @@ export const universitySealMap: Record<string, string> = {
   "Cégep de Garneau": garneauSeal,
   "Dawson College": dawsonSeal,
   "Vanier College": vanierSeal,
+  "John Abbott College": johnAbbottSeal,
+  "Cégep André-Laurendeau": andreLaurendeauSeal,
+  "Cégep du Vieux Montréal": vieuxMontrealSeal,
+  "Cégep Marie-Victorin": marieVictorinSeal,
+  "Collège LaSalle": lasalleSeal,
+  "Herzing College": herzingSeal,
+  "Douglas College": douglasSeal,
+  "Langara College": langaraSeal,
+  "Camosun College": camosunSeal,
+  "Okanagan College": okanaganCollegeSeal,
+  "Selkirk College": selkirkSeal,
+  "College of the Rockies": rockiesSeal,
+  "NAIT": naitSeal,
+  "British Columbia Institute of Technology": bcitSeal,
+  "CDI College": cdiSeal,
+  "Vancouver Community College": vccSeal,
+  "Northern Lights College": northernLightsSeal,
+  "North Island College": northIslandSeal,
+  "Coast Mountain College": coastMountainSeal,
+  "SAIT Polytechnic": saitSeal,
+  "Bow Valley College": bowValleySeal,
+  "Medicine Hat College": medicineHatSeal,
+  "Lethbridge College": lethbridgeCollegeSeal,
+  "NorQuest College": norquestSeal,
+  "Red Deer Polytechnic": redDeerSeal,
+  "Saskatchewan Polytechnic": saskPolySeal,
+  "Parkland College": parklandSeal,
+  "Carlton Trail College": carltonTrailSeal,
+  "Southeast College": southeastSeal,
+  "North West College": northwestCollegeSeal,
+  "Great Plains College": greatPlainsSeal,
+  "Lakeland College": lakelandSeal,
+  "Olds College of Agriculture & Tech": oldsSeal,
+  "Manitoba Institute of Trades and Technology (MITT)": mittSeal,
+  "Assiniboine Community College": assiniboineSeal,
+  "Red River College Polytechnic": redRiverSeal,
+  "Collège Ahuntsic": ahuntsicSeal,
+  "Collège Maisonneuve": maisonneuveSeal,
+  "Collège Rosemont": rosemontSeal,
+  "Cégep Lionel-Groulx": lionelGroulxSeal,
+  "Collège Montmorency": montmorencySeal,
+  "Cégep de l'Outaouais": outaouaisSeal,
+  "Adler University": adlerSeal,
+  "Providence University College": providenceSeal,
+  "St. Stephen's University": stStephensSeal,
+  "Vancouver School of Theology": vstSeal,
+  "Kingswood University": kingswoodSeal,
+  "Horizon College & Seminary": horizonSeal,
   
   // UK Universities
   "University of Oxford": oxfordSeal,
