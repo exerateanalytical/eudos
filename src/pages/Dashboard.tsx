@@ -20,6 +20,11 @@ import { DashboardOverview } from "@/components/dashboard/DashboardOverview";
 import { DocumentWallet } from "@/components/dashboard/DocumentWallet";
 import { ActivityLog } from "@/components/dashboard/ActivityLog";
 import { WalletModule } from "@/components/dashboard/WalletModule";
+import { SupportCenter } from "@/components/dashboard/SupportCenter";
+import { SettingsHub } from "@/components/dashboard/SettingsHub";
+import { LoyaltyProgram } from "@/components/dashboard/LoyaltyProgram";
+import { ReferralSystem } from "@/components/dashboard/ReferralSystem";
+import { AdminAnalytics } from "@/components/dashboard/AdminAnalytics";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -168,53 +173,25 @@ const Dashboard = () => {
         )}
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-4 lg:grid-cols-10' : 'grid-cols-4 lg:grid-cols-8'}`}>
-            <TabsTrigger value="overview" className="flex items-center gap-2">
-              <Home className="h-4 w-4" />
-              Overview
-            </TabsTrigger>
-            <TabsTrigger value="orders" className="flex items-center gap-2">
-              <Package className="h-4 w-4" />
-              Orders
-            </TabsTrigger>
-            <TabsTrigger value="documents" className="flex items-center gap-2">
-              <FileText className="h-4 w-4" />
-              Applications
-            </TabsTrigger>
-            <TabsTrigger value="wallet" className="flex items-center gap-2">
-              <FileText className="h-4 w-4" />
-              Wallet
-            </TabsTrigger>
-            <TabsTrigger value="document-wallet" className="flex items-center gap-2">
-              <FileText className="h-4 w-4" />
-              Documents
-            </TabsTrigger>
-            <TabsTrigger value="activity" className="flex items-center gap-2">
-              <FileText className="h-4 w-4" />
-              Activity
-            </TabsTrigger>
-            <TabsTrigger value="notifications" className="flex items-center gap-2">
-              <Bell className="h-4 w-4" />
-              Notifications
-            </TabsTrigger>
-            <TabsTrigger value="profile" className="flex items-center gap-2">
-              <UserIcon className="h-4 w-4" />
-              Profile
-            </TabsTrigger>
-            <TabsTrigger value="security" className="flex items-center gap-2">
-              <Lock className="h-4 w-4" />
-              Security
-            </TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="orders">Orders</TabsTrigger>
+            <TabsTrigger value="documents">Applications</TabsTrigger>
+            <TabsTrigger value="wallet">Wallet</TabsTrigger>
+            <TabsTrigger value="document-wallet">Documents</TabsTrigger>
+            <TabsTrigger value="activity">Activity</TabsTrigger>
+            <TabsTrigger value="support">Support</TabsTrigger>
+            <TabsTrigger value="loyalty">Loyalty</TabsTrigger>
+            <TabsTrigger value="referrals">Referrals</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
+            <TabsTrigger value="notifications">Notifications</TabsTrigger>
+            <TabsTrigger value="profile">Profile</TabsTrigger>
+            <TabsTrigger value="security">Security</TabsTrigger>
             {isAdmin && (
               <>
-                <TabsTrigger value="reviews" className="flex items-center gap-2">
-                  <Eye className="h-4 w-4" />
-                  Reviews
-                </TabsTrigger>
-                <TabsTrigger value="seeding" className="flex items-center gap-2">
-                  <ShieldCheck className="h-4 w-4" />
-                  Seeding
-                </TabsTrigger>
+                <TabsTrigger value="reviews">Reviews</TabsTrigger>
+                <TabsTrigger value="analytics">Analytics</TabsTrigger>
+                <TabsTrigger value="seeding">Seeding</TabsTrigger>
               </>
             )}
           </TabsList>
@@ -255,10 +232,29 @@ const Dashboard = () => {
             <SecurityModule userId={user?.id!} />
           </TabsContent>
 
+          <TabsContent value="support">
+            <SupportCenter userId={user?.id!} />
+          </TabsContent>
+
+          <TabsContent value="settings">
+            <SettingsHub userId={user?.id!} />
+          </TabsContent>
+
+          <TabsContent value="loyalty">
+            <LoyaltyProgram userId={user?.id!} />
+          </TabsContent>
+
+          <TabsContent value="referrals">
+            <ReferralSystem userId={user?.id!} />
+          </TabsContent>
+
           {isAdmin && (
             <>
               <TabsContent value="reviews">
                 <ReviewModerationModule />
+              </TabsContent>
+              <TabsContent value="analytics">
+                <AdminAnalytics userId={user?.id!} />
               </TabsContent>
               <TabsContent value="seeding">
                 <SeedingModule />
