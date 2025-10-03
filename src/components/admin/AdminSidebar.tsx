@@ -146,19 +146,19 @@ export function AdminSidebar() {
               {adminItems.map((item, index) => (
                 <SidebarMenuItem key={item.title} className="animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
                   <SidebarMenuButton asChild>
-                    <NavLink 
+                     <NavLink 
                       to={item.url} 
                       end={item.end}
                       className={({ isActive }) =>
                         isActive 
                           ? `bg-gradient-to-r ${item.gradient} text-white font-semibold shadow-lg hover-scale transition-all duration-300` 
-                          : "hover:bg-accent/50 transition-all duration-300 hover-scale"
+                          : "hover:bg-accent text-foreground transition-all duration-300 hover-scale"
                       }
                     >
                       {({ isActive }) => (
                         <>
                           <div className={`p-1 rounded-md ${isActive ? 'bg-white/20' : `bg-gradient-to-br ${item.gradient}`}`}>
-                            <item.icon className={`h-4 w-4 ${isActive ? 'text-white' : 'text-white'}`} />
+                            <item.icon className="h-4 w-4 text-white" />
                           </div>
                           {open && <span className="ml-1">{item.title}</span>}
                         </>
