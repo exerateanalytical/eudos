@@ -409,6 +409,24 @@ import maltaSeal from "@/assets/university-seals/malta.png";
 // Cypriot Universities
 import cyprusSeal from "@/assets/university-seals/cyprus.png";
 
+// Estonian Universities
+import tartuSeal from "@/assets/university-seals/tartu.png";
+
+// Latvian Universities
+import latviaSeal from "@/assets/university-seals/latvia.png";
+
+// Lithuanian Universities
+import vilniusSeal from "@/assets/university-seals/vilnius.png";
+
+// Slovak Universities
+import comeniusSeal from "@/assets/university-seals/comenius.png";
+
+// Slovenian Universities
+import ljubljanaSeal from "@/assets/university-seals/ljubljana.png";
+
+// Croatian Universities
+import zagrebSeal from "@/assets/university-seals/zagreb.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -820,6 +838,24 @@ export const universitySealMap: Record<string, string> = {
   
   // Cypriot Universities
   "University of Cyprus": cyprusSeal,
+  
+  // Estonian Universities
+  "University of Tartu": tartuSeal,
+  
+  // Latvian Universities
+  "University of Latvia": latviaSeal,
+  
+  // Lithuanian Universities
+  "Vilnius University": vilniusSeal,
+  
+  // Slovak Universities
+  "Comenius University": comeniusSeal,
+  
+  // Slovenian Universities
+  "University of Ljubljana": ljubljanaSeal,
+  
+  // Croatian Universities
+  "University of Zagreb": zagrebSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
