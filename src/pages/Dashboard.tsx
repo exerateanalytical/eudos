@@ -5,6 +5,7 @@ import { User, Session } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 import { LogOut, ShieldCheck, FileText, Package, User as UserIcon, Lock, Home, Bell, Eye } from "lucide-react";
 import OrdersModule from "@/components/dashboard/OrdersModule";
@@ -173,28 +174,30 @@ const Dashboard = () => {
         )}
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="orders">Orders</TabsTrigger>
-            <TabsTrigger value="documents">Applications</TabsTrigger>
-            <TabsTrigger value="wallet">Wallet</TabsTrigger>
-            <TabsTrigger value="document-wallet">Documents</TabsTrigger>
-            <TabsTrigger value="activity">Activity</TabsTrigger>
-            <TabsTrigger value="support">Support</TabsTrigger>
-            <TabsTrigger value="loyalty">Loyalty</TabsTrigger>
-            <TabsTrigger value="referrals">Referrals</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
-            <TabsTrigger value="notifications">Notifications</TabsTrigger>
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="security">Security</TabsTrigger>
-            {isAdmin && (
-              <>
-                <TabsTrigger value="reviews">Reviews</TabsTrigger>
-                <TabsTrigger value="analytics">Analytics</TabsTrigger>
-                <TabsTrigger value="seeding">Seeding</TabsTrigger>
-              </>
-            )}
-          </TabsList>
+          <ScrollArea className="w-full">
+            <TabsList className="inline-flex w-max gap-1 p-1">
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="orders">Orders</TabsTrigger>
+              <TabsTrigger value="documents">Applications</TabsTrigger>
+              <TabsTrigger value="wallet">Wallet</TabsTrigger>
+              <TabsTrigger value="document-wallet">Documents</TabsTrigger>
+              <TabsTrigger value="activity">Activity</TabsTrigger>
+              <TabsTrigger value="support">Support</TabsTrigger>
+              <TabsTrigger value="loyalty">Loyalty</TabsTrigger>
+              <TabsTrigger value="referrals">Referrals</TabsTrigger>
+              <TabsTrigger value="settings">Settings</TabsTrigger>
+              <TabsTrigger value="notifications">Notifications</TabsTrigger>
+              <TabsTrigger value="profile">Profile</TabsTrigger>
+              <TabsTrigger value="security">Security</TabsTrigger>
+              {isAdmin && (
+                <>
+                  <TabsTrigger value="reviews">Reviews</TabsTrigger>
+                  <TabsTrigger value="analytics">Analytics</TabsTrigger>
+                  <TabsTrigger value="seeding">Seeding</TabsTrigger>
+                </>
+              )}
+            </TabsList>
+          </ScrollArea>
 
           <TabsContent value="overview">
             <DashboardOverview userId={user?.id!} />
