@@ -21,11 +21,7 @@ const DiplomaDetail = () => {
   const [reviewsRefresh, setReviewsRefresh] = useState(0);
   const [activeTab, setActiveTab] = useState("package");
   
-  // Convert URL parameter back to proper university name with title case
-  const universityName = university?.split('-').map(word => 
-    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-  ).join(' ') || "Harvard University";
-  
+  const universityName = university?.replace(/-/g, ' ') || "Harvard University";
   const reviewStats = useReviewStats("diploma", university || "");
   
   const certificateImage = getDiplomaCertificate(universityName);
@@ -233,15 +229,6 @@ const DiplomaDetail = () => {
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
                 {diplomaData.description}
               </p>
-
-              {/* Legal Disclaimer */}
-              <div className="mb-6 p-4 bg-muted/50 rounded-lg border border-border/50">
-                <p className="text-sm text-muted-foreground">
-                  <span className="font-semibold">Note:</span> Certificate images shown are samples for reference only. 
-                  We serve as an authorized intermediary to facilitate diploma replacement requests directly with the university's registrar office. 
-                  All diplomas are issued officially by the respective institution.
-                </p>
-              </div>
 
               <div className="grid sm:grid-cols-3 gap-4 mb-8">
                 <Card>
