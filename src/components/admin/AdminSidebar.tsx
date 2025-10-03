@@ -14,6 +14,8 @@ import {
   Star,
   Activity,
   FileCode,
+  Mail,
+  Settings,
 } from "lucide-react";
 import {
   Sidebar,
@@ -100,6 +102,18 @@ const adminItems = [
     url: "/admin/activity", 
     icon: Activity,
     gradient: "from-slate-500 to-gray-500"
+  },
+  { 
+    title: "Notifications", 
+    url: "/admin/notifications", 
+    icon: Mail,
+    gradient: "from-blue-500 to-indigo-500"
+  },
+  { 
+    title: "Settings", 
+    url: "/admin/settings", 
+    icon: Settings,
+    gradient: "from-gray-500 to-slate-500"
   },
 ];
 

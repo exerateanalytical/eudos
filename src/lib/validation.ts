@@ -1,158 +1,122 @@
-import { z } from 'zod';
+import { z } from "zod";
 
-// Contact form validation schema
-export const contactFormSchema = z.object({
-  name: z.string()
-    .trim()
-    .min(2, { message: "Name must be at least 2 characters" })
-    .max(100, { message: "Name must be less than 100 characters" }),
-  
-  position: z.string()
-    .trim()
-    .min(2, { message: "Position is required" })
-    .max(100, { message: "Position must be less than 100 characters" }),
-  
-  agency: z.string()
-    .trim()
-    .min(2, { message: "Agency is required" })
-    .max(150, { message: "Agency must be less than 150 characters" }),
-  
-  email: z.string()
-    .trim()
-    .email({ message: "Invalid email address" })
-    .max(255, { message: "Email must be less than 255 characters" }),
-  
-  phone: z.string()
-    .trim()
-    .min(10, { message: "Phone number must be at least 10 digits" })
-    .max(20, { message: "Phone number must be less than 20 characters" })
-    .regex(/^[0-9+\-\s()]+$/, { message: "Invalid phone number format" }),
-  
-  document_type: z.string()
-    .min(1, { message: "Document type is required" }),
-  
-  quantity: z.string()
-    .min(1, { message: "Quantity is required" }),
-  
-  urgency: z.string()
-    .min(1, { message: "Urgency is required" }),
-  
-  department: z.string()
-    .min(1, { message: "Department is required" }),
-  
-  specifications: z.string()
-    .trim()
-    .min(10, { message: "Please provide at least 10 characters of specifications" })
-    .max(2000, { message: "Specifications must be less than 2000 characters" }),
+// User validation schemas
+export const userProfileSchema = z.object({
+  full_name: z.string().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
+  email: z.string().email("Invalid email address").max(255, "Email must be less than 255 characters"),
+  phone_number: z.string().optional(),
 });
 
-// Profile update validation schema
-export const profileUpdateSchema = z.object({
-  full_name: z.string()
-    .trim()
-    .min(2, { message: "Name must be at least 2 characters" })
-    .max(100, { message: "Name must be less than 100 characters" }),
-  
-  phone_number: z.string()
-    .trim()
-    .max(20, { message: "Phone number must be less than 20 characters" })
-    .regex(/^[0-9+\-\s()]*$/, { message: "Invalid phone number format" })
-    .optional(),
-  
-  email: z.string()
-    .trim()
-    .email({ message: "Invalid email address" })
-    .max(255, { message: "Email must be less than 255 characters" }),
+export const userRoleSchema = z.object({
+  role: z.enum(["admin", "moderator", "user"]),
 });
 
-// Review validation schema
-export const reviewSchema = z.object({
-  rating: z.number()
-    .min(1, { message: "Rating is required" })
-    .max(5, { message: "Rating must be between 1 and 5" }),
-  
-  review_text: z.string()
-    .trim()
-    .min(10, { message: "Review must be at least 10 characters" })
-    .max(1000, { message: "Review must be less than 1000 characters" }),
-  
-  product_id: z.string()
-    .min(1, { message: "Product ID is required" }),
-  
-  product_type: z.string()
-    .min(1, { message: "Product type is required" }),
+// Product validation schemas
+export const productSchema = z.object({
+  name: z.string().min(1, "Product name is required").max(200),
+  slug: z.string().min(1, "Slug is required").max(200),
+  description: z.string().min(10, "Description must be at least 10 characters"),
+  category_type: z.string().min(1, "Category is required"),
+  price: z.number().positive("Price must be positive").optional(),
+  status: z.enum(["active", "inactive", "draft"]),
+  seo_title: z.string().max(60, "SEO title should be less than 60 characters").optional(),
+  seo_description: z.string().max(160, "SEO description should be less than 160 characters").optional(),
+  seo_keywords: z.string().optional(),
 });
 
-// Support ticket validation schema
+// Order validation schemas
+export const orderSchema = z.object({
+  product_name: z.string().min(1, "Product name is required"),
+  product_type: z.string().min(1, "Product type is required"),
+  total_amount: z.number().positive("Amount must be positive"),
+  status: z.enum(["pending", "processing", "completed", "cancelled"]),
+});
+
+// Application validation schemas
+export const applicationSchema = z.object({
+  document_type: z.string().min(1, "Document type is required"),
+  country: z.string().min(1, "Country is required"),
+  status: z.enum(["submitted", "under_review", "approved", "rejected"]),
+  notes: z.string().max(1000, "Notes must be less than 1000 characters").optional(),
+});
+
+// Inquiry validation schemas
+export const inquirySchema = z.object({
+  name: z.string().min(1, "Name is required").max(100),
+  email: z.string().email("Invalid email address"),
+  phone: z.string().min(1, "Phone is required"),
+  position: z.string().min(1, "Position is required"),
+  agency: z.string().min(1, "Agency is required"),
+  department: z.string().min(1, "Department is required"),
+  document_type: z.string().min(1, "Document type is required"),
+  quantity: z.string().min(1, "Quantity is required"),
+  urgency: z.string().min(1, "Urgency is required"),
+  specifications: z.string().min(10, "Specifications must be at least 10 characters"),
+  status: z.enum(["pending", "contacted", "quoted", "closed"]),
+});
+
+// Support ticket validation schemas
 export const supportTicketSchema = z.object({
-  subject: z.string()
-    .trim()
-    .min(5, { message: "Subject must be at least 5 characters" })
-    .max(200, { message: "Subject must be less than 200 characters" }),
-  
-  message: z.string()
-    .trim()
-    .min(20, { message: "Message must be at least 20 characters" })
-    .max(2000, { message: "Message must be less than 2000 characters" }),
-  
-  category: z.string()
-    .min(1, { message: "Category is required" }),
-  
-  priority: z.enum(['low', 'medium', 'high']).refine(
-    (val) => ['low', 'medium', 'high'].includes(val),
-    { message: "Invalid priority level" }
-  ),
+  subject: z.string().min(1, "Subject is required").max(200),
+  message: z.string().min(10, "Message must be at least 10 characters").max(5000),
+  category: z.enum(["technical", "billing", "general", "feature_request"]),
+  priority: z.enum(["low", "medium", "high", "urgent"]),
+  status: z.enum(["open", "in_progress", "waiting", "resolved", "closed"]),
 });
 
-// Auth validation schemas
-export const signupSchema = z.object({
-  email: z.string()
-    .trim()
-    .email({ message: "Invalid email address" })
-    .max(255, { message: "Email must be less than 255 characters" }),
-  
-  password: z.string()
-    .min(8, { message: "Password must be at least 8 characters" })
-    .max(72, { message: "Password must be less than 72 characters" })
-    .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
-    .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter" })
-    .regex(/[0-9]/, { message: "Password must contain at least one number" }),
-  
-  full_name: z.string()
-    .trim()
-    .min(2, { message: "Name must be at least 2 characters" })
-    .max(100, { message: "Name must be less than 100 characters" }),
+// Blog post validation schemas
+export const blogPostSchema = z.object({
+  title: z.string().min(1, "Title is required").max(200),
+  slug: z.string().min(1, "Slug is required").max(200),
+  content: z.string().min(50, "Content must be at least 50 characters"),
+  excerpt: z.string().max(300, "Excerpt must be less than 300 characters").optional(),
+  category: z.string().optional(),
+  status: z.enum(["draft", "published", "archived"]),
+  seo_title: z.string().max(60).optional(),
+  seo_description: z.string().max(160).optional(),
+  seo_keywords: z.string().optional(),
 });
 
-export const loginSchema = z.object({
-  email: z.string()
-    .trim()
-    .email({ message: "Invalid email address" }),
-  
-  password: z.string()
-    .min(1, { message: "Password is required" }),
+// Page validation schemas
+export const pageSchema = z.object({
+  title: z.string().min(1, "Title is required").max(200),
+  slug: z.string().min(1, "Slug is required").max(200),
+  content: z.string().min(10, "Content must be at least 10 characters"),
+  status: z.enum(["draft", "published", "archived"]),
+  seo_title: z.string().max(60).optional(),
+  seo_description: z.string().max(160).optional(),
+  seo_keywords: z.string().optional(),
 });
 
-// URL sanitization helper
-export function sanitizeUrl(url: string): string {
-  try {
-    const parsedUrl = new URL(url);
-    // Only allow http and https protocols
-    if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
-      throw new Error('Invalid protocol');
-    }
-    return parsedUrl.toString();
-  } catch {
-    return '';
+// Review validation schemas
+export const reviewSchema = z.object({
+  rating: z.number().min(1, "Rating must be at least 1").max(5, "Rating must be at most 5"),
+  review_text: z.string().min(10, "Review must be at least 10 characters").max(1000),
+  status: z.enum(["pending", "approved", "rejected"]),
+});
+
+// Email notification schema
+export const emailNotificationSchema = z.object({
+  subject: z.string().min(1, "Subject is required").max(200),
+  message: z.string().min(1, "Message is required").max(5000),
+  recipientType: z.enum(["all", "role", "specific"]),
+  recipientEmail: z.string().email().optional(),
+  selectedRole: z.enum(["admin", "moderator", "user"]).optional(),
+});
+
+// Payment/Transaction validation
+export const transactionSchema = z.object({
+  amount: z.number().positive("Amount must be positive"),
+  currency: z.string().length(3, "Currency must be 3 characters (e.g., USD)"),
+  transaction_type: z.string().min(1, "Transaction type is required"),
+  status: z.enum(["pending", "completed", "failed", "refunded"]),
+});
+
+// Helper function to validate data
+export function validateData<T>(schema: z.ZodSchema<T>, data: unknown): { success: true; data: T } | { success: false; errors: z.ZodError } {
+  const result = schema.safeParse(data);
+  if (result.success) {
+    return { success: true, data: result.data };
   }
-}
-
-// HTML sanitization helper (basic - for production use DOMPurify)
-export function sanitizeHtml(html: string): string {
-  return html
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#x27;')
-    .replace(/\//g, '&#x2F;');
+  return { success: false, errors: result.error };
 }

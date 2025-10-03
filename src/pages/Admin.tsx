@@ -21,6 +21,8 @@ const AdminAnalytics = lazy(() => import("@/components/dashboard/AdminAnalytics"
 const SupportTicketManagement = lazy(() => import("@/components/dashboard/SupportTicketManagement").then(m => ({ default: m.SupportTicketManagement })));
 const ActivityLogsViewer = lazy(() => import("@/components/dashboard/ActivityLogsViewer").then(m => ({ default: m.ActivityLogsViewer })));
 const PageManagement = lazy(() => import("@/components/dashboard/PageManagement").then(m => ({ default: m.PageManagement })));
+const EmailNotificationSystem = lazy(() => import("@/components/dashboard/EmailNotificationSystem").then(m => ({ default: m.EmailNotificationSystem })));
+const SystemSettings = lazy(() => import("@/components/dashboard/SystemSettings").then(m => ({ default: m.SystemSettings })));
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -153,6 +155,8 @@ const Admin = () => {
                   <Route path="reviews" element={<ReviewModerationModule />} />
                   <Route path="pages" element={<PageManagement />} />
                   <Route path="activity" element={<ActivityLogsViewer />} />
+                  <Route path="notifications" element={<EmailNotificationSystem />} />
+                  <Route path="settings" element={<SystemSettings />} />
                 </Routes>
               </div>
             </Suspense>
