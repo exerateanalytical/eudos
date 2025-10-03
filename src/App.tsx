@@ -8,6 +8,8 @@ import { Layout } from "./components/Layout";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { ContentProtection } from "./components/ContentProtection";
+import { useEffect } from "react";
+import { performanceMonitor } from "./lib/performance";
 import Index from "./pages/Index";
 import Apply from "./pages/Apply";
 import Products from "./pages/Products";
@@ -39,16 +41,22 @@ import ServerError from "./pages/ServerError";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <HelmetProvider>
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <ContentProtection />
-          <ScrollToTop />
-          <ErrorBoundary>
+const App = () => {
+  useEffect(() => {
+    // Initialize performance monitoring
+    performanceMonitor.init();
+  }, []);
+
+  return (
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <ContentProtection />
+            <ScrollToTop />
+            <ErrorBoundary>
             <Layout>
             <Routes>
             <Route path="/" element={<Index />} />
@@ -87,6 +95,7 @@ const App = () => (
       </TooltipProvider>
     </QueryClientProvider>
   </HelmetProvider>
-);
+  );
+};
 
 export default App;
