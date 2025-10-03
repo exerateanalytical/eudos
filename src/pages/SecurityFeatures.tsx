@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Fingerprint, Cpu, Sparkles, Eye, Scan, Radio, FileCheck, Lock, Database } from "lucide-react";
+import { SEO } from "@/components/SEO";
+import { seoConfig } from "@/config/seo";
 
 const securityFeatures = [
   {
@@ -153,8 +155,16 @@ const securityFeatures = [
 ];
 
 const SecurityFeatures = () => {
+  const baseUrl = window.location.origin;
+
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title={seoConfig.securityFeatures.title}
+        description={seoConfig.securityFeatures.description}
+        keywords={seoConfig.securityFeatures.keywords}
+        canonicalUrl={`${baseUrl}/security-features`}
+      />
       {/* Hero Section */}
       <section className="relative py-12 md:py-20 px-4 overflow-hidden border-b border-border/40">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />

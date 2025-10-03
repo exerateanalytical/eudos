@@ -11,10 +11,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { SEO } from "@/components/SEO";
+import { seoConfig } from "@/config/seo";
 
 const Escrow = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const baseUrl = window.location.origin;
   const [showEscrowForm, setShowEscrowForm] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -43,6 +46,12 @@ const Escrow = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
+      <SEO 
+        title={seoConfig.escrow.title}
+        description={seoConfig.escrow.description}
+        keywords={seoConfig.escrow.keywords}
+        canonicalUrl={`${baseUrl}/escrow`}
+      />
       {/* Hero Section */}
       <section className="pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-14 md:pb-16 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto text-center">
