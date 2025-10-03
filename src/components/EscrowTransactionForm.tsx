@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { Check, Copy, Shield, ArrowRight, Search } from "lucide-react";
+import { Check, Copy, Shield, ArrowRight, Search, CheckCircle } from "lucide-react";
 import { escrowProducts, searchProducts, getProductById, type EscrowProduct } from "@/lib/escrowProducts";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -375,6 +375,30 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
 
         {step === "review" && (
           <div className="space-y-6 py-4">
+            {/* Escrow Protection Notice */}
+            <div className="bg-green-50 dark:bg-green-950/20 border-2 border-green-500/30 p-4 rounded-lg">
+              <div className="flex items-start gap-3">
+                <Shield className="w-6 h-6 text-green-600 dark:text-green-400 flex-shrink-0 mt-1" />
+                <div className="space-y-2">
+                  <h3 className="font-bold text-green-700 dark:text-green-300">Escrow Protection</h3>
+                  <p className="text-sm text-green-700 dark:text-green-300">
+                    Your payment will be held in escrow until you confirm delivery. The vendor will only receive payment after successful completion.
+                  </p>
+                  <div className="flex flex-wrap gap-3 mt-3">
+                    <div className="flex items-center gap-2 text-xs font-medium text-green-700 dark:text-green-300">
+                      <CheckCircle className="w-4 h-4" />
+                      <span>No Auto-release</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs font-medium text-green-700 dark:text-green-300">
+                      <CheckCircle className="w-4 h-4" />
+                      <span>Dispute protection</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Transaction Details */}
             <div className="bg-secondary/50 p-4 rounded-lg space-y-3">
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -416,7 +440,7 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
                   <span>${subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-muted-foreground">
-                  <span>Escrow Fee:</span>
+                  <span>Escrow Fee (1.5%):</span>
                   <span>${fee.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between font-bold text-lg">
