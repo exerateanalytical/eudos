@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { FileText, Eye } from "lucide-react";
+import { ApplicationDetailModal } from "./ApplicationDetailModal";
 import {
   Select,
   SelectContent,
@@ -27,6 +28,8 @@ interface Application {
 export function ApplicationManagement() {
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
+  const [detailModalOpen, setDetailModalOpen] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -114,7 +117,14 @@ export function ApplicationManagement() {
       key: "actions",
       label: "Actions",
       render: (row: Application) => (
-        <Button size="sm" variant="outline">
+        <Button 
+          size="sm" 
+          variant="outline"
+          onClick={() => {
+            setSelectedApplication(row);
+            setDetailModalOpen(true);
+          }}
+        >
           <Eye className="h-4 w-4 mr-1" />
           Review
         </Button>
@@ -176,6 +186,14 @@ export function ApplicationManagement() {
           searchPlaceholder="Search applications..."
         />
       </Card>
+
+      {selectedApplication && (
+        <ApplicationDetailModal
+          open={detailModalOpen}
+          onOpenChange={setDetailModalOpen}
+          application={selectedApplication}
+        />
+      )}
     </div>
   );
 }

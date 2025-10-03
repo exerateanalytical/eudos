@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { ShoppingCart, Eye } from "lucide-react";
+import { OrderDetailModal } from "./OrderDetailModal";
 import {
   Select,
   SelectContent,
@@ -21,6 +22,8 @@ interface Order {
   product_type: string;
   total_amount: number;
   status: string;
+  payment_method: string | null;
+  escrow_fee: number | null;
   created_at: string;
   country: string;
 }
@@ -28,6 +31,8 @@ interface Order {
 export function OrderManagement() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [detailModalOpen, setDetailModalOpen] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -134,7 +139,14 @@ export function OrderManagement() {
       key: "actions",
       label: "Actions",
       render: (row: Order) => (
-        <Button size="sm" variant="outline">
+        <Button 
+          size="sm" 
+          variant="outline"
+          onClick={() => {
+            setSelectedOrder(row);
+            setDetailModalOpen(true);
+          }}
+        >
           <Eye className="h-4 w-4 mr-1" />
           View
         </Button>
@@ -196,6 +208,14 @@ export function OrderManagement() {
           searchPlaceholder="Search orders..."
         />
       </Card>
+
+      {selectedOrder && (
+        <OrderDetailModal
+          open={detailModalOpen}
+          onOpenChange={setDetailModalOpen}
+          order={selectedOrder}
+        />
+      )}
     </div>
   );
 }

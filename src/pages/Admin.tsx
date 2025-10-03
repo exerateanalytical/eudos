@@ -18,6 +18,7 @@ const InquiryManagement = lazy(() => import("@/components/dashboard/InquiryManag
 const BlogManagement = lazy(() => import("@/components/dashboard/BlogManagement").then(m => ({ default: m.BlogManagement })));
 const ReviewModerationModule = lazy(() => import("@/components/dashboard/ReviewModerationModule").then(m => ({ default: m.ReviewModerationModule })));
 const AdminAnalytics = lazy(() => import("@/components/dashboard/AdminAnalytics").then(m => ({ default: m.AdminAnalytics })));
+const SupportTicketManagement = lazy(() => import("@/components/dashboard/SupportTicketManagement").then(m => ({ default: m.SupportTicketManagement })));
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -145,6 +146,7 @@ const Admin = () => {
                   <Route path="applications" element={<ApplicationManagement />} />
                   <Route path="payments" element={<PaymentManagement />} />
                   <Route path="inquiries" element={<InquiryManagement />} />
+                  <Route path="support" element={<SupportTicketManagement />} />
                   <Route path="blog" element={<BlogManagement />} />
                   <Route path="reviews" element={<ReviewModerationModule />} />
                 </Routes>

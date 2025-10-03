@@ -9,6 +9,9 @@ import {
   MessageSquare,
   Eye,
   Sparkles,
+  Headphones,
+  BookOpen,
+  Star,
 } from "lucide-react";
 import {
   Sidebar,
@@ -67,15 +70,21 @@ const adminItems = [
     gradient: "from-teal-500 to-cyan-500"
   },
   { 
+    title: "Support Tickets", 
+    url: "/admin/support", 
+    icon: Headphones,
+    gradient: "from-amber-500 to-orange-500"
+  },
+  { 
     title: "Blog Posts", 
     url: "/admin/blog", 
-    icon: FileText,
+    icon: BookOpen,
     gradient: "from-rose-500 to-pink-500"
   },
   { 
     title: "Reviews", 
     url: "/admin/reviews", 
-    icon: Eye,
+    icon: Star,
     gradient: "from-violet-500 to-purple-500"
   },
 ];

@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { MessageSquare, Eye } from "lucide-react";
+import { InquiryDetailModal } from "./InquiryDetailModal";
 import {
   Select,
   SelectContent,
@@ -19,9 +20,13 @@ interface Inquiry {
   name: string;
   email: string;
   phone: string;
+  position: string;
   agency: string;
   department: string;
   document_type: string;
+  quantity: string;
+  urgency: string;
+  specifications: string;
   status: string;
   created_at: string;
 }
@@ -29,6 +34,8 @@ interface Inquiry {
 export function InquiryManagement() {
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null);
+  const [detailModalOpen, setDetailModalOpen] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -127,7 +134,14 @@ export function InquiryManagement() {
       key: "actions",
       label: "Actions",
       render: (row: Inquiry) => (
-        <Button size="sm" variant="outline">
+        <Button 
+          size="sm" 
+          variant="outline"
+          onClick={() => {
+            setSelectedInquiry(row);
+            setDetailModalOpen(true);
+          }}
+        >
           <Eye className="h-4 w-4 mr-1" />
           View
         </Button>
@@ -183,6 +197,14 @@ export function InquiryManagement() {
           searchPlaceholder="Search inquiries..."
         />
       </Card>
+
+      {selectedInquiry && (
+        <InquiryDetailModal
+          open={detailModalOpen}
+          onOpenChange={setDetailModalOpen}
+          inquiry={selectedInquiry}
+        />
+      )}
     </div>
   );
 }
