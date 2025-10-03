@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { SecurityFeaturesSection } from "@/components/SecurityFeaturesSection";
+import { SEO } from "@/components/SEO";
+import { seoConfig } from "@/config/seo";
 
 // Import EU logo images
 import euAT from "@/assets/drivers-license/eu-at.png";
@@ -112,6 +114,7 @@ const driversLicenses = generateDriversLicenses();
 
 const DriversLicense = () => {
   const navigate = useNavigate();
+  const baseUrl = window.location.origin;
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
   const [selectedLicense, setSelectedLicense] = useState<any>(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -169,6 +172,12 @@ const DriversLicense = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <SEO 
+        title={seoConfig.driversLicense.title}
+        description={seoConfig.driversLicense.description}
+        keywords={seoConfig.driversLicense.keywords}
+        canonicalUrl={`${baseUrl}/drivers-license`}
+      />
       {/* Hero Section */}
       <section className="relative py-12 md:py-20 px-4 overflow-hidden border-b border-border/40">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />

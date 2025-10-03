@@ -8,9 +8,12 @@ import { SecurityFeaturesSection } from "@/components/SecurityFeaturesSection";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { SEO } from "@/components/SEO";
+import { seoConfig } from "@/config/seo";
 
 const Citizenship = () => {
   const navigate = useNavigate();
+  const baseUrl = window.location.origin;
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
@@ -379,6 +382,12 @@ const Citizenship = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title={seoConfig.citizenship.title}
+        description={seoConfig.citizenship.description}
+        keywords={seoConfig.citizenship.keywords}
+        canonicalUrl={`${baseUrl}/citizenship`}
+      />
       {/* Hero Section - Reduced by 1/2 */}
       <section className="relative py-10 md:py-12 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />

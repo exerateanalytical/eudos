@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { SEO } from "@/components/SEO";
+import { seoConfig } from "@/config/seo";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -152,6 +154,7 @@ type Step = "document" | "details" | "upload" | "review" | "payment";
 const Apply = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const baseUrl = window.location.origin;
   const [currentStep, setCurrentStep] = useState<Step>("document");
   const [selectedDocument, setSelectedDocument] = useState("");
   const [formData, setFormData] = useState({
@@ -272,6 +275,12 @@ const Apply = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-primary/5">
+      <SEO 
+        title={seoConfig.apply.title}
+        description={seoConfig.apply.description}
+        keywords={seoConfig.apply.keywords}
+        canonicalUrl={`${baseUrl}/apply`}
+      />
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">

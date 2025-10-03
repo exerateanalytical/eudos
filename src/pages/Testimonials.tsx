@@ -9,6 +9,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { z } from "zod";
+import { SEO } from "@/components/SEO";
+import { seoConfig } from "@/config/seo";
 
 
 // Validation schema for testimonial submission
@@ -46,6 +48,7 @@ type TestimonialFormData = z.infer<typeof testimonialSchema>;
 
 const Testimonials = () => {
   const navigate = useNavigate();
+  const baseUrl = window.location.origin;
 
   const [formData, setFormData] = useState<TestimonialFormData>({
     name: "",
@@ -234,6 +237,12 @@ const Testimonials = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title={seoConfig.testimonials.title}
+        description={seoConfig.testimonials.description}
+        keywords={seoConfig.testimonials.keywords}
+        canonicalUrl={`${baseUrl}/testimonials`}
+      />
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">

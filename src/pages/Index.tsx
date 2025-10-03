@@ -4,11 +4,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { FileText, Shield, Clock, CheckCircle, Printer, Building2, Award, Sparkles, CreditCard, GraduationCap, Fingerprint, Cpu, Eye, Radio, Lock, Scan, FileCheck, Database, BookOpen, ShoppingBag } from "lucide-react";
 import { useState, useEffect } from "react";
 import { SecurityFeaturesSection } from "@/components/SecurityFeaturesSection";
+import { SEO } from "@/components/SEO";
+import { seoConfig } from "@/config/seo";
 
 const Index = () => {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const [currentFeature, setCurrentFeature] = useState(0);
+
+  const baseUrl = window.location.origin;
 
   useEffect(() => {
     setIsVisible(true);
@@ -147,6 +151,12 @@ const Index = () => {
 
   return (
     <div className="bg-background overflow-x-hidden">
+      <SEO 
+        title={seoConfig.home.title}
+        description={seoConfig.home.description}
+        keywords={seoConfig.home.keywords}
+        canonicalUrl={baseUrl}
+      />
       {/* Hero Section - Mobile First */}
       <section className="relative py-8 md:py-12 lg:py-16 px-4 overflow-hidden">
         {/* Animated background gradient */}

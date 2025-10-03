@@ -3,6 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CreditCard, FileText, Globe, GraduationCap, Award, Shield, ArrowRight, Sparkles, Lock, CheckCircle } from "lucide-react";
+import { SEO } from "@/components/SEO";
+import { seoConfig } from "@/config/seo";
 
 const categories = [
   {
@@ -76,9 +78,16 @@ const securityFeatures = [
 
 const Products = () => {
   const navigate = useNavigate();
+  const baseUrl = window.location.origin;
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title={seoConfig.products.title}
+        description={seoConfig.products.description}
+        keywords={seoConfig.products.keywords}
+        canonicalUrl={`${baseUrl}/products`}
+      />
       <div className="container mx-auto px-4 py-12 md:py-20">
         {/* Hero Section */}
         <div className="text-center mb-16 animate-fade-in">

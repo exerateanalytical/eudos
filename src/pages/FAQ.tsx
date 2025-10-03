@@ -8,9 +8,12 @@ import {
 } from "@/components/ui/accordion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { SEO } from "@/components/SEO";
+import { seoConfig } from "@/config/seo";
 
 const FAQ = () => {
   const navigate = useNavigate();
+  const baseUrl = window.location.origin;
 
   const faqCategories = [
     {
@@ -151,6 +154,12 @@ const FAQ = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title={seoConfig.faq.title}
+        description={seoConfig.faq.description}
+        keywords={seoConfig.faq.keywords}
+        canonicalUrl={`${baseUrl}/faq`}
+      />
       {/* Hero Section - Mobile Optimized */}
       <section className="py-10 md:py-16 lg:py-20 px-4 bg-gradient-to-b from-primary/5 to-background">
         <div className="container mx-auto max-w-4xl text-center">

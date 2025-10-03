@@ -9,6 +9,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { SecurityFeaturesSection } from "@/components/SecurityFeaturesSection";
 import { Slider } from "@/components/ui/slider";
+import { SEO } from "@/components/SEO";
+import { seoConfig } from "@/config/seo";
 
 
 import { getUniversitySeal } from "@/lib/universitySeals";
@@ -545,6 +547,7 @@ const universities = [
 
 const Diplomas = () => {
   const navigate = useNavigate();
+  const baseUrl = window.location.origin;
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
@@ -598,6 +601,12 @@ const Diplomas = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title={seoConfig.diplomas.title}
+        description={seoConfig.diplomas.description}
+        keywords={seoConfig.diplomas.keywords}
+        canonicalUrl={`${baseUrl}/diplomas`}
+      />
       {/* Hero Section */}
       <section className="relative py-16 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-background" />

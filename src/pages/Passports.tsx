@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { SecurityFeaturesSection } from "@/components/SecurityFeaturesSection";
+import { SEO } from "@/components/SEO";
+import { seoConfig } from "@/config/seo";
 
 // Import coat of arms images
 import austriaCoA from "@/assets/coat-of-arms/austria.png";
@@ -122,6 +124,7 @@ const passports = generatePassports();
 
 const Passports = () => {
   const navigate = useNavigate();
+  const baseUrl = window.location.origin;
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
   const [selectedPassport, setSelectedPassport] = useState<any>(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -162,6 +165,12 @@ const Passports = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <SEO 
+        title={seoConfig.passports.title}
+        description={seoConfig.passports.description}
+        keywords={seoConfig.passports.keywords}
+        canonicalUrl={`${baseUrl}/passports`}
+      />
       {/* Hero Section */}
       <section className="relative py-12 md:py-20 px-4 overflow-hidden border-b border-border/40">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />

@@ -9,6 +9,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { SecurityFeaturesSection } from "@/components/SecurityFeaturesSection";
+import { SEO } from "@/components/SEO";
+import { seoConfig } from "@/config/seo";
 
 const certifications = [
   // Project Management & Business (20)
@@ -222,6 +224,7 @@ const certifications = [
 
 const Certifications = () => {
   const navigate = useNavigate();
+  const baseUrl = window.location.origin;
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState([1500, 8500]);
@@ -258,6 +261,12 @@ const Certifications = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title={seoConfig.certifications.title}
+        description={seoConfig.certifications.description}
+        keywords={seoConfig.certifications.keywords}
+        canonicalUrl={`${baseUrl}/certifications`}
+      />
       {/* Hero Section */}
       <section className="relative py-16 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-background" />
