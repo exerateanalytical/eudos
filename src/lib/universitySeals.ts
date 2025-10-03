@@ -357,6 +357,13 @@ import grazSeal from "@/assets/university-seals/graz.png";
 import innsbruckSeal from "@/assets/university-seals/innsbruck.png";
 import wuViennaSeal from "@/assets/university-seals/wu-vienna.png";
 
+// Polish Universities
+import warsawSeal from "@/assets/university-seals/warsaw.png";
+import jagiellonianSeal from "@/assets/university-seals/jagiellonian.png";
+import warsawTechSeal from "@/assets/university-seals/warsaw-tech.png";
+import aghKrakowSeal from "@/assets/university-seals/agh-krakow.png";
+import adamMickiewiczSeal from "@/assets/university-seals/adam-mickiewicz.png";
+
 
 export const universitySealMap: Record<string, string> = {
   // Top U.S. Universities
@@ -716,6 +723,13 @@ export const universitySealMap: Record<string, string> = {
   "University of Graz": grazSeal,
   "University of Innsbruck": innsbruckSeal,
   "WU Vienna": wuViennaSeal,
+  
+  // Polish Universities
+  "University of Warsaw": warsawSeal,
+  "Jagiellonian University": jagiellonianSeal,
+  "Warsaw University of Technology": warsawTechSeal,
+  "AGH University of Science and Technology": aghKrakowSeal,
+  "Adam Mickiewicz University": adamMickiewiczSeal,
 };
 
 // Helper function to get seal with fallback for community colleges
