@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Bitcoin, Plus, Edit, Trash2 } from "lucide-react";
+import { AdminPaymentDashboard } from "./AdminPaymentDashboard";
 import {
   Dialog,
   DialogContent,
@@ -301,22 +302,30 @@ export function BitcoinWalletManagement() {
     .reduce((sum, p) => sum + Number(p.amount_btc), 0);
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold flex items-center gap-2">
-            <Bitcoin className="h-8 w-8" />
-            Bitcoin Payments
-          </h1>
-          <p className="text-muted-foreground mt-1">
-            Manage Bitcoin wallets and payments
-          </p>
-        </div>
-        <Button onClick={handleOpenAddDialog}>
-          <Plus className="h-4 w-4 mr-2" />
-          Add Wallet
-        </Button>
+    <div className="space-y-8">
+      {/* Payment Dashboard */}
+      <div>
+        <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+          <Bitcoin className="h-7 w-7" />
+          Payment Dashboard
+        </h2>
+        <AdminPaymentDashboard />
       </div>
+
+      {/* Wallet Management Section */}
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold">Wallet Management</h2>
+            <p className="text-muted-foreground mt-1">
+              Manage Bitcoin wallets and configure payment addresses
+            </p>
+          </div>
+          <Button onClick={handleOpenAddDialog}>
+            <Plus className="h-4 w-4 mr-2" />
+            Add Wallet
+          </Button>
+        </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent>
@@ -422,6 +431,7 @@ export function BitcoinWalletManagement() {
           searchPlaceholder="Search payments..."
         />
       </Card>
+      </div>
     </div>
   );
 }
