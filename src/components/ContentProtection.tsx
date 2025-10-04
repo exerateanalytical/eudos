@@ -13,23 +13,30 @@ export const ContentProtection = () => {
     location.pathname.includes('/checkout') || 
     location.pathname.includes('/apply') ||
     location.pathname.includes('/escrow') ||
-    location.pathname === '/' && location.hash === '#contact';
+    location.pathname.includes('/contact') ||
+    (location.pathname === '/' && location.hash === '#contact');
 
   useEffect(() => {
     const checkAdminStatus = async () => {
       try {
         const { data: { user } } = await supabase.auth.getUser();
-        
-        if (user) {
-          const { data: roleData } = await supabase
-            .from('user_roles')
-            .select('role')
-            .eq('user_id', user.id)
-            .in('role', ['admin', 'moderator'])
-            .single();
-          
-          setIsAdmin(!!roleData);
+
+        if (!user) {
+          setIsAdmin(false);
+          return;
         }
+
+        // Use secure backend function to check role (bypasses RLS safely)
+        const [{ data: isAdminRole, error: adminErr }, { data: isModRole, error: modErr }] = await Promise.all([
+          supabase.rpc('has_role', { _user_id: user.id, _role: 'admin' }),
+          supabase.rpc('has_role', { _user_id: user.id, _role: 'moderator' }),
+        ]);
+
+        if (adminErr || modErr) {
+          console.error('Error checking roles:', adminErr || modErr);
+        }
+
+        setIsAdmin(Boolean(isAdminRole) || Boolean(isModRole));
       } catch (error) {
         console.error('Error checking admin status:', error);
       } finally {
