@@ -353,7 +353,7 @@ const Passports = () => {
                     <Button 
                       variant="outline"
                       size="sm"
-                      onClick={() => navigate(`/apply?type=passport&name=${encodeURIComponent(passport.title)}`)}
+                      onClick={() => navigate(`/passports/${passport.id}`)}
                     >
                       Buy Now
                     </Button>

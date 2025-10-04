@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +14,9 @@ import { ReviewStatsCard } from "@/components/reviews/ReviewStatsCard";
 import { useReviewStats } from "@/hooks/useReviewStats";
 import { useState, useEffect } from "react";
 import { SEO } from "@/components/SEO";
+import { CheckoutModal } from "@/components/checkout/CheckoutModal";
+import { BitcoinCheckout } from "@/components/checkout/BitcoinCheckout";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const DiplomaDetail = () => {
   const { university } = useParams();
@@ -21,9 +25,51 @@ const DiplomaDetail = () => {
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
   const [reviewsRefresh, setReviewsRefresh] = useState(0);
   const [activeTab, setActiveTab] = useState("package");
+  const [showCheckoutModal, setShowCheckoutModal] = useState(false);
+  const [showBitcoinCheckout, setShowBitcoinCheckout] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [guestInfo, setGuestInfo] = useState<any>(null);
+  const [walletId, setWalletId] = useState<string>("");
   
   const universityName = university?.replace(/-/g, ' ') || "Harvard University";
   const reviewStats = useReviewStats("diploma", university || "");
+
+  useEffect(() => {
+    checkUser();
+    fetchWallet();
+  }, []);
+
+  const checkUser = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    setUser(user);
+  };
+
+  const fetchWallet = async () => {
+    const { data } = await supabase
+      .from('btc_wallets')
+      .select('id')
+      .limit(1)
+      .single();
+    if (data) setWalletId(data.id);
+  };
+
+  const handleBuyNow = () => {
+    if (!walletId) {
+      alert("Bitcoin wallet not configured. Please contact support.");
+      return;
+    }
+    
+    if (user) {
+      setShowBitcoinCheckout(true);
+    } else {
+      setShowCheckoutModal(true);
+    }
+  };
+
+  const handleGuestProceed = (info: any) => {
+    setGuestInfo(info);
+    setShowBitcoinCheckout(true);
+  };
 
   // Check for ?tab=reviews query param and scroll to reviews
   useEffect(() => {
@@ -271,10 +317,10 @@ const DiplomaDetail = () => {
             <div className="flex gap-4 flex-wrap">
               <Button 
                 size="lg"
-                onClick={() => navigate(`/apply?type=diploma&university=${diplomaData.universityName}`)}
+                onClick={handleBuyNow}
               >
                 <ShoppingCart className="h-4 w-4 mr-2" />
-                Buy Now
+                Buy Now with Bitcoin
               </Button>
 
               <Button 
@@ -525,6 +571,30 @@ const DiplomaDetail = () => {
           </div>
         </div>
       </section>
+
+      {/* Checkout Modals */}
+      <CheckoutModal
+        open={showCheckoutModal}
+        onClose={() => setShowCheckoutModal(false)}
+        onProceed={handleGuestProceed}
+      />
+
+      <Dialog open={showBitcoinCheckout} onOpenChange={setShowBitcoinCheckout}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <BitcoinCheckout
+            walletId={walletId}
+            productName={`${diplomaData.universityName} Diploma`}
+            productType="Diploma"
+            amountBTC={parseInt(diplomaPrice.replace(/[^0-9]/g, '')) / 50000}
+            amountFiat={parseInt(diplomaPrice.replace(/[^0-9]/g, ''))}
+            guestInfo={guestInfo}
+            onPaymentComplete={() => {
+              setShowBitcoinCheckout(false);
+              navigate('/dashboard/orders');
+            }}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

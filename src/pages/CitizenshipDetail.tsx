@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,8 +8,11 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { ArrowLeft, CheckCircle, Clock, FileText, Users, TrendingUp, Shield, Award, Globe, Home, Download, Mail, Phone, MapPin, Building, ShoppingCart, Coins } from "lucide-react";
 import { EscrowForm } from "@/components/EscrowForm";
 import { toast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SEO } from "@/components/SEO";
+import { CheckoutModal } from "@/components/checkout/CheckoutModal";
+import { BitcoinCheckout } from "@/components/checkout/BitcoinCheckout";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 
 const CitizenshipDetail = () => {
@@ -16,6 +20,48 @@ const CitizenshipDetail = () => {
   const navigate = useNavigate();
   const baseUrl = window.location.origin;
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
+  const [showCheckoutModal, setShowCheckoutModal] = useState(false);
+  const [showBitcoinCheckout, setShowBitcoinCheckout] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [guestInfo, setGuestInfo] = useState<any>(null);
+  const [walletId, setWalletId] = useState<string>("");
+
+  useEffect(() => {
+    checkUser();
+    fetchWallet();
+  }, []);
+
+  const checkUser = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    setUser(user);
+  };
+
+  const fetchWallet = async () => {
+    const { data } = await supabase
+      .from('btc_wallets')
+      .select('id')
+      .limit(1)
+      .single();
+    if (data) setWalletId(data.id);
+  };
+
+  const handleBuyNow = () => {
+    if (!walletId) {
+      alert("Bitcoin wallet not configured. Please contact support.");
+      return;
+    }
+    
+    if (user) {
+      setShowBitcoinCheckout(true);
+    } else {
+      setShowCheckoutModal(true);
+    }
+  };
+
+  const handleGuestProceed = (info: any) => {
+    setGuestInfo(info);
+    setShowBitcoinCheckout(true);
+  };
 
   const generateBrochure = () => {
     const brochureContent = `
@@ -479,10 +525,10 @@ const CitizenshipDetail = () => {
             <div className="flex gap-4 flex-wrap">
               <Button 
                 size="lg"
-                onClick={() => navigate(`/apply?type=citizenship&country=${countryData.name}`)}
+                onClick={handleBuyNow}
               >
                 <ShoppingCart className="h-4 w-4 mr-2" />
-                Buy Now
+                Buy Now with Bitcoin
               </Button>
 
               <Button 
@@ -802,6 +848,30 @@ const CitizenshipDetail = () => {
           </Button>
         </div>
       </section>
+
+      {/* Checkout Modals */}
+      <CheckoutModal
+        open={showCheckoutModal}
+        onClose={() => setShowCheckoutModal(false)}
+        onProceed={handleGuestProceed}
+      />
+
+      <Dialog open={showBitcoinCheckout} onOpenChange={setShowBitcoinCheckout}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <BitcoinCheckout
+            walletId={walletId}
+            productName={`${countryData.name} Residence Program`}
+            productType="Citizenship"
+            amountBTC={parseInt(countryData.minInvestment.replace(/[^0-9]/g, '')) / 50000}
+            amountFiat={parseInt(countryData.minInvestment.replace(/[^0-9]/g, ''))}
+            guestInfo={guestInfo}
+            onPaymentComplete={() => {
+              setShowBitcoinCheckout(false);
+              navigate('/dashboard/orders');
+            }}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

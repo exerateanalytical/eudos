@@ -388,7 +388,7 @@ const DriversLicense = () => {
                     <Button 
                       variant="outline"
                       size="sm"
-                      onClick={() => navigate(`/apply?type=license&name=${encodeURIComponent(license.title)}`)}
+                      onClick={() => navigate(`/drivers-license/${license.id}`)}
                     >
                       Buy Now
                     </Button>

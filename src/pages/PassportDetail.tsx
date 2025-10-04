@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -12,6 +13,9 @@ import { ReviewsList } from "@/components/reviews/ReviewsList";
 import { ReviewStatsCard } from "@/components/reviews/ReviewStatsCard";
 import { useReviewStats } from "@/hooks/useReviewStats";
 import { SEO } from "@/components/SEO";
+import { CheckoutModal } from "@/components/checkout/CheckoutModal";
+import { BitcoinCheckout } from "@/components/checkout/BitcoinCheckout";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 // Import coat of arms images
 import austriaCoA from "@/assets/coat-of-arms/austria.png";
@@ -90,7 +94,49 @@ const PassportDetail = () => {
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
   const [reviewsRefresh, setReviewsRefresh] = useState(0);
   const [activeTab, setActiveTab] = useState("features");
+  const [showCheckoutModal, setShowCheckoutModal] = useState(false);
+  const [showBitcoinCheckout, setShowBitcoinCheckout] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [guestInfo, setGuestInfo] = useState<any>(null);
+  const [walletId, setWalletId] = useState<string>("");
   const reviewStats = useReviewStats("passport", passportId || "");
+
+  useEffect(() => {
+    checkUser();
+    fetchWallet();
+  }, []);
+
+  const checkUser = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    setUser(user);
+  };
+
+  const fetchWallet = async () => {
+    const { data } = await supabase
+      .from('btc_wallets')
+      .select('id')
+      .limit(1)
+      .single();
+    if (data) setWalletId(data.id);
+  };
+
+  const handleBuyNow = () => {
+    if (!walletId) {
+      alert("Bitcoin wallet not configured. Please contact support.");
+      return;
+    }
+    
+    if (user) {
+      setShowBitcoinCheckout(true);
+    } else {
+      setShowCheckoutModal(true);
+    }
+  };
+
+  const handleGuestProceed = (info: any) => {
+    setGuestInfo(info);
+    setShowBitcoinCheckout(true);
+  };
 
   // Check for ?tab=reviews query param and scroll to reviews
   useEffect(() => {
@@ -293,10 +339,10 @@ const PassportDetail = () => {
                   <Button 
                     className="w-full" 
                     size="lg"
-                    onClick={() => navigate(`/apply?type=passport&name=${encodeURIComponent(passportData.title)}`)}
+                    onClick={handleBuyNow}
                   >
                     <ShoppingCart className="w-4 h-4 mr-2" />
-                    Buy Now
+                    Buy Now with Bitcoin
                   </Button>
                   <Button
                     variant="outline"
@@ -573,6 +619,30 @@ const PassportDetail = () => {
           </div>
         </div>
       </section>
+
+      {/* Checkout Modals */}
+      <CheckoutModal
+        open={showCheckoutModal}
+        onClose={() => setShowCheckoutModal(false)}
+        onProceed={handleGuestProceed}
+      />
+
+      <Dialog open={showBitcoinCheckout} onOpenChange={setShowBitcoinCheckout}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <BitcoinCheckout
+            walletId={walletId}
+            productName={passportData.title}
+            productType="Passport"
+            amountBTC={parseInt(passportData.price.replace(/[^0-9]/g, '')) / 50000}
+            amountFiat={parseInt(passportData.price.replace(/[^0-9]/g, ''))}
+            guestInfo={guestInfo}
+            onPaymentComplete={() => {
+              setShowBitcoinCheckout(false);
+              navigate('/dashboard/orders');
+            }}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
