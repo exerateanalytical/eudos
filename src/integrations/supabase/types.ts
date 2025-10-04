@@ -121,6 +121,7 @@ export type Database = {
           featured_image: string | null
           id: string
           published_at: string | null
+          scheduled_publish_at: string | null
           seo_description: string | null
           seo_keywords: string | null
           seo_title: string | null
@@ -139,6 +140,7 @@ export type Database = {
           featured_image?: string | null
           id?: string
           published_at?: string | null
+          scheduled_publish_at?: string | null
           seo_description?: string | null
           seo_keywords?: string | null
           seo_title?: string | null
@@ -157,6 +159,7 @@ export type Database = {
           featured_image?: string | null
           id?: string
           published_at?: string | null
+          scheduled_publish_at?: string | null
           seo_description?: string | null
           seo_keywords?: string | null
           seo_title?: string | null
@@ -173,6 +176,7 @@ export type Database = {
           content: string
           created_at: string | null
           id: string
+          scheduled_publish_at: string | null
           seo_description: string | null
           seo_keywords: string | null
           seo_title: string | null
@@ -186,6 +190,7 @@ export type Database = {
           content: string
           created_at?: string | null
           id?: string
+          scheduled_publish_at?: string | null
           seo_description?: string | null
           seo_keywords?: string | null
           seo_title?: string | null
@@ -199,6 +204,7 @@ export type Database = {
           content?: string
           created_at?: string | null
           id?: string
+          scheduled_publish_at?: string | null
           seo_description?: string | null
           seo_keywords?: string | null
           seo_title?: string | null
@@ -221,6 +227,7 @@ export type Database = {
           image_url: string | null
           name: string
           price: number | null
+          scheduled_publish_at: string | null
           seo_description: string | null
           seo_keywords: string | null
           seo_title: string | null
@@ -239,6 +246,7 @@ export type Database = {
           image_url?: string | null
           name: string
           price?: number | null
+          scheduled_publish_at?: string | null
           seo_description?: string | null
           seo_keywords?: string | null
           seo_title?: string | null
@@ -257,6 +265,7 @@ export type Database = {
           image_url?: string | null
           name?: string
           price?: number | null
+          scheduled_publish_at?: string | null
           seo_description?: string | null
           seo_keywords?: string | null
           seo_title?: string | null
@@ -314,6 +323,69 @@ export type Database = {
           status?: string | null
           updated_at?: string | null
           urgency?: string
+        }
+        Relationships: []
+      }
+      content_auto_saves: {
+        Row: {
+          content_data: Json
+          content_id: string | null
+          content_type: string
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content_data: Json
+          content_id?: string | null
+          content_type: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content_data?: Json
+          content_id?: string | null
+          content_type?: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      content_revisions: {
+        Row: {
+          content_data: Json
+          content_id: string
+          content_type: string
+          created_at: string
+          created_by: string
+          id: string
+          notes: string | null
+          revision_number: number
+        }
+        Insert: {
+          content_data: Json
+          content_id: string
+          content_type: string
+          created_at?: string
+          created_by: string
+          id?: string
+          notes?: string | null
+          revision_number: number
+        }
+        Update: {
+          content_data?: Json
+          content_id?: string
+          content_type?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          notes?: string | null
+          revision_number?: number
         }
         Relationships: []
       }

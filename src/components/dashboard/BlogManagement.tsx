@@ -21,6 +21,11 @@ import { FeaturedImagePicker } from "@/components/admin/FeaturedImagePicker";
 import { AdminSEOForm } from "@/components/admin/AdminSEOForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ContentPreview } from "@/components/admin/ContentPreview";
+import { SchedulePublish } from "@/components/admin/SchedulePublish";
+import { RevisionHistory } from "@/components/admin/RevisionHistory";
+import { useAutoSave } from "@/hooks/useAutoSave";
+import { Copy, History as HistoryIcon } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -50,6 +55,8 @@ export function BlogManagement() {
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
+  const [showPreview, setShowPreview] = useState(false);
+  const [showRevisions, setShowRevisions] = useState(false);
   const { toast } = useToast();
 
   const [formData, setFormData] = useState({
@@ -57,7 +64,9 @@ export function BlogManagement() {
     slug: "",
     excerpt: "",
     content: "",
+    featured_image: "",
     category: "guides",
+    scheduled_publish_at: null as string | null,
     status: "draft",
     seo_title: "",
     seo_description: "",
@@ -148,7 +157,9 @@ export function BlogManagement() {
       slug: "",
       excerpt: "",
       content: "",
+      featured_image: "",
       category: "guides",
+      scheduled_publish_at: null,
       status: "draft",
       seo_title: "",
       seo_description: "",
@@ -164,7 +175,9 @@ export function BlogManagement() {
       slug: post.slug,
       excerpt: post.excerpt || "",
       content: post.content,
+      featured_image: (post as any).featured_image || "",
       category: post.category || "guides",
+      scheduled_publish_at: (post as any).scheduled_publish_at || null,
       status: post.status,
       seo_title: post.seo_title || "",
       seo_description: post.seo_description || "",
@@ -173,6 +186,60 @@ export function BlogManagement() {
     });
     setDialogOpen(true);
   };
+
+  const handleDuplicate = async (post: BlogPost) => {
+    try {
+      const { data, error } = await supabase
+        .from("cms_blog_posts")
+        .insert({
+          title: `${post.title} (Copy)`,
+          slug: `${post.slug}-copy-${Date.now()}`,
+          excerpt: post.excerpt,
+          content: post.content,
+          category: post.category,
+          status: "draft",
+          seo_title: post.seo_title,
+          seo_description: post.seo_description,
+          seo_keywords: post.seo_keywords,
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Blog post duplicated successfully",
+      });
+
+      fetchPosts();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleRestoreRevision = (revisionData: any) => {
+    setFormData({
+      ...formData,
+      ...revisionData,
+    });
+    toast({
+      title: "Revision Restored",
+      description: "Content has been restored from revision",
+    });
+  };
+
+  // Enable auto-save
+  useAutoSave({
+    contentType: 'blog_post',
+    contentId: editingPost?.id || null,
+    data: formData,
+    enabled: dialogOpen,
+  });
 
   const columns = [
     { key: "title", label: "Title" },
@@ -212,6 +279,14 @@ export function BlogManagement() {
               <Eye className="h-4 w-4" />
             </Button>
           )}
+          <Button 
+            size="sm" 
+            variant="outline" 
+            onClick={() => handleDuplicate(row)}
+            title="Duplicate"
+          >
+            <Copy className="h-4 w-4" />
+          </Button>
           <Button size="sm" variant="outline" onClick={() => openEditDialog(row)}>
             <Edit className="h-4 w-4" />
           </Button>
@@ -256,9 +331,31 @@ export function BlogManagement() {
           </DialogTrigger>
           <DialogContent className="max-w-5xl max-h-[95vh]">
             <DialogHeader>
-              <DialogTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5" />
-                {editingPost ? "Edit Blog Post" : "Create New Blog Post"}
+              <DialogTitle className="flex items-center gap-2 justify-between">
+                <div className="flex items-center gap-2">
+                  <FileText className="h-5 w-5" />
+                  {editingPost ? "Edit Blog Post" : "Create New Blog Post"}
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowPreview(true)}
+                  >
+                    <Eye className="h-4 w-4 mr-2" />
+                    Preview
+                  </Button>
+                  {editingPost && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowRevisions(true)}
+                    >
+                      <HistoryIcon className="h-4 w-4 mr-2" />
+                      Revisions
+                    </Button>
+                  )}
+                </div>
               </DialogTitle>
             </DialogHeader>
             
@@ -352,6 +449,11 @@ export function BlogManagement() {
                     </p>
                   </div>
 
+                  <SchedulePublish
+                    value={formData.scheduled_publish_at}
+                    onChange={(value) => setFormData({ ...formData, scheduled_publish_at: value })}
+                  />
+
                   <div className="space-y-2">
                     <Label>Content *</Label>
                     <WYSIWYGEditor
@@ -415,6 +517,22 @@ export function BlogManagement() {
           searchPlaceholder="Search blog posts..."
         />
       </Card>
+
+      <ContentPreview
+        open={showPreview}
+        onOpenChange={setShowPreview}
+        title={formData.title}
+        content={formData.content}
+        featuredImage={formData.featured_image}
+      />
+
+      <RevisionHistory
+        open={showRevisions}
+        onOpenChange={setShowRevisions}
+        contentType="blog_post"
+        contentId={editingPost?.id || null}
+        onRestore={handleRestoreRevision}
+      />
     </div>
   );
 }
