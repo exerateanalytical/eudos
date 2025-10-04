@@ -242,16 +242,26 @@ export type Database = {
           created_at: string | null
           excerpt: string | null
           featured_image: string | null
+          focus_keyword: string | null
           id: string
+          noindex: boolean | null
+          og_description: string | null
+          og_image: string | null
+          og_title: string | null
           published_at: string | null
+          readability_score: number | null
+          related_keywords: string[] | null
           scheduled_publish_at: string | null
+          schema_type: string | null
           seo_description: string | null
           seo_keywords: string | null
+          seo_score: number | null
           seo_title: string | null
           slug: string
           status: string
           tags: string[] | null
           title: string
+          twitter_card_type: string | null
           updated_at: string | null
         }
         Insert: {
@@ -262,16 +272,26 @@ export type Database = {
           created_at?: string | null
           excerpt?: string | null
           featured_image?: string | null
+          focus_keyword?: string | null
           id?: string
+          noindex?: boolean | null
+          og_description?: string | null
+          og_image?: string | null
+          og_title?: string | null
           published_at?: string | null
+          readability_score?: number | null
+          related_keywords?: string[] | null
           scheduled_publish_at?: string | null
+          schema_type?: string | null
           seo_description?: string | null
           seo_keywords?: string | null
+          seo_score?: number | null
           seo_title?: string | null
           slug: string
           status?: string
           tags?: string[] | null
           title: string
+          twitter_card_type?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -282,16 +302,26 @@ export type Database = {
           created_at?: string | null
           excerpt?: string | null
           featured_image?: string | null
+          focus_keyword?: string | null
           id?: string
+          noindex?: boolean | null
+          og_description?: string | null
+          og_image?: string | null
+          og_title?: string | null
           published_at?: string | null
+          readability_score?: number | null
+          related_keywords?: string[] | null
           scheduled_publish_at?: string | null
+          schema_type?: string | null
           seo_description?: string | null
           seo_keywords?: string | null
+          seo_score?: number | null
           seo_title?: string | null
           slug?: string
           status?: string
           tags?: string[] | null
           title?: string
+          twitter_card_type?: string | null
           updated_at?: string | null
         }
         Relationships: []
@@ -301,45 +331,75 @@ export type Database = {
           canonical_url: string | null
           content: string
           created_at: string | null
+          focus_keyword: string | null
           id: string
+          noindex: boolean | null
+          og_description: string | null
+          og_image: string | null
+          og_title: string | null
+          readability_score: number | null
+          related_keywords: string[] | null
           scheduled_publish_at: string | null
+          schema_type: string | null
           seo_description: string | null
           seo_keywords: string | null
+          seo_score: number | null
           seo_title: string | null
           slug: string
           status: string
           tags: string[] | null
           title: string
+          twitter_card_type: string | null
           updated_at: string | null
         }
         Insert: {
           canonical_url?: string | null
           content: string
           created_at?: string | null
+          focus_keyword?: string | null
           id?: string
+          noindex?: boolean | null
+          og_description?: string | null
+          og_image?: string | null
+          og_title?: string | null
+          readability_score?: number | null
+          related_keywords?: string[] | null
           scheduled_publish_at?: string | null
+          schema_type?: string | null
           seo_description?: string | null
           seo_keywords?: string | null
+          seo_score?: number | null
           seo_title?: string | null
           slug: string
           status?: string
           tags?: string[] | null
           title: string
+          twitter_card_type?: string | null
           updated_at?: string | null
         }
         Update: {
           canonical_url?: string | null
           content?: string
           created_at?: string | null
+          focus_keyword?: string | null
           id?: string
+          noindex?: boolean | null
+          og_description?: string | null
+          og_image?: string | null
+          og_title?: string | null
+          readability_score?: number | null
+          related_keywords?: string[] | null
           scheduled_publish_at?: string | null
+          schema_type?: string | null
           seo_description?: string | null
           seo_keywords?: string | null
+          seo_score?: number | null
           seo_title?: string | null
           slug?: string
           status?: string
           tags?: string[] | null
           title?: string
+          twitter_card_type?: string | null
           updated_at?: string | null
         }
         Relationships: []
@@ -353,15 +413,24 @@ export type Database = {
           created_at: string | null
           description: string
           features: Json | null
+          focus_keyword: string | null
           gallery_images: Json | null
           id: string
           image_url: string | null
           name: string
+          noindex: boolean | null
+          og_description: string | null
+          og_image: string | null
+          og_title: string | null
           price: number | null
+          readability_score: number | null
+          related_keywords: string[] | null
           related_products: Json | null
           scheduled_publish_at: string | null
+          schema_type: string | null
           seo_description: string | null
           seo_keywords: string | null
+          seo_score: number | null
           seo_title: string | null
           sku: string | null
           slug: string
@@ -369,6 +438,7 @@ export type Database = {
           stock_quantity: number | null
           stock_status: string | null
           tags: string[] | null
+          twitter_card_type: string | null
           updated_at: string | null
         }
         Insert: {
@@ -379,15 +449,24 @@ export type Database = {
           created_at?: string | null
           description: string
           features?: Json | null
+          focus_keyword?: string | null
           gallery_images?: Json | null
           id?: string
           image_url?: string | null
           name: string
+          noindex?: boolean | null
+          og_description?: string | null
+          og_image?: string | null
+          og_title?: string | null
           price?: number | null
+          readability_score?: number | null
+          related_keywords?: string[] | null
           related_products?: Json | null
           scheduled_publish_at?: string | null
+          schema_type?: string | null
           seo_description?: string | null
           seo_keywords?: string | null
+          seo_score?: number | null
           seo_title?: string | null
           sku?: string | null
           slug: string
@@ -395,6 +474,7 @@ export type Database = {
           stock_quantity?: number | null
           stock_status?: string | null
           tags?: string[] | null
+          twitter_card_type?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -405,15 +485,24 @@ export type Database = {
           created_at?: string | null
           description?: string
           features?: Json | null
+          focus_keyword?: string | null
           gallery_images?: Json | null
           id?: string
           image_url?: string | null
           name?: string
+          noindex?: boolean | null
+          og_description?: string | null
+          og_image?: string | null
+          og_title?: string | null
           price?: number | null
+          readability_score?: number | null
+          related_keywords?: string[] | null
           related_products?: Json | null
           scheduled_publish_at?: string | null
+          schema_type?: string | null
           seo_description?: string | null
           seo_keywords?: string | null
+          seo_score?: number | null
           seo_title?: string | null
           sku?: string | null
           slug?: string
@@ -421,6 +510,7 @@ export type Database = {
           stock_quantity?: number | null
           stock_status?: string | null
           tags?: string[] | null
+          twitter_card_type?: string | null
           updated_at?: string | null
         }
         Relationships: [
@@ -481,6 +571,42 @@ export type Database = {
           status?: string | null
           updated_at?: string | null
           urgency?: string
+        }
+        Relationships: []
+      }
+      content_analytics: {
+        Row: {
+          avg_time_on_page: number | null
+          bounce_rate: number | null
+          content_id: string
+          content_type: string
+          created_at: string | null
+          id: string
+          unique_views: number | null
+          updated_at: string | null
+          views: number | null
+        }
+        Insert: {
+          avg_time_on_page?: number | null
+          bounce_rate?: number | null
+          content_id: string
+          content_type: string
+          created_at?: string | null
+          id?: string
+          unique_views?: number | null
+          updated_at?: string | null
+          views?: number | null
+        }
+        Update: {
+          avg_time_on_page?: number | null
+          bounce_rate?: number | null
+          content_id?: string
+          content_type?: string
+          created_at?: string | null
+          id?: string
+          unique_views?: number | null
+          updated_at?: string | null
+          views?: number | null
         }
         Relationships: []
       }
@@ -578,6 +704,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      content_templates: {
+        Row: {
+          content_type: string
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: string
+          name: string
+          template_data: Json
+          thumbnail: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          content_type: string
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          template_data: Json
+          thumbnail?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          content_type?: string
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          template_data?: Json
+          thumbnail?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       document_applications: {
         Row: {
