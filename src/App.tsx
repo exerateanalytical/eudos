@@ -8,6 +8,8 @@ import { Layout } from "./components/Layout";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { ContentProtection } from "./components/ContentProtection";
+import { DynamicPage } from "./components/DynamicPage";
+import { DynamicProduct } from "./components/DynamicProduct";
 import { useEffect } from "react";
 import { performanceMonitor } from "./lib/performance";
 import Index from "./pages/Index";
@@ -61,34 +63,43 @@ const App = () => {
             <Layout>
             <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/apply" element={<Apply />} />
-            <Route path="/products" element={<Products />} />
             
-            <Route path="/product/:productId" element={<ProductDetail />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/faq" element={<FAQ />} />
-            <Route path="/testimonials" element={<Testimonials />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:id" element={<BlogPost />} />
-            <Route path="/citizenship" element={<Citizenship />} />
-            <Route path="/citizenship/:country" element={<CitizenshipDetail />} />
-            <Route path="/diplomas" element={<Diplomas />} />
-            <Route path="/diploma/:university" element={<DiplomaDetail />} />
-            <Route path="/certifications" element={<Certifications />} />
-            <Route path="/certification/:certificationName" element={<CertificationDetail />} />
-            <Route path="/drivers-license" element={<DriversLicense />} />
-            <Route path="/drivers-license/:licenseId" element={<DriverLicenseDetail />} />
-            <Route path="/passports" element={<Passports />} />
-            <Route path="/passports/:passportId" element={<PassportDetail />} />
+            {/* Protected/Authenticated Routes */}
+            <Route path="/apply" element={<Apply />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/dashboard/*" element={<Dashboard />} />
             <Route path="/admin/*" element={<Admin />} />
-            <Route path="/security-features" element={<SecurityFeatures />} />
-            <Route path="/escrow" element={<Escrow />} />
-            <Route path="/track-order" element={<TrackOrder />} />
+            
+            {/* Legacy Product Detail Routes - Keep for backward compatibility */}
+            <Route path="/product/:productId" element={<ProductDetail />} />
+            <Route path="/citizenship/:country" element={<CitizenshipDetail />} />
+            <Route path="/diploma/:university" element={<DiplomaDetail />} />
+            <Route path="/certification/:certificationName" element={<CertificationDetail />} />
+            <Route path="/drivers-license/:licenseId" element={<DriverLicenseDetail />} />
+            <Route path="/passports/:passportId" element={<PassportDetail />} />
+            
+            {/* Legacy Category Routes - Keep for backward compatibility */}
+            <Route path="/products" element={<Products />} />
+            <Route path="/citizenship" element={<Citizenship />} />
+            <Route path="/diplomas" element={<Diplomas />} />
+            <Route path="/certifications" element={<Certifications />} />
+            <Route path="/drivers-license" element={<DriversLicense />} />
+            <Route path="/passports" element={<Passports />} />
+            
+            {/* Blog Routes */}
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:id" element={<BlogPost />} />
+            
+            {/* Error Pages */}
             <Route path="/403" element={<Forbidden />} />
             <Route path="/500" element={<ServerError />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="/404" element={<NotFound />} />
+            
+            {/* Dynamic CMS Routes - These should come last before catch-all */}
+            <Route path="/p/:slug" element={<DynamicProduct />} />
+            <Route path="/:slug" element={<DynamicPage />} />
+            
+            {/* Catch-all 404 - Must be last */}
             <Route path="*" element={<NotFound />} />
             </Routes>
             </Layout>
