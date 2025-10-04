@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { FileText, Shield, Clock, CheckCircle, Printer, Building2, Award, Sparkles, CreditCard, GraduationCap, Fingerprint, Cpu, Eye, Radio, Lock, Scan, FileCheck, Database, BookOpen, ShoppingBag } from "lucide-react";
 import { useState, useEffect } from "react";
 import { SecurityFeaturesSection } from "@/components/SecurityFeaturesSection";
+import { MobileBottomBar } from "@/components/MobileBottomBar";
 import { SEO } from "@/components/SEO";
 import { seoConfig } from "@/config/seo";
 
@@ -150,7 +151,7 @@ const Index = () => {
   ];
 
   return (
-    <div className="bg-background overflow-x-hidden">
+    <div className="bg-background overflow-x-hidden pb-20 md:pb-0">
       <SEO 
         title={seoConfig.home.title}
         description={seoConfig.home.description}
@@ -158,7 +159,7 @@ const Index = () => {
         canonicalUrl={baseUrl}
       />
       {/* Hero Section - Mobile First */}
-      <section className="relative py-8 md:py-12 lg:py-16 px-4 overflow-hidden">
+      <section className="relative py-12 md:py-16 lg:py-20 px-4 md:px-6 overflow-hidden">
         {/* Animated background gradient */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
         <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]" />
@@ -168,7 +169,7 @@ const Index = () => {
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary-glow/10 rounded-full blur-3xl animate-float hidden lg:block" style={{ animationDelay: '2s' }} />
         
         <div className="container mx-auto relative z-10">
-          <div className="grid lg:grid-cols-2 gap-6 md:gap-8 lg:gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 md:gap-10 lg:gap-14 items-center">
             {/* Left side - Text content */}
             <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-primary/10 border border-primary/20 mb-4 md:mb-6 animate-fade-in">
@@ -471,6 +472,8 @@ const Index = () => {
       {/* Security Features Section */}
       <SecurityFeaturesSection />
 
+      {/* Mobile Bottom Action Bar */}
+      <MobileBottomBar />
 
       <style>{`
         .bg-grid-pattern {
