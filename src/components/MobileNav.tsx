@@ -52,16 +52,16 @@ export const MobileNav = ({ currentPage }: MobileNavProps) => {
     <>
       {/* Mobile Header */}
       <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto px-4 py-4 md:py-5 flex items-center justify-between">
+        <div className="container mx-auto px-4 py-5 md:py-5 flex items-center justify-between">
           <div 
             className="flex items-center gap-3 md:gap-4 group cursor-pointer active:scale-95 transition-transform touch-manipulation" 
             onClick={() => handleNavClick("/")}
           >
             <div className="relative">
-              <Globe className="h-8 w-8 md:h-10 md:w-10 text-primary transition-transform duration-300 group-hover:scale-110" />
-              <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <Globe className="h-9 w-9 md:h-10 md:w-10 text-primary transition-transform duration-300 group-hover:scale-110 drop-shadow-lg" />
+              <div className="absolute inset-0 bg-primary/30 blur-lg rounded-full opacity-50 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
-            <h1 className="text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+            <h1 className="text-2xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent drop-shadow-sm">
               SecurePrint Labs
             </h1>
           </div>
