@@ -18,6 +18,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { WYSIWYGEditor } from "@/components/admin/WYSIWYGEditor";
 import { FeaturedImagePicker } from "@/components/admin/FeaturedImagePicker";
+import { ImageGalleryManager } from "@/components/admin/ImageGalleryManager";
+import { ProductAttributes } from "@/components/admin/ProductAttributes";
+import { InventoryManagement } from "@/components/admin/InventoryManagement";
+import { RelatedProducts } from "@/components/admin/RelatedProducts";
 import { AdminSEOForm } from "@/components/admin/AdminSEOForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -61,6 +65,12 @@ export function ProductManagement() {
     country: "",
     status: "active",
     image_url: "",
+    gallery_images: [] as string[],
+    stock_quantity: 0,
+    stock_status: "in_stock",
+    sku: "",
+    attributes: [] as Array<{ name: string; value: string }>,
+    related_products: [] as string[],
     seo_title: "",
     seo_description: "",
     seo_keywords: "",
@@ -149,6 +159,12 @@ export function ProductManagement() {
       country: "",
       status: "active",
       image_url: "",
+      gallery_images: [],
+      stock_quantity: 0,
+      stock_status: "in_stock",
+      sku: "",
+      attributes: [],
+      related_products: [],
       seo_title: "",
       seo_description: "",
       seo_keywords: "",
@@ -167,6 +183,12 @@ export function ProductManagement() {
       country: product.country || "",
       status: product.status,
       image_url: product.image_url || "",
+      gallery_images: (product as any).gallery_images || [],
+      stock_quantity: (product as any).stock_quantity || 0,
+      stock_status: (product as any).stock_status || "in_stock",
+      sku: (product as any).sku || "",
+      attributes: [],
+      related_products: (product as any).related_products || [],
       seo_title: product.seo_title || "",
       seo_description: product.seo_description || "",
       seo_keywords: product.seo_keywords || "",
@@ -349,7 +371,12 @@ export function ProductManagement() {
               <FeaturedImagePicker
                 value={formData.image_url || ''}
                 onChange={(value) => setFormData({ ...formData, image_url: value })}
-                label="Product Image"
+                label="Featured Image"
+              />
+
+              <ImageGalleryManager
+                images={formData.gallery_images}
+                onChange={(images) => setFormData({ ...formData, gallery_images: images })}
               />
 
               <div className="space-y-2">
@@ -362,6 +389,26 @@ export function ProductManagement() {
                   placeholder="Write product description..."
                 />
               </div>
+
+              <InventoryManagement
+                stockQuantity={formData.stock_quantity}
+                stockStatus={formData.stock_status}
+                sku={formData.sku}
+                onStockQuantityChange={(value) => setFormData({ ...formData, stock_quantity: value })}
+                onStockStatusChange={(value) => setFormData({ ...formData, stock_status: value })}
+                onSkuChange={(value) => setFormData({ ...formData, sku: value })}
+              />
+
+              <ProductAttributes
+                attributes={formData.attributes}
+                onChange={(attrs) => setFormData({ ...formData, attributes: attrs })}
+              />
+
+              <RelatedProducts
+                selectedIds={formData.related_products}
+                onChange={(ids) => setFormData({ ...formData, related_products: ids })}
+                currentProductId={editingProduct?.id}
+              />
 
               <AdminSEOForm
                 seoTitle={formData.seo_title}

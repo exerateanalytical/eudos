@@ -218,62 +218,88 @@ export type Database = {
       cms_products: {
         Row: {
           canonical_url: string | null
+          category_id: string | null
           category_type: string
           country: string | null
           created_at: string | null
           description: string
           features: Json | null
+          gallery_images: Json | null
           id: string
           image_url: string | null
           name: string
           price: number | null
+          related_products: Json | null
           scheduled_publish_at: string | null
           seo_description: string | null
           seo_keywords: string | null
           seo_title: string | null
+          sku: string | null
           slug: string
           status: string
+          stock_quantity: number | null
+          stock_status: string | null
           updated_at: string | null
         }
         Insert: {
           canonical_url?: string | null
+          category_id?: string | null
           category_type: string
           country?: string | null
           created_at?: string | null
           description: string
           features?: Json | null
+          gallery_images?: Json | null
           id?: string
           image_url?: string | null
           name: string
           price?: number | null
+          related_products?: Json | null
           scheduled_publish_at?: string | null
           seo_description?: string | null
           seo_keywords?: string | null
           seo_title?: string | null
+          sku?: string | null
           slug: string
           status?: string
+          stock_quantity?: number | null
+          stock_status?: string | null
           updated_at?: string | null
         }
         Update: {
           canonical_url?: string | null
+          category_id?: string | null
           category_type?: string
           country?: string | null
           created_at?: string | null
           description?: string
           features?: Json | null
+          gallery_images?: Json | null
           id?: string
           image_url?: string | null
           name?: string
           price?: number | null
+          related_products?: Json | null
           scheduled_publish_at?: string | null
           seo_description?: string | null
           seo_keywords?: string | null
           seo_title?: string | null
+          sku?: string | null
           slug?: string
           status?: string
+          stock_quantity?: number | null
+          stock_status?: string | null
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "cms_products_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "product_categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       contact_inquiries: {
         Row: {
@@ -782,6 +808,76 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: true
             referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_attributes: {
+        Row: {
+          attribute_name: string
+          attribute_value: string
+          created_at: string
+          id: string
+          product_id: string
+        }
+        Insert: {
+          attribute_name: string
+          attribute_value: string
+          created_at?: string
+          id?: string
+          product_id: string
+        }
+        Update: {
+          attribute_name?: string
+          attribute_value?: string
+          created_at?: string
+          id?: string
+          product_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_attributes_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "cms_products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          parent_id: string | null
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          parent_id?: string | null
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          parent_id?: string | null
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_categories_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "product_categories"
             referencedColumns: ["id"]
           },
         ]
