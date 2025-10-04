@@ -5,14 +5,13 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Bitcoin, Plus } from "lucide-react";
+import { Bitcoin, Plus, Edit, Trash2 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -51,6 +50,7 @@ export function BitcoinWalletManagement() {
   const [payments, setPayments] = useState<Payment[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [editingWallet, setEditingWallet] = useState<Wallet | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     xpub: "",
@@ -86,23 +86,46 @@ export function BitcoinWalletManagement() {
     }
   };
 
-  const handleAddWallet = async () => {
+  const handleSaveWallet = async () => {
     try {
-      const { error } = await supabase.from("btc_wallets").insert({
-        name: formData.name,
-        xpub: formData.xpub,
-        network: formData.network,
-        derivation_path: formData.derivation_path
-      });
+      if (editingWallet) {
+        // Update existing wallet
+        const { error } = await supabase
+          .from("btc_wallets")
+          .update({
+            name: formData.name,
+            xpub: formData.xpub,
+            network: formData.network,
+            derivation_path: formData.derivation_path,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", editingWallet.id);
 
-      if (error) throw error;
+        if (error) throw error;
 
-      toast({
-        title: "Success",
-        description: "Bitcoin wallet added successfully",
-      });
+        toast({
+          title: "Success",
+          description: "Wallet updated successfully",
+        });
+      } else {
+        // Add new wallet
+        const { error } = await supabase.from("btc_wallets").insert({
+          name: formData.name,
+          xpub: formData.xpub,
+          network: formData.network,
+          derivation_path: formData.derivation_path
+        });
+
+        if (error) throw error;
+
+        toast({
+          title: "Success",
+          description: "Bitcoin wallet added successfully",
+        });
+      }
 
       setDialogOpen(false);
+      setEditingWallet(null);
       setFormData({
         name: "",
         xpub: "",
@@ -117,6 +140,56 @@ export function BitcoinWalletManagement() {
         variant: "destructive",
       });
     }
+  };
+
+  const handleEditWallet = (wallet: Wallet) => {
+    setEditingWallet(wallet);
+    setFormData({
+      name: wallet.name,
+      xpub: wallet.xpub,
+      network: wallet.network,
+      derivation_path: wallet.derivation_path,
+    });
+    setDialogOpen(true);
+  };
+
+  const handleDeleteWallet = async (walletId: string, walletName: string) => {
+    if (!confirm(`Are you sure you want to delete wallet "${walletName}"?`)) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from("btc_wallets")
+        .delete()
+        .eq("id", walletId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Wallet deleted successfully",
+      });
+      
+      fetchData();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleOpenAddDialog = () => {
+    setEditingWallet(null);
+    setFormData({
+      name: "",
+      xpub: "",
+      network: "mainnet",
+      derivation_path: "m/84'/0'/0'/0"
+    });
+    setDialogOpen(true);
   };
 
   const walletColumns = [
@@ -148,6 +221,29 @@ export function BitcoinWalletManagement() {
       key: "created_at",
       label: "Created",
       render: (row: Wallet) => new Date(row.created_at).toLocaleDateString(),
+    },
+    {
+      key: "actions",
+      label: "Actions",
+      render: (row: Wallet) => (
+        <div className="flex gap-2">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => handleEditWallet(row)}
+          >
+            <Edit className="h-4 w-4 mr-1" />
+            Edit
+          </Button>
+          <Button
+            size="sm"
+            variant="destructive"
+            onClick={() => handleDeleteWallet(row.id, row.name)}
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
+      ),
     },
   ];
 
@@ -216,66 +312,73 @@ export function BitcoinWalletManagement() {
             Manage Bitcoin wallets and payments
           </p>
         </div>
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Wallet
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Add Bitcoin Wallet</DialogTitle>
-              <DialogDescription>
-                Add a new Bitcoin wallet using an xpub key
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div>
-                <Label>Wallet Name</Label>
-                <Input
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Primary Wallet"
-                />
-              </div>
-              <div>
-                <Label>Extended Public Key (xpub)</Label>
-                <Input
-                  value={formData.xpub}
-                  onChange={(e) => setFormData({ ...formData, xpub: e.target.value })}
-                  placeholder="xpub..."
-                />
-              </div>
-              <div>
-                <Label>Network</Label>
-                <Select
-                  value={formData.network}
-                  onValueChange={(value) => setFormData({ ...formData, network: value })}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="mainnet">Mainnet</SelectItem>
-                    <SelectItem value="testnet">Testnet</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label>Derivation Path</Label>
-                <Input
-                  value={formData.derivation_path}
-                  onChange={(e) => setFormData({ ...formData, derivation_path: e.target.value })}
-                />
-              </div>
-              <Button onClick={handleAddWallet} className="w-full">
-                Add Wallet
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+        <Button onClick={handleOpenAddDialog}>
+          <Plus className="h-4 w-4 mr-2" />
+          Add Wallet
+        </Button>
       </div>
+
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {editingWallet ? "Edit Bitcoin Wallet" : "Add Bitcoin Wallet"}
+            </DialogTitle>
+            <DialogDescription>
+              {editingWallet 
+                ? "Update your Bitcoin wallet details" 
+                : "Add a new Bitcoin wallet using an xpub key"}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label>Wallet Name</Label>
+              <Input
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                placeholder="Primary Wallet"
+              />
+            </div>
+            <div>
+              <Label>Extended Public Key (xpub/zpub)</Label>
+              <Input
+                value={formData.xpub}
+                onChange={(e) => setFormData({ ...formData, xpub: e.target.value })}
+                placeholder="zpub6nXBJB56BbW7d4kg4PHdzQNCzcx5XVj3aczVTa12PSbM9KZfVKBfph6jgfsZ..."
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                Supports xpub, ypub, zpub formats
+              </p>
+            </div>
+            <div>
+              <Label>Network</Label>
+              <Select
+                value={formData.network}
+                onValueChange={(value) => setFormData({ ...formData, network: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="mainnet">Mainnet</SelectItem>
+                  <SelectItem value="testnet">Testnet</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Derivation Path</Label>
+              <Input
+                value={formData.derivation_path}
+                onChange={(e) => setFormData({ ...formData, derivation_path: e.target.value })}
+                placeholder="m/84'/0'/0'/0"
+              />
+            </div>
+            <Button onClick={handleSaveWallet} className="w-full">
+              {editingWallet ? "Update Wallet" : "Add Wallet"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <div className="grid gap-4 md:grid-cols-3">
         <Card className="p-6">
@@ -294,11 +397,21 @@ export function BitcoinWalletManagement() {
 
       <Card className="p-6">
         <h2 className="text-xl font-semibold mb-4">Wallets</h2>
-        <AdminDataTable
-          data={wallets}
-          columns={walletColumns}
-          searchPlaceholder="Search wallets..."
-        />
+        {wallets.length === 0 ? (
+          <div className="text-center py-8">
+            <p className="text-muted-foreground mb-4">No wallets configured yet</p>
+            <Button onClick={handleOpenAddDialog}>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Your First Wallet
+            </Button>
+          </div>
+        ) : (
+          <AdminDataTable
+            data={wallets}
+            columns={walletColumns}
+            searchPlaceholder="Search wallets..."
+          />
+        )}
       </Card>
 
       <Card className="p-6">
