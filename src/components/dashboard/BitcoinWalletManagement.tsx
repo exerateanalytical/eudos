@@ -1,0 +1,314 @@
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { AdminDataTable } from "@/components/admin/AdminDataTable";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { Bitcoin, Plus } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+interface Wallet {
+  id: string;
+  name: string;
+  xpub: string;
+  network: string;
+  derivation_path: string;
+  next_index: number;
+  created_at: string;
+}
+
+interface Payment {
+  id: string;
+  wallet_id: string;
+  order_id: string;
+  address: string;
+  amount_btc: number;
+  status: string;
+  txid: string | null;
+  confirmations: number;
+  created_at: string;
+}
+
+export function BitcoinWalletManagement() {
+  const [wallets, setWallets] = useState<Wallet[]>([]);
+  const [payments, setPayments] = useState<Payment[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    xpub: "",
+    network: "mainnet",
+    derivation_path: "m/84'/0'/0'/0"
+  });
+  const { toast } = useToast();
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const [walletsResult, paymentsResult] = await Promise.all([
+        supabase.from("btc_wallets").select("*").order("created_at", { ascending: false }),
+        supabase.from("btc_payments").select("*").order("created_at", { ascending: false }),
+      ]);
+
+      if (walletsResult.error) throw walletsResult.error;
+      if (paymentsResult.error) throw paymentsResult.error;
+
+      setWallets(walletsResult.data || []);
+      setPayments(paymentsResult.data || []);
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddWallet = async () => {
+    try {
+      const { error } = await supabase.from("btc_wallets").insert({
+        name: formData.name,
+        xpub: formData.xpub,
+        network: formData.network,
+        derivation_path: formData.derivation_path
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Bitcoin wallet added successfully",
+      });
+
+      setDialogOpen(false);
+      setFormData({
+        name: "",
+        xpub: "",
+        network: "mainnet",
+        derivation_path: "m/84'/0'/0'/0"
+      });
+      fetchData();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const walletColumns = [
+    {
+      key: "name",
+      label: "Name",
+    },
+    {
+      key: "network",
+      label: "Network",
+      render: (row: Wallet) => (
+        <Badge variant={row.network === "mainnet" ? "default" : "secondary"}>
+          {row.network}
+        </Badge>
+      ),
+    },
+    {
+      key: "xpub",
+      label: "XPub",
+      render: (row: Wallet) => (
+        <code className="text-xs">{row.xpub.substring(0, 20)}...</code>
+      ),
+    },
+    {
+      key: "next_index",
+      label: "Next Index",
+    },
+    {
+      key: "created_at",
+      label: "Created",
+      render: (row: Wallet) => new Date(row.created_at).toLocaleDateString(),
+    },
+  ];
+
+  const paymentColumns = [
+    {
+      key: "order_id",
+      label: "Order ID",
+    },
+    {
+      key: "address",
+      label: "Address",
+      render: (row: Payment) => (
+        <code className="text-xs">{row.address.substring(0, 15)}...</code>
+      ),
+    },
+    {
+      key: "amount_btc",
+      label: "Amount (BTC)",
+      render: (row: Payment) => `${row.amount_btc} BTC`,
+    },
+    {
+      key: "status",
+      label: "Status",
+      render: (row: Payment) => (
+        <Badge variant={row.status === "paid" ? "default" : "secondary"}>
+          {row.status}
+        </Badge>
+      ),
+    },
+    {
+      key: "confirmations",
+      label: "Confirmations",
+    },
+    {
+      key: "created_at",
+      label: "Date",
+      render: (row: Payment) => new Date(row.created_at).toLocaleDateString(),
+    },
+  ];
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <p className="text-muted-foreground">Loading Bitcoin data...</p>
+      </div>
+    );
+  }
+
+  const totalReceived = payments
+    .filter((p) => p.status === "paid")
+    .reduce((sum, p) => sum + Number(p.amount_btc), 0);
+
+  const pendingAmount = payments
+    .filter((p) => p.status === "pending")
+    .reduce((sum, p) => sum + Number(p.amount_btc), 0);
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold flex items-center gap-2">
+            <Bitcoin className="h-8 w-8" />
+            Bitcoin Payments
+          </h1>
+          <p className="text-muted-foreground mt-1">
+            Manage Bitcoin wallets and payments
+          </p>
+        </div>
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <DialogTrigger asChild>
+            <Button>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Wallet
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Add Bitcoin Wallet</DialogTitle>
+              <DialogDescription>
+                Add a new Bitcoin wallet using an xpub key
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label>Wallet Name</Label>
+                <Input
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="Primary Wallet"
+                />
+              </div>
+              <div>
+                <Label>Extended Public Key (xpub)</Label>
+                <Input
+                  value={formData.xpub}
+                  onChange={(e) => setFormData({ ...formData, xpub: e.target.value })}
+                  placeholder="xpub..."
+                />
+              </div>
+              <div>
+                <Label>Network</Label>
+                <Select
+                  value={formData.network}
+                  onValueChange={(value) => setFormData({ ...formData, network: value })}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="mainnet">Mainnet</SelectItem>
+                    <SelectItem value="testnet">Testnet</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label>Derivation Path</Label>
+                <Input
+                  value={formData.derivation_path}
+                  onChange={(e) => setFormData({ ...formData, derivation_path: e.target.value })}
+                />
+              </div>
+              <Button onClick={handleAddWallet} className="w-full">
+                Add Wallet
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-3">
+        <Card className="p-6">
+          <p className="text-sm text-muted-foreground">Total Received</p>
+          <p className="text-2xl font-bold">{totalReceived.toFixed(8)} BTC</p>
+        </Card>
+        <Card className="p-6">
+          <p className="text-sm text-muted-foreground">Pending</p>
+          <p className="text-2xl font-bold">{pendingAmount.toFixed(8)} BTC</p>
+        </Card>
+        <Card className="p-6">
+          <p className="text-sm text-muted-foreground">Total Payments</p>
+          <p className="text-2xl font-bold">{payments.length}</p>
+        </Card>
+      </div>
+
+      <Card className="p-6">
+        <h2 className="text-xl font-semibold mb-4">Wallets</h2>
+        <AdminDataTable
+          data={wallets}
+          columns={walletColumns}
+          searchPlaceholder="Search wallets..."
+        />
+      </Card>
+
+      <Card className="p-6">
+        <h2 className="text-xl font-semibold mb-4">Recent Payments</h2>
+        <AdminDataTable
+          data={payments}
+          columns={paymentColumns}
+          searchPlaceholder="Search payments..."
+        />
+      </Card>
+    </div>
+  );
+}
