@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -110,17 +112,73 @@ const generateDriversLicenses = () => {
   }));
 };
 
-const driversLicenses = generateDriversLicenses();
-
 const DriversLicense = () => {
   const navigate = useNavigate();
   const baseUrl = window.location.origin;
+  const { toast } = useToast();
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
   const [selectedLicense, setSelectedLicense] = useState<any>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
   const [selectedSecurityLevels, setSelectedSecurityLevels] = useState<string[]>([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [driversLicenses, setDriversLicenses] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchDriversLicenseProducts();
+  }, []);
+
+  const fetchDriversLicenseProducts = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("cms_products")
+        .select("*")
+        .eq("category_type", "drivers_license")
+        .eq("status", "active")
+        .order("name");
+
+      if (error) throw error;
+
+      const formattedLicenses = (data || []).map(product => ({
+        id: product.id,
+        title: product.name,
+        description: product.description || "",
+        country: product.country || "United States",
+        price: product.price || 800,
+        processing: "2-3 weeks",
+        securityLevel: "high",
+        region: euCountries.includes(product.country || "") ? "EU" : "Other",
+        logo: product.image_url,
+        features: Array.isArray(product.features) 
+          ? product.features.map((f: any) => f.text || f) 
+          : []
+      }));
+
+      setDriversLicenses(formattedLicenses);
+    } catch (error: any) {
+      console.error("Error fetching drivers license products:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load driver's licenses",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading driver's licenses...</p>
+        </div>
+      </div>
+    );
+  }
 
   const regions = [
     { id: "eu", label: "European Union", count: euCountries.length },

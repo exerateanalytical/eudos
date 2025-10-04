@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,8 +11,59 @@ import { Slider } from "@/components/ui/slider";
 import { SecurityFeaturesSection } from "@/components/SecurityFeaturesSection";
 import { SEO } from "@/components/SEO";
 import { seoConfig } from "@/config/seo";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
-const certifications = [
+const Certifications = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
+  const [priceRange, setPriceRange] = useState([0, 10000]);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [certifications, setCertifications] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchCertificationProducts();
+  }, []);
+
+  const fetchCertificationProducts = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("cms_products")
+        .select("*")
+        .eq("category_type", "certification")
+        .eq("status", "active")
+        .order("name");
+
+      if (error) throw error;
+
+      const formattedCertifications = (data || []).map((product, index) => ({
+        id: product.id,
+        name: product.name,
+        provider: product.country || "Various",
+        category: product.tags?.[0] || "Professional",
+        price: `$${product.price || 3000}`,
+        image: product.image_url
+      }));
+
+      setCertifications(formattedCertifications);
+    } catch (error: any) {
+      console.error("Error fetching certification products:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load certifications",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const oldHardcodedCertifications = [
   // Project Management & Business (20)
   { id: 1, name: "PMP – Project Management Professional", provider: "PMI", category: "Project Management & Business", price: "$3,500" },
   { id: 2, name: "PRINCE2 Foundation & Practitioner", provider: "AXELOS", category: "Project Management & Business", price: "$3,200" },
@@ -222,13 +273,19 @@ const certifications = [
   { id: 190, name: "Food Safety Certification (HACCP, ServSafe)", provider: "ServSafe", category: "Other Professional", price: "$2,000" },
 ];
 
-const Certifications = () => {
-  const navigate = useNavigate();
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading certifications...</p>
+        </div>
+      </div>
+    );
+  }
+
   const baseUrl = window.location.origin;
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState([1500, 8500]);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Get unique categories
   const categories = Array.from(new Set(certifications.map(c => c.category))).sort();
@@ -244,12 +301,12 @@ const Certifications = () => {
   const clearFilters = () => {
     setSelectedCategories([]);
     setPriceRange([1500, 8500]);
-    setSearchQuery("");
+    setSearchTerm("");
   };
 
   const filteredCertifications = certifications.filter((cert) => {
-    const matchesSearch = cert.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      cert.provider.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = cert.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      cert.provider.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(cert.category);
     
@@ -326,11 +383,11 @@ const Certifications = () => {
       <div className="container mx-auto px-4 py-4 lg:hidden">
         <Button 
           variant="outline" 
-          onClick={() => setSidebarOpen(!sidebarOpen)}
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           className="w-full"
         >
           <Filter className="mr-2 h-4 w-4" />
-          {sidebarOpen ? "Hide Filters" : "Show Filters"}
+          {isSidebarOpen ? "Hide Filters" : "Show Filters"}
         </Button>
       </div>
 
@@ -338,7 +395,7 @@ const Certifications = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="grid lg:grid-cols-4 gap-8">
           {/* Sidebar */}
-          <aside className={`lg:col-span-1 ${sidebarOpen ? 'block' : 'hidden lg:block'}`}>
+          <aside className={`lg:col-span-1 ${isSidebarOpen ? 'block' : 'hidden lg:block'}`}>
             <div className="lg:sticky lg:top-24 space-y-6">
               <Card className="border-border/50 bg-card backdrop-blur-sm">
                 <CardHeader>

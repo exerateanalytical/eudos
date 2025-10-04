@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,11 +11,62 @@ import { SecurityFeaturesSection } from "@/components/SecurityFeaturesSection";
 import { Slider } from "@/components/ui/slider";
 import { SEO } from "@/components/SEO";
 import { seoConfig } from "@/config/seo";
-
-
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import { getUniversitySeal } from "@/lib/universitySeals";
 
-const universities = [
+const Diplomas = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [priceRange, setPriceRange] = useState([0, 20000]);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [universities, setUniversities] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchDiplomaProducts();
+  }, []);
+
+  const fetchDiplomaProducts = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("cms_products")
+        .select("*")
+        .eq("category_type", "diploma")
+        .eq("status", "active")
+        .order("name");
+
+      if (error) throw error;
+
+      const formattedUniversities = (data || []).map((product, index) => ({
+        id: product.id,
+        name: product.name,
+        location: product.country || "United States",
+        ranking: index + 1,
+        price: `$${product.price || 15000}`,
+        type: product.tags?.includes("Community College") ? "Community College" : "University",
+        country: product.country || "USA",
+        image: product.image_url
+      }));
+
+      setUniversities(formattedUniversities);
+    } catch (error: any) {
+      console.error("Error fetching diploma products:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load university diplomas",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const oldHardcodedUniversities = [
   { id: 1, name: "Harvard University", location: "Cambridge, MA", ranking: 1, price: "$15,000" },
   { id: 2, name: "Stanford University", location: "Stanford, CA", ranking: 2, price: "$15,000" },
   { id: 3, name: "Massachusetts Institute of Technology (MIT)", location: "Cambridge, MA", ranking: 3, price: "$15,000" },
@@ -545,14 +596,18 @@ const universities = [
   { id: 513, name: "Hochschule Bielefeld", location: "Bielefeld, Germany", ranking: 81, price: "$8,000", country: "EU", type: "Technical" },
 ];
 
-const Diplomas = () => {
-  const navigate = useNavigate();
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading university diplomas...</p>
+        </div>
+      </div>
+    );
+  }
+
   const baseUrl = window.location.origin;
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState([4000, 15000]);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Get unique countries
   const countries = Array.from(new Set(universities.map(u => u.country || "USA"))).sort();
@@ -580,12 +635,12 @@ const Diplomas = () => {
     setSelectedCountries([]);
     setSelectedTypes([]);
     setPriceRange([4000, 15000]);
-    setSearchQuery("");
+    setSearchTerm("");
   };
 
   const filteredUniversities = universities.filter((uni) => {
-    const matchesSearch = uni.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      uni.location.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = uni.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      uni.location.toLowerCase().includes(searchTerm.toLowerCase());
     
     const country = uni.country || "USA";
     const matchesCountry = selectedCountries.length === 0 || selectedCountries.includes(country);
@@ -642,11 +697,11 @@ const Diplomas = () => {
         <div className="container mx-auto max-w-2xl">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <Input
+          <Input
               type="text"
               placeholder="Search universities by name or location..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10 h-12"
             />
           </div>
@@ -660,11 +715,11 @@ const Diplomas = () => {
       <div className="container mx-auto px-4 py-4 lg:hidden">
         <Button 
           variant="outline" 
-          onClick={() => setSidebarOpen(!sidebarOpen)}
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           className="w-full"
         >
           <Filter className="mr-2 h-4 w-4" />
-          {sidebarOpen ? "Hide Filters" : "Show Filters"}
+          {isSidebarOpen ? "Hide Filters" : "Show Filters"}
         </Button>
       </div>
 
@@ -672,7 +727,7 @@ const Diplomas = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="grid lg:grid-cols-4 gap-8">
           {/* Sidebar */}
-          <aside className={`lg:col-span-1 ${sidebarOpen ? 'block' : 'hidden lg:block'}`}>
+          <aside className={`lg:col-span-1 ${isSidebarOpen ? 'block' : 'hidden lg:block'}`}>
             <div className="lg:sticky lg:top-24 space-y-6">
               <Card className="border-border/50 bg-card backdrop-blur-sm">
                 <CardHeader>
