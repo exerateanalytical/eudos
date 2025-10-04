@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Headphones, Eye, Trash2 } from "lucide-react";
+import { Headphones, Eye, Trash2, Reply } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -24,6 +24,7 @@ interface SupportTicket {
   priority: string;
   status: string;
   created_at: string;
+  reply_count?: number;
 }
 
 export function SupportTicketManagement() {
@@ -45,7 +46,20 @@ export function SupportTicketManagement() {
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      setTickets(data || []);
+      
+      // Fetch reply counts for each ticket
+      const ticketsWithCounts = await Promise.all(
+        (data || []).map(async (ticket) => {
+          const { count } = await supabase
+            .from("ticket_replies")
+            .select("*", { count: "exact", head: true })
+            .eq("ticket_id", ticket.id);
+          
+          return { ...ticket, reply_count: count || 0 };
+        })
+      );
+      
+      setTickets(ticketsWithCounts);
     } catch (error: any) {
       toast({
         title: "Error",
@@ -151,6 +165,16 @@ export function SupportTicketManagement() {
       label: "Priority",
       render: (row: SupportTicket) => (
         <Badge variant={getPriorityColor(row.priority)}>{row.priority}</Badge>
+      ),
+    },
+    {
+      key: "reply_count",
+      label: "Replies",
+      render: (row: SupportTicket) => (
+        <div className="flex items-center gap-1">
+          <Reply className="h-4 w-4 text-muted-foreground" />
+          <span className="font-medium">{row.reply_count || 0}</span>
+        </div>
       ),
     },
     {

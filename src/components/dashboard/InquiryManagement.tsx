@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { MessageSquare, Eye, Trash2 } from "lucide-react";
+import { MessageSquare, Eye, Trash2, Reply } from "lucide-react";
 import { InquiryDetailModal } from "./InquiryDetailModal";
 import {
   Select,
@@ -29,6 +29,7 @@ interface Inquiry {
   specifications: string;
   status: string;
   created_at: string;
+  reply_count?: number;
 }
 
 export function InquiryManagement() {
@@ -50,7 +51,20 @@ export function InquiryManagement() {
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      setInquiries(data || []);
+      
+      // Fetch reply counts for each inquiry
+      const inquiriesWithCounts = await Promise.all(
+        (data || []).map(async (inquiry) => {
+          const { count } = await supabase
+            .from("inquiry_replies")
+            .select("*", { count: "exact", head: true })
+            .eq("inquiry_id", inquiry.id);
+          
+          return { ...inquiry, reply_count: count || 0 };
+        })
+      );
+      
+      setInquiries(inquiriesWithCounts);
     } catch (error: any) {
       toast({
         title: "Error",
@@ -132,6 +146,16 @@ export function InquiryManagement() {
       label: "Document Type",
       render: (row: Inquiry) => (
         <Badge variant="outline">{row.document_type}</Badge>
+      ),
+    },
+    {
+      key: "reply_count",
+      label: "Replies",
+      render: (row: Inquiry) => (
+        <div className="flex items-center gap-1">
+          <Reply className="h-4 w-4 text-muted-foreground" />
+          <span className="font-medium">{row.reply_count || 0}</span>
+        </div>
       ),
     },
     {
