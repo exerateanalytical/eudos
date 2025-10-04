@@ -34,6 +34,7 @@ export function UserManagement() {
   const [detailModalOpen, setDetailModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<{ id: string; name: string; role: string } | null>(null);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const [userRoles, setUserRoles] = useState<Record<string, string>>({});
   const [stats, setStats] = useState<UserStats>({
     totalUsers: 0,
     admins: 0,
@@ -56,10 +57,17 @@ export function UserManagement() {
       if (error) throw error;
       setUsers(data || []);
 
-      // Calculate stats
+      // Fetch all roles at once
+      const rolesMap: Record<string, string> = {};
       const roles = await Promise.all(
-        (data || []).map(user => getUserRole(user.id))
+        (data || []).map(async (user) => {
+          const role = await getUserRole(user.id);
+          rolesMap[user.id] = role;
+          return role;
+        })
       );
+      
+      setUserRoles(rolesMap);
       
       setStats({
         totalUsers: data?.length || 0,
@@ -135,12 +143,7 @@ export function UserManagement() {
       key: "role",
       label: "Role",
       render: (row: Profile) => {
-        const [role, setRole] = useState<string>("user");
-
-        useEffect(() => {
-          getUserRole(row.id).then(setRole);
-        }, []);
-
+        const role = userRoles[row.id] || "user";
         return (
           <Badge variant={role === "admin" ? "default" : "secondary"}>
             {role}
@@ -152,12 +155,7 @@ export function UserManagement() {
       key: "actions",
       label: "Actions",
       render: (row: Profile) => {
-        const [role, setRole] = useState<string>("user");
-
-        useEffect(() => {
-          getUserRole(row.id).then(setRole);
-        }, []);
-
+        const role = userRoles[row.id] || "user";
         return (
           <div className="flex gap-2">
             <Button 
