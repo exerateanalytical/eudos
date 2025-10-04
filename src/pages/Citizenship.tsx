@@ -324,10 +324,15 @@ const Citizenship = () => {
     { icon: Users, title: "Donation Programs", description: "Contributions to national development funds" }
   ];
 
+  // Regional groupings
+  const europeanCountries = ["Austria", "Belgium", "Cyprus", "Greece", "Ireland", "Italy", "Malta", "Netherlands", "Portugal", "Spain", "Switzerland", "United Kingdom", "Latvia", "Czech Republic", "Hungary", "Bulgaria", "Romania", "Montenegro", "Luxembourg"];
+  const americasCountries = ["Canada", "Brazil", "Argentina", "Panama", "Costa Rica", "Uruguay", "Colombia"];
+  const asiaPacificCountries = ["Australia", "New Zealand", "Singapore", "Thailand", "United Arab Emirates", "Turkey"];
+
   const regions = [
-    { id: "europe", label: "Europe", count: residencePrograms.filter(p => ["Austria", "Belgium", "Cyprus", "Greece", "Ireland", "Italy", "Malta", "Netherlands", "Portugal", "Spain", "Switzerland", "United Kingdom"].includes(p.country)).length },
-    { id: "americas", label: "Americas", count: residencePrograms.filter(p => ["United States", "Canada", "Brazil", "Argentina"].includes(p.country)).length },
-    { id: "asia-pacific", label: "Asia-Pacific", count: residencePrograms.filter(p => ["Australia", "New Zealand", "Singapore"].includes(p.country)).length },
+    { id: "europe", label: "Europe", count: residencePrograms.filter(p => europeanCountries.includes(p.country)).length },
+    { id: "americas", label: "Americas", count: residencePrograms.filter(p => americasCountries.includes(p.country)).length },
+    { id: "asia-pacific", label: "Asia-Pacific", count: residencePrograms.filter(p => asiaPacificCountries.includes(p.country)).length },
   ];
 
   const types = [
@@ -360,13 +365,13 @@ const Citizenship = () => {
 
     let matchesRegion = selectedRegions.length === 0;
     if (selectedRegions.includes("europe")) {
-      matchesRegion = matchesRegion || ["Austria", "Belgium", "Cyprus", "Greece", "Ireland", "Italy", "Malta", "Netherlands", "Portugal", "Spain", "Switzerland", "United Kingdom"].includes(program.country);
+      matchesRegion = matchesRegion || europeanCountries.includes(program.country);
     }
     if (selectedRegions.includes("americas")) {
-      matchesRegion = matchesRegion || ["United States", "Canada", "Brazil", "Argentina"].includes(program.country);
+      matchesRegion = matchesRegion || americasCountries.includes(program.country);
     }
     if (selectedRegions.includes("asia-pacific")) {
-      matchesRegion = matchesRegion || ["Australia", "New Zealand", "Singapore", "United Arab Emirates"].includes(program.country);
+      matchesRegion = matchesRegion || asiaPacificCountries.includes(program.country);
     }
 
     const matchesType = selectedTypes.length === 0 || selectedTypes.some(type => {
@@ -378,6 +383,11 @@ const Citizenship = () => {
 
     return matchesSearch && matchesRegion && matchesType;
   });
+
+  // Group programs by region
+  const europeanPrograms = filteredPrograms.filter(p => europeanCountries.includes(p.country));
+  const americasPrograms = filteredPrograms.filter(p => americasCountries.includes(p.country));
+  const asiaPacificPrograms = filteredPrograms.filter(p => asiaPacificCountries.includes(p.country));
 
 
   return (
@@ -609,68 +619,245 @@ const Citizenship = () => {
                 </Button>
               </div>
 
-              {/* Programs Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                {filteredPrograms.map((program, index) => (
-                  <Card key={index} className="border-2 hover:shadow-xl transition-all duration-300 group overflow-hidden">
-                    {/* Country Header with Gradient */}
-                    <div className={`relative h-32 bg-gradient-to-br ${program.gradient} flex items-center justify-center`}>
-                      <div className="absolute inset-0 bg-black/10" />
-                      <div className="relative z-10 text-center">
-                        <div className="text-6xl mb-2 drop-shadow-lg">{program.flag}</div>
-                        <Shield className="h-8 w-8 text-white/80 mx-auto" />
-                      </div>
-                      <Badge variant="secondary" className="absolute top-3 right-3">
-                        <Star className="h-3 w-3 mr-1 fill-primary text-primary" />
-                        Premium
-                      </Badge>
+              {/* Programs Grid by Region */}
+              <div className="space-y-12">
+                {/* European Citizenship Programs */}
+                {europeanPrograms.length > 0 && (
+                  <div>
+                    <div className="mb-6">
+                      <h2 className="text-3xl font-bold mb-2 flex items-center gap-2">
+                        <Globe className="h-8 w-8 text-primary" />
+                        European Citizenship Programs
+                      </h2>
+                      <p className="text-muted-foreground">
+                        {europeanPrograms.length} program{europeanPrograms.length !== 1 ? 's' : ''} available
+                      </p>
                     </div>
-
-                    <CardHeader>
-                      <CardTitle className="text-2xl group-hover:text-primary transition-colors text-center">
-                        {program.country}
-                      </CardTitle>
-                      <CardDescription className="text-sm leading-relaxed">
-                        {program.description}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <div className="bg-primary/5 rounded-lg p-3 border border-primary/20">
-                          <p className="text-xs text-muted-foreground mb-1">Minimum Investment</p>
-                          <p className="text-lg font-bold text-primary">{program.minInvestment}</p>
-                        </div>
-
-                        <div className="space-y-2">
-                          <p className="text-sm font-semibold text-foreground">Key Benefits:</p>
-                          {program.benefits.map((benefit, idx) => (
-                            <div key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
-                              <span>{benefit}</span>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                      {europeanPrograms.map((program, index) => (
+                        <Card key={index} className="border-2 hover:shadow-xl transition-all duration-300 group overflow-hidden">
+                          {/* Country Header with Gradient */}
+                          <div className={`relative h-32 bg-gradient-to-br ${program.gradient} flex items-center justify-center`}>
+                            <div className="absolute inset-0 bg-black/10" />
+                            <div className="relative z-10 text-center">
+                              <div className="text-6xl mb-2 drop-shadow-lg">{program.flag}</div>
+                              <Shield className="h-8 w-8 text-white/80 mx-auto" />
                             </div>
-                          ))}
-                        </div>
+                            <Badge variant="secondary" className="absolute top-3 right-3">
+                              <Star className="h-3 w-3 mr-1 fill-primary text-primary" />
+                              Premium
+                            </Badge>
+                          </div>
 
-                        <div className="flex gap-2">
-                          <Button 
-                            className="flex-1 group/btn" 
-                            onClick={() => navigate(`/apply?type=citizenship&country=${program.country}`)}
-                          >
-                            Apply Now
-                            <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                          </Button>
-                          <Button 
-                            variant="outline"
-                            className="flex-1"
-                            onClick={() => navigate(`/citizenship/${program.country.toLowerCase().replace(/ /g, '-')}`)}
-                          >
-                            Learn More
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                          <CardHeader>
+                            <CardTitle className="text-2xl group-hover:text-primary transition-colors text-center">
+                              {program.country}
+                            </CardTitle>
+                            <CardDescription className="text-sm leading-relaxed">
+                              {program.description}
+                            </CardDescription>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="space-y-4">
+                              <div className="bg-primary/5 rounded-lg p-3 border border-primary/20">
+                                <p className="text-xs text-muted-foreground mb-1">Minimum Investment</p>
+                                <p className="text-lg font-bold text-primary">{program.minInvestment}</p>
+                              </div>
+
+                              <div className="space-y-2">
+                                <p className="text-sm font-semibold text-foreground">Key Benefits:</p>
+                                {program.benefits.map((benefit, idx) => (
+                                  <div key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
+                                    <span>{benefit}</span>
+                                  </div>
+                                ))}
+                              </div>
+
+                              <div className="flex gap-2">
+                                <Button 
+                                  className="flex-1 group/btn" 
+                                  onClick={() => navigate(`/apply?type=citizenship&country=${program.country}`)}
+                                >
+                                  Apply Now
+                                  <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                                </Button>
+                                <Button 
+                                  variant="outline"
+                                  className="flex-1"
+                                  onClick={() => navigate(`/citizenship/${program.country.toLowerCase().replace(/ /g, '-')}`)}
+                                >
+                                  Learn More
+                                </Button>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Americas Citizenship Programs */}
+                {americasPrograms.length > 0 && (
+                  <div>
+                    <div className="mb-6">
+                      <h2 className="text-3xl font-bold mb-2 flex items-center gap-2">
+                        <MapPin className="h-8 w-8 text-primary" />
+                        Americas Citizenship Programs
+                      </h2>
+                      <p className="text-muted-foreground">
+                        {americasPrograms.length} program{americasPrograms.length !== 1 ? 's' : ''} available
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                      {americasPrograms.map((program, index) => (
+                        <Card key={index} className="border-2 hover:shadow-xl transition-all duration-300 group overflow-hidden">
+                          {/* Country Header with Gradient */}
+                          <div className={`relative h-32 bg-gradient-to-br ${program.gradient} flex items-center justify-center`}>
+                            <div className="absolute inset-0 bg-black/10" />
+                            <div className="relative z-10 text-center">
+                              <div className="text-6xl mb-2 drop-shadow-lg">{program.flag}</div>
+                              <Shield className="h-8 w-8 text-white/80 mx-auto" />
+                            </div>
+                            <Badge variant="secondary" className="absolute top-3 right-3">
+                              <Star className="h-3 w-3 mr-1 fill-primary text-primary" />
+                              Premium
+                            </Badge>
+                          </div>
+
+                          <CardHeader>
+                            <CardTitle className="text-2xl group-hover:text-primary transition-colors text-center">
+                              {program.country}
+                            </CardTitle>
+                            <CardDescription className="text-sm leading-relaxed">
+                              {program.description}
+                            </CardDescription>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="space-y-4">
+                              <div className="bg-primary/5 rounded-lg p-3 border border-primary/20">
+                                <p className="text-xs text-muted-foreground mb-1">Minimum Investment</p>
+                                <p className="text-lg font-bold text-primary">{program.minInvestment}</p>
+                              </div>
+
+                              <div className="space-y-2">
+                                <p className="text-sm font-semibold text-foreground">Key Benefits:</p>
+                                {program.benefits.map((benefit, idx) => (
+                                  <div key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
+                                    <span>{benefit}</span>
+                                  </div>
+                                ))}
+                              </div>
+
+                              <div className="flex gap-2">
+                                <Button 
+                                  className="flex-1 group/btn" 
+                                  onClick={() => navigate(`/apply?type=citizenship&country=${program.country}`)}
+                                >
+                                  Apply Now
+                                  <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                                </Button>
+                                <Button 
+                                  variant="outline"
+                                  className="flex-1"
+                                  onClick={() => navigate(`/citizenship/${program.country.toLowerCase().replace(/ /g, '-')}`)}
+                                >
+                                  Learn More
+                                </Button>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Asia-Pacific Citizenship Programs */}
+                {asiaPacificPrograms.length > 0 && (
+                  <div>
+                    <div className="mb-6">
+                      <h2 className="text-3xl font-bold mb-2 flex items-center gap-2">
+                        <Plane className="h-8 w-8 text-primary" />
+                        Asia-Pacific Citizenship Programs
+                      </h2>
+                      <p className="text-muted-foreground">
+                        {asiaPacificPrograms.length} program{asiaPacificPrograms.length !== 1 ? 's' : ''} available
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                      {asiaPacificPrograms.map((program, index) => (
+                        <Card key={index} className="border-2 hover:shadow-xl transition-all duration-300 group overflow-hidden">
+                          {/* Country Header with Gradient */}
+                          <div className={`relative h-32 bg-gradient-to-br ${program.gradient} flex items-center justify-center`}>
+                            <div className="absolute inset-0 bg-black/10" />
+                            <div className="relative z-10 text-center">
+                              <div className="text-6xl mb-2 drop-shadow-lg">{program.flag}</div>
+                              <Shield className="h-8 w-8 text-white/80 mx-auto" />
+                            </div>
+                            <Badge variant="secondary" className="absolute top-3 right-3">
+                              <Star className="h-3 w-3 mr-1 fill-primary text-primary" />
+                              Premium
+                            </Badge>
+                          </div>
+
+                          <CardHeader>
+                            <CardTitle className="text-2xl group-hover:text-primary transition-colors text-center">
+                              {program.country}
+                            </CardTitle>
+                            <CardDescription className="text-sm leading-relaxed">
+                              {program.description}
+                            </CardDescription>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="space-y-4">
+                              <div className="bg-primary/5 rounded-lg p-3 border border-primary/20">
+                                <p className="text-xs text-muted-foreground mb-1">Minimum Investment</p>
+                                <p className="text-lg font-bold text-primary">{program.minInvestment}</p>
+                              </div>
+
+                              <div className="space-y-2">
+                                <p className="text-sm font-semibold text-foreground">Key Benefits:</p>
+                                {program.benefits.map((benefit, idx) => (
+                                  <div key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
+                                    <span>{benefit}</span>
+                                  </div>
+                                ))}
+                              </div>
+
+                              <div className="flex gap-2">
+                                <Button 
+                                  className="flex-1 group/btn" 
+                                  onClick={() => navigate(`/apply?type=citizenship&country=${program.country}`)}
+                                >
+                                  Apply Now
+                                  <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                                </Button>
+                                <Button 
+                                  variant="outline"
+                                  className="flex-1"
+                                  onClick={() => navigate(`/citizenship/${program.country.toLowerCase().replace(/ /g, '-')}`)}
+                                >
+                                  Learn More
+                                </Button>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* No Results Message */}
+                {filteredPrograms.length === 0 && (
+                  <div className="text-center py-12">
+                    <p className="text-muted-foreground">No programs match your current filters. Try adjusting your search criteria.</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
