@@ -887,10 +887,10 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
         {step === "bitcoin" && formData.selectedProduct && (
           <div className="py-4">
             <BitcoinCheckout
-              walletId=""
+              walletId="0b7d759f-d8c2-414e-9798-f2a18846e034"
               productName={`${formData.selectedProduct.name} (x${formData.quantity}) - ESCROW`}
               productType={formData.selectedProduct.category}
-              amountBTC={(total / 100000)}
+              amountBTC={parseFloat((total / 50000).toFixed(8))}
               amountFiat={total}
               guestInfo={userProfile ? undefined : {
                 name: formData.buyerName,
