@@ -114,13 +114,13 @@ serve(async (req) => {
 
     console.log(`Derived BIP84 address ${address} at index ${addressIndex} from wallet ${walletData.name}`);
 
-    // Insert payment record
+    // Insert payment record with proper UUID order_id
     const { data: payment, error: paymentError } = await supabaseClient
       .from('btc_payments')
       .insert({
         wallet_id,
         user_id: user_id || null,
-        order_id,
+        order_id, // Now properly typed as UUID
         address_index: addressIndex,
         address,
         amount_btc,

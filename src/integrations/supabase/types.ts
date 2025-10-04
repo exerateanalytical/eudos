@@ -167,6 +167,13 @@ export type Database = {
             referencedRelation: "btc_wallets"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "fk_btc_payments_order"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
         ]
       }
       btc_wallets: {

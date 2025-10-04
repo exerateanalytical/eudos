@@ -105,7 +105,7 @@ serve(async (req) => {
         if (!updateError) {
           console.log(`Payment ${payment.id} marked as paid (tx: ${result.txid})`);
           
-          // Update linked order status to paid
+          // Update linked order status to paid (order_id is now UUID)
           if (payment.order_id) {
             const { error: orderError } = await supabaseClient
               .from('orders')
@@ -117,6 +117,8 @@ serve(async (req) => {
             
             if (!orderError) {
               console.log(`Order ${payment.order_id} marked as paid`);
+            } else {
+              console.error(`Failed to update order ${payment.order_id}:`, orderError);
             }
           }
           
