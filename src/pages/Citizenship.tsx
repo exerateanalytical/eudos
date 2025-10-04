@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,63 +10,16 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { SEO } from "@/components/SEO";
 import { seoConfig } from "@/config/seo";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
 
 const Citizenship = () => {
   const navigate = useNavigate();
   const baseUrl = window.location.origin;
-  const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [residencePrograms, setResidencePrograms] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchCitizenshipProducts();
-  }, []);
-
-  const fetchCitizenshipProducts = async () => {
-    try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from("cms_products")
-        .select("*")
-        .eq("category_type", "citizenship")
-        .eq("status", "active")
-        .order("name");
-
-      if (error) throw error;
-
-      const formattedPrograms = (data || []).map(product => ({
-        country: product.name,
-        flag: product.country || "🌍",
-        description: product.description || "",
-        minInvestment: `USD ${product.price || 37000}`,
-        benefits: Array.isArray(product.features) 
-          ? product.features.map((f: any) => f.text || f) 
-          : ["Complete documentation package", "No investment required", "1 month processing"],
-        gradient: "from-blue-500 to-cyan-500",
-        id: product.id,
-        image: product.image_url
-      }));
-
-      setResidencePrograms(formattedPrograms);
-    } catch (error: any) {
-      console.error("Error fetching citizenship products:", error);
-      toast({
-        title: "Error",
-        description: "Failed to load citizenship programs",
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const oldHardcodedPrograms = [
+  const residencePrograms = [
     {
       country: "Australia",
       flag: "🇦🇺",
@@ -324,17 +277,6 @@ const Citizenship = () => {
       gradient: "from-blue-600 via-white to-blue-600"
     }
   ];
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading citizenship programs...</p>
-        </div>
-      </div>
-    );
-  }
 
   const benefits = [
     {
