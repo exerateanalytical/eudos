@@ -6,66 +6,162 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const BLOCKCYPHER_API = 'https://api.blockcypher.com/v1/btc/main';
 const CONFIRMATIONS_REQUIRED = 1;
 
-async function checkAddressTransactions(address: string, expectedAmount: number) {
-  try {
-    console.log(`Checking address ${address} for transactions`);
-    
-    // Get address details including transactions from BlockCypher
-    const response = await fetch(`${BLOCKCYPHER_API}/addrs/${address}?limit=50`);
-    if (!response.ok) {
-      throw new Error(`BlockCypher API error: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    
-    // Check confirmed transactions (txrefs)
-    if (data.txrefs && data.txrefs.length > 0) {
-      for (const txref of data.txrefs) {
-        const receivedBTC = txref.value / 100000000; // satoshis to BTC
-        const confirmations = txref.confirmations || 0;
-        
-        console.log(`Found tx ${txref.tx_hash} with ${receivedBTC} BTC to ${address}, confirmations: ${confirmations}`);
-        
-        // Check if amount matches (with small tolerance for fees)
-        if (Math.abs(receivedBTC - expectedAmount) < 0.00001) {
-          return {
-            found: true,
-            txid: txref.tx_hash,
-            confirmations,
-            confirmed: confirmations >= CONFIRMATIONS_REQUIRED
-          };
-        }
+// Blockchain API providers
+const API_PROVIDERS = {
+  blockcypher: {
+    name: 'BlockCypher',
+    baseUrl: 'https://api.blockcypher.com/v1/btc/main',
+    rateLimit: 200, // requests per hour on free tier
+  },
+  blockchain: {
+    name: 'Blockchain.info',
+    baseUrl: 'https://blockchain.info',
+    rateLimit: 300,
+  },
+  blockstream: {
+    name: 'Blockstream',
+    baseUrl: 'https://blockstream.info/api',
+    rateLimit: 600,
+  },
+};
+
+async function checkWithBlockCypher(address: string, expectedAmount: number) {
+  const response = await fetch(`${API_PROVIDERS.blockcypher.baseUrl}/addrs/${address}?limit=50`);
+  if (!response.ok) throw new Error(`BlockCypher API error: ${response.status}`);
+  
+  const data = await response.json();
+  
+  // Check confirmed transactions
+  if (data.txrefs && data.txrefs.length > 0) {
+    for (const txref of data.txrefs) {
+      const receivedBTC = txref.value / 100000000;
+      if (Math.abs(receivedBTC - expectedAmount) < 0.00001) {
+        return {
+          found: true,
+          txid: txref.tx_hash,
+          confirmations: txref.confirmations || 0,
+          confirmed: (txref.confirmations || 0) >= CONFIRMATIONS_REQUIRED
+        };
       }
     }
-    
-    // Check unconfirmed transactions
-    if (data.unconfirmed_txrefs && data.unconfirmed_txrefs.length > 0) {
-      for (const txref of data.unconfirmed_txrefs) {
-        const receivedBTC = txref.value / 100000000; // satoshis to BTC
-        
-        console.log(`Found unconfirmed tx ${txref.tx_hash} with ${receivedBTC} BTC to ${address}`);
-        
-        // Check if amount matches (with small tolerance for fees)
-        if (Math.abs(receivedBTC - expectedAmount) < 0.00001) {
-          return {
-            found: true,
-            txid: txref.tx_hash,
-            confirmations: 0,
-            confirmed: false
-          };
-        }
-      }
-    }
-    
-    return { found: false };
-  } catch (error) {
-    console.error(`Error checking address ${address}:`, error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return { found: false, error: errorMessage };
   }
+  
+  // Check unconfirmed transactions
+  if (data.unconfirmed_txrefs && data.unconfirmed_txrefs.length > 0) {
+    for (const txref of data.unconfirmed_txrefs) {
+      const receivedBTC = txref.value / 100000000;
+      if (Math.abs(receivedBTC - expectedAmount) < 0.00001) {
+        return {
+          found: true,
+          txid: txref.tx_hash,
+          confirmations: 0,
+          confirmed: false
+        };
+      }
+    }
+  }
+  
+  return { found: false };
+}
+
+async function checkWithBlockchain(address: string, expectedAmount: number) {
+  const response = await fetch(`${API_PROVIDERS.blockchain.baseUrl}/rawaddr/${address}?limit=50`);
+  if (!response.ok) throw new Error(`Blockchain.info API error: ${response.status}`);
+  
+  const data = await response.json();
+  
+  if (data.txs && data.txs.length > 0) {
+    for (const tx of data.txs) {
+      const confirmations = tx.block_height ? 1 : 0;
+      
+      for (const out of tx.out) {
+        if (out.addr === address) {
+          const receivedBTC = out.value / 100000000;
+          if (Math.abs(receivedBTC - expectedAmount) < 0.00001) {
+            return {
+              found: true,
+              txid: tx.hash,
+              confirmations,
+              confirmed: confirmations >= CONFIRMATIONS_REQUIRED
+            };
+          }
+        }
+      }
+    }
+  }
+  
+  return { found: false };
+}
+
+async function checkWithBlockstream(address: string, expectedAmount: number) {
+  const txsResponse = await fetch(`${API_PROVIDERS.blockstream.baseUrl}/address/${address}/txs`);
+  if (!txsResponse.ok) throw new Error(`Blockstream API error: ${txsResponse.status}`);
+  
+  const txs = await txsResponse.json();
+  
+  for (const tx of txs) {
+    const statusResponse = await fetch(`${API_PROVIDERS.blockstream.baseUrl}/tx/${tx.txid}/status`);
+    const status = await statusResponse.json();
+    const confirmations = status.confirmed ? 1 : 0;
+    
+    if (tx.vout) {
+      for (const vout of tx.vout) {
+        if (vout.scriptpubkey_address === address) {
+          const receivedBTC = vout.value / 100000000;
+          if (Math.abs(receivedBTC - expectedAmount) < 0.00001) {
+            return {
+              found: true,
+              txid: tx.txid,
+              confirmations,
+              confirmed: confirmations >= CONFIRMATIONS_REQUIRED
+            };
+          }
+        }
+      }
+    }
+  }
+  
+  return { found: false };
+}
+
+async function checkAddressTransactions(address: string, expectedAmount: number): Promise<{
+  found: boolean;
+  txid?: string;
+  confirmations?: number;
+  confirmed?: boolean;
+  error?: string;
+}> {
+  const providers = [
+    { name: 'BlockCypher', fn: checkWithBlockCypher },
+    { name: 'Blockchain.info', fn: checkWithBlockchain },
+    { name: 'Blockstream', fn: checkWithBlockstream },
+  ];
+
+  console.log(`Checking address ${address} for transactions with ${providers.length} providers`);
+  
+  for (const provider of providers) {
+    try {
+      console.log(`Trying ${provider.name}...`);
+      const result = await provider.fn(address, expectedAmount);
+      
+      if (result.found) {
+        console.log(`✓ ${provider.name} found tx ${result.txid} with ${result.confirmations} confirmations`);
+        return result;
+      }
+      
+      console.log(`${provider.name} - no matching transaction found`);
+      return { found: false };
+      
+    } catch (error) {
+      console.error(`✗ ${provider.name} failed:`, error instanceof Error ? error.message : 'Unknown error');
+      // Continue to next provider
+    }
+  }
+  
+  console.error(`All providers failed for address ${address}`);
+  return { found: false, error: 'All API providers failed' };
 }
 
 serve(async (req) => {
@@ -81,7 +177,6 @@ serve(async (req) => {
 
     console.log('Checking pending BTC payments...');
 
-    // Get all pending payments
     const { data: payments, error: paymentsError } = await supabaseClient
       .from('btc_payments')
       .select('*, btc_wallets(*)')
@@ -99,7 +194,6 @@ serve(async (req) => {
       const result = await checkAddressTransactions(payment.address, payment.amount_btc);
       
       if (result.found && result.confirmed) {
-        // Mark payment as paid
         const { error: updateError } = await supabaseClient
           .from('btc_payments')
           .update({
@@ -113,7 +207,6 @@ serve(async (req) => {
         if (!updateError) {
           console.log(`Payment ${payment.id} marked as paid (tx: ${result.txid})`);
           
-          // Update linked order status to paid (order_id is now UUID)
           if (payment.order_id) {
             const { error: orderError } = await supabaseClient
               .from('orders')
@@ -133,7 +226,6 @@ serve(async (req) => {
           updatedCount++;
         }
       } else if (result.found && !result.confirmed) {
-        // Update confirmations
         const { error: updateError } = await supabaseClient
           .from('btc_payments')
           .update({
