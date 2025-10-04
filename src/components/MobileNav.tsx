@@ -96,7 +96,7 @@ export const MobileNav = ({ currentPage }: MobileNavProps) => {
           {/* Mobile Menu */}
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon" className="active:scale-95 touch-manipulation">
+              <Button variant="ghost" className="active:scale-95 touch-manipulation h-12 w-12 p-0">
                 <Menu className="h-9 w-9 text-primary" />
               </Button>
             </SheetTrigger>
