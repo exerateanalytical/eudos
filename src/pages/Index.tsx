@@ -2,11 +2,13 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileText, Shield, Clock, CheckCircle, Printer, Building2, Award, Sparkles, CreditCard, GraduationCap, Fingerprint, Cpu, Eye, Radio, Lock, Scan, FileCheck, Database, BookOpen, ShoppingBag } from "lucide-react";
-import { useState, useEffect } from "react";
-import { SecurityFeaturesSection } from "@/components/SecurityFeaturesSection";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { MobileBottomBar } from "@/components/MobileBottomBar";
 import { SEO } from "@/components/SEO";
 import { seoConfig } from "@/config/seo";
+
+// Lazy load heavy components for better mobile performance
+const SecurityFeaturesSection = lazy(() => import("@/components/SecurityFeaturesSection").then(module => ({ default: module.SecurityFeaturesSection })));
 
 const Index = () => {
   const navigate = useNavigate();
@@ -16,15 +18,17 @@ const Index = () => {
   const baseUrl = window.location.origin;
 
   useEffect(() => {
-    setIsVisible(true);
+    // Defer visibility animation for better initial load
+    const timer = setTimeout(() => setIsVisible(true), 100);
     
-    // Auto-rotate security features
-    const interval = setInterval(() => {
+    // Auto-rotate security features (only on desktop for performance)
+    const interval = window.innerWidth >= 768 ? setInterval(() => {
       setCurrentFeature((prev) => (prev + 1) % securityShowcase.length);
-    }, 4000);
+    }, 4000) : null;
 
     return () => {
-      clearInterval(interval);
+      clearTimeout(timer);
+      if (interval) clearInterval(interval);
     };
   }, []);
 
@@ -162,7 +166,6 @@ const Index = () => {
       <section className="relative py-12 md:py-16 lg:py-20 px-4 md:px-6 overflow-hidden">
         {/* Animated background gradient */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
-        <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]" />
         
         {/* Floating elements - hidden on mobile for performance */}
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-float hidden lg:block" />
@@ -215,7 +218,7 @@ const Index = () => {
                     <CardContent className="h-full flex flex-col items-center justify-center p-6 sm:p-8 md:p-10 relative">
                       {/* Icon with animated glow */}
                       <div className="relative mb-6 sm:mb-8">
-                        <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} blur-2xl opacity-40 animate-pulse`} />
+                        <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} blur-2xl opacity-40 hidden md:block md:animate-pulse`} />
                         <div className={`relative p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl bg-gradient-to-br ${feature.gradient} shadow-2xl`}>
                           <Icon className="h-14 w-14 sm:h-18 sm:w-18 md:h-24 md:w-24 text-white" strokeWidth={1.5} />
                         </div>
@@ -345,7 +348,6 @@ const Index = () => {
 
       {/* Security Features Section - Mobile Optimized */}
       <section className="py-16 md:py-20 lg:py-28 px-4 bg-gradient-to-b from-background to-secondary/20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]" />
         
         <div className="container mx-auto relative z-10">
           <div className="text-center mb-10 md:mb-14 lg:mb-18">
@@ -469,8 +471,14 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Security Features Section */}
-      <SecurityFeaturesSection />
+      {/* Security Features Section - Lazy loaded */}
+      <Suspense fallback={
+        <div className="py-16 flex items-center justify-center">
+          <div className="animate-pulse text-primary">Loading...</div>
+        </div>
+      }>
+        <SecurityFeaturesSection />
+      </Suspense>
 
       {/* Mobile Bottom Action Bar */}
       <MobileBottomBar />
