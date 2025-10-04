@@ -112,11 +112,17 @@ const PassportDetail = () => {
   };
 
   const fetchWallet = async () => {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('btc_wallets')
       .select('id')
       .limit(1)
-      .single();
+      .maybeSingle();
+    
+    if (error) {
+      console.error('Error fetching wallet:', error);
+      return;
+    }
+    
     if (data) setWalletId(data.id);
   };
 
