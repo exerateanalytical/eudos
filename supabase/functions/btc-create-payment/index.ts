@@ -1,23 +1,49 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
+import { BIP32Factory } from "https://esm.sh/bip32@4.0.0";
+import * as ecc from "https://esm.sh/tiny-secp256k1@2.2.3";
+import { payments, networks } from "https://esm.sh/bitcoinjs-lib@6.1.5";
+
+// Initialize BIP32 with ECC library
+const bip32 = BIP32Factory(ecc);
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Bitcoin address derivation using bitcoinjs-lib equivalent
-// Note: For production, use a proper Bitcoin library
-async function deriveAddressFromXpub(xpub: string, index: number): Promise<string> {
-  // This is a simplified placeholder - in production, use proper BIP32/BIP84 derivation
-  // For now, we'll use a deterministic hash-based approach as a placeholder
-  const encoder = new TextEncoder();
-  const data = encoder.encode(`${xpub}-${index}`);
-  const hash = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hash));
-  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-  // Generate a placeholder Bitcoin address (for demo - replace with real derivation)
-  return `bc1q${hashHex.substring(0, 40)}`;
+// Proper BIP84 Bitcoin address derivation from xpub/zpub
+async function deriveAddressFromXpub(xpub: string, index: number, network: string = 'mainnet'): Promise<string> {
+  try {
+    console.log(`Deriving address at index ${index} from xpub`);
+    
+    // Determine network
+    const btcNetwork = network === 'testnet' ? networks.testnet : networks.bitcoin;
+    
+    // Parse the extended public key (handles xpub, ypub, zpub)
+    const node = bip32.fromBase58(xpub, btcNetwork);
+    
+    // Derive child key at the specified index (non-hardened derivation)
+    const child = node.derive(index);
+    
+    // Generate native segwit (P2WPKH) address - bc1q... format
+    const payment = payments.p2wpkh({
+      pubkey: child.publicKey,
+      network: btcNetwork
+    });
+    
+    if (!payment.address) {
+      throw new Error('Failed to generate Bitcoin address');
+    }
+    
+    console.log(`Generated address: ${payment.address}`);
+    return payment.address;
+    
+  } catch (error) {
+    console.error('Error deriving Bitcoin address:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    throw new Error(`Address derivation failed: ${errorMessage}`);
+  }
 }
 
 serve(async (req) => {
@@ -79,10 +105,14 @@ serve(async (req) => {
 
     const addressIndex = walletData.next_index;
     
-    // Derive Bitcoin address
-    const address = await deriveAddressFromXpub(walletData.xpub, addressIndex);
+    // Derive Bitcoin address using proper BIP84 derivation
+    const address = await deriveAddressFromXpub(
+      walletData.xpub, 
+      addressIndex,
+      walletData.network || 'mainnet'
+    );
 
-    console.log(`Derived address ${address} at index ${addressIndex}`);
+    console.log(`Derived BIP84 address ${address} at index ${addressIndex} from wallet ${walletData.name}`);
 
     // Insert payment record
     const { data: payment, error: paymentError } = await supabaseClient
