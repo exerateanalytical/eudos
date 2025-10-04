@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -12,58 +11,62 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-interface Revision {
-  id: string;
-  revision_number: number;
-  created_at: string;
-  created_by: string;
-  notes?: string;
-  content_data: any;
-}
+import { useContentRevisions } from "@/hooks/useContentRevisions";
 
 interface RevisionHistoryProps {
-  revisions: Revision[];
-  currentData: any;
-  onRestore: (revisionId: string) => void;
-  isLoading?: boolean;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  contentType: 'page' | 'product' | 'blog_post';
+  contentId: string | null;
+  onRestore: (revisionData: any) => void;
 }
 
 export function RevisionHistory({ 
-  revisions, 
-  currentData,
+  open,
+  onOpenChange,
+  contentType,
+  contentId,
   onRestore,
-  isLoading = false 
 }: RevisionHistoryProps) {
-  const [selectedRevision, setSelectedRevision] = useState<Revision | null>(null);
+  const { revisions, restoreRevision, isRestoring } = useContentRevisions({
+    contentType,
+    contentId,
+  });
+  
+  const [selectedRevision, setSelectedRevision] = useState<any>(null);
   const [showComparison, setShowComparison] = useState(false);
 
-  const handlePreview = (revision: Revision) => {
+  const handlePreview = (revision: any) => {
     setSelectedRevision(revision);
     setShowComparison(true);
   };
 
   const handleRestore = (revisionId: string) => {
     if (confirm('Are you sure you want to restore this revision? Current changes will be saved as a new revision.')) {
-      onRestore(revisionId);
+      restoreRevision(revisionId);
+      const revision = revisions.find(r => r.id === revisionId);
+      if (revision) {
+        onRestore(revision.content_data);
+      }
       setShowComparison(false);
+      onOpenChange(false);
     }
   };
 
   return (
     <>
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <History className="h-5 w-5" />
-            Revision History
-          </CardTitle>
-          <CardDescription>
-            View and restore previous versions of this content
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ScrollArea className="h-[400px] pr-4">
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-4xl max-h-[80vh]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <History className="h-5 w-5" />
+              Revision History
+            </DialogTitle>
+            <DialogDescription>
+              View and restore previous versions of this content
+            </DialogDescription>
+          </DialogHeader>
+          <ScrollArea className="h-[500px] pr-4">
             {revisions.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">
                 No revisions yet
@@ -101,7 +104,7 @@ export function RevisionHistory({
                         variant="outline"
                         size="sm"
                         onClick={() => handleRestore(revision.id)}
-                        disabled={isLoading}
+                        disabled={isRestoring}
                       >
                         <RotateCcw className="h-4 w-4 mr-1" />
                         Restore
@@ -112,44 +115,34 @@ export function RevisionHistory({
               </div>
             )}
           </ScrollArea>
-        </CardContent>
-      </Card>
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={showComparison} onOpenChange={setShowComparison}>
         <DialogContent className="max-w-4xl max-h-[80vh]">
           <DialogHeader>
             <DialogTitle>
-              Revision Comparison - Version {selectedRevision?.revision_number}
+              Revision Preview - Version {selectedRevision?.revision_number}
             </DialogTitle>
             <DialogDescription>
-              Compare this revision with the current version
+              Review the content of this revision
             </DialogDescription>
           </DialogHeader>
-          <div className="grid grid-cols-2 gap-4 overflow-auto">
-            <div>
-              <h3 className="font-semibold mb-2">Current Version</h3>
-              <div className="p-4 bg-muted rounded-lg">
-                <pre className="text-xs whitespace-pre-wrap">
-                  {JSON.stringify(currentData, null, 2)}
-                </pre>
-              </div>
+          <ScrollArea className="h-[400px]">
+            <div className="p-4 bg-muted rounded-lg">
+              <pre className="text-xs whitespace-pre-wrap">
+                {JSON.stringify(selectedRevision?.content_data, null, 2)}
+              </pre>
             </div>
-            <div>
-              <h3 className="font-semibold mb-2">
-                Version {selectedRevision?.revision_number}
-              </h3>
-              <div className="p-4 bg-muted rounded-lg">
-                <pre className="text-xs whitespace-pre-wrap">
-                  {JSON.stringify(selectedRevision?.content_data, null, 2)}
-                </pre>
-              </div>
-            </div>
-          </div>
+          </ScrollArea>
           <div className="flex justify-end gap-2">
             <Button variant="outline" onClick={() => setShowComparison(false)}>
               Close
             </Button>
-            <Button onClick={() => selectedRevision && handleRestore(selectedRevision.id)}>
+            <Button 
+              onClick={() => selectedRevision && handleRestore(selectedRevision.id)}
+              disabled={isRestoring}
+            >
               <RotateCcw className="h-4 w-4 mr-2" />
               Restore This Version
             </Button>
