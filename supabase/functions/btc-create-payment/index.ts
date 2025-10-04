@@ -1,26 +1,59 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
 import BIP84 from "https://esm.sh/bip84@0.2.9";
+import BIP32Factory from "https://esm.sh/bip32@4.0.0";
+import * as ecc from "https://esm.sh/tiny-secp256k1@2.2.3";
+import { payments } from "https://esm.sh/bitcoinjs-lib@6.1.5";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Proper BIP84 Bitcoin address derivation from zpub
-function deriveAddressFromXpub(xpub: string, index: number, network: string = 'mainnet'): string {
+// Derive Bitcoin address from xpub (Electrum BIP32) or zpub (BIP84)
+function deriveAddressFromXpub(xpub: string, index: number, derivationPath: string): string {
   try {
-    console.log(`Deriving address at index ${index} from xpub: ${xpub.substring(0, 10)}...`);
+    console.log(`Deriving address at index ${index} from ${xpub.substring(0, 4)}... using path ${derivationPath}`);
     
-    // Create BIP84 account from zpub
-    const account = new BIP84.fromZPub(xpub);
+    // Check if it's a zpub (BIP84 native SegWit)
+    if (xpub.startsWith('zpub')) {
+      const account = new BIP84.fromZPub(xpub);
+      const address = account.getAddress(index, false); // false = receiving address
+      console.log(`Derived BIP84 address: ${address} at index ${index}`);
+      return address;
+    }
     
-    // Derive receiving address at the specified index
-    // BIP84 path: m/84'/0'/0'/0/index for receiving addresses
-    const address = account.getAddress(index, false); // false = receiving address (not change)
+    // Handle xpub (Electrum BIP32)
+    if (xpub.startsWith('xpub')) {
+      const bip32 = BIP32Factory(ecc);
+      const node = bip32.fromBase58(xpub);
+      
+      // Electrum uses m/0 for receiving addresses
+      // The xpub is already at the account level (m/0'), so we derive /0/index
+      const child = node.derive(0).derive(index);
+      
+      // Generate P2WPKH (native SegWit) address
+      const { address } = payments.p2wpkh({ 
+        pubkey: child.publicKey,
+        network: { // mainnet
+          messagePrefix: '\x18Bitcoin Signed Message:\n',
+          bech32: 'bc',
+          bip32: { public: 0x0488b21e, private: 0x0488ade4 },
+          pubKeyHash: 0x00,
+          scriptHash: 0x05,
+          wif: 0x80
+        }
+      });
+      
+      if (!address) {
+        throw new Error('Failed to generate address from xpub');
+      }
+      
+      console.log(`Derived Electrum BIP32 address: ${address} at index ${index}`);
+      return address;
+    }
     
-    console.log(`Derived BIP84 address: ${address} at index ${index}`);
-    return address;
+    throw new Error('Unsupported extended public key format');
     
   } catch (error) {
     console.error('Error deriving Bitcoin address:', error);
@@ -88,14 +121,14 @@ serve(async (req) => {
 
     const addressIndex = walletData.next_index;
     
-    // Derive Bitcoin address using proper BIP84 derivation (mainnet only)
+    // Derive Bitcoin address (supports both Electrum BIP32 and BIP84)
     const address = deriveAddressFromXpub(
       walletData.xpub, 
       addressIndex,
-      'mainnet' // Platform operates on mainnet only
+      walletData.derivation_path
     );
 
-    console.log(`Derived BIP84 address ${address} at index ${addressIndex} from wallet ${walletData.name}`);
+    console.log(`Derived address ${address} at index ${addressIndex} from wallet ${walletData.name}`);
 
     // Insert payment record with proper UUID order_id
     const { data: payment, error: paymentError } = await supabaseClient

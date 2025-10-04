@@ -56,7 +56,7 @@ export function BitcoinWalletManagement() {
   const [formData, setFormData] = useState({
     name: "",
     xpub: "",
-    derivation_path: "m/84'/0'/0'/0"
+    derivation_path: "m/0'/0" // Default to Electrum standard
   });
   const { toast } = useToast();
 
@@ -89,20 +89,44 @@ export function BitcoinWalletManagement() {
 
   const handleSaveWallet = async () => {
     try {
-      // Validate xpub format
-      if (!formData.xpub.startsWith('zpub')) {
+      // Validate xpub/zpub format for mainnet
+      const isValidXpub = formData.xpub.startsWith('xpub') || formData.xpub.startsWith('zpub');
+      if (!isValidXpub) {
         toast({
-          title: "Invalid xpub",
-          description: "Please enter a valid mainnet zpub (BIP84) extended public key",
+          title: "Invalid extended public key",
+          description: "Please enter a valid mainnet xpub (Electrum BIP32) or zpub (BIP84) key",
           variant: "destructive",
         });
         return;
       }
 
+      // Validate extended public key length
       if (formData.xpub.length < 100 || formData.xpub.length > 120) {
         toast({
-          title: "Invalid xpub",
-          description: "Extended public key length is invalid",
+          title: "Invalid extended public key",
+          description: "Extended public key length appears incorrect",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Validate derivation path matches key type
+      const isZpub = formData.xpub.startsWith('zpub');
+      const isXpub = formData.xpub.startsWith('xpub');
+      
+      if (isZpub && !formData.derivation_path.startsWith("m/84'")) {
+        toast({
+          title: "Mismatched wallet type",
+          description: "zpub keys require BIP84 derivation path (m/84'/0'/0'/0)",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      if (isXpub && formData.derivation_path.startsWith("m/84'")) {
+        toast({
+          title: "Mismatched wallet type",
+          description: "xpub keys (Electrum) should use m/0'/0 derivation path",
           variant: "destructive",
         });
         return;
@@ -158,7 +182,7 @@ export function BitcoinWalletManagement() {
       setFormData({
         name: "",
         xpub: "",
-        derivation_path: "m/84'/0'/0'/0"
+        derivation_path: "m/0'/0" // Default to Electrum standard
       });
       fetchData();
     } catch (error: any) {
@@ -213,7 +237,7 @@ export function BitcoinWalletManagement() {
     setFormData({
       name: "",
       xpub: "",
-      derivation_path: "m/84'/0'/0'/0"
+      derivation_path: "m/0'/0" // Default to Electrum standard
     });
     setDialogOpen(true);
   };
@@ -380,14 +404,14 @@ export function BitcoinWalletManagement() {
               />
             </div>
             <div>
-              <Label>Extended Public Key (zpub)</Label>
+              <Label>Extended Public Key</Label>
               <Input
                 value={formData.xpub}
                 onChange={(e) => setFormData({ ...formData, xpub: e.target.value })}
-                placeholder="zpub6nXBJB56BbW7d4kg4PHdzQNCzcx5XVj3aczVTa12PSbM9KZfVKBfph6jgfsZ..."
+                placeholder="xpub... or zpub..."
               />
               <p className="text-xs text-muted-foreground mt-1">
-                Enter your BIP84 mainnet zpub extended public key
+                Mainnet xpub (Electrum BIP32) or zpub (BIP84) extended public key
               </p>
             </div>
             <div>
@@ -395,10 +419,10 @@ export function BitcoinWalletManagement() {
               <Input
                 value={formData.derivation_path}
                 onChange={(e) => setFormData({ ...formData, derivation_path: e.target.value })}
-                placeholder="m/84'/0'/0'/0"
+                placeholder="m/0'/0 (Electrum) or m/84'/0'/0'/0 (BIP84)"
               />
               <p className="text-xs text-muted-foreground mt-1">
-                Standard BIP84 path for native SegWit (bc1 addresses)
+                Electrum: m/0'/0 (receiving) | BIP84: m/84'/0'/0'/0
               </p>
             </div>
             <Button onClick={handleSaveWallet} className="w-full">
