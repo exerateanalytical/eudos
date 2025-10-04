@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Copy, ExternalLink, CheckCircle2, Clock } from "lucide-react";
+import { Copy, ExternalLink, CheckCircle2, Clock, AlertCircle } from "lucide-react";
 import QRCode from "qrcode";
 
 interface BitcoinCheckoutProps {
@@ -32,15 +34,19 @@ export function BitcoinCheckout({
   onPaymentComplete,
 }: BitcoinCheckoutProps) {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [orderNumber, setOrderNumber] = useState<string>("");
+  const [orderId, setOrderId] = useState<string>("");
   const [payment, setPayment] = useState<any>(null);
   const [qrCodeUrl, setQrCodeUrl] = useState<string>("");
   const [polling, setPolling] = useState(false);
+  const [configError, setConfigError] = useState<string>("");
 
+  // Verify wallet configuration
   useEffect(() => {
-    createPaymentAndOrder();
-  }, []);
+    verifyWalletConfig();
+  }, [walletId]);
 
   useEffect(() => {
     if (payment && payment.status === "pending") {
@@ -49,6 +55,36 @@ export function BitcoinCheckout({
       return () => clearInterval(interval);
     }
   }, [payment]);
+
+  const verifyWalletConfig = async () => {
+    try {
+      const { data: wallet, error } = await supabase
+        .from('btc_wallets')
+        .select('*')
+        .eq('id', walletId)
+        .single();
+
+      if (error || !wallet) {
+        setConfigError("Bitcoin wallet not configured. Please contact support.");
+        setLoading(false);
+        return;
+      }
+
+      if (!wallet.xpub) {
+        setConfigError("Bitcoin wallet configuration incomplete. Please contact support.");
+        setLoading(false);
+        return;
+      }
+
+      console.log("✓ Bitcoin wallet verified:", wallet.name);
+      // If wallet is valid, proceed with payment creation
+      createPaymentAndOrder();
+    } catch (error: any) {
+      console.error("Wallet verification error:", error);
+      setConfigError("Failed to verify payment configuration.");
+      setLoading(false);
+    }
+  };
 
   const createPaymentAndOrder = async () => {
     try {
@@ -94,6 +130,9 @@ export function BitcoinCheckout({
         .single();
 
       if (orderError) throw orderError;
+      
+      setOrderId(order.id);
+      console.log("✓ Order created:", order.order_number);
 
       // Create Bitcoin payment
       const { data: paymentData, error: paymentError } = await supabase.functions.invoke(
@@ -123,6 +162,7 @@ export function BitcoinCheckout({
         .eq('id', order.id);
 
       setPayment(paymentData.payment);
+      console.log("✓ Bitcoin payment created:", paymentData.payment.address);
 
       // Generate QR code
       const qrCode = await QRCode.toDataURL(paymentData.bitcoinURI);
@@ -156,16 +196,24 @@ export function BitcoinCheckout({
 
       if (error) throw error;
 
-      if (data.status !== payment.status) {
+      if (data.status !== payment.status || data.txid !== payment.txid) {
         setPayment(data);
         
-        if (data.status === 'paid') {
+        if (data.status === 'paid' && data.txid) {
           setPolling(false);
+          
           toast({
             title: "Payment Confirmed!",
-            description: "Your Bitcoin payment has been confirmed.",
+            description: "Redirecting to your order details...",
           });
-          onPaymentComplete?.();
+          
+          // Redirect to order details after 2 seconds
+          setTimeout(() => {
+            if (onPaymentComplete) {
+              onPaymentComplete();
+            }
+            navigate(`/dashboard/orders?order=${orderId}`);
+          }, 2000);
         }
       }
     } catch (error) {
@@ -190,6 +238,17 @@ export function BitcoinCheckout({
         <Skeleton className="h-64 w-full" />
         <Skeleton className="h-32 w-full" />
       </div>
+    );
+  }
+
+  if (configError) {
+    return (
+      <Alert variant="destructive">
+        <AlertCircle className="h-4 w-4" />
+        <AlertDescription>
+          {configError}
+        </AlertDescription>
+      </Alert>
     );
   }
 
@@ -259,6 +318,11 @@ export function BitcoinCheckout({
               {payment.txid && (
                 <div className="border-t pt-4">
                   <h3 className="font-semibold mb-2">Transaction Details</h3>
+                  <div className="bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg p-3 mb-3">
+                    <p className="text-sm text-green-900 dark:text-green-100 font-medium">
+                      ✓ Transaction ID: {payment.txid.substring(0, 8)}...{payment.txid.substring(payment.txid.length - 8)}
+                    </p>
+                  </div>
                   <div className="flex items-center gap-2">
                     <code className="text-sm bg-muted px-2 py-1 rounded flex-1 truncate">
                       {payment.txid}
@@ -290,6 +354,14 @@ export function BitcoinCheckout({
                 <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
                   <p className="text-sm text-blue-900 dark:text-blue-100">
                     ⏳ Waiting for payment... This page will update automatically when payment is detected.
+                  </p>
+                </div>
+              )}
+
+              {payment.status === 'paid' && (
+                <div className="bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                  <p className="text-sm text-green-900 dark:text-green-100 font-medium">
+                    ✓ Payment confirmed! You will be redirected to your order details shortly...
                   </p>
                 </div>
               )}
