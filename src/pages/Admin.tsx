@@ -24,6 +24,7 @@ const ActivityLogsViewer = lazy(() => import("@/components/dashboard/ActivityLog
 const PageManagement = lazy(() => import("@/components/dashboard/PageManagement").then(m => ({ default: m.PageManagement })));
 const EmailNotificationSystem = lazy(() => import("@/components/dashboard/EmailNotificationSystem").then(m => ({ default: m.EmailNotificationSystem })));
 const SystemSettings = lazy(() => import("@/components/dashboard/SystemSettings").then(m => ({ default: m.SystemSettings })));
+const ContentList = lazy(() => import("@/components/admin/ContentList").then(m => ({ default: m.ContentList })));
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -146,16 +147,46 @@ const Admin = () => {
                 <Routes>
                   <Route path="/" element={<AdminAnalytics userId={user?.id!} />} />
                   <Route path="users" element={<UserManagement />} />
-                  <Route path="products" element={<ProductManagement />} />
+                  <Route 
+                    path="products" 
+                    element={
+                      <ContentList
+                        contentType="product"
+                        title="Products"
+                        newItemPath="/admin/products/new"
+                        editItemPath={(id) => `/admin/products/edit/${id}`}
+                      />
+                    } 
+                  />
                   <Route path="orders" element={<OrderManagement />} />
                   <Route path="applications" element={<ApplicationManagement />} />
                   <Route path="payments" element={<PaymentManagement />} />
                   <Route path="bitcoin" element={<BitcoinWalletManagement />} />
                   <Route path="inquiries" element={<InquiryManagement />} />
                   <Route path="support" element={<SupportTicketManagement />} />
-                  <Route path="blog" element={<BlogManagement />} />
+                  <Route 
+                    path="blog" 
+                    element={
+                      <ContentList
+                        contentType="blog_post"
+                        title="Blog Posts"
+                        newItemPath="/admin/blog/new"
+                        editItemPath={(id) => `/admin/blog/edit/${id}`}
+                      />
+                    } 
+                  />
                   <Route path="reviews" element={<ReviewModerationModule />} />
-                  <Route path="pages" element={<PageManagement />} />
+                  <Route 
+                    path="pages" 
+                    element={
+                      <ContentList
+                        contentType="page"
+                        title="Pages"
+                        newItemPath="/admin/pages/new"
+                        editItemPath={(id) => `/admin/pages/edit/${id}`}
+                      />
+                    } 
+                  />
                   <Route path="activity" element={<ActivityLogsViewer />} />
                   <Route path="notifications" element={<EmailNotificationSystem />} />
                   <Route path="settings" element={<SystemSettings />} />

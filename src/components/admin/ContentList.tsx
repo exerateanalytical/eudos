@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Plus, Search, Edit, Trash2, Eye } from "lucide-react";
+import { Plus, Search, Edit, Trash2, Eye, FileText } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ContentBulkActions } from "./ContentBulkActions";
 import { format } from "date-fns";
@@ -46,9 +46,26 @@ export function ContentList({
     contentType === 'product' ? 'cms_products' :
     'cms_blog_posts';
 
-  const { data: items = [], isLoading, refetch } = useQuery({
+  const { data: items = [], isLoading, refetch, error } = useQuery({
     queryKey: [tableName, search, statusFilter],
     queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        console.error('No authenticated user found');
+        throw new Error('Not authenticated');
+      }
+
+      // Check user role
+      const { data: roleData } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .in('role', ['admin', 'moderator'])
+        .maybeSingle();
+
+      console.log('User role:', roleData);
+
       let query = supabase.from(tableName).select('*').order('created_at', { ascending: false });
 
       if (search) {
@@ -61,7 +78,13 @@ export function ContentList({
       }
 
       const { data, error } = await query;
-      if (error) throw error;
+      
+      if (error) {
+        console.error('Query error:', error);
+        throw error;
+      }
+      
+      console.log(`${tableName} data:`, data);
       return data || [];
     },
   });
@@ -191,10 +214,33 @@ export function ContentList({
                   Loading...
                 </TableCell>
               </TableRow>
+            ) : error ? (
+              <TableRow>
+                <TableCell colSpan={5} className="text-center py-8 text-destructive">
+                  <div className="space-y-2">
+                    <p>Error loading content</p>
+                    <p className="text-sm text-muted-foreground">{(error as Error).message}</p>
+                  </div>
+                </TableCell>
+              </TableRow>
             ) : items.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
-                  No items found
+                <TableCell colSpan={5} className="text-center py-12">
+                  <div className="space-y-4">
+                    <FileText className="h-16 w-16 mx-auto text-muted-foreground opacity-50" />
+                    <div>
+                      <p className="text-lg font-medium text-muted-foreground">No {title.toLowerCase()} found</p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        Get started by creating your first {contentType === 'blog_post' ? 'blog post' : contentType}
+                      </p>
+                    </div>
+                    <Link to={newItemPath}>
+                      <Button>
+                        <Plus className="h-4 w-4 mr-2" />
+                        Create {contentType === 'blog_post' ? 'Blog Post' : contentType === 'product' ? 'Product' : 'Page'}
+                      </Button>
+                    </Link>
+                  </div>
                 </TableCell>
               </TableRow>
             ) : (
