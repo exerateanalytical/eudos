@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -51,6 +52,7 @@ export function CategoryManagement() {
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [formData, setFormData] = useState<CategoryFormData>({
     name: "",
     slug: "",
@@ -72,6 +74,23 @@ export function CategoryManagement() {
       if (error) throw error;
       return data as Category[];
     },
+  });
+
+  const { data: categoryProducts = [], isLoading: isLoadingProducts } = useQuery({
+    queryKey: ["category_products", selectedCategory?.id],
+    queryFn: async () => {
+      if (!selectedCategory) return [];
+      
+      const { data, error } = await supabase
+        .from("cms_products")
+        .select("*")
+        .eq("category_id", selectedCategory.id)
+        .order("name", { ascending: true });
+
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!selectedCategory,
   });
 
   const saveMutation = useMutation({
@@ -162,6 +181,58 @@ export function CategoryManagement() {
     return <div>Loading categories...</div>;
   }
 
+  // Show products view when a category is selected
+  if (selectedCategory) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <Button variant="outline" onClick={() => setSelectedCategory(null)}>
+            ← Back to Categories
+          </Button>
+          <div>
+            <h2 className="text-3xl font-bold">{selectedCategory.name}</h2>
+            <p className="text-sm text-muted-foreground">{selectedCategory.description}</p>
+          </div>
+        </div>
+
+        {isLoadingProducts ? (
+          <div>Loading products...</div>
+        ) : categoryProducts.length === 0 ? (
+          <div className="text-center py-12 border border-dashed rounded-lg">
+            <p className="text-muted-foreground">No products in this category yet</p>
+          </div>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Country</TableHead>
+                <TableHead>Price</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Stock</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {categoryProducts.map((product: any) => (
+                <TableRow key={product.id}>
+                  <TableCell className="font-medium">{product.name}</TableCell>
+                  <TableCell>{product.country || '-'}</TableCell>
+                  <TableCell>${product.price}</TableCell>
+                  <TableCell>
+                    <Badge variant={product.status === 'active' ? 'default' : 'secondary'}>
+                      {product.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>{product.stock_quantity || 0}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -242,13 +313,17 @@ export function CategoryManagement() {
         </TableHeader>
         <TableBody>
           {categories.map((category) => (
-            <TableRow key={category.id}>
+            <TableRow 
+              key={category.id}
+              className="cursor-pointer hover:bg-muted/50"
+              onClick={() => setSelectedCategory(category)}
+            >
               <TableCell className="font-medium">{category.name}</TableCell>
               <TableCell>{category.slug}</TableCell>
               <TableCell>{category.description}</TableCell>
               <TableCell>{category.display_order}</TableCell>
               <TableCell className="text-right">
-                <div className="flex justify-end gap-2">
+                <div className="flex justify-end gap-2" onClick={(e) => e.stopPropagation()}>
                   <Button
                     variant="ghost"
                     size="sm"
