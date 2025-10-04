@@ -376,37 +376,37 @@ const Index = () => {
             ))}
           </div>
 
-          {/* Registration & Verification */}
-          <div className="mt-16 max-w-4xl mx-auto">
+          {/* Registration & Verification - Mobile Optimized */}
+          <div className="mt-12 md:mt-16 max-w-4xl mx-auto px-4">
             <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent backdrop-blur-sm">
               <CardHeader>
-                <div className="flex items-center gap-3 mb-2">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-2">
                   <div className="p-3 rounded-xl bg-primary/20">
-                    <Database className="h-6 w-6 text-primary" />
+                    <Database className="h-5 w-5 md:h-6 md:w-6 text-primary" />
                   </div>
-                  <CardTitle className="text-2xl">Registration & Verification System</CardTitle>
+                  <CardTitle className="text-xl md:text-2xl">Registration & Verification System</CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground leading-relaxed mb-4">
+                <p className="text-sm md:text-base text-muted-foreground leading-relaxed mb-4">
                   Every document we produce is registered in secure government databases with real-time verification capabilities. Our authentication system allows instant validation through multiple channels including:
                 </p>
-                <ul className="space-y-2 text-muted-foreground">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
-                    <span>Centralized database registration with unique serial numbers</span>
+                <ul className="space-y-2 md:space-y-3 text-muted-foreground">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm md:text-base">Centralized database registration with unique serial numbers</span>
                   </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
-                    <span>RFID/NFC chip verification through authorized readers</span>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm md:text-base">RFID/NFC chip verification through authorized readers</span>
                   </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
-                    <span>Machine-readable zones compatible with international standards</span>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm md:text-base">Machine-readable zones compatible with international standards</span>
                   </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
-                    <span>Secure API access for government verification systems</span>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm md:text-base">Secure API access for government verification systems</span>
                   </li>
                 </ul>
               </CardContent>
@@ -415,15 +415,15 @@ const Index = () => {
         </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="py-24 px-4 bg-background relative overflow-hidden">
+      {/* About Section - Mobile Optimized */}
+      <section id="about" className="py-12 md:py-16 lg:py-24 px-4 bg-background relative overflow-hidden">
         <div className="container mx-auto max-w-6xl relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Why We're Different</h2>
-            <p className="text-xl text-muted-foreground">Licensed, authorized, and uncompromising on security</p>
+          <div className="text-center mb-8 md:mb-12 lg:mb-16 px-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 md:mb-4">Why We're Different</h2>
+            <p className="text-base md:text-lg lg:text-xl text-muted-foreground">Licensed, authorized, and uncompromising on security</p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
             {[
               {
                 title: "Licensed & Authorized",
@@ -448,19 +448,19 @@ const Index = () => {
             ].map((item, index) => (
               <Card 
                 key={index} 
-                className="group hover:shadow-xl transition-all duration-300 border-border/50 bg-card/50 backdrop-blur-sm hover:bg-card animate-slide-in-left"
+                className="group hover:shadow-xl transition-all duration-300 border-border/50 bg-card/50 backdrop-blur-sm hover:bg-card animate-slide-in-left active:scale-95 touch-manipulation"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <CardHeader>
-                  <div className="flex items-center gap-4 mb-2">
-                    <div className="p-3 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300">
-                      <item.icon className="h-6 w-6 text-primary" />
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 md:gap-4 mb-2">
+                    <div className="p-2.5 md:p-3 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300">
+                      <item.icon className="h-5 w-5 md:h-6 md:w-6 text-primary" />
                     </div>
-                    <CardTitle className="text-xl">{item.title}</CardTitle>
+                    <CardTitle className="text-lg md:text-xl">{item.title}</CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground leading-relaxed">{item.description}</p>
+                  <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{item.description}</p>
                 </CardContent>
               </Card>
             ))}
