@@ -26,6 +26,7 @@ import { SchedulePublish } from "@/components/admin/SchedulePublish";
 import { RevisionHistory } from "@/components/admin/RevisionHistory";
 import { useAutoSave } from "@/hooks/useAutoSave";
 import { Copy, History as HistoryIcon } from "lucide-react";
+import { TagSelector } from "@/components/admin/TagSelector";
 import {
   Select,
   SelectContent,
@@ -66,6 +67,7 @@ export function BlogManagement() {
     content: "",
     featured_image: "",
     category: "guides",
+    tags: [] as string[],
     scheduled_publish_at: null as string | null,
     status: "draft",
     seo_title: "",
@@ -159,6 +161,7 @@ export function BlogManagement() {
       content: "",
       featured_image: "",
       category: "guides",
+      tags: [],
       scheduled_publish_at: null,
       status: "draft",
       seo_title: "",
@@ -177,6 +180,7 @@ export function BlogManagement() {
       content: post.content,
       featured_image: (post as any).featured_image || "",
       category: post.category || "guides",
+      tags: (post as any).tags || [],
       scheduled_publish_at: (post as any).scheduled_publish_at || null,
       status: post.status,
       seo_title: post.seo_title || "",
@@ -452,6 +456,11 @@ export function BlogManagement() {
                   <SchedulePublish
                     value={formData.scheduled_publish_at}
                     onChange={(value) => setFormData({ ...formData, scheduled_publish_at: value })}
+                  />
+
+                  <TagSelector
+                    selectedTags={formData.tags}
+                    onChange={(tags) => setFormData({ ...formData, tags })}
                   />
 
                   <div className="space-y-2">

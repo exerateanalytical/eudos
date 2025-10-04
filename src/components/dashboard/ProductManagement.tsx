@@ -22,6 +22,8 @@ import { ImageGalleryManager } from "@/components/admin/ImageGalleryManager";
 import { ProductAttributes } from "@/components/admin/ProductAttributes";
 import { InventoryManagement } from "@/components/admin/InventoryManagement";
 import { RelatedProducts } from "@/components/admin/RelatedProducts";
+import { TagSelector } from "@/components/admin/TagSelector";
+import { CategorySelector } from "@/components/admin/CategorySelector";
 import { AdminSEOForm } from "@/components/admin/AdminSEOForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -71,6 +73,8 @@ export function ProductManagement() {
     sku: "",
     attributes: [] as Array<{ name: string; value: string }>,
     related_products: [] as string[],
+    tags: [] as string[],
+    category_id: null as string | null,
     seo_title: "",
     seo_description: "",
     seo_keywords: "",
@@ -165,6 +169,8 @@ export function ProductManagement() {
       sku: "",
       attributes: [],
       related_products: [],
+      tags: [],
+      category_id: null,
       seo_title: "",
       seo_description: "",
       seo_keywords: "",
@@ -189,6 +195,8 @@ export function ProductManagement() {
       sku: (product as any).sku || "",
       attributes: [],
       related_products: (product as any).related_products || [],
+      tags: (product as any).tags || [],
+      category_id: (product as any).category_id || null,
       seo_title: product.seo_title || "",
       seo_description: product.seo_description || "",
       seo_keywords: product.seo_keywords || "",
@@ -286,8 +294,12 @@ export function ProductManagement() {
             </DialogHeader>
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
+                <CategorySelector
+                  selectedCategoryId={formData.category_id}
+                  onChange={(categoryId) => setFormData({ ...formData, category_id: categoryId })}
+                />
                 <div className="space-y-2">
-                  <Label>Category</Label>
+                  <Label>Legacy Category Type</Label>
                   <Select
                     value={formData.category_type}
                     onValueChange={(value) =>
@@ -408,6 +420,11 @@ export function ProductManagement() {
                 selectedIds={formData.related_products}
                 onChange={(ids) => setFormData({ ...formData, related_products: ids })}
                 currentProductId={editingProduct?.id}
+              />
+
+              <TagSelector
+                selectedTags={formData.tags}
+                onChange={(tags) => setFormData({ ...formData, tags })}
               />
 
               <AdminSEOForm

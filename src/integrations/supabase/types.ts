@@ -127,6 +127,7 @@ export type Database = {
           seo_title: string | null
           slug: string
           status: string
+          tags: string[] | null
           title: string
           updated_at: string | null
         }
@@ -146,6 +147,7 @@ export type Database = {
           seo_title?: string | null
           slug: string
           status?: string
+          tags?: string[] | null
           title: string
           updated_at?: string | null
         }
@@ -165,6 +167,7 @@ export type Database = {
           seo_title?: string | null
           slug?: string
           status?: string
+          tags?: string[] | null
           title?: string
           updated_at?: string | null
         }
@@ -182,6 +185,7 @@ export type Database = {
           seo_title: string | null
           slug: string
           status: string
+          tags: string[] | null
           title: string
           updated_at: string | null
         }
@@ -196,6 +200,7 @@ export type Database = {
           seo_title?: string | null
           slug: string
           status?: string
+          tags?: string[] | null
           title: string
           updated_at?: string | null
         }
@@ -210,6 +215,7 @@ export type Database = {
           seo_title?: string | null
           slug?: string
           status?: string
+          tags?: string[] | null
           title?: string
           updated_at?: string | null
         }
@@ -239,6 +245,7 @@ export type Database = {
           status: string
           stock_quantity: number | null
           stock_status: string | null
+          tags: string[] | null
           updated_at: string | null
         }
         Insert: {
@@ -264,6 +271,7 @@ export type Database = {
           status?: string
           stock_quantity?: number | null
           stock_status?: string | null
+          tags?: string[] | null
           updated_at?: string | null
         }
         Update: {
@@ -289,6 +297,7 @@ export type Database = {
           status?: string
           stock_quantity?: number | null
           stock_status?: string | null
+          tags?: string[] | null
           updated_at?: string | null
         }
         Relationships: [
@@ -414,6 +423,38 @@ export type Database = {
           revision_number?: number
         }
         Relationships: []
+      }
+      content_tags: {
+        Row: {
+          content_id: string
+          content_type: string
+          created_at: string
+          id: string
+          tag_id: string
+        }
+        Insert: {
+          content_id: string
+          content_type: string
+          created_at?: string
+          id?: string
+          tag_id: string
+        }
+        Update: {
+          content_id?: string
+          content_type?: string
+          created_at?: string
+          id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_tags_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "tags"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       document_applications: {
         Row: {
@@ -1089,6 +1130,27 @@ export type Database = {
           setting_key?: string
           setting_value?: Json
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      tags: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          slug?: string
         }
         Relationships: []
       }
