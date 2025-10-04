@@ -51,6 +51,12 @@ const adminItems = [
     gradient: "from-green-500 to-emerald-500"
   },
   { 
+    title: "Categories", 
+    url: "/admin/categories", 
+    icon: Package,
+    gradient: "from-teal-500 to-green-500"
+  },
+  { 
     title: "Orders", 
     url: "/admin/orders", 
     icon: ShoppingCart,

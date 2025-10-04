@@ -11,6 +11,7 @@ import { DashboardLoadingSkeleton } from "@/components/dashboard/DashboardLoadin
 
 const UserManagement = lazy(() => import("@/components/dashboard/UserManagement").then(m => ({ default: m.UserManagement })));
 const ProductManagement = lazy(() => import("@/components/dashboard/ProductManagement").then(m => ({ default: m.ProductManagement })));
+const CategoryManagement = lazy(() => import("@/components/dashboard/CategoryManagement").then(m => ({ default: m.CategoryManagement })));
 const OrderManagement = lazy(() => import("@/components/dashboard/OrderManagement").then(m => ({ default: m.OrderManagement })));
 const ApplicationManagement = lazy(() => import("@/components/dashboard/ApplicationManagement").then(m => ({ default: m.ApplicationManagement })));
 const PaymentManagement = lazy(() => import("@/components/dashboard/PaymentManagement").then(m => ({ default: m.PaymentManagement })));
@@ -158,6 +159,7 @@ const Admin = () => {
                       />
                     } 
                   />
+                  <Route path="categories" element={<CategoryManagement />} />
                   <Route path="orders" element={<OrderManagement />} />
                   <Route path="applications" element={<ApplicationManagement />} />
                   <Route path="payments" element={<PaymentManagement />} />
