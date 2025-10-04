@@ -74,7 +74,7 @@ export function ProductManagement() {
     attributes: [] as Array<{ name: string; value: string }>,
     related_products: [] as string[],
     tags: [] as string[],
-    category_id: "" as string,
+    category_id: null as string | null,
     seo_title: "",
     seo_description: "",
     seo_keywords: "",
