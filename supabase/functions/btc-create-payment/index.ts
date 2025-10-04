@@ -88,11 +88,11 @@ serve(async (req) => {
 
     const addressIndex = walletData.next_index;
     
-    // Derive Bitcoin address using proper BIP84 derivation
+    // Derive Bitcoin address using proper BIP84 derivation (mainnet only)
     const address = deriveAddressFromXpub(
       walletData.xpub, 
       addressIndex,
-      walletData.network || 'mainnet'
+      'mainnet' // Platform operates on mainnet only
     );
 
     console.log(`Derived BIP84 address ${address} at index ${addressIndex} from wallet ${walletData.name}`);

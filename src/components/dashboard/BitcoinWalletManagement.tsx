@@ -56,7 +56,6 @@ export function BitcoinWalletManagement() {
   const [formData, setFormData] = useState({
     name: "",
     xpub: "",
-    network: "mainnet",
     derivation_path: "m/84'/0'/0'/0"
   });
   const { toast } = useToast();
@@ -90,14 +89,42 @@ export function BitcoinWalletManagement() {
 
   const handleSaveWallet = async () => {
     try {
+      // Validate xpub format
+      if (!formData.xpub.startsWith('zpub')) {
+        toast({
+          title: "Invalid xpub",
+          description: "Please enter a valid mainnet zpub (BIP84) extended public key",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (formData.xpub.length < 100 || formData.xpub.length > 120) {
+        toast({
+          title: "Invalid xpub",
+          description: "Extended public key length is invalid",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (!formData.name.trim()) {
+        toast({
+          title: "Validation Error",
+          description: "Wallet name is required",
+          variant: "destructive",
+        });
+        return;
+      }
+
       if (editingWallet) {
         // Update existing wallet
         const { error } = await supabase
           .from("btc_wallets")
           .update({
-            name: formData.name,
-            xpub: formData.xpub,
-            network: formData.network,
+            name: formData.name.trim(),
+            xpub: formData.xpub.trim(),
+            network: "mainnet", // Always mainnet
             derivation_path: formData.derivation_path,
             updated_at: new Date().toISOString(),
           })
@@ -112,9 +139,9 @@ export function BitcoinWalletManagement() {
       } else {
         // Add new wallet
         const { error } = await supabase.from("btc_wallets").insert({
-          name: formData.name,
-          xpub: formData.xpub,
-          network: formData.network,
+          name: formData.name.trim(),
+          xpub: formData.xpub.trim(),
+          network: "mainnet", // Always mainnet
           derivation_path: formData.derivation_path
         });
 
@@ -131,7 +158,6 @@ export function BitcoinWalletManagement() {
       setFormData({
         name: "",
         xpub: "",
-        network: "mainnet",
         derivation_path: "m/84'/0'/0'/0"
       });
       fetchData();
@@ -149,7 +175,6 @@ export function BitcoinWalletManagement() {
     setFormData({
       name: wallet.name,
       xpub: wallet.xpub,
-      network: wallet.network,
       derivation_path: wallet.derivation_path,
     });
     setDialogOpen(true);
@@ -188,7 +213,6 @@ export function BitcoinWalletManagement() {
     setFormData({
       name: "",
       xpub: "",
-      network: "mainnet",
       derivation_path: "m/84'/0'/0'/0"
     });
     setDialogOpen(true);
@@ -202,9 +226,9 @@ export function BitcoinWalletManagement() {
     {
       key: "network",
       label: "Network",
-      render: (row: Wallet) => (
-        <Badge variant={row.network === "mainnet" ? "default" : "secondary"}>
-          {row.network}
+      render: () => (
+        <Badge variant="default">
+          Mainnet
         </Badge>
       ),
     },
@@ -356,30 +380,15 @@ export function BitcoinWalletManagement() {
               />
             </div>
             <div>
-              <Label>Extended Public Key (xpub/zpub)</Label>
+              <Label>Extended Public Key (zpub)</Label>
               <Input
                 value={formData.xpub}
                 onChange={(e) => setFormData({ ...formData, xpub: e.target.value })}
                 placeholder="zpub6nXBJB56BbW7d4kg4PHdzQNCzcx5XVj3aczVTa12PSbM9KZfVKBfph6jgfsZ..."
               />
               <p className="text-xs text-muted-foreground mt-1">
-                Supports xpub, ypub, zpub formats
+                Enter your BIP84 mainnet zpub extended public key
               </p>
-            </div>
-            <div>
-              <Label>Network</Label>
-              <Select
-                value={formData.network}
-                onValueChange={(value) => setFormData({ ...formData, network: value })}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="mainnet">Mainnet</SelectItem>
-                  <SelectItem value="testnet">Testnet</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
             <div>
               <Label>Derivation Path</Label>
@@ -388,6 +397,9 @@ export function BitcoinWalletManagement() {
                 onChange={(e) => setFormData({ ...formData, derivation_path: e.target.value })}
                 placeholder="m/84'/0'/0'/0"
               />
+              <p className="text-xs text-muted-foreground mt-1">
+                Standard BIP84 path for native SegWit (bc1 addresses)
+              </p>
             </div>
             <Button onClick={handleSaveWallet} className="w-full">
               {editingWallet ? "Update Wallet" : "Add Wallet"}
