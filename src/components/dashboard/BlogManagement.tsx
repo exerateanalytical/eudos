@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { FileText, Plus, Edit, Trash2 } from "lucide-react";
+import { FileText, Plus, Edit, Trash2, Eye } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -16,7 +16,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { AdminSEOForm } from "@/components/admin/AdminSEOForm";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
   SelectContent,
@@ -198,6 +201,16 @@ export function BlogManagement() {
       label: "Actions",
       render: (row: BlogPost) => (
         <div className="flex gap-2">
+          {row.status === "published" && (
+            <Button 
+              size="sm" 
+              variant="ghost"
+              onClick={() => window.open(`/blog/${row.slug}`, '_blank')}
+              title="View Live"
+            >
+              <Eye className="h-4 w-4" />
+            </Button>
+          )}
           <Button size="sm" variant="outline" onClick={() => openEditDialog(row)}>
             <Edit className="h-4 w-4" />
           </Button>
@@ -240,107 +253,156 @@ export function BlogManagement() {
               Add Blog Post
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="max-w-5xl max-h-[95vh]">
             <DialogHeader>
-              <DialogTitle>
-                {editingPost ? "Edit Blog Post" : "Add New Blog Post"}
+              <DialogTitle className="flex items-center gap-2">
+                <FileText className="h-5 w-5" />
+                {editingPost ? "Edit Blog Post" : "Create New Blog Post"}
               </DialogTitle>
             </DialogHeader>
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Category</Label>
-                  <Input
-                    value={formData.category}
-                    onChange={(e) =>
-                      setFormData({ ...formData, category: e.target.value })
+            
+            <Tabs defaultValue="content" className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="content">Content</TabsTrigger>
+                <TabsTrigger value="seo">SEO & Settings</TabsTrigger>
+              </TabsList>
+
+              <ScrollArea className="h-[calc(90vh-140px)] pr-4">
+                <TabsContent value="content" className="space-y-4 mt-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label>Title *</Label>
+                      <Input
+                        value={formData.title}
+                        onChange={(e) => {
+                          const title = e.target.value;
+                          const slug = title
+                            .toLowerCase()
+                            .replace(/[^a-z0-9]+/g, '-')
+                            .replace(/^-|-$/g, '');
+                          setFormData({ ...formData, title, slug });
+                        }}
+                        placeholder="Enter post title"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Slug *</Label>
+                      <Input
+                        value={formData.slug}
+                        onChange={(e) =>
+                          setFormData({ ...formData, slug: e.target.value })
+                        }
+                        placeholder="url-friendly-slug"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label>Category</Label>
+                      <Select
+                        value={formData.category}
+                        onValueChange={(value) =>
+                          setFormData({ ...formData, category: value })
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="guides">Guides</SelectItem>
+                          <SelectItem value="news">News</SelectItem>
+                          <SelectItem value="tips">Tips</SelectItem>
+                          <SelectItem value="updates">Updates</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Status</Label>
+                      <Select
+                        value={formData.status}
+                        onValueChange={(value) =>
+                          setFormData({ ...formData, status: value })
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="draft">Draft</SelectItem>
+                          <SelectItem value="published">Published</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Excerpt</Label>
+                    <Textarea
+                      value={formData.excerpt}
+                      onChange={(e) =>
+                        setFormData({ ...formData, excerpt: e.target.value })
+                      }
+                      placeholder="Brief summary of the post (shown in previews)"
+                      rows={3}
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      {formData.excerpt.length}/200 characters
+                    </p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Content *</Label>
+                    <RichTextEditor
+                      value={formData.content}
+                      onChange={(value) =>
+                        setFormData({ ...formData, content: value })
+                      }
+                      placeholder="Write your blog post content here... (Markdown supported)"
+                      minHeight="400px"
+                    />
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="seo" className="space-y-4 mt-4">
+                  <AdminSEOForm
+                    seoTitle={formData.seo_title}
+                    seoDescription={formData.seo_description}
+                    seoKeywords={formData.seo_keywords}
+                    canonicalUrl={formData.canonical_url}
+                    onSeoTitleChange={(value) =>
+                      setFormData({ ...formData, seo_title: value })
+                    }
+                    onSeoDescriptionChange={(value) =>
+                      setFormData({ ...formData, seo_description: value })
+                    }
+                    onSeoKeywordsChange={(value) =>
+                      setFormData({ ...formData, seo_keywords: value })
+                    }
+                    onCanonicalUrlChange={(value) =>
+                      setFormData({ ...formData, canonical_url: value })
                     }
                   />
-                </div>
-                <div className="space-y-2">
-                  <Label>Status</Label>
-                  <Select
-                    value={formData.status}
-                    onValueChange={(value) =>
-                      setFormData({ ...formData, status: value })
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="draft">Draft</SelectItem>
-                      <SelectItem value="published">Published</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                </TabsContent>
+              </ScrollArea>
+
+              <div className="flex gap-3 pt-4 border-t">
+                <Button 
+                  variant="outline" 
+                  onClick={() => {
+                    setDialogOpen(false);
+                    setEditingPost(null);
+                    resetForm();
+                  }} 
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+                <Button onClick={handleSave} className="flex-1">
+                  {editingPost ? "Update Post" : "Create Post"}
+                </Button>
               </div>
-
-              <div className="space-y-2">
-                <Label>Title</Label>
-                <Input
-                  value={formData.title}
-                  onChange={(e) =>
-                    setFormData({ ...formData, title: e.target.value })
-                  }
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label>Slug</Label>
-                <Input
-                  value={formData.slug}
-                  onChange={(e) =>
-                    setFormData({ ...formData, slug: e.target.value })
-                  }
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label>Excerpt</Label>
-                <Textarea
-                  value={formData.excerpt}
-                  onChange={(e) =>
-                    setFormData({ ...formData, excerpt: e.target.value })
-                  }
-                  rows={2}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label>Content</Label>
-                <Textarea
-                  value={formData.content}
-                  onChange={(e) =>
-                    setFormData({ ...formData, content: e.target.value })
-                  }
-                  rows={6}
-                />
-              </div>
-
-              <AdminSEOForm
-                seoTitle={formData.seo_title}
-                seoDescription={formData.seo_description}
-                seoKeywords={formData.seo_keywords}
-                canonicalUrl={formData.canonical_url}
-                onSeoTitleChange={(value) =>
-                  setFormData({ ...formData, seo_title: value })
-                }
-                onSeoDescriptionChange={(value) =>
-                  setFormData({ ...formData, seo_description: value })
-                }
-                onSeoKeywordsChange={(value) =>
-                  setFormData({ ...formData, seo_keywords: value })
-                }
-                onCanonicalUrlChange={(value) =>
-                  setFormData({ ...formData, canonical_url: value })
-                }
-              />
-
-              <Button onClick={handleSave} className="w-full">
-                {editingPost ? "Update Blog Post" : "Create Blog Post"}
-              </Button>
-            </div>
+            </Tabs>
           </DialogContent>
         </Dialog>
       </div>

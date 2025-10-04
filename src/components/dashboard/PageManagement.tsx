@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { FileText, Plus, Edit, Trash2 } from "lucide-react";
+import { FileText, Plus, Edit, Trash2, Eye } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -16,7 +16,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { AdminSEOForm } from "@/components/admin/AdminSEOForm";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
   SelectContent,

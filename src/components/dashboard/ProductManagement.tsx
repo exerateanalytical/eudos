@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Package, Plus, Edit, Trash2 } from "lucide-react";
+import { Package, Plus, Edit, Trash2, Eye } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -16,7 +16,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { AdminSEOForm } from "@/components/admin/AdminSEOForm";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
   SelectContent,
@@ -184,6 +187,16 @@ export function ProductManagement() {
       label: "Actions",
       render: (row: Product) => (
         <div className="flex gap-2">
+          {row.status === "active" && (
+            <Button 
+              size="sm" 
+              variant="ghost"
+              onClick={() => window.open(`/product/${row.slug}`, '_blank')}
+              title="View Live"
+            >
+              <Eye className="h-4 w-4" />
+            </Button>
+          )}
           <Button size="sm" variant="outline" onClick={() => openEditDialog(row)}>
             <Edit className="h-4 w-4" />
           </Button>
