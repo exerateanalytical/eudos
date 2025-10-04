@@ -52,6 +52,10 @@ export function BitcoinCheckout({
 
   const createPaymentAndOrder = async () => {
     try {
+      console.log("BitcoinCheckout: Starting payment creation");
+      console.log("Wallet ID:", walletId);
+      console.log("Amount BTC:", amountBTC);
+      console.log("Product:", productName);
       setLoading(true);
       
       // Get current user

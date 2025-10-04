@@ -119,6 +119,9 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
   };
 
   const handleConfirmPayment = async () => {
+    console.log("Confirming payment, moving to bitcoin step");
+    console.log("Selected product:", formData.selectedProduct);
+    console.log("Total amount:", total);
     setStep("bitcoin");
   };
 
