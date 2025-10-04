@@ -16,7 +16,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { RichTextEditor } from "@/components/admin/RichTextEditor";
+import { WYSIWYGEditor } from "@/components/admin/WYSIWYGEditor";
+import { FeaturedImagePicker } from "@/components/admin/FeaturedImagePicker";
 import { AdminSEOForm } from "@/components/admin/AdminSEOForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -353,12 +354,12 @@ export function BlogManagement() {
 
                   <div className="space-y-2">
                     <Label>Content *</Label>
-                    <RichTextEditor
+                    <WYSIWYGEditor
                       value={formData.content}
                       onChange={(value) =>
                         setFormData({ ...formData, content: value })
                       }
-                      placeholder="Write your blog post content here... (Markdown supported)"
+                      placeholder="Write your blog post content here..."
                       minHeight="400px"
                     />
                   </div>

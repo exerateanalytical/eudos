@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { RichTextEditor } from "@/components/admin/RichTextEditor";
+import { WYSIWYGEditor } from "@/components/admin/WYSIWYGEditor";
 import { AdminSEOForm } from "@/components/admin/AdminSEOForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -270,12 +270,12 @@ export function PageManagement() {
 
               <div className="space-y-2">
                 <Label>Content</Label>
-                <Textarea
+                <WYSIWYGEditor
                   value={formData.content}
-                  onChange={(e) =>
-                    setFormData({ ...formData, content: e.target.value })
+                  onChange={(value) =>
+                    setFormData({ ...formData, content: value })
                   }
-                  rows={8}
+                  placeholder="Write your page content..."
                 />
               </div>
 

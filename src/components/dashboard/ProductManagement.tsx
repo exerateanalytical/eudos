@@ -16,7 +16,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { RichTextEditor } from "@/components/admin/RichTextEditor";
+import { WYSIWYGEditor } from "@/components/admin/WYSIWYGEditor";
+import { FeaturedImagePicker } from "@/components/admin/FeaturedImagePicker";
 import { AdminSEOForm } from "@/components/admin/AdminSEOForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -37,6 +38,7 @@ interface Product {
   price: number;
   country: string;
   status: string;
+  image_url?: string;
   seo_title: string;
   seo_description: string;
   seo_keywords: string;
@@ -58,6 +60,7 @@ export function ProductManagement() {
     price: 0,
     country: "",
     status: "active",
+    image_url: "",
     seo_title: "",
     seo_description: "",
     seo_keywords: "",
@@ -145,6 +148,7 @@ export function ProductManagement() {
       price: 0,
       country: "",
       status: "active",
+      image_url: "",
       seo_title: "",
       seo_description: "",
       seo_keywords: "",
@@ -154,7 +158,20 @@ export function ProductManagement() {
 
   const openEditDialog = (product: Product) => {
     setEditingProduct(product);
-    setFormData(product);
+    setFormData({
+      category_type: product.category_type,
+      name: product.name,
+      slug: product.slug,
+      description: product.description,
+      price: product.price || 0,
+      country: product.country || "",
+      status: product.status,
+      image_url: product.image_url || "",
+      seo_title: product.seo_title || "",
+      seo_description: product.seo_description || "",
+      seo_keywords: product.seo_keywords || "",
+      canonical_url: product.canonical_url || "",
+    });
     setDialogOpen(true);
   };
 
@@ -329,14 +346,20 @@ export function ProductManagement() {
                 </div>
               </div>
 
+              <FeaturedImagePicker
+                value={formData.image_url || ''}
+                onChange={(value) => setFormData({ ...formData, image_url: value })}
+                label="Product Image"
+              />
+
               <div className="space-y-2">
                 <Label>Description</Label>
-                <Textarea
+                <WYSIWYGEditor
                   value={formData.description}
-                  onChange={(e) =>
-                    setFormData({ ...formData, description: e.target.value })
+                  onChange={(value) =>
+                    setFormData({ ...formData, description: value })
                   }
-                  rows={4}
+                  placeholder="Write product description..."
                 />
               </div>
 
