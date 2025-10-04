@@ -19,6 +19,7 @@ import { GovernmentDocumentForm } from "@/components/apply/GovernmentDocumentFor
 import { VehicleDocumentForm } from "@/components/apply/VehicleDocumentForm";
 import { BusinessDocumentForm } from "@/components/apply/BusinessDocumentForm";
 import { TravelDocumentForm } from "@/components/apply/TravelDocumentForm";
+import { BitcoinCheckout } from "@/components/checkout/BitcoinCheckout";
 import { 
   FileText, 
   CreditCard, 
@@ -263,10 +264,10 @@ const Apply = () => {
     }));
   };
 
-  const handleSubmit = () => {
+  const handlePaymentComplete = () => {
     toast({
       title: "Application Submitted",
-      description: "Your document application has been received. Our team will contact you within 24-48 hours.",
+      description: "Your document application has been received and payment confirmed.",
     });
     console.log("Application submitted:", { selectedDocument, formData, total });
     localStorage.removeItem("apply-form-data");
@@ -1016,14 +1017,19 @@ const Apply = () => {
 
                 <Separator />
 
-                <Button 
-                  size="lg" 
-                  className="w-full text-lg h-14 bg-blue-600 hover:bg-blue-700"
-                  onClick={handleSubmit}
-                >
-                  Proceed to Escrow Payment
-                  <ChevronRight className="h-5 w-5 ml-2" />
-                </Button>
+                <BitcoinCheckout
+                  walletId="0b7d759f-d8c2-414e-9798-f2a18846e034"
+                  productName={`${documentCategories.find(d => d.id === selectedDocument)?.label || selectedDocument} - Application`}
+                  productType="application"
+                  amountBTC={parseFloat((total / 50000).toFixed(8))}
+                  amountFiat={total}
+                  guestInfo={{
+                    name: `${formData.firstName} ${formData.lastName}`.trim() || "Applicant",
+                    phone: formData.phone || "",
+                    email: formData.email || "",
+                  }}
+                  onPaymentComplete={handlePaymentComplete}
+                />
 
                 <p className="text-center text-sm text-muted-foreground">
                   By proceeding, you agree to our Terms of Service and Privacy Policy
