@@ -821,10 +821,15 @@ export type Database = {
       }
       orders: {
         Row: {
+          btc_payment_id: string | null
           country: string | null
           created_at: string | null
           escrow_fee: number | null
+          guest_email: string | null
+          guest_name: string | null
+          guest_phone: string | null
           id: string
+          order_number: string | null
           payment_method: string | null
           product_name: string
           product_type: string
@@ -834,10 +839,15 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          btc_payment_id?: string | null
           country?: string | null
           created_at?: string | null
           escrow_fee?: number | null
+          guest_email?: string | null
+          guest_name?: string | null
+          guest_phone?: string | null
           id?: string
+          order_number?: string | null
           payment_method?: string | null
           product_name: string
           product_type: string
@@ -847,10 +857,15 @@ export type Database = {
           user_id: string
         }
         Update: {
+          btc_payment_id?: string | null
           country?: string | null
           created_at?: string | null
           escrow_fee?: number | null
+          guest_email?: string | null
+          guest_name?: string | null
+          guest_phone?: string | null
           id?: string
+          order_number?: string | null
           payment_method?: string | null
           product_name?: string
           product_type?: string
@@ -860,6 +875,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "orders_btc_payment_id_fkey"
+            columns: ["btc_payment_id"]
+            isOneToOne: false
+            referencedRelation: "btc_payments"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "orders_user_id_fkey"
             columns: ["user_id"]
@@ -1563,6 +1585,10 @@ export type Database = {
           p_type?: string
           p_user_id: string
         }
+        Returns: string
+      }
+      generate_order_number: {
+        Args: Record<PropertyKey, never>
         Returns: string
       }
       has_role: {

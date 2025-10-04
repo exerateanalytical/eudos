@@ -26,6 +26,14 @@ interface Order {
   escrow_fee: number | null;
   created_at: string;
   country: string;
+  order_number?: string;
+  btc_payment_id?: string;
+  btc_payments?: {
+    address: string;
+    txid: string | null;
+    confirmations: number;
+    status: string;
+  };
 }
 
 export function OrderManagement() {
@@ -43,7 +51,15 @@ export function OrderManagement() {
     try {
       const { data, error } = await supabase
         .from("orders")
-        .select("*")
+        .select(`
+          *,
+          btc_payments (
+            address,
+            txid,
+            confirmations,
+            status
+          )
+        `)
         .order("created_at", { ascending: false });
 
       if (error) throw error;
@@ -119,6 +135,15 @@ export function OrderManagement() {
 
   const columns = [
     {
+      key: "order_number",
+      label: "Order #",
+      render: (row: Order) => (
+        <code className="text-xs font-mono bg-muted px-2 py-1 rounded">
+          {row.order_number || 'N/A'}
+        </code>
+      ),
+    },
+    {
       key: "product_name",
       label: "Product",
     },
@@ -137,6 +162,35 @@ export function OrderManagement() {
       key: "total_amount",
       label: "Amount",
       render: (row: Order) => `$${row.total_amount}`,
+    },
+    {
+      key: "payment_method",
+      label: "Payment",
+      render: (row: Order) => (
+        <Badge variant="outline" className="capitalize">
+          {row.payment_method || 'N/A'}
+        </Badge>
+      ),
+    },
+    {
+      key: "transaction",
+      label: "Transaction",
+      render: (row: Order) => {
+        if (row.btc_payments && row.btc_payments.txid) {
+          return (
+            <a
+              href={`https://blockstream.info/tx/${row.btc_payments.txid}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline text-xs flex items-center gap-1"
+            >
+              View TX
+              <Eye className="h-3 w-3" />
+            </a>
+          );
+        }
+        return <span className="text-xs text-muted-foreground">-</span>;
+      },
     },
     {
       key: "status",

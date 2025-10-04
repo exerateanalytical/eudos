@@ -28,6 +28,7 @@ const NotificationsPanel = lazy(() => import("@/components/dashboard/Notificatio
 const ProfileModule = lazy(() => import("@/components/dashboard/ProfileModule"));
 const SecurityModule = lazy(() => import("@/components/dashboard/SecurityModule"));
 const SeedingModule = lazy(() => import("@/components/dashboard/SeedingModule").then(m => ({ default: m.SeedingModule })));
+const UserOrders = lazy(() => import("@/components/dashboard/UserOrders").then(m => ({ default: m.UserOrders })));
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -216,7 +217,7 @@ const Dashboard = () => {
                 <div className="animate-fade-in">
                   <Routes>
                     <Route path="/" element={<DashboardOverview userId={user?.id!} />} />
-                    <Route path="orders" element={<OrdersModule userId={user?.id!} />} />
+                    <Route path="orders" element={<UserOrders />} />
                     <Route path="applications" element={<DocumentApplicationsModule userId={user?.id!} />} />
                     <Route path="wallet" element={<WalletModule userId={user?.id!} />} />
                     <Route path="documents" element={<DocumentWallet userId={user?.id!} />} />

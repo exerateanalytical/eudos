@@ -104,6 +104,22 @@ serve(async (req) => {
 
         if (!updateError) {
           console.log(`Payment ${payment.id} marked as paid (tx: ${result.txid})`);
+          
+          // Update linked order status to paid
+          if (payment.order_id) {
+            const { error: orderError } = await supabaseClient
+              .from('orders')
+              .update({
+                status: 'paid',
+                updated_at: new Date().toISOString()
+              })
+              .eq('id', payment.order_id);
+            
+            if (!orderError) {
+              console.log(`Order ${payment.order_id} marked as paid`);
+            }
+          }
+          
           updatedCount++;
         }
       } else if (result.found && !result.confirmed) {

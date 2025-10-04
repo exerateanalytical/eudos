@@ -31,7 +31,19 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const { wallet_id, order_id, amount_btc, amount_fiat, user_id, metadata } = await req.json();
+    const { 
+      wallet_id, 
+      order_id, 
+      amount_btc, 
+      amount_fiat, 
+      user_id, 
+      metadata,
+      guest_name,
+      guest_phone,
+      guest_email,
+      product_name,
+      product_type
+    } = await req.json();
 
     if (!wallet_id || !order_id || !amount_btc) {
       throw new Error('wallet_id, order_id, and amount_btc are required');
@@ -84,7 +96,14 @@ serve(async (req) => {
         amount_btc,
         amount_fiat: amount_fiat || null,
         status: 'pending',
-        metadata: metadata || null
+        metadata: {
+          ...metadata,
+          guest_name,
+          guest_phone,
+          guest_email,
+          product_name,
+          product_type
+        }
       })
       .select()
       .single();
