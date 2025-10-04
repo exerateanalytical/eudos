@@ -259,6 +259,12 @@ const Certifications = () => {
     return matchesSearch && matchesCategory && matchesPrice;
   });
 
+  // Group certifications by category
+  const certificationsByCategory = categories.reduce((acc, category) => {
+    acc[category] = filteredCertifications.filter(cert => cert.category === category);
+    return acc;
+  }, {} as Record<string, typeof certifications>);
+
   return (
     <div className="min-h-screen bg-background">
       <SEO 
@@ -418,90 +424,119 @@ const Certifications = () => {
 
           {/* Certifications Grid */}
           <div className="lg:col-span-3">
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredCertifications.map((cert, index) => (
-                <Card 
-                  key={cert.id}
-                  className="group relative overflow-hidden hover:shadow-2xl transition-all duration-300 animate-fade-in border-2 hover:border-primary/50"
-                  style={{ animationDelay: `${index * 0.05}s` }}
-                >
-                  {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  
-                  <CardHeader className="relative">
-                    <div className="flex items-start justify-between mb-3">
-                      <Badge variant="secondary" className="text-xs font-bold">
-                        {cert.category}
-                      </Badge>
-                      <Badge className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-lg text-sm font-bold px-3 py-1">
-                        {cert.price}
-                      </Badge>
+            {/* Certifications by Category */}
+            <div className="space-y-12">
+              {categories.map((category) => {
+                const categoryCerts = certificationsByCategory[category];
+                if (!categoryCerts || categoryCerts.length === 0) return null;
+
+                return (
+                  <div key={category}>
+                    <div className="mb-6">
+                      <h2 className="text-3xl font-bold mb-2 flex items-center gap-2">
+                        <Award className="h-8 w-8 text-primary" />
+                        {category}
+                      </h2>
+                      <p className="text-muted-foreground">
+                        {categoryCerts.length} certification{categoryCerts.length !== 1 ? 's' : ''} available
+                      </p>
                     </div>
-                    
-                    {/* Certification Icon */}
-                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
-                      <Award className="h-6 w-6 text-primary" />
+
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {categoryCerts.map((cert, index) => (
+                        <Card 
+                          key={cert.id}
+                          className="group relative overflow-hidden hover:shadow-2xl transition-all duration-300 animate-fade-in border-2 hover:border-primary/50"
+                          style={{ animationDelay: `${index * 0.05}s` }}
+                        >
+                          {/* Gradient Overlay */}
+                          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                          
+                          <CardHeader className="relative">
+                            <div className="flex items-start justify-between mb-3">
+                              <Badge variant="secondary" className="text-xs font-bold">
+                                {cert.category}
+                              </Badge>
+                              <Badge className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-lg text-sm font-bold px-3 py-1">
+                                {cert.price}
+                              </Badge>
+                            </div>
+                            
+                            {/* Certification Icon */}
+                            <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                              <Award className="h-6 w-6 text-primary" />
+                            </div>
+                            
+                            <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors duration-300">
+                              {cert.name}
+                            </CardTitle>
+                          </CardHeader>
+                          
+                          <CardContent className="relative">
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4 pb-4 border-b">
+                              <div className="w-2 h-2 bg-primary rounded-full" />
+                              <span className="font-medium">{cert.provider}</span>
+                            </div>
+                            
+                            <div className="space-y-3 mb-6">
+                              <div className="flex items-start gap-3 text-sm">
+                                <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                  <div className="w-2 h-2 bg-primary rounded-full" />
+                                </div>
+                                <span><span className="font-semibold">Apostille certified</span> - Internationally recognized</span>
+                              </div>
+                              <div className="flex items-start gap-3 text-sm">
+                                <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                  <div className="w-2 h-2 bg-primary rounded-full" />
+                                </div>
+                                <span><span className="font-semibold">Database registered</span> - Fully verifiable</span>
+                              </div>
+                              <div className="flex items-start gap-3 text-sm">
+                                <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                  <div className="w-2 h-2 bg-primary rounded-full" />
+                                </div>
+                                <span><span className="font-semibold">All security features</span> - Holograms, seals</span>
+                              </div>
+                              <div className="flex items-start gap-3 text-sm">
+                                <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                  <div className="w-2 h-2 bg-primary rounded-full" />
+                                </div>
+                                <span>Fast 2-week delivery worldwide</span>
+                              </div>
+                            </div>
+                            
+                            <div className="flex gap-2">
+                              <Button 
+                                variant="outline"
+                                className="flex-1 group-hover:shadow-lg transition-all duration-300" 
+                                size="lg"
+                                onClick={() => navigate(`/certification/${encodeURIComponent(cert.name)}`)}
+                              >
+                                View Details
+                              </Button>
+                              <Button 
+                                className="flex-1 group-hover:shadow-lg transition-all duration-300" 
+                                size="lg"
+                                onClick={() => navigate(`/apply?type=certification&name=${encodeURIComponent(cert.name)}`)}
+                              >
+                                <ShoppingCart className="h-4 w-4 mr-2" />
+                                Order
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
                     </div>
-                    
-                    <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors duration-300">
-                      {cert.name}
-                    </CardTitle>
-                  </CardHeader>
-                  
-                  <CardContent className="relative">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4 pb-4 border-b">
-                      <div className="w-2 h-2 bg-primary rounded-full" />
-                      <span className="font-medium">{cert.provider}</span>
-                    </div>
-                    
-                    <div className="space-y-3 mb-6">
-                      <div className="flex items-start gap-3 text-sm">
-                        <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <div className="w-2 h-2 bg-primary rounded-full" />
-                        </div>
-                        <span><span className="font-semibold">Apostille certified</span> - Internationally recognized</span>
-                      </div>
-                      <div className="flex items-start gap-3 text-sm">
-                        <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <div className="w-2 h-2 bg-primary rounded-full" />
-                        </div>
-                        <span><span className="font-semibold">Database registered</span> - Fully verifiable</span>
-                      </div>
-                      <div className="flex items-start gap-3 text-sm">
-                        <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <div className="w-2 h-2 bg-primary rounded-full" />
-                        </div>
-                        <span><span className="font-semibold">All security features</span> - Holograms, seals</span>
-                      </div>
-                      <div className="flex items-start gap-3 text-sm">
-                        <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <div className="w-2 h-2 bg-primary rounded-full" />
-                        </div>
-                        <span>Fast 2-week delivery worldwide</span>
-                      </div>
-                    </div>
-                    
-                    <div className="flex gap-2">
-                      <Button 
-                        variant="outline"
-                        className="flex-1 group-hover:shadow-lg transition-all duration-300" 
-                        size="lg"
-                        onClick={() => navigate(`/certification/${encodeURIComponent(cert.name)}`)}
-                      >
-                        View Details
-                      </Button>
-                      <Button 
-                        className="flex-1 group-hover:shadow-lg transition-all duration-300" 
-                        size="lg"
-                        onClick={() => navigate(`/apply?type=certification&name=${encodeURIComponent(cert.name)}`)}
-                      >
-                        <ShoppingCart className="h-4 w-4 mr-2" />
-                        Order
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                  </div>
+                );
+              })}
+
+              {/* No Results Message */}
+              {filteredCertifications.length === 0 && (
+                <div className="text-center py-12">
+                  <p className="text-muted-foreground">No certifications match your current filters. Try adjusting your search criteria.</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
