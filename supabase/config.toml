@@ -11,7 +11,7 @@ verify_jwt = false
 
 [functions.btc-check-payments.schedule]
 enabled = true
-cron = "*/60 * * * * *"
+cron = "*/30 * * * * *"
 
 [functions.send-payment-confirmation]
 verify_jwt = false
