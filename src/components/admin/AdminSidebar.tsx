@@ -17,6 +17,7 @@ import {
   Mail,
   Settings,
   Bitcoin,
+  FolderTree,
 } from "lucide-react";
 import {
   Sidebar,
@@ -49,6 +50,12 @@ const adminItems = [
     url: "/admin/products", 
     icon: Package,
     gradient: "from-green-500 to-emerald-500"
+  },
+  { 
+    title: "Categories", 
+    url: "/admin/categories", 
+    icon: FolderTree,
+    gradient: "from-lime-500 to-green-500"
   },
   { 
     title: "Orders", 

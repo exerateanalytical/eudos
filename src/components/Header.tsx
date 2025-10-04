@@ -5,11 +5,35 @@ import { Globe, Menu, User, LayoutDashboard, Home, Shield } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Session } from "@supabase/supabase-js";
+import { useQuery } from "@tanstack/react-query";
+
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  display_order: number;
+}
 
 export const Header = () => {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
+
+  // Fetch categories dynamically
+  const { data: categories } = useQuery({
+    queryKey: ["header-categories"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("product_categories")
+        .select("id, name, slug, display_order")
+        .is("parent_id", null)
+        .eq("is_visible_in_menu", true)
+        .order("display_order");
+      
+      if (error) throw error;
+      return data as Category[];
+    },
+  });
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -46,24 +70,15 @@ export const Header = () => {
             <Home className="h-4 w-4" />
             Home
           </button>
-          <button onClick={() => navigate("/products")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
-            Products
-          </button>
-          <button onClick={() => navigate("/passports")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
-            Passports
-          </button>
-          <button onClick={() => navigate("/drivers-license")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
-            Driver's License
-          </button>
-          <button onClick={() => navigate("/citizenship")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
-            Citizenship
-          </button>
-          <button onClick={() => navigate("/diplomas")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
-            Diplomas
-          </button>
-          <button onClick={() => navigate("/certifications")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
-            Certifications
-          </button>
+          {categories?.map((category) => (
+            <button 
+              key={category.id}
+              onClick={() => navigate(`/category/${category.slug}`)}
+              className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95"
+            >
+              {category.name}
+            </button>
+          ))}
           <button onClick={() => navigate("/apply")} className="text-foreground/80 hover:text-primary transition-colors duration-300 font-medium text-sm lg:text-base active:scale-95">
             Apply
           </button>
@@ -97,24 +112,15 @@ export const Header = () => {
                 <Home className="h-5 w-5" />
                 Home
               </button>
-              <button onClick={() => { navigate("/products"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
-                Products
-              </button>
-              <button onClick={() => { navigate("/passports"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
-                Passports
-              </button>
-              <button onClick={() => { navigate("/drivers-license"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
-                Driver's License
-              </button>
-              <button onClick={() => { navigate("/citizenship"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
-                Citizenship
-              </button>
-              <button onClick={() => { navigate("/diplomas"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
-                Diplomas
-              </button>
-              <button onClick={() => { navigate("/certifications"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
-                Certifications
-              </button>
+              {categories?.map((category) => (
+                <button 
+                  key={category.id}
+                  onClick={() => { navigate(`/category/${category.slug}`); setMobileMenuOpen(false); }}
+                  className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95"
+                >
+                  {category.name}
+                </button>
+              ))}
               <button onClick={() => { navigate("/apply"); setMobileMenuOpen(false); }} className="text-left text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-3 px-4 rounded-lg hover:bg-primary/5 active:scale-95">
                 Apply
               </button>

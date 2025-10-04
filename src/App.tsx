@@ -41,6 +41,8 @@ import NotFound from "./pages/NotFound";
 import Forbidden from "./pages/Forbidden";
 import ServerError from "./pages/ServerError";
 import TrackOrder from "./pages/TrackOrder";
+import CategoryPage from "./pages/CategoryPage";
+import CategoryManagement from "./pages/CategoryManagement";
 
 const queryClient = new QueryClient();
 
@@ -94,6 +96,10 @@ const App = () => {
             <Route path="/403" element={<Forbidden />} />
             <Route path="/500" element={<ServerError />} />
             <Route path="/404" element={<NotFound />} />
+            
+            {/* Category Routes */}
+            <Route path="/category/:slug" element={<CategoryPage />} />
+            <Route path="/admin/categories" element={<CategoryManagement />} />
             
             {/* Dynamic CMS Routes - These should come last before catch-all */}
             <Route path="/p/:slug" element={<DynamicProduct />} />
