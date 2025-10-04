@@ -24,6 +24,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
+import { BitcoinCheckout } from "@/components/checkout/BitcoinCheckout";
 
 interface EscrowTransactionFormProps {
   open: boolean;
@@ -32,7 +33,7 @@ interface EscrowTransactionFormProps {
 
 const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProps) => {
   const navigate = useNavigate();
-  const [step, setStep] = useState<"form" | "review" | "payment">("form");
+  const [step, setStep] = useState<"form" | "review" | "payment" | "bitcoin">("form");
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [userProfile, setUserProfile] = useState<any>(null);
@@ -118,55 +119,7 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
   };
 
   const handleConfirmPayment = async () => {
-    setLoading(true);
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        toast.error("Please log in to complete the transaction");
-        return;
-      }
-
-      const { subtotal, fee, total } = calculateTotal();
-      const terms = formData.escrowTerms === "custom" ? formData.customTerms : formData.escrowTerms;
-
-      const { error } = await supabase.from("orders").insert({
-        user_id: session.user.id,
-        product_type: formData.selectedProduct?.category || "Product",
-        product_name: `${formData.selectedProduct?.name} (x${formData.quantity})`,
-        country: formData.selectedProduct?.category,
-        total_amount: total,
-        escrow_fee: fee,
-        payment_method: "crypto_escrow",
-        status: "pending",
-        escrow_terms: terms,
-        escrow_wallet_address: escrowWalletAddress,
-        seller_name: "SecurePrint Labs",
-        additional_instructions: `${formData.specifications}\n${formData.additionalInstructions}`.trim(),
-      });
-
-      if (error) throw error;
-
-      toast.success("Escrow created successfully! Please send payment to the wallet address.");
-      onOpenChange(false);
-      setStep("form");
-      setFormData({
-        selectedProduct: null,
-        quantity: 1,
-        specifications: "",
-        escrowTerms: "standard",
-        customTerms: "",
-        deliveryAddress: "",
-        additionalInstructions: "",
-        buyerName: "",
-        buyerEmail: "",
-        buyerPhone: "",
-      });
-    } catch (error) {
-      console.error("Error creating escrow:", error);
-      toast.error("Failed to create escrow. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+    setStep("bitcoin");
   };
 
   const copyToClipboard = () => {
@@ -193,11 +146,13 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
                 {step === "form" && "Create Secure Escrow"}
                 {step === "review" && "Review Escrow Details"}
                 {step === "payment" && "Payment Instructions"}
+                {step === "bitcoin" && "Bitcoin Payment"}
               </span>
               <span className="text-xs font-normal text-muted-foreground">
                 {step === "form" && "Protected by blockchain escrow technology"}
                 {step === "review" && "Verify all details before proceeding"}
                 {step === "payment" && "Secure your funds in escrow"}
+                {step === "bitcoin" && "Complete your Bitcoin payment"}
               </span>
             </div>
           </DialogTitle>
@@ -217,21 +172,21 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
             <div className="flex items-center gap-2">
               <div className={cn(
                 "w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-all",
-                step === "review" ? "bg-primary text-primary-foreground shadow-lg shadow-primary/50" : step === "payment" ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground"
+                step === "review" ? "bg-primary text-primary-foreground shadow-lg shadow-primary/50" : (step === "payment" || step === "bitcoin") ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground"
               )}>
                 2
               </div>
               <span className={cn("text-xs font-medium", step === "review" ? "text-primary" : "text-muted-foreground")}>Review</span>
             </div>
-            <div className={cn("h-0.5 w-8 transition-all", step === "payment" ? "bg-primary" : "bg-muted")} />
+            <div className={cn("h-0.5 w-8 transition-all", (step === "payment" || step === "bitcoin") ? "bg-primary" : "bg-muted")} />
             <div className="flex items-center gap-2">
               <div className={cn(
                 "w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-all",
-                step === "payment" ? "bg-primary text-primary-foreground shadow-lg shadow-primary/50" : "bg-muted text-muted-foreground"
+                (step === "payment" || step === "bitcoin") ? "bg-primary text-primary-foreground shadow-lg shadow-primary/50" : "bg-muted text-muted-foreground"
               )}>
                 3
               </div>
-              <span className={cn("text-xs font-medium", step === "payment" ? "text-primary" : "text-muted-foreground")}>Payment</span>
+              <span className={cn("text-xs font-medium", (step === "payment" || step === "bitcoin") ? "text-primary" : "text-muted-foreground")}>Payment</span>
             </div>
           </div>
         </DialogHeader>
@@ -926,6 +881,41 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
             <p className="text-xs text-center text-muted-foreground">
               Your order will be tracked in your dashboard once payment is confirmed
             </p>
+          </div>
+        )}
+
+        {step === "bitcoin" && formData.selectedProduct && (
+          <div className="py-4">
+            <BitcoinCheckout
+              walletId=""
+              productName={`${formData.selectedProduct.name} (x${formData.quantity}) - ESCROW`}
+              productType={formData.selectedProduct.category}
+              amountBTC={(total / 100000)}
+              amountFiat={total}
+              guestInfo={userProfile ? undefined : {
+                name: formData.buyerName,
+                phone: formData.buyerPhone,
+                email: formData.buyerEmail,
+              }}
+              onPaymentComplete={() => {
+                toast.success("Escrow order created! Waiting for Bitcoin payment confirmation.");
+                onOpenChange(false);
+                setStep("form");
+                setFormData({
+                  selectedProduct: null,
+                  quantity: 1,
+                  specifications: "",
+                  escrowTerms: "standard",
+                  customTerms: "",
+                  deliveryAddress: "",
+                  additionalInstructions: "",
+                  buyerName: "",
+                  buyerEmail: "",
+                  buyerPhone: "",
+                });
+                navigate("/dashboard");
+              }}
+            />
           </div>
         )}
       </DialogContent>
