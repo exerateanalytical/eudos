@@ -77,8 +77,9 @@ export const Header = () => {
               Dashboard
             </Button>
           ) : (
-            <Button onClick={() => navigate("/auth")} variant="outline" size="icon" className="active:scale-95">
+            <Button onClick={() => navigate("/auth")} variant="outline" size="sm" className="active:scale-95 gap-2">
               <User className="h-4 w-4" />
+              <span className="hidden lg:inline">Login</span>
             </Button>
           )}
         </nav>
