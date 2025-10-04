@@ -1,55 +1,25 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
+import BIP84 from "https://esm.sh/bip84@0.2.9";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Proper BIP84 Bitcoin address derivation from xpub/zpub
-// Using simple implementation that works in Deno environment
-async function deriveAddressFromXpub(xpub: string, index: number, network: string = 'mainnet'): Promise<string> {
+// Proper BIP84 Bitcoin address derivation from zpub
+function deriveAddressFromXpub(xpub: string, index: number, network: string = 'mainnet'): string {
   try {
-    console.log(`Deriving address at index ${index} from xpub`);
+    console.log(`Deriving address at index ${index} from xpub: ${xpub.substring(0, 10)}...`);
     
-    // For production with your specific zpub, we'll use a simplified derivation
-    // that works reliably in Deno without complex dependencies
+    // Create BIP84 account from zpub
+    const account = new BIP84.fromZPub(xpub);
     
-    // Base58 decode the xpub to get the chain code and public key
-    const base58Alphabet = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
-    const base58Decode = (str: string): Uint8Array => {
-      const bytes = [];
-      for (let i = 0; i < str.length; i++) {
-        let value = base58Alphabet.indexOf(str[i]);
-        for (let j = 0; j < bytes.length; j++) {
-          value += bytes[j] * 58;
-          bytes[j] = value & 0xff;
-          value >>= 8;
-        }
-        while (value > 0) {
-          bytes.push(value & 0xff);
-          value >>= 8;
-        }
-      }
-      return new Uint8Array(bytes.reverse());
-    };
-
-    const decoded = base58Decode(xpub);
+    // Derive receiving address at the specified index
+    // BIP84 path: m/84'/0'/0'/0/index for receiving addresses
+    const address = account.getAddress(index, false); // false = receiving address (not change)
     
-    // For native segwit (bc1q...), we create a deterministic address
-    // In production, this should use proper BIP32 child key derivation
-    const encoder = new TextEncoder();
-    const data = encoder.encode(`${xpub}-${index}-${network}`);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    
-    // Generate bc1q address format (Bech32)
-    const address = network === 'testnet' 
-      ? `tb1q${hashHex.substring(0, 38)}`
-      : `bc1q${hashHex.substring(0, 38)}`;
-    
-    console.log(`Generated address: ${address}`);
+    console.log(`Derived BIP84 address: ${address} at index ${index}`);
     return address;
     
   } catch (error) {
@@ -119,7 +89,7 @@ serve(async (req) => {
     const addressIndex = walletData.next_index;
     
     // Derive Bitcoin address using proper BIP84 derivation
-    const address = await deriveAddressFromXpub(
+    const address = deriveAddressFromXpub(
       walletData.xpub, 
       addressIndex,
       walletData.network || 'mainnet'
