@@ -151,8 +151,8 @@ export function AdminSidebar() {
                       end={item.end}
                       className={({ isActive }) =>
                         isActive 
-                          ? "bg-blue-600 text-white font-semibold shadow-lg hover-scale transition-all duration-300" 
-                          : "bg-blue-500 text-white hover:bg-blue-600 transition-all duration-300 hover-scale"
+                          ? "bg-accent text-blue-600 font-semibold shadow-lg hover-scale transition-all duration-300" 
+                          : "hover:bg-accent/50 text-blue-600 transition-all duration-300 hover-scale"
                       }
                     >
                       {({ isActive }) => (
