@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Bitcoin, Plus, Edit, Trash2 } from "lucide-react";
 import { AdminPaymentDashboard } from "./AdminPaymentDashboard";
+import { BitcoinAnalytics } from "./BitcoinAnalytics";
 import {
   Dialog,
   DialogContent,
@@ -318,13 +319,19 @@ export function BitcoinWalletManagement() {
           <div>
             <h2 className="text-2xl font-bold">Wallet Management</h2>
             <p className="text-muted-foreground mt-1">
-              Manage Bitcoin wallets and configure payment addresses
+              Configure Bitcoin wallets for payment processing
             </p>
           </div>
           <Button onClick={handleOpenAddDialog}>
             <Plus className="h-4 w-4 mr-2" />
             Add Wallet
           </Button>
+        </div>
+
+        {/* Analytics Dashboard */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Payment Analytics</h3>
+          <BitcoinAnalytics />
         </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>

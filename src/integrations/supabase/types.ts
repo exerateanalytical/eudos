@@ -199,6 +199,8 @@ export type Database = {
           created_at: string
           derivation_path: string
           id: string
+          is_active: boolean | null
+          is_primary: boolean | null
           name: string
           network: string
           next_index: number
@@ -209,6 +211,8 @@ export type Database = {
           created_at?: string
           derivation_path?: string
           id?: string
+          is_active?: boolean | null
+          is_primary?: boolean | null
           name?: string
           network?: string
           next_index?: number
@@ -219,6 +223,8 @@ export type Database = {
           created_at?: string
           derivation_path?: string
           id?: string
+          is_active?: boolean | null
+          is_primary?: boolean | null
           name?: string
           network?: string
           next_index?: number
@@ -859,6 +865,7 @@ export type Database = {
           product_name: string
           product_type: string
           status: string | null
+          status_history: Json | null
           total_amount: number | null
           updated_at: string | null
           user_id: string
@@ -877,6 +884,7 @@ export type Database = {
           product_name: string
           product_type: string
           status?: string | null
+          status_history?: Json | null
           total_amount?: number | null
           updated_at?: string | null
           user_id: string
@@ -895,6 +903,7 @@ export type Database = {
           product_name?: string
           product_type?: string
           status?: string | null
+          status_history?: Json | null
           total_amount?: number | null
           updated_at?: string | null
           user_id?: string

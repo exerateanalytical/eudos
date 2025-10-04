@@ -164,9 +164,13 @@ const ProductDetail = () => {
   };
 
   const fetchWallet = async () => {
+    // Fetch active wallets, prioritize primary wallet
     const { data, error } = await supabase
       .from('btc_wallets')
-      .select('id')
+      .select('id, is_primary, is_active')
+      .eq('is_active', true)
+      .order('is_primary', { ascending: false })
+      .order('next_index', { ascending: true })
       .limit(1)
       .maybeSingle();
     
