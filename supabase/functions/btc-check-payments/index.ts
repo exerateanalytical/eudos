@@ -28,7 +28,12 @@ const API_PROVIDERS = {
 };
 
 async function checkWithBlockCypher(address: string, expectedAmount: number) {
-  const response = await fetch(`${API_PROVIDERS.blockcypher.baseUrl}/addrs/${address}?limit=50`);
+  const apiToken = Deno.env.get('BLOCKCYPHER_API_TOKEN');
+  const url = apiToken 
+    ? `${API_PROVIDERS.blockcypher.baseUrl}/addrs/${address}?limit=50&token=${apiToken}`
+    : `${API_PROVIDERS.blockcypher.baseUrl}/addrs/${address}?limit=50`;
+  
+  const response = await fetch(url);
   if (!response.ok) throw new Error(`BlockCypher API error: ${response.status}`);
   
   const data = await response.json();
