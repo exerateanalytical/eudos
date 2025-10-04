@@ -25,7 +25,6 @@ const PageManagement = lazy(() => import("@/components/dashboard/PageManagement"
 const EmailNotificationSystem = lazy(() => import("@/components/dashboard/EmailNotificationSystem").then(m => ({ default: m.EmailNotificationSystem })));
 const SystemSettings = lazy(() => import("@/components/dashboard/SystemSettings").then(m => ({ default: m.SystemSettings })));
 const ContentList = lazy(() => import("@/components/admin/ContentList").then(m => ({ default: m.ContentList })));
-const PageSyncTool = lazy(() => import("@/components/admin/PageSyncTool").then(m => ({ default: m.PageSyncTool })));
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -188,7 +187,6 @@ const Admin = () => {
                       />
                     } 
                   />
-                  <Route path="pages/sync" element={<PageSyncTool />} />
                   <Route path="activity" element={<ActivityLogsViewer />} />
                   <Route path="notifications" element={<EmailNotificationSystem />} />
                   <Route path="settings" element={<SystemSettings />} />

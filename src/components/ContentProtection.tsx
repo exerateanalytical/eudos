@@ -1,33 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
 
 export const ContentProtection = () => {
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
-    const checkAdminStatus = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (user) {
-        const { data: roleData } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', user.id)
-          .in('role', ['admin', 'moderator'])
-          .maybeSingle();
-        
-        setIsAdmin(!!roleData);
-      }
-      setLoading(false);
-    };
-
-    checkAdminStatus();
-  }, []);
-
-  useEffect(() => {
-    if (loading || isAdmin) return; // Don't apply protection for admins
     // Prevent right-click context menu
     const handleContextMenu = (e: MouseEvent) => {
       e.preventDefault();
@@ -143,7 +118,7 @@ export const ContentProtection = () => {
       document.removeEventListener('copy', handleCopy);
       document.removeEventListener('cut', handleCut);
     };
-  }, [loading, isAdmin]);
+  }, []);
 
   return null; // This component doesn't render anything
 };

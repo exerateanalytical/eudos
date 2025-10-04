@@ -1199,45 +1199,27 @@ export type Database = {
         Row: {
           created_at: string
           description: string | null
-          display_order: number | null
-          icon: string | null
           id: string
-          is_visible_in_menu: boolean | null
           name: string
-          og_image: string | null
           parent_id: string | null
-          seo_description: string | null
-          seo_title: string | null
           slug: string
           updated_at: string
         }
         Insert: {
           created_at?: string
           description?: string | null
-          display_order?: number | null
-          icon?: string | null
           id?: string
-          is_visible_in_menu?: boolean | null
           name: string
-          og_image?: string | null
           parent_id?: string | null
-          seo_description?: string | null
-          seo_title?: string | null
           slug: string
           updated_at?: string
         }
         Update: {
           created_at?: string
           description?: string | null
-          display_order?: number | null
-          icon?: string | null
           id?: string
-          is_visible_in_menu?: boolean | null
           name?: string
-          og_image?: string | null
           parent_id?: string | null
-          seo_description?: string | null
-          seo_title?: string | null
           slug?: string
           updated_at?: string
         }
