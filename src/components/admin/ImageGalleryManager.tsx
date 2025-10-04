@@ -100,7 +100,7 @@ export function ImageGalleryManager({ images, onChange }: ImageGalleryManagerPro
       <MediaLibraryDialog
         open={showMediaLibrary}
         onOpenChange={setShowMediaLibrary}
-        onSelectImage={handleAddImage}
+        onSelect={handleAddImage}
       />
     </div>
   );

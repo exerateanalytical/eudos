@@ -265,7 +265,7 @@ export function WYSIWYGEditor({
       <MediaLibraryDialog
         open={showMediaLibrary}
         onOpenChange={setShowMediaLibrary}
-        onSelectImage={insertImage}
+        onSelect={insertImage}
       />
     </div>
   );

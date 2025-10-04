@@ -397,7 +397,7 @@ export function AdvancedEditor({
       <MediaLibraryDialog
         open={showMediaLibrary}
         onOpenChange={setShowMediaLibrary}
-        onSelectImage={insertImage}
+        onSelect={insertImage}
       />
     </div>
   );

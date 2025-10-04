@@ -1,255 +1,264 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState, useCallback } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
-import { Upload, Trash2, Search } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Trash2, Check, Image as ImageIcon } from "lucide-react";
+import { useMediaLibrary } from "@/hooks/useMediaLibrary";
+import { MediaUpload } from "./MediaUpload";
+import { formatDistanceToNow } from "date-fns";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface MediaLibraryDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSelectImage: (url: string) => void;
+  onSelect: (url: string) => void;
+  allowMultiple?: boolean;
 }
 
-interface MediaItem {
-  id: string;
-  file_name: string;
-  file_path: string;
-  file_size: number;
-  mime_type: string;
-  alt_text: string | null;
-  caption: string | null;
-  width: number | null;
-  height: number | null;
-  created_at: string;
-}
+export function MediaLibraryDialog({
+  open,
+  onOpenChange,
+  onSelect,
+  allowMultiple = false,
+}: MediaLibraryDialogProps) {
+  const { media, isLoading, uploadMedia, deleteMedia, updateMedia, isUploading } = useMediaLibrary();
+  const [selectedMedia, setSelectedMedia] = useState<string[]>([]);
+  const [editingMedia, setEditingMedia] = useState<any>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
-export function MediaLibraryDialog({ open, onOpenChange, onSelectImage }: MediaLibraryDialogProps) {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [uploading, setUploading] = useState(false);
-  const queryClient = useQueryClient();
-
-  const { data: mediaItems = [], isLoading } = useQuery({
-    queryKey: ['media-library', searchTerm],
-    queryFn: async () => {
-      let query = supabase
-        .from('media_library')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (searchTerm) {
-        query = query.ilike('file_name', `%${searchTerm}%`);
-      }
-
-      const { data, error } = await query;
-      if (error) throw error;
-      return data as MediaItem[];
-    },
-  });
-
-  const deleteMutation = useMutation({
-    mutationFn: async (item: MediaItem) => {
-      // Delete from storage
-      const { error: storageError } = await supabase.storage
-        .from('media-library')
-        .remove([item.file_path]);
-
-      if (storageError) throw storageError;
-
-      // Delete from database
-      const { error: dbError } = await supabase
-        .from('media_library')
-        .delete()
-        .eq('id', item.id);
-
-      if (dbError) throw dbError;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['media-library'] });
-      toast.success('Media deleted successfully');
-    },
-    onError: (error: Error) => {
-      toast.error(`Failed to delete media: ${error.message}`);
-    },
-  });
-
-  const handleFileUpload = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (!files || files.length === 0) return;
-
-    setUploading(true);
-
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Not authenticated');
-
-      for (const file of Array.from(files)) {
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
-        const filePath = `${user.id}/${fileName}`;
-
-        // Upload to storage
-        const { error: uploadError } = await supabase.storage
-          .from('media-library')
-          .upload(filePath, file);
-
-        if (uploadError) throw uploadError;
-
-        // Get image dimensions if it's an image
-        let width = null;
-        let height = null;
-        if (file.type.startsWith('image/')) {
-          const img = new Image();
-          const imgPromise = new Promise<void>((resolve) => {
-            img.onload = () => {
-              width = img.width;
-              height = img.height;
-              resolve();
-            };
-          });
-          img.src = URL.createObjectURL(file);
-          await imgPromise;
-        }
-
-        // Save to database
-        const { error: dbError } = await supabase
-          .from('media_library')
-          .insert({
-            user_id: user.id,
-            file_name: file.name,
-            file_path: filePath,
-            file_size: file.size,
-            mime_type: file.type,
-            width,
-            height,
-          });
-
-        if (dbError) throw dbError;
-      }
-
-      queryClient.invalidateQueries({ queryKey: ['media-library'] });
-      toast.success('Media uploaded successfully');
-      event.target.value = '';
-    } catch (error: any) {
-      toast.error(`Upload failed: ${error.message}`);
-    } finally {
-      setUploading(false);
+  const handleSelect = (url: string) => {
+    if (allowMultiple) {
+      setSelectedMedia(prev => 
+        prev.includes(url) 
+          ? prev.filter(u => u !== url)
+          : [...prev, url]
+      );
+    } else {
+      onSelect(url);
+      onOpenChange(false);
     }
-  }, [queryClient]);
+  };
 
-  const getPublicUrl = (filePath: string) => {
-    const { data } = supabase.storage
-      .from('media-library')
-      .getPublicUrl(filePath);
-    return data.publicUrl;
+  const handleInsert = () => {
+    if (allowMultiple && selectedMedia.length > 0) {
+      selectedMedia.forEach(url => onSelect(url));
+      setSelectedMedia([]);
+      onOpenChange(false);
+    }
+  };
+
+  const handleUpdateMedia = () => {
+    if (editingMedia) {
+      updateMedia({
+        id: editingMedia.id,
+        alt_text: editingMedia.alt_text,
+        caption: editingMedia.caption,
+      });
+      setEditingMedia(null);
+    }
+  };
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / 1048576).toFixed(1) + ' MB';
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[80vh]">
-        <DialogHeader>
-          <DialogTitle>Media Library</DialogTitle>
-        </DialogHeader>
+    <>
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-5xl max-h-[90vh]">
+          <DialogHeader>
+            <DialogTitle>Media Library</DialogTitle>
+            <DialogDescription>
+              Upload, manage, and select media files
+            </DialogDescription>
+          </DialogHeader>
 
-        <Tabs defaultValue="library" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="library">Library</TabsTrigger>
-            <TabsTrigger value="upload">Upload</TabsTrigger>
-          </TabsList>
+          <Tabs defaultValue="library" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="library">Library</TabsTrigger>
+              <TabsTrigger value="upload">Upload</TabsTrigger>
+            </TabsList>
 
-          <TabsContent value="library" className="space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="relative flex-1">
-                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search media..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-8"
-                />
-              </div>
-            </div>
-
-            <ScrollArea className="h-[400px] w-full rounded-md border p-4">
-              {isLoading ? (
-                <div className="text-center py-8">Loading media...</div>
-              ) : mediaItems.length === 0 ? (
-                <div className="text-center py-8 text-muted-foreground">
-                  No media found. Upload some files to get started.
-                </div>
-              ) : (
-                <div className="grid grid-cols-3 gap-4">
-                  {mediaItems.map((item) => (
-                    <div
-                      key={item.id}
-                      className="relative group border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
-                    >
-                      {item.mime_type.startsWith('image/') ? (
-                        <img
-                          src={getPublicUrl(item.file_path)}
-                          alt={item.alt_text || item.file_name}
-                          className="w-full h-40 object-cover cursor-pointer"
-                          onClick={() => {
-                            onSelectImage(getPublicUrl(item.file_path));
-                            onOpenChange(false);
-                          }}
-                        />
-                      ) : (
-                        <div className="w-full h-40 bg-accent flex items-center justify-center">
-                          <p className="text-sm text-muted-foreground">{item.file_name}</p>
-                        </div>
-                      )}
-                      <div className="p-2">
-                        <p className="text-xs truncate">{item.file_name}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {(item.file_size / 1024).toFixed(2)} KB
-                        </p>
-                      </div>
-                      <Button
-                        variant="destructive"
-                        size="icon"
-                        className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity h-8 w-8"
-                        onClick={() => deleteMutation.mutate(item)}
+            <TabsContent value="library" className="space-y-4">
+              <ScrollArea className="h-[500px] pr-4">
+                {isLoading ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    Loading media...
+                  </div>
+                ) : media.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <ImageIcon className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>No media files yet. Upload your first file!</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-3 gap-4">
+                    {media.map((item) => (
+                      <div
+                        key={item.id}
+                        className="relative group border rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                        onClick={() => handleSelect(item.file_path)}
                       >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
+                        {item.mime_type.startsWith('image/') ? (
+                          <img
+                            src={item.file_path}
+                            alt={item.alt_text || item.file_name}
+                            className="w-full h-48 object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-48 flex items-center justify-center bg-muted">
+                            <ImageIcon className="h-12 w-12 text-muted-foreground" />
+                          </div>
+                        )}
+                        
+                        {selectedMedia.includes(item.file_path) && (
+                          <div className="absolute top-2 right-2 bg-primary text-primary-foreground rounded-full p-1">
+                            <Check className="h-4 w-4" />
+                          </div>
+                        )}
+
+                        <div className="p-3 space-y-1">
+                          <p className="text-sm font-medium truncate">
+                            {item.file_name}
+                          </p>
+                          <div className="flex items-center justify-between text-xs text-muted-foreground">
+                            <span>{formatFileSize(item.file_size)}</span>
+                            <span>{formatDistanceToNow(new Date(item.created_at), { addSuffix: true })}</span>
+                          </div>
+                        </div>
+
+                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setEditingMedia(item);
+                            }}
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setDeleteConfirm(item.id);
+                            }}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </ScrollArea>
+
+              {allowMultiple && selectedMedia.length > 0 && (
+                <div className="flex justify-end gap-2">
+                  <Button variant="outline" onClick={() => setSelectedMedia([])}>
+                    Clear Selection
+                  </Button>
+                  <Button onClick={handleInsert}>
+                    Insert {selectedMedia.length} File(s)
+                  </Button>
                 </div>
               )}
-            </ScrollArea>
-          </TabsContent>
+            </TabsContent>
 
-          <TabsContent value="upload" className="space-y-4">
-            <div className="border-2 border-dashed rounded-lg p-12 text-center">
-              <Upload className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-              <Label
-                htmlFor="file-upload"
-                className="cursor-pointer text-primary hover:underline"
-              >
-                Click to upload files
-              </Label>
-              <Input
-                id="file-upload"
-                type="file"
-                multiple
-                accept="image/*"
-                className="hidden"
-                onChange={handleFileUpload}
-                disabled={uploading}
+            <TabsContent value="upload">
+              <MediaUpload
+                onUpload={uploadMedia}
+                isUploading={isUploading}
               />
-              <p className="text-sm text-muted-foreground mt-2">
-                {uploading ? 'Uploading...' : 'PNG, JPG, GIF up to 10MB'}
-              </p>
+            </TabsContent>
+          </Tabs>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Media Dialog */}
+      <Dialog open={!!editingMedia} onOpenChange={() => setEditingMedia(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Media Details</DialogTitle>
+          </DialogHeader>
+          {editingMedia && (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="alt-text">Alt Text</Label>
+                <Input
+                  id="alt-text"
+                  value={editingMedia.alt_text || ''}
+                  onChange={(e) => setEditingMedia({ ...editingMedia, alt_text: e.target.value })}
+                  placeholder="Describe this image for accessibility"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="caption">Caption</Label>
+                <Input
+                  id="caption"
+                  value={editingMedia.caption || ''}
+                  onChange={(e) => setEditingMedia({ ...editingMedia, caption: e.target.value })}
+                  placeholder="Optional caption"
+                />
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={() => setEditingMedia(null)}>
+                  Cancel
+                </Button>
+                <Button onClick={handleUpdateMedia}>
+                  Save Changes
+                </Button>
+              </div>
             </div>
-          </TabsContent>
-        </Tabs>
-      </DialogContent>
-    </Dialog>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!deleteConfirm} onOpenChange={() => setDeleteConfirm(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Media File</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this file? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (deleteConfirm) {
+                  deleteMedia(deleteConfirm);
+                  setDeleteConfirm(null);
+                }
+              }}
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }

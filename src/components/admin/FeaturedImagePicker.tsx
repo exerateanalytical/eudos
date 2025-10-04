@@ -49,10 +49,7 @@ export function FeaturedImagePicker({ value, onChange, label = "Featured Image" 
       <MediaLibraryDialog
         open={showMediaLibrary}
         onOpenChange={setShowMediaLibrary}
-        onSelectImage={(url) => {
-          onChange(url);
-          setShowMediaLibrary(false);
-        }}
+        onSelect={onChange}
       />
     </div>
   );
