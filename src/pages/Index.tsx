@@ -171,68 +171,68 @@ const Index = () => {
           <div className="grid lg:grid-cols-2 gap-6 md:gap-8 lg:gap-12 items-center">
             {/* Left side - Text content */}
             <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <div className="inline-flex items-center gap-1.5 md:gap-2 px-2.5 md:px-3 py-1 md:py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-4 md:mb-6 animate-fade-in">
-                <Shield className="h-3 w-3 md:h-4 md:w-4 text-primary" />
-                <span className="text-[10px] sm:text-xs md:text-sm font-medium text-primary">Licensed & Authorized • Government Agencies Only</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-primary/10 border border-primary/20 mb-4 md:mb-6 animate-fade-in">
+                <Shield className="h-4 w-4 md:h-5 md:w-5 text-primary flex-shrink-0" />
+                <span className="text-xs sm:text-sm md:text-base font-medium text-primary">Licensed & Authorized • Gov Agencies Only</span>
               </div>
               
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground mb-3 md:mb-4 lg:mb-6 leading-tight animate-fade-in-up">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground mb-4 md:mb-6 lg:mb-8 leading-[1.1] animate-fade-in-up">
                 Official Government Document
-                <span className="block bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent mt-1 md:mt-2">
+                <span className="block bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent mt-2">
                   Printing Services
                 </span>
-              </h2>
+              </h1>
               
-              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground mb-4 md:mb-6 lg:mb-8 animate-fade-in-up leading-relaxed" style={{ animationDelay: '0.2s' }}>
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground mb-6 md:mb-8 lg:mb-10 animate-fade-in-up leading-relaxed" style={{ animationDelay: '0.2s' }}>
                 Licensed facility serving government agencies worldwide with registered passports, ID cards, driver's licenses, and diplomas featuring military-grade security
               </p>
               
-              <div className="flex gap-2 md:gap-3 flex-wrap animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+              <div className="flex gap-3 md:gap-4 flex-wrap animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
                 <Button 
-                  size="default" 
-                  className="group relative overflow-hidden bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 text-xs sm:text-sm md:text-base active:scale-95 touch-manipulation"
+                  size="lg" 
+                  className="group relative overflow-hidden bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 text-base md:text-lg h-12 md:h-14 px-6 md:px-8 active:scale-95 touch-manipulation"
                   onClick={() => navigate("/apply")}
                 >
                   <span className="relative z-10">Apply Now</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-primary-glow to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </Button>
-                <Button size="default" variant="outline" className="border-2 hover:bg-primary/5 transition-all duration-300 text-xs sm:text-sm md:text-base active:scale-95 touch-manipulation hidden sm:inline-flex" onClick={() => navigate("/shop")}>
-                  <ShoppingBag className="mr-2 h-4 w-4" />
+                <Button size="lg" variant="outline" className="border-2 hover:bg-primary/5 transition-all duration-300 text-base md:text-lg h-12 md:h-14 px-6 md:px-8 active:scale-95 touch-manipulation hidden sm:inline-flex" onClick={() => navigate("/shop")}>
+                  <ShoppingBag className="mr-2 h-5 w-5" />
                   Shop
                 </Button>
               </div>
             </div>
 
             {/* Right side - Security features showcase - Mobile Optimized */}
-            <div className="relative h-[280px] sm:h-[320px] md:h-[360px] lg:h-[400px] mt-6 lg:mt-0">
+            <div className="relative h-[340px] sm:h-[380px] md:h-[420px] lg:h-[460px] mt-8 lg:mt-0">
               {securityShowcase.map((feature, index) => {
                 if (currentFeature !== index) return null;
                 const Icon = feature.icon;
                 return (
                   <Card key={index} className="h-full border-2 bg-card/50 backdrop-blur-sm overflow-hidden shadow-xl">
                     <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-5`} />
-                    <CardContent className="h-full flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 relative">
+                    <CardContent className="h-full flex flex-col items-center justify-center p-6 sm:p-8 md:p-10 relative">
                       {/* Icon with animated glow */}
-                      <div className="relative mb-4 sm:mb-6">
+                      <div className="relative mb-6 sm:mb-8">
                         <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} blur-2xl opacity-40 animate-pulse`} />
-                        <div className={`relative p-4 sm:p-5 md:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-br ${feature.gradient} shadow-2xl`}>
-                          <Icon className="h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 text-white" strokeWidth={1.5} />
+                        <div className={`relative p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl bg-gradient-to-br ${feature.gradient} shadow-2xl`}>
+                          <Icon className="h-14 w-14 sm:h-18 sm:w-18 md:h-24 md:w-24 text-white" strokeWidth={1.5} />
                         </div>
                       </div>
 
                       {/* Feature title */}
-                      <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-2 sm:mb-3 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                      <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-3 sm:mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
                         {feature.title}
                       </h3>
 
                       {/* Feature description */}
-                      <p className="text-sm sm:text-base md:text-lg text-muted-foreground text-center max-w-md mb-4 sm:mb-6 px-2 leading-relaxed">
+                      <p className="text-base sm:text-lg md:text-xl text-muted-foreground text-center max-w-md mb-6 sm:mb-8 px-2 leading-relaxed">
                         {feature.description}
                       </p>
 
                       {/* Security badge */}
-                      <div className={`inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-gradient-to-r ${feature.gradient} text-white font-semibold shadow-lg text-xs sm:text-sm active:scale-95 transition-transform`}>
-                        <Shield className="h-4 w-4" />
+                      <div className={`inline-flex items-center gap-2 px-5 sm:px-7 py-2.5 sm:py-3 rounded-full bg-gradient-to-r ${feature.gradient} text-white font-semibold shadow-lg text-sm sm:text-base active:scale-95 transition-transform touch-manipulation`}>
+                        <Shield className="h-4 w-4 sm:h-5 sm:w-5" />
                         <span>Military-Grade Security</span>
                       </div>
                     </CardContent>
@@ -241,15 +241,15 @@ const Index = () => {
               })}
 
               {/* Progress indicators - Mobile optimized */}
-              <div className="absolute -bottom-8 sm:-bottom-6 left-1/2 -translate-x-1/2 flex gap-2 sm:gap-2.5 touch-manipulation">
+              <div className="absolute -bottom-10 sm:-bottom-8 left-1/2 -translate-x-1/2 flex gap-2.5 sm:gap-3 touch-manipulation">
                 {securityShowcase.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => setCurrentFeature(index)}
-                    className={`h-2 rounded-full transition-all duration-300 active:scale-95 ${
+                    className={`h-2.5 sm:h-3 rounded-full transition-all duration-300 active:scale-95 ${
                       currentFeature === index 
-                        ? 'w-8 sm:w-10 bg-primary shadow-lg' 
-                        : 'w-2 bg-primary/30 hover:bg-primary/50'
+                        ? 'w-10 sm:w-12 bg-primary shadow-lg' 
+                        : 'w-2.5 sm:w-3 bg-primary/30 hover:bg-primary/50'
                     }`}
                     aria-label={`Go to feature ${index + 1}`}
                   />
@@ -261,18 +261,18 @@ const Index = () => {
       </section>
 
       {/* Stats Section - Mobile Optimized */}
-      <section className="py-10 md:py-12 lg:py-16 px-4 bg-primary text-primary-foreground relative overflow-hidden">
+      <section className="py-12 md:py-16 lg:py-20 px-4 bg-primary text-primary-foreground relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern opacity-10" />
         <div className="container mx-auto relative z-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 md:gap-10">
             {stats.map((stat, index) => (
               <div 
                 key={index} 
                 className="text-center animate-scale-in p-4 md:p-0"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-1 md:mb-2">{stat.value}</div>
-                <div className="text-primary-foreground/80 font-medium text-xs sm:text-sm md:text-base">{stat.label}</div>
+                <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-2 md:mb-3">{stat.value}</div>
+                <div className="text-primary-foreground/90 font-medium text-sm sm:text-base md:text-lg">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -280,19 +280,19 @@ const Index = () => {
       </section>
 
       {/* Features Bar - Mobile Optimized */}
-      <section className="py-6 md:py-8 border-y border-border bg-card/50 backdrop-blur-sm">
+      <section className="py-8 md:py-10 border-y border-border bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
             {features.map((feature, index) => (
               <div 
                 key={index} 
-                className="flex items-center gap-2 md:gap-3 justify-center group animate-slide-in-right active:scale-95 transition-transform touch-manipulation"
+                className="flex items-center gap-2.5 md:gap-3 justify-center group animate-slide-in-right active:scale-95 transition-transform touch-manipulation"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="p-1.5 md:p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300 flex-shrink-0">
-                  <feature.icon className="h-4 w-4 md:h-5 md:w-5 text-primary" />
+                <div className="p-2 md:p-2.5 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300 flex-shrink-0">
+                  <feature.icon className="h-5 w-5 md:h-6 md:w-6 text-primary" />
                 </div>
-                <span className="font-medium text-foreground text-xs sm:text-sm md:text-base">{feature.text}</span>
+                <span className="font-medium text-foreground text-sm sm:text-base md:text-lg">{feature.text}</span>
               </div>
             ))}
           </div>
@@ -300,20 +300,20 @@ const Index = () => {
       </section>
 
       {/* Services Section - Mobile Optimized */}
-      <section id="services" className="py-12 md:py-16 lg:py-24 px-4 bg-background relative">
+      <section id="services" className="py-16 md:py-20 lg:py-28 px-4 bg-background relative">
         <div className="container mx-auto">
-          <div className="text-center mb-8 md:mb-12 lg:mb-16">
-            <div className="inline-flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-primary/10 border border-primary/20 mb-4 md:mb-6">
-              <Building2 className="h-3 w-3 md:h-4 md:w-4 text-primary" />
-              <span className="text-xs md:text-sm font-medium text-primary">Government Agencies & Organizations Only</span>
+          <div className="text-center mb-10 md:mb-14 lg:mb-18">
+            <div className="inline-flex items-center gap-2 md:gap-2.5 px-4 md:px-5 py-2 md:py-2.5 rounded-full bg-primary/10 border border-primary/20 mb-6 md:mb-8">
+              <Building2 className="h-4 w-4 md:h-5 md:w-5 text-primary flex-shrink-0" />
+              <span className="text-sm md:text-base font-medium text-primary">Government Agencies & Organizations Only</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 md:mb-4 px-4">Government Document Services</h2>
-            <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 md:mb-6 px-4 leading-tight">Government Document Services</h2>
+            <p className="text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-2xl mx-auto px-4 leading-relaxed">
               Fully registered and verifiable documents with military-grade security features
             </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-7">
             {services.map((service, index) => (
               <Card 
                 key={index} 
@@ -321,18 +321,18 @@ const Index = () => {
                 style={{ animationDelay: `${index * 0.1}s` }}
                 onClick={() => navigate(service.link)}
               >
-                <CardHeader className="pb-4">
-                  <div className={`w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-gradient-to-br ${service.color} p-0.5 mb-3 md:mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                <CardHeader className="pb-4 p-6 md:p-6">
+                  <div className={`w-14 h-14 md:w-18 md:h-18 rounded-xl md:rounded-2xl bg-gradient-to-br ${service.color} p-0.5 mb-4 md:mb-5 group-hover:scale-110 transition-transform duration-300`}>
                     <div className="w-full h-full rounded-xl md:rounded-2xl bg-card flex items-center justify-center">
-                      <service.icon className="h-6 w-6 md:h-8 md:w-8 text-primary" />
+                      <service.icon className="h-7 w-7 md:h-9 md:w-9 text-primary" />
                     </div>
                   </div>
-                  <CardTitle className="group-hover:text-primary transition-colors duration-300 text-lg md:text-xl">
+                  <CardTitle className="group-hover:text-primary transition-colors duration-300 text-xl md:text-2xl">
                     {service.title}
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-sm md:text-base">
+                <CardContent className="p-6 md:p-6 pt-0">
+                  <CardDescription className="text-base md:text-lg leading-relaxed">
                     {service.description}
                   </CardDescription>
                 </CardContent>
@@ -343,12 +343,12 @@ const Index = () => {
       </section>
 
       {/* Security Features Section - Mobile Optimized */}
-      <section className="py-12 md:py-16 lg:py-24 px-4 bg-gradient-to-b from-background to-secondary/20 relative overflow-hidden">
+      <section className="py-16 md:py-20 lg:py-28 px-4 bg-gradient-to-b from-background to-secondary/20 relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]" />
         
         <div className="container mx-auto relative z-10">
-          <div className="text-center mb-8 md:mb-12 lg:mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 md:mb-4 px-4">Advanced Security Features</h2>
+          <div className="text-center mb-10 md:mb-14 lg:mb-18">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 md:mb-6 px-4 leading-tight">Advanced Security Features</h2>
             <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
               What sets our documents apart from other printing laboratories - every document includes multiple layers of protection
             </p>
