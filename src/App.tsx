@@ -38,6 +38,7 @@ import Escrow from "./pages/Escrow";
 import NotFound from "./pages/NotFound";
 import Forbidden from "./pages/Forbidden";
 import ServerError from "./pages/ServerError";
+import TrackOrder from "./pages/TrackOrder";
 
 const queryClient = new QueryClient();
 
@@ -84,6 +85,7 @@ const App = () => {
             <Route path="/admin/*" element={<Admin />} />
             <Route path="/security-features" element={<SecurityFeatures />} />
             <Route path="/escrow" element={<Escrow />} />
+            <Route path="/track-order" element={<TrackOrder />} />
             <Route path="/403" element={<Forbidden />} />
             <Route path="/500" element={<ServerError />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

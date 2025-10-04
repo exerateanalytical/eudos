@@ -131,6 +131,9 @@ async function checkWithBlockstream(address: string, expectedAmount: number) {
   return { found: false };
 }
 
+// Helper function to add delay
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 async function checkAddressTransactions(address: string, expectedAmount: number): Promise<{
   found: boolean;
   txid?: string;
@@ -149,6 +152,10 @@ async function checkAddressTransactions(address: string, expectedAmount: number)
   for (const provider of providers) {
     try {
       console.log(`Trying ${provider.name}...`);
+      
+      // Add delay to prevent burst requests
+      await delay(500);
+      
       const result = await provider.fn(address, expectedAmount);
       
       if (result.found) {
@@ -161,6 +168,8 @@ async function checkAddressTransactions(address: string, expectedAmount: number)
       
     } catch (error) {
       console.error(`✗ ${provider.name} failed:`, error instanceof Error ? error.message : 'Unknown error');
+      // Wait before trying next provider
+      await delay(1000);
       // Continue to next provider
     }
   }

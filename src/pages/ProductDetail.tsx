@@ -17,6 +17,7 @@ import { SEO } from "@/components/SEO";
 import { CheckoutModal } from "@/components/checkout/CheckoutModal";
 import { BitcoinCheckout } from "@/components/checkout/BitcoinCheckout";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
 
 // Product data (same as Shop page)
 const euCountries = [
@@ -143,6 +144,7 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const { productId } = useParams();
   const baseUrl = window.location.origin;
+  const { toast } = useToast();
   const [quantity, setQuantity] = useState(1);
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
@@ -178,7 +180,11 @@ const ProductDetail = () => {
 
   const handleBuyNow = () => {
     if (!walletId) {
-      alert("Bitcoin wallet not configured. Please contact support.");
+      toast({
+        title: "Configuration Required",
+        description: "Bitcoin wallet is not configured. Please contact support or try again later.",
+        variant: "destructive",
+      });
       return;
     }
     

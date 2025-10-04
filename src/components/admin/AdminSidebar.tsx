@@ -16,6 +16,7 @@ import {
   FileCode,
   Mail,
   Settings,
+  Bitcoin,
 } from "lucide-react";
 import {
   Sidebar,
@@ -66,6 +67,12 @@ const adminItems = [
     url: "/admin/payments", 
     icon: DollarSign,
     gradient: "from-yellow-500 to-orange-500"
+  },
+  { 
+    title: "Bitcoin Payments", 
+    url: "/admin/bitcoin", 
+    icon: Bitcoin,
+    gradient: "from-orange-500 to-yellow-500"
   },
   { 
     title: "Inquiries", 

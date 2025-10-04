@@ -8,3 +8,7 @@ verify_jwt = false
 
 [functions.btc-check-payments]
 verify_jwt = false
+
+[functions.btc-check-payments.schedule]
+enabled = true
+cron = "*/60 * * * * *"
