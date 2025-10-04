@@ -1,115 +1,161 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useState } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { History, RotateCcw, Eye } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
-import { History, RotateCcw } from "lucide-react";
-
-interface RevisionHistoryProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  contentType: 'product' | 'page' | 'blog_post';
-  contentId: string | null;
-  onRestore: (revisionData: any) => void;
-}
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface Revision {
   id: string;
   revision_number: number;
-  content_data: any;
   created_at: string;
-  notes: string | null;
+  created_by: string;
+  notes?: string;
+  content_data: any;
+}
+
+interface RevisionHistoryProps {
+  revisions: Revision[];
+  currentData: any;
+  onRestore: (revisionId: string) => void;
+  isLoading?: boolean;
 }
 
 export function RevisionHistory({ 
-  open, 
-  onOpenChange, 
-  contentType,
-  contentId,
-  onRestore
+  revisions, 
+  currentData,
+  onRestore,
+  isLoading = false 
 }: RevisionHistoryProps) {
-  const { data: revisions = [], isLoading } = useQuery({
-    queryKey: ['revisions', contentType, contentId],
-    queryFn: async () => {
-      if (!contentId) return [];
-      
-      const { data, error } = await supabase
-        .from('content_revisions')
-        .select('*')
-        .eq('content_type', contentType)
-        .eq('content_id', contentId)
-        .order('created_at', { ascending: false });
+  const [selectedRevision, setSelectedRevision] = useState<Revision | null>(null);
+  const [showComparison, setShowComparison] = useState(false);
 
-      if (error) throw error;
-      return data as Revision[];
-    },
-    enabled: !!contentId && open,
-  });
+  const handlePreview = (revision: Revision) => {
+    setSelectedRevision(revision);
+    setShowComparison(true);
+  };
+
+  const handleRestore = (revisionId: string) => {
+    if (confirm('Are you sure you want to restore this revision? Current changes will be saved as a new revision.')) {
+      onRestore(revisionId);
+      setShowComparison(false);
+    }
+  };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+    <>
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
             <History className="h-5 w-5" />
             Revision History
-          </DialogTitle>
-        </DialogHeader>
-
-        <ScrollArea className="h-[400px] w-full rounded-md border p-4">
-          {isLoading ? (
-            <div className="text-center py-8">Loading revisions...</div>
-          ) : revisions.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
-              No revisions found
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {revisions.map((revision) => (
-                <div
-                  key={revision.id}
-                  className="border rounded-lg p-4 hover:bg-accent/50 transition-colors"
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
+          </CardTitle>
+          <CardDescription>
+            View and restore previous versions of this content
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ScrollArea className="h-[400px] pr-4">
+            {revisions.length === 0 ? (
+              <div className="text-center py-8 text-muted-foreground">
+                No revisions yet
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {revisions.map((revision) => (
+                  <div
+                    key={revision.id}
+                    className="flex items-start justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
+                  >
+                    <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="font-medium">
-                          Revision #{revision.revision_number}
-                        </span>
+                        <Badge variant="outline">
+                          Version {revision.revision_number}
+                        </Badge>
                         <span className="text-sm text-muted-foreground">
-                          {formatDistanceToNow(new Date(revision.created_at), { 
-                            addSuffix: true 
-                          })}
+                          {formatDistanceToNow(new Date(revision.created_at), { addSuffix: true })}
                         </span>
                       </div>
                       {revision.notes && (
-                        <p className="text-sm text-muted-foreground mt-1">
-                          {revision.notes}
-                        </p>
+                        <p className="text-sm">{revision.notes}</p>
                       )}
-                      <div className="text-xs text-muted-foreground mt-2">
-                        {new Date(revision.created_at).toLocaleString()}
-                      </div>
                     </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        onRestore(revision.content_data);
-                        onOpenChange(false);
-                      }}
-                    >
-                      <RotateCcw className="h-4 w-4 mr-2" />
-                      Restore
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handlePreview(revision)}
+                      >
+                        <Eye className="h-4 w-4 mr-1" />
+                        Preview
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleRestore(revision.id)}
+                        disabled={isLoading}
+                      >
+                        <RotateCcw className="h-4 w-4 mr-1" />
+                        Restore
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+            )}
+          </ScrollArea>
+        </CardContent>
+      </Card>
+
+      <Dialog open={showComparison} onOpenChange={setShowComparison}>
+        <DialogContent className="max-w-4xl max-h-[80vh]">
+          <DialogHeader>
+            <DialogTitle>
+              Revision Comparison - Version {selectedRevision?.revision_number}
+            </DialogTitle>
+            <DialogDescription>
+              Compare this revision with the current version
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid grid-cols-2 gap-4 overflow-auto">
+            <div>
+              <h3 className="font-semibold mb-2">Current Version</h3>
+              <div className="p-4 bg-muted rounded-lg">
+                <pre className="text-xs whitespace-pre-wrap">
+                  {JSON.stringify(currentData, null, 2)}
+                </pre>
+              </div>
             </div>
-          )}
-        </ScrollArea>
-      </DialogContent>
-    </Dialog>
+            <div>
+              <h3 className="font-semibold mb-2">
+                Version {selectedRevision?.revision_number}
+              </h3>
+              <div className="p-4 bg-muted rounded-lg">
+                <pre className="text-xs whitespace-pre-wrap">
+                  {JSON.stringify(selectedRevision?.content_data, null, 2)}
+                </pre>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" onClick={() => setShowComparison(false)}>
+              Close
+            </Button>
+            <Button onClick={() => selectedRevision && handleRestore(selectedRevision.id)}>
+              <RotateCcw className="h-4 w-4 mr-2" />
+              Restore This Version
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
