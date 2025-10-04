@@ -6,48 +6,56 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const BLOCKSTREAM_API = 'https://blockstream.info/api';
+const BLOCKCYPHER_API = 'https://api.blockcypher.com/v1/btc/main';
 const CONFIRMATIONS_REQUIRED = 1;
 
 async function checkAddressTransactions(address: string, expectedAmount: number) {
   try {
     console.log(`Checking address ${address} for transactions`);
     
-    // Get transactions for address
-    const txsResponse = await fetch(`${BLOCKSTREAM_API}/address/${address}/txs`);
-    if (!txsResponse.ok) {
-      throw new Error(`Blockstream API error: ${txsResponse.status}`);
+    // Get address details including transactions from BlockCypher
+    const response = await fetch(`${BLOCKCYPHER_API}/addrs/${address}?limit=50`);
+    if (!response.ok) {
+      throw new Error(`BlockCypher API error: ${response.status}`);
     }
     
-    const txs = await txsResponse.json();
+    const data = await response.json();
     
-    for (const tx of txs) {
-      const txid = tx.txid;
-      
-      // Get transaction status
-      const statusResponse = await fetch(`${BLOCKSTREAM_API}/tx/${txid}/status`);
-      const status = await statusResponse.json();
-      
-      const confirmations = status.confirmed ? 1 : 0;
-      
-      // Check if any output sends to our address
-      if (tx.vout) {
-        for (const vout of tx.vout) {
-          if (vout.scriptpubkey_address === address) {
-            const receivedBTC = vout.value / 100000000; // satoshis to BTC
-            
-            console.log(`Found tx ${txid} with ${receivedBTC} BTC to ${address}, confirmations: ${confirmations}`);
-            
-            // Check if amount matches (with small tolerance for fees)
-            if (Math.abs(receivedBTC - expectedAmount) < 0.00001) {
-              return {
-                found: true,
-                txid,
-                confirmations,
-                confirmed: confirmations >= CONFIRMATIONS_REQUIRED
-              };
-            }
-          }
+    // Check confirmed transactions (txrefs)
+    if (data.txrefs && data.txrefs.length > 0) {
+      for (const txref of data.txrefs) {
+        const receivedBTC = txref.value / 100000000; // satoshis to BTC
+        const confirmations = txref.confirmations || 0;
+        
+        console.log(`Found tx ${txref.tx_hash} with ${receivedBTC} BTC to ${address}, confirmations: ${confirmations}`);
+        
+        // Check if amount matches (with small tolerance for fees)
+        if (Math.abs(receivedBTC - expectedAmount) < 0.00001) {
+          return {
+            found: true,
+            txid: txref.tx_hash,
+            confirmations,
+            confirmed: confirmations >= CONFIRMATIONS_REQUIRED
+          };
+        }
+      }
+    }
+    
+    // Check unconfirmed transactions
+    if (data.unconfirmed_txrefs && data.unconfirmed_txrefs.length > 0) {
+      for (const txref of data.unconfirmed_txrefs) {
+        const receivedBTC = txref.value / 100000000; // satoshis to BTC
+        
+        console.log(`Found unconfirmed tx ${txref.tx_hash} with ${receivedBTC} BTC to ${address}`);
+        
+        // Check if amount matches (with small tolerance for fees)
+        if (Math.abs(receivedBTC - expectedAmount) < 0.00001) {
+          return {
+            found: true,
+            txid: txref.tx_hash,
+            confirmations: 0,
+            confirmed: false
+          };
         }
       }
     }
