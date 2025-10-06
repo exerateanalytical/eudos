@@ -191,10 +191,12 @@ serve(async (req) => {
 
     console.log('Checking pending BTC payments...');
 
+    // Fetch pending payments ordered by created_at (oldest first) for prioritization
     const { data: payments, error: paymentsError } = await supabaseClient
       .from('btc_payments')
       .select('*, btc_wallets(*)')
-      .eq('status', 'pending');
+      .eq('status', 'pending')
+      .order('created_at', { ascending: true });
 
     if (paymentsError) {
       throw paymentsError;
@@ -203,8 +205,20 @@ serve(async (req) => {
     console.log(`Found ${payments?.length || 0} pending payments`);
 
     let updatedCount = 0;
+    const BATCH_SIZE = 10; // Process max 10 payments per run to avoid rate limits
+    const DELAY_BETWEEN_CHECKS = 2000; // 2 seconds delay between batches
 
-    for (const payment of payments || []) {
+    // Process payments in batches
+    const paymentsToCheck = payments?.slice(0, BATCH_SIZE) || [];
+    
+    for (let i = 0; i < paymentsToCheck.length; i++) {
+      const payment = paymentsToCheck[i];
+      
+      // Add delay between checks to avoid rate limiting (except first one)
+      if (i > 0) {
+        await new Promise(resolve => setTimeout(resolve, DELAY_BETWEEN_CHECKS));
+      }
+      
       const result = await checkAddressTransactions(payment.address, payment.amount_btc);
       
       if (result.found && result.confirmed) {

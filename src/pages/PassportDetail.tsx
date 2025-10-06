@@ -16,6 +16,7 @@ import { SEO } from "@/components/SEO";
 import { CheckoutModal } from "@/components/checkout/CheckoutModal";
 import { BitcoinCheckout } from "@/components/checkout/BitcoinCheckout";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { toast } from "@/hooks/use-toast";
 
 // Import coat of arms images
 import austriaCoA from "@/assets/coat-of-arms/austria.png";
@@ -114,12 +115,15 @@ const PassportDetail = () => {
   const fetchWallet = async () => {
     const { data, error } = await supabase
       .from('btc_wallets')
-      .select('id')
+      .select('id, is_active, is_primary, xpub, derivation_path, next_index')
+      .eq('is_active', true)
+      .order('is_primary', { ascending: false })
+      .order('created_at', { ascending: true })
       .limit(1)
       .maybeSingle();
     
     if (error) {
-      console.error('Error fetching wallet:', error);
+      console.error('Wallet fetch error:', error);
       return;
     }
     
@@ -128,7 +132,11 @@ const PassportDetail = () => {
 
   const handleBuyNow = () => {
     if (!walletId) {
-      alert("Bitcoin wallet not configured. Please contact support.");
+      toast({
+        title: "Configuration Error",
+        description: "Bitcoin wallet not configured. Please contact support.",
+        variant: "destructive",
+      });
       return;
     }
     

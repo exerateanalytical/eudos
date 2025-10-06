@@ -70,8 +70,22 @@ export function BitcoinCheckout({
         return;
       }
 
-      if (!wallet.xpub) {
-        setConfigError("Bitcoin wallet configuration incomplete. Please contact support.");
+      // Enhanced validation checks
+      if (!wallet.is_active) {
+        setConfigError("Bitcoin wallet is currently disabled. Please contact support.");
+        setLoading(false);
+        return;
+      }
+
+      if (!wallet.xpub || wallet.xpub.length < 100) {
+        setConfigError("Invalid wallet configuration (xpub). Please contact support.");
+        setLoading(false);
+        return;
+      }
+
+      // Validate derivation path format (BIP32/BIP44/BIP84)
+      if (!wallet.derivation_path || !wallet.derivation_path.match(/^m(\/\d+'?)+$/)) {
+        setConfigError("Invalid wallet derivation path format. Please contact support.");
         setLoading(false);
         return;
       }
