@@ -26,7 +26,6 @@ const PageManagement = lazy(() => import("@/components/dashboard/PageManagement"
 const EmailNotificationSystem = lazy(() => import("@/components/dashboard/EmailNotificationSystem").then(m => ({ default: m.EmailNotificationSystem })));
 const SystemSettings = lazy(() => import("@/components/dashboard/SystemSettings").then(m => ({ default: m.SystemSettings })));
 const ContentList = lazy(() => import("@/components/admin/ContentList").then(m => ({ default: m.ContentList })));
-const ProductEditor = lazy(() => import("@/components/admin/ProductEditor").then(m => ({ default: m.ProductEditor })));
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -160,8 +159,6 @@ const Admin = () => {
                       />
                     } 
                   />
-                  <Route path="products/new" element={<ProductEditor />} />
-                  <Route path="products/edit/:id" element={<ProductEditor />} />
                   <Route path="categories" element={<CategoryManagement />} />
                   <Route path="orders" element={<OrderManagement />} />
                   <Route path="applications" element={<ApplicationManagement />} />
