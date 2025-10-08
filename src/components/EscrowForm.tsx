@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Shield, CheckCircle, AlertCircle } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { BitcoinCheckout } from "@/components/checkout/BitcoinCheckout";
+import { supabase } from "@/integrations/supabase/client";
 
 interface EscrowFormProps {
   open: boolean;
@@ -19,6 +20,8 @@ interface EscrowFormProps {
 
 export const EscrowForm = ({ open, onOpenChange, productName, productPrice, deliveryTime }: EscrowFormProps) => {
   const [step, setStep] = useState<'form' | 'bitcoin'>('form');
+  const [walletId, setWalletId] = useState<string>("");
+  const [walletError, setWalletError] = useState<string>("");
   
   // Form state
   const [buyerName, setBuyerName] = useState("");
@@ -34,6 +37,28 @@ export const EscrowForm = ({ open, onOpenChange, productName, productPrice, deli
 
   const sellerName = "SecurePrint Labs";
 
+  // Fetch active Bitcoin wallet on mount
+  useEffect(() => {
+    const fetchActiveWallet = async () => {
+      const { data, error } = await supabase
+        .from('btc_wallets')
+        .select('id')
+        .eq('is_active', true)
+        .maybeSingle();
+
+      if (error || !data) {
+        setWalletError("No active Bitcoin wallet configured. Please contact support.");
+        return;
+      }
+
+      setWalletId(data.id);
+    };
+
+    if (open) {
+      fetchActiveWallet();
+    }
+  }, [open]);
+
   const handleProceedToPayment = () => {
     if (!buyerName || !buyerEmail || !buyerPhone || !escrowTerms) {
       toast({
@@ -43,6 +68,16 @@ export const EscrowForm = ({ open, onOpenChange, productName, productPrice, deli
       });
       return;
     }
+
+    if (!walletId) {
+      toast({
+        title: "Configuration Error",
+        description: walletError || "Bitcoin wallet not configured",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setStep('bitcoin');
   };
 
@@ -205,10 +240,10 @@ export const EscrowForm = ({ open, onOpenChange, productName, productPrice, deli
               </Button>
             </div>
           </div>
-        ) : (
+        ) : walletId ? (
           <div className="py-4">
             <BitcoinCheckout
-              walletId="0b7d759f-d8c2-414e-9798-f2a18846e034"
+              walletId={walletId}
               productName={`${productName} - ESCROW`}
               productType="escrow"
               amountBTC={parseFloat((totalAmount / 50000).toFixed(8))}
@@ -235,6 +270,15 @@ export const EscrowForm = ({ open, onOpenChange, productName, productPrice, deli
                 }, 300);
               }}
             />
+          </div>
+        ) : (
+          <div className="py-4">
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                {walletError || "Failed to load Bitcoin wallet configuration."}
+              </AlertDescription>
+            </Alert>
           </div>
         )}
       </DialogContent>

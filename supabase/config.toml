@@ -13,5 +13,8 @@ verify_jwt = false
 enabled = true
 cron = "*/30 * * * * *"
 
+[functions.btc-create-payment]
+verify_jwt = false
+
 [functions.send-payment-confirmation]
 verify_jwt = false
