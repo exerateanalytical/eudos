@@ -28,9 +28,9 @@ function deriveAddressFromXpub(xpub: string, index: number, derivationPath: stri
       const bip32 = BIP32Factory(ecc);
       const node = bip32.fromBase58(xpub);
       
-      // Electrum uses m/0 for receiving addresses
-      // The xpub is already at the account level (m/0'), so we derive /0/index
-      const child = node.derive(0).derive(index);
+      // Electrum exports xpub at account level (m/0h)
+      // For receiving addresses, derive directly from index (no additional /0 chain)
+      const child = node.derive(index);
       
       // Generate P2WPKH (native SegWit) address
       const { address } = payments.p2wpkh({ 

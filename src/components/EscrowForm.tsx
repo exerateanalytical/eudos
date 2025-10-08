@@ -243,6 +243,10 @@ export const EscrowForm = ({ open, onOpenChange, productName, productPrice, deli
           </div>
         ) : walletId ? (
           <div className="py-4">
+            <DialogHeader className="mb-4">
+              <DialogTitle>Bitcoin Payment</DialogTitle>
+              <DialogDescription>Complete your secure Bitcoin payment</DialogDescription>
+            </DialogHeader>
             <BitcoinCheckout
               walletId={walletId}
               productName={`${productName} - ESCROW`}
