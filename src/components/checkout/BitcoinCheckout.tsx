@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Copy, ExternalLink, CheckCircle2, Clock, AlertCircle } from "lucide-react";
@@ -269,13 +268,10 @@ export function BitcoinCheckout({
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      <DialogHeader>
-        <DialogTitle>Bitcoin Payment - Order {orderNumber}</DialogTitle>
-      </DialogHeader>
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="sr-only">Order {orderNumber}</CardTitle>
+            <CardTitle>Order {orderNumber}</CardTitle>
             <Badge variant={payment?.status === 'paid' ? 'default' : 'secondary'}>
               {payment?.status === 'paid' ? (
                 <><CheckCircle2 className="h-4 w-4 mr-1" /> Paid</>
