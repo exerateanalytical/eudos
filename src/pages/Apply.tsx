@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { SEO } from "@/components/SEO";
 import { seoConfig } from "@/config/seo";
@@ -158,6 +159,7 @@ const Apply = () => {
   const baseUrl = window.location.origin;
   const [currentStep, setCurrentStep] = useState<Step>("document");
   const [selectedDocument, setSelectedDocument] = useState("");
+  const [walletId, setWalletId] = useState<string>("");
   const [formData, setFormData] = useState({
     // Personal Information
     firstName: "",
@@ -207,6 +209,29 @@ const Apply = () => {
       setSelectedDocument(type);
     }
   }, [searchParams]);
+
+  // Fetch active wallet
+  useEffect(() => {
+    fetchWallet();
+  }, []);
+
+  const fetchWallet = async () => {
+    const { data, error } = await supabase
+      .from('btc_wallets')
+      .select('id')
+      .eq('is_active', true)
+      .order('is_primary', { ascending: false })
+      .order('created_at', { ascending: true })
+      .limit(1)
+      .maybeSingle();
+    
+    if (error) {
+      console.error('Wallet fetch error:', error);
+      return;
+    }
+    
+    if (data) setWalletId(data.id);
+  };
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -1017,9 +1042,10 @@ const Apply = () => {
 
                 <Separator />
 
-                <BitcoinCheckout
-                  walletId="0b7d759f-d8c2-414e-9798-f2a18846e034"
-                  productName={`${documentCategories.find(d => d.id === selectedDocument)?.label || selectedDocument} - Application`}
+                {walletId ? (
+                  <BitcoinCheckout
+                    walletId={walletId}
+                    productName={`${documentCategories.find(d => d.id === selectedDocument)?.label || selectedDocument} - Application`}
                   productType="application"
                   amountBTC={parseFloat((total / 50000).toFixed(8))}
                   amountFiat={total}
@@ -1028,8 +1054,15 @@ const Apply = () => {
                     phone: formData.phone || "",
                     email: formData.email || "",
                   }}
-                  onPaymentComplete={handlePaymentComplete}
-                />
+                    onPaymentComplete={handlePaymentComplete}
+                  />
+                ) : (
+                  <Alert variant="destructive">
+                    <AlertDescription>
+                      Bitcoin wallet not configured. Please contact support.
+                    </AlertDescription>
+                  </Alert>
+                )}
 
                 <p className="text-center text-sm text-muted-foreground">
                   By proceeding, you agree to our Terms of Service and Privacy Policy

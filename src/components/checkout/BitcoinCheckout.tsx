@@ -77,20 +77,31 @@ export function BitcoinCheckout({
         return;
       }
 
-      if (!wallet.xpub || wallet.xpub.length < 100) {
-        setConfigError("Invalid wallet configuration (xpub). Please contact support.");
+      // Check for zpub or xpub
+      const isZpub = wallet.xpub?.startsWith('zpub');
+      const isXpub = wallet.xpub?.startsWith('xpub');
+
+      if (!wallet.xpub || (!isZpub && !isXpub)) {
+        setConfigError("Invalid wallet configuration (missing zpub/xpub). Please contact support.");
         setLoading(false);
         return;
       }
 
-      // Validate derivation path format (BIP32/BIP44/BIP84)
-      if (!wallet.derivation_path || !wallet.derivation_path.match(/^m(\/\d+'?)+$/)) {
+      if (wallet.xpub.length < 80) {
+        setConfigError("Invalid wallet key format. Please contact support.");
+        setLoading(false);
+        return;
+      }
+
+      // For zpub, derivation path is handled by the edge function (BIP84.fromZPub)
+      // For xpub (Electrum), validate derivation path
+      if (isXpub && wallet.derivation_path && !wallet.derivation_path.match(/^m(\/\d+'?)+$/)) {
         setConfigError("Invalid wallet derivation path format. Please contact support.");
         setLoading(false);
         return;
       }
 
-      console.log("✓ Bitcoin wallet verified:", wallet.name);
+      console.log(`✓ Bitcoin wallet verified (${isZpub ? 'zpub' : 'xpub'}):`, wallet.name);
       // If wallet is valid, proceed with payment creation
       createPaymentAndOrder();
     } catch (error: any) {

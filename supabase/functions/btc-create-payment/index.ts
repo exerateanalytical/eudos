@@ -104,6 +104,9 @@ serve(async (req) => {
       throw new Error(`Wallet not found: ${walletError?.message}`);
     }
 
+    const walletType = walletData.xpub?.startsWith('zpub') ? 'zpub' : 'xpub';
+    console.log(`Using ${walletType} wallet: ${walletData.name}`);
+
     // Atomically increment next_index
     const { data: updatedWallet, error: updateError } = await supabaseClient
       .from('btc_wallets')

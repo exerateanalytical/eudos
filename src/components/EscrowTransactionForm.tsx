@@ -40,6 +40,7 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
   const [searchQuery, setSearchQuery] = useState("");
   const [comboboxOpen, setComboboxOpen] = useState(false);
   const [whyEscrowOpen, setWhyEscrowOpen] = useState(false);
+  const [walletId, setWalletId] = useState<string>("");
   
   const [formData, setFormData] = useState({
     selectedProduct: null as EscrowProduct | null,
@@ -60,8 +61,27 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
   useEffect(() => {
     if (open) {
       loadUserProfile();
+      fetchWallet();
     }
   }, [open]);
+
+  const fetchWallet = async () => {
+    const { data, error } = await supabase
+      .from('btc_wallets')
+      .select('id')
+      .eq('is_active', true)
+      .order('is_primary', { ascending: false })
+      .order('created_at', { ascending: true })
+      .limit(1)
+      .maybeSingle();
+    
+    if (error) {
+      console.error('Wallet fetch error:', error);
+      return;
+    }
+    
+    if (data) setWalletId(data.id);
+  };
 
   const loadUserProfile = async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -889,9 +909,10 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
 
         {step === "bitcoin" && formData.selectedProduct && (
           <div className="py-4">
-            <BitcoinCheckout
-              walletId="0b7d759f-d8c2-414e-9798-f2a18846e034"
-              productName={`${formData.selectedProduct.name} (x${formData.quantity}) - ESCROW`}
+            {walletId ? (
+              <BitcoinCheckout
+                walletId={walletId}
+                productName={`${formData.selectedProduct.name} (x${formData.quantity}) - ESCROW`}
               productType={formData.selectedProduct.category}
               amountBTC={parseFloat((total / 50000).toFixed(8))}
               amountFiat={total}
@@ -918,7 +939,14 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
                 });
                 navigate("/dashboard");
               }}
-            />
+              />
+            ) : (
+              <Alert variant="destructive">
+                <AlertDescription>
+                  Bitcoin wallet not configured. Please contact support.
+                </AlertDescription>
+              </Alert>
+            )}
           </div>
         )}
       </DialogContent>

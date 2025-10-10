@@ -16,7 +16,7 @@ import {
 import { SEO } from "@/components/SEO";
 import { CheckoutModal } from "@/components/checkout/CheckoutModal";
 import { BitcoinCheckout } from "@/components/checkout/BitcoinCheckout";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 
 // Product data (same as Shop page)
@@ -604,6 +604,9 @@ const ProductDetail = () => {
 
       <Dialog open={showBitcoinCheckout} onOpenChange={setShowBitcoinCheckout}>
         <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Bitcoin Payment</DialogTitle>
+          </DialogHeader>
           <BitcoinCheckout
             walletId={walletId}
             productName={product.title}
