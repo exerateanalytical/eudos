@@ -63,6 +63,9 @@ function deriveAddressFromXpub(xpub: string, index: number, derivationPath: stri
 }
 
 serve(async (req) => {
+  console.log('🚀 btc-create-payment function called');
+  console.log(`📋 Request method: ${req.method}`);
+  
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -73,6 +76,9 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
+    const requestBody = await req.json();
+    console.log('📦 Request body:', JSON.stringify(requestBody, null, 2));
+    
     const { 
       wallet_id, 
       order_id, 
@@ -85,13 +91,15 @@ serve(async (req) => {
       guest_email,
       product_name,
       product_type
-    } = await req.json();
+    } = requestBody;
 
     if (!wallet_id || !order_id || !amount_btc) {
+      const errMsg = `Missing required fields - wallet_id: ${wallet_id}, order_id: ${order_id}, amount_btc: ${amount_btc}`;
+      console.error('❌', errMsg);
       throw new Error('wallet_id, order_id, and amount_btc are required');
     }
 
-    console.log(`Creating BTC payment for order ${order_id}, amount: ${amount_btc} BTC`);
+    console.log(`✅ Creating BTC payment for order ${order_id}, amount: ${amount_btc} BTC`);
 
     // Start transaction: atomically increment wallet index
     const { data: walletData, error: walletError } = await supabaseClient
@@ -101,11 +109,13 @@ serve(async (req) => {
       .single();
 
     if (walletError || !walletData) {
+      console.error('❌ Wallet fetch error:', walletError);
       throw new Error(`Wallet not found: ${walletError?.message}`);
     }
 
     const walletType = walletData.xpub?.startsWith('zpub') ? 'zpub' : 'xpub';
-    console.log(`Using ${walletType} wallet: ${walletData.name}`);
+    console.log(`🔑 Using ${walletType} wallet: ${walletData.name}`);
+    console.log(`📊 Wallet details - xpub prefix: ${walletData.xpub.substring(0, 8)}..., derivation: ${walletData.derivation_path}, next_index: ${walletData.next_index}`);
 
     // Atomically increment next_index
     const { data: updatedWallet, error: updateError } = await supabaseClient
@@ -123,15 +133,17 @@ serve(async (req) => {
     }
 
     const addressIndex = walletData.next_index;
+    console.log(`🔢 Using address index: ${addressIndex}`);
     
     // Derive Bitcoin address (supports both Electrum BIP32 and BIP84)
+    console.log(`🔨 Attempting to derive ${walletType} address...`);
     const address = deriveAddressFromXpub(
       walletData.xpub, 
       addressIndex,
       walletData.derivation_path
     );
 
-    console.log(`Derived address ${address} at index ${addressIndex} from wallet ${walletData.name}`);
+    console.log(`✅ Successfully derived ${walletType} address: ${address} at index ${addressIndex} from wallet ${walletData.name}`);
 
     // Insert payment record with proper UUID order_id
     const { data: payment, error: paymentError } = await supabaseClient
@@ -164,7 +176,8 @@ serve(async (req) => {
     // Generate QR code data URI (Bitcoin URI format)
     const bitcoinURI = `bitcoin:${address}?amount=${amount_btc}`;
 
-    console.log(`Payment created: ${payment.id}`);
+    console.log(`✅ Payment created successfully: ${payment.id}`);
+    console.log(`💰 Amount: ${amount_btc} BTC, Address: ${address}`);
 
     return new Response(
       JSON.stringify({
@@ -178,7 +191,8 @@ serve(async (req) => {
       }
     );
   } catch (error) {
-    console.error('Error creating BTC payment:', error);
+    console.error('❌ ERROR creating BTC payment:', error);
+    console.error('❌ Error stack:', error instanceof Error ? error.stack : 'No stack trace');
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return new Response(
       JSON.stringify({ error: errorMessage }),

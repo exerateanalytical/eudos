@@ -164,22 +164,33 @@ const ProductDetail = () => {
   };
 
   const fetchWallet = async () => {
-    // Fetch active wallets, prioritize primary wallet
+    console.log('🔍 Fetching active BTC wallet...');
     const { data, error } = await supabase
       .from('btc_wallets')
-      .select('id, is_primary, is_active')
+      .select('id, is_primary, is_active, xpub, name')
       .eq('is_active', true)
       .order('is_primary', { ascending: false })
-      .order('next_index', { ascending: true })
+      .order('created_at', { ascending: true })
       .limit(1)
-      .maybeSingle();
+      .single();
     
     if (error) {
-      console.error('Error fetching wallet:', error);
+      console.error('❌ Wallet fetch error:', error);
+      toast({
+        title: "Wallet Error",
+        description: "Unable to load Bitcoin wallet configuration.",
+        variant: "destructive",
+      });
       return;
     }
     
-    if (data) setWalletId(data.id);
+    if (data) {
+      const walletType = data.xpub?.startsWith('zpub') ? 'zpub' : 'xpub';
+      console.log(`✅ Fetched ${walletType} wallet:`, data.name, 'ID:', data.id);
+      setWalletId(data.id);
+    } else {
+      console.warn('⚠️ No active wallet found');
+    }
   };
 
   const handleBuyNow = () => {

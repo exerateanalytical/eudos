@@ -58,6 +58,8 @@ export function BitcoinCheckout({
 
   const verifyWalletConfig = async () => {
     try {
+      console.log('🔍 Verifying wallet configuration for ID:', walletId);
+      
       const { data: wallet, error } = await supabase
         .from('btc_wallets')
         .select('*')
@@ -65,6 +67,7 @@ export function BitcoinCheckout({
         .single();
 
       if (error || !wallet) {
+        console.error('❌ Wallet fetch error:', error);
         setConfigError("Bitcoin wallet not configured. Please contact support.");
         setLoading(false);
         return;
@@ -72,6 +75,7 @@ export function BitcoinCheckout({
 
       // Enhanced validation checks
       if (!wallet.is_active) {
+        console.error('❌ Wallet is not active');
         setConfigError("Bitcoin wallet is currently disabled. Please contact support.");
         setLoading(false);
         return;
@@ -81,13 +85,19 @@ export function BitcoinCheckout({
       const isZpub = wallet.xpub?.startsWith('zpub');
       const isXpub = wallet.xpub?.startsWith('xpub');
 
+      console.log(`📋 Wallet type: ${isZpub ? 'zpub (BIP84)' : isXpub ? 'xpub (BIP32)' : 'unknown'}`);
+      console.log(`📋 Wallet name: ${wallet.name}`);
+      console.log(`📋 Derivation path: ${wallet.derivation_path}`);
+
       if (!wallet.xpub || (!isZpub && !isXpub)) {
+        console.error('❌ Invalid wallet type - must be zpub or xpub');
         setConfigError("Invalid wallet configuration (missing zpub/xpub). Please contact support.");
         setLoading(false);
         return;
       }
 
       if (wallet.xpub.length < 80) {
+        console.error('❌ Invalid xpub length:', wallet.xpub.length);
         setConfigError("Invalid wallet key format. Please contact support.");
         setLoading(false);
         return;
@@ -96,16 +106,17 @@ export function BitcoinCheckout({
       // For zpub, derivation path is handled by the edge function (BIP84.fromZPub)
       // For xpub (Electrum), validate derivation path
       if (isXpub && wallet.derivation_path && !wallet.derivation_path.match(/^m(\/\d+'?)+$/)) {
+        console.error('❌ Invalid derivation path for xpub:', wallet.derivation_path);
         setConfigError("Invalid wallet derivation path format. Please contact support.");
         setLoading(false);
         return;
       }
 
-      console.log(`✓ Bitcoin wallet verified (${isZpub ? 'zpub' : 'xpub'}):`, wallet.name);
+      console.log(`✅ Wallet verified successfully: ${wallet.name} (${isZpub ? 'zpub' : 'xpub'})`);
       // If wallet is valid, proceed with payment creation
       createPaymentAndOrder();
     } catch (error: any) {
-      console.error("Wallet verification error:", error);
+      console.error("❌ Wallet verification error:", error);
       setConfigError("Failed to verify payment configuration.");
       setLoading(false);
     }
@@ -113,21 +124,24 @@ export function BitcoinCheckout({
 
   const createPaymentAndOrder = async () => {
     try {
-      console.log("BitcoinCheckout: Starting payment creation");
-      console.log("Wallet ID:", walletId);
-      console.log("Amount BTC:", amountBTC);
-      console.log("Product:", productName);
+      console.log("🚀 BitcoinCheckout: Starting payment creation");
+      console.log("📋 Wallet ID:", walletId);
+      console.log("💰 Amount BTC:", amountBTC);
+      console.log("📦 Product:", productName);
       setLoading(true);
       
       // Get current user
       const { data: { user } } = await supabase.auth.getUser();
+      console.log("👤 User:", user?.id || 'Guest');
       
       // Generate order number
+      console.log("🔢 Generating order number...");
       const { data: orderNumberData, error: orderNumError } = await supabase
         .rpc('generate_order_number');
       
       if (orderNumError) throw orderNumError;
       const newOrderNumber = orderNumberData as string;
+      console.log("✅ Order number generated:", newOrderNumber);
       setOrderNumber(newOrderNumber);
 
       // Create order first
@@ -148,18 +162,30 @@ export function BitcoinCheckout({
         orderData.guest_email = guestInfo.email;
       }
 
+      console.log("📝 Creating order in database...");
       const { data: order, error: orderError } = await supabase
         .from('orders')
         .insert(orderData)
         .select()
         .single();
 
-      if (orderError) throw orderError;
+      if (orderError) {
+        console.error("❌ Order creation error:", orderError);
+        throw orderError;
+      }
       
       setOrderId(order.id);
-      console.log("✓ Order created:", order.order_number);
+      console.log("✅ Order created:", order.order_number, "ID:", order.id);
 
       // Create Bitcoin payment
+      console.log("💳 Calling btc-create-payment edge function...");
+      console.log("📤 Payment request:", {
+        wallet_id: walletId,
+        order_id: order.id,
+        amount_btc: amountBTC,
+        amount_fiat: amountFiat,
+      });
+      
       const { data: paymentData, error: paymentError } = await supabase.functions.invoke(
         'btc-create-payment',
         {
@@ -178,27 +204,39 @@ export function BitcoinCheckout({
         }
       );
 
-      if (paymentError) throw paymentError;
+      if (paymentError) {
+        console.error("❌ Edge function error:", paymentError);
+        throw paymentError;
+      }
+      
+      console.log("✅ Edge function response received:", paymentData);
 
       // Update order with btc_payment_id
+      console.log("🔗 Linking payment to order...");
       await supabase
         .from('orders')
         .update({ btc_payment_id: paymentData.payment.id })
         .eq('id', order.id);
 
       setPayment(paymentData.payment);
-      console.log("✓ Bitcoin payment created:", paymentData.payment.address);
+      console.log("✅ Bitcoin payment created successfully!");
+      console.log("📍 Payment address:", paymentData.payment.address);
+      console.log("🆔 Payment ID:", paymentData.payment.id);
 
       // Generate QR code
+      console.log("📱 Generating QR code...");
       const qrCode = await QRCode.toDataURL(paymentData.bitcoinURI);
       setQrCodeUrl(qrCode);
+      console.log("✅ QR code generated");
 
       toast({
         title: "Payment Created",
         description: `Order ${newOrderNumber} created successfully`,
       });
+      console.log("✅ Checkout complete - ready for payment");
     } catch (error: any) {
-      console.error("Error creating payment:", error);
+      console.error("❌ Error creating payment:", error);
+      console.error("Error details:", error.message, error.stack);
       toast({
         title: "Error",
         description: error.message || "Failed to create payment",

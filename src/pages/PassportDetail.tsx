@@ -113,21 +113,38 @@ const PassportDetail = () => {
   };
 
   const fetchWallet = async () => {
+    console.log('🔍 Fetching active BTC wallet...');
     const { data, error } = await supabase
       .from('btc_wallets')
-      .select('id, is_active, is_primary, xpub, derivation_path, next_index')
+      .select('id, is_active, is_primary, xpub, derivation_path, next_index, name')
       .eq('is_active', true)
       .order('is_primary', { ascending: false })
       .order('created_at', { ascending: true })
       .limit(1)
-      .maybeSingle();
+      .single();
     
     if (error) {
-      console.error('Wallet fetch error:', error);
+      console.error('❌ Wallet fetch error:', error);
+      toast({
+        title: "Wallet Configuration Error",
+        description: "Unable to fetch Bitcoin wallet. Please contact support.",
+        variant: "destructive",
+      });
       return;
     }
     
-    if (data) setWalletId(data.id);
+    if (data) {
+      const walletType = data.xpub?.startsWith('zpub') ? 'zpub' : 'xpub';
+      console.log(`✅ Fetched ${walletType} wallet:`, data.name, 'ID:', data.id);
+      setWalletId(data.id);
+    } else {
+      console.warn('⚠️ No active wallet found');
+      toast({
+        title: "No Active Wallet",
+        description: "No Bitcoin wallet is currently active. Please contact support.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleBuyNow = () => {
