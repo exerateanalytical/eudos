@@ -87,7 +87,7 @@ export function BitcoinCheckout({
 
       console.log(`📋 Wallet type: ${isZpub ? 'zpub (BIP84)' : isXpub ? 'xpub (BIP32)' : 'unknown'}`);
       console.log(`📋 Wallet name: ${wallet.name}`);
-      console.log(`📋 Derivation path: ${wallet.derivation_path}`);
+      console.log(`📋 Derivation path: ${wallet.derivation_path || 'N/A (zpub handles internally)'}`);
 
       if (!wallet.xpub || (!isZpub && !isXpub)) {
         console.error('❌ Invalid wallet type - must be zpub or xpub');
@@ -96,20 +96,26 @@ export function BitcoinCheckout({
         return;
       }
 
-      if (wallet.xpub.length < 80) {
-        console.error('❌ Invalid xpub length:', wallet.xpub.length);
+      // Validate extended public key length (both zpub and xpub should be 111 characters)
+      if (wallet.xpub.length < 100) {
+        console.error('❌ Invalid extended public key length:', wallet.xpub.length);
         setConfigError("Invalid wallet key format. Please contact support.");
         setLoading(false);
         return;
       }
 
-      // For zpub, derivation path is handled by the edge function (BIP84.fromZPub)
-      // For xpub (Electrum), validate derivation path
-      if (isXpub && wallet.derivation_path && !wallet.derivation_path.match(/^m(\/\d+'?)+$/)) {
-        console.error('❌ Invalid derivation path for xpub:', wallet.derivation_path);
-        setConfigError("Invalid wallet derivation path format. Please contact support.");
+      // For zpub: BIP84 derivation is handled internally by BIP84.fromZPub(), no path needed
+      // For xpub: Electrum format requires derivation path validation
+      if (isXpub && (!wallet.derivation_path || !wallet.derivation_path.match(/^m(\/\d+'?)+$/))) {
+        console.error('❌ xpub wallet missing or invalid derivation path:', wallet.derivation_path);
+        setConfigError("Invalid wallet derivation path for xpub. Please contact support.");
         setLoading(false);
         return;
+      }
+
+      // zpub wallets can have null derivation_path (it's handled by BIP84 library)
+      if (isZpub && wallet.derivation_path) {
+        console.log('⚠️ zpub wallet has derivation_path set, but BIP84 will handle derivation internally');
       }
 
       console.log(`✅ Wallet verified successfully: ${wallet.name} (${isZpub ? 'zpub' : 'xpub'})`);
