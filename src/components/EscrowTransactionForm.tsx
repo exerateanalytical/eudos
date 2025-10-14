@@ -68,7 +68,7 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
   const fetchWallet = async () => {
     const { data, error } = await supabase
       .from('btc_wallets')
-      .select('id')
+      .select('id, xpub, name')
       .eq('is_active', true)
       .order('is_primary', { ascending: false })
       .order('created_at', { ascending: true })
@@ -76,11 +76,20 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
       .maybeSingle();
     
     if (error) {
-      console.error('Wallet fetch error:', error);
+      console.error('❌ Error fetching wallet:', error);
+      toast.error('Failed to fetch Bitcoin wallet');
       return;
     }
     
-    if (data) setWalletId(data.id);
+    if (!data) {
+      console.error('❌ No active Bitcoin wallet found');
+      toast.error('No active Bitcoin wallet configured. Please set up a wallet first.');
+      return;
+    }
+    
+    const walletType = data.xpub.startsWith('zpub') ? 'zpub (BIP84)' : 'xpub (BIP32)';
+    console.log(`✅ Using wallet: ${data.id} (${walletType}) - ${data.name}`);
+    setWalletId(data.id);
   };
 
   const loadUserProfile = async () => {

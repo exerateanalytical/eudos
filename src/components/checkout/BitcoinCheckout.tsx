@@ -105,12 +105,16 @@ export function BitcoinCheckout({
       }
 
       // For zpub: BIP84 derivation is handled internally by BIP84.fromZPub(), no path needed
-      // For xpub: Electrum format requires derivation path validation
-      if (isXpub && (!wallet.derivation_path || !wallet.derivation_path.match(/^m(\/\d+'?)+$/))) {
-        console.error('❌ xpub wallet missing or invalid derivation path:', wallet.derivation_path);
-        setConfigError("Invalid wallet derivation path for xpub. Please contact support.");
-        setLoading(false);
-        return;
+      // For xpub: Electrum format requires derivation path validation (accept both ' and h notation)
+      if (isXpub) {
+        if (!wallet.derivation_path) {
+          console.warn('⚠️ xpub wallet missing derivation path, will default to m/0\' (Electrum BIP32)');
+        } else if (!wallet.derivation_path.match(/^m(\/\d+['h]?)+$/i)) {
+          console.error('❌ xpub wallet has invalid derivation path:', wallet.derivation_path);
+          setConfigError("Invalid wallet derivation path format. Expected format like m/0h or m/0'/0. Please contact support.");
+          setLoading(false);
+          return;
+        }
       }
 
       // zpub wallets can have null derivation_path (it's handled by BIP84 library)

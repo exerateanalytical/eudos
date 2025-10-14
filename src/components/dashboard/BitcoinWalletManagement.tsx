@@ -56,7 +56,7 @@ export function BitcoinWalletManagement() {
   const [formData, setFormData] = useState({
     name: "",
     xpub: "",
-    derivation_path: "m/0'/0" // Default to Electrum standard
+    derivation_path: "m/0h" // Default to Electrum BIP32
   });
   const { toast } = useToast();
 
@@ -110,26 +110,25 @@ export function BitcoinWalletManagement() {
         return;
       }
 
-      // Validate derivation path matches key type
+      // Validate derivation path format (accept both ' and h notation)
       const isZpub = formData.xpub.startsWith('zpub');
       const isXpub = formData.xpub.startsWith('xpub');
       
-      if (isZpub && !formData.derivation_path.startsWith("m/84'")) {
-        toast({
-          title: "Mismatched wallet type",
-          description: "zpub keys require BIP84 derivation path (m/84'/0'/0'/0)",
-          variant: "destructive",
-        });
-        return;
-      }
-      
-      if (isXpub && formData.derivation_path.startsWith("m/84'")) {
-        toast({
-          title: "Mismatched wallet type",
-          description: "xpub keys (Electrum) should use m/0'/0 derivation path",
-          variant: "destructive",
-        });
-        return;
+      if (isZpub) {
+        // zpub should use BIP84 path (informational - zpub handles derivation internally)
+        if (formData.derivation_path && !formData.derivation_path.startsWith("m/84'")) {
+          console.warn("zpub wallet has non-BIP84 derivation path, but BIP84 will handle derivation internally");
+        }
+      } else if (isXpub) {
+        // xpub can use various paths - validate format (accept both ' and h notation)
+        if (formData.derivation_path && !formData.derivation_path.match(/^m(\/\d+['h]?)+$/i)) {
+          toast({
+            title: "Invalid derivation path",
+            description: "Expected format like m/0h or m/84'/0'/0'",
+            variant: "destructive",
+          });
+          return;
+        }
       }
 
       if (!formData.name.trim()) {
@@ -182,7 +181,7 @@ export function BitcoinWalletManagement() {
       setFormData({
         name: "",
         xpub: "",
-        derivation_path: "m/0'/0" // Default to Electrum standard
+        derivation_path: "m/0h" // Default to Electrum BIP32
       });
       fetchData();
     } catch (error: any) {
@@ -237,7 +236,7 @@ export function BitcoinWalletManagement() {
     setFormData({
       name: "",
       xpub: "",
-      derivation_path: "m/0'/0" // Default to Electrum standard
+      derivation_path: "m/0h" // Default to Electrum BIP32
     });
     setDialogOpen(true);
   };
@@ -419,10 +418,13 @@ export function BitcoinWalletManagement() {
               <Input
                 value={formData.derivation_path}
                 onChange={(e) => setFormData({ ...formData, derivation_path: e.target.value })}
-                placeholder="m/0'/0 (Electrum) or m/84'/0'/0'/0 (BIP84)"
+                placeholder="m/0h or m/84'/0'/0'/0"
               />
               <p className="text-xs text-muted-foreground mt-1">
-                Electrum: m/0'/0 (receiving) | BIP84: m/84'/0'/0'/0
+                Derivation path (accepts both ' and h notation):<br/>
+                • Electrum BIP32 (xpub): m/0h or m/0'/0 (P2PKH, 1... addresses)<br/>
+                • BIP49 (xpub): m/49'/0'/0'/0 (P2SH-P2WPKH, 3... addresses)<br/>
+                • BIP84/zpub: m/84'/0'/0'/0 (P2WPKH, bc1... addresses)
               </p>
             </div>
             <Button onClick={handleSaveWallet} className="w-full">

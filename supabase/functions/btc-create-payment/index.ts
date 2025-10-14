@@ -19,44 +19,72 @@ function deriveAddressFromXpub(xpub: string, index: number, derivationPath: stri
     if (xpub.startsWith('zpub')) {
       const account = new BIP84.fromZPub(xpub);
       const address = account.getAddress(index, false); // false = receiving address
-      console.log(`Derived BIP84 address: ${address} at index ${index}`);
+      console.log(`✅ Derived BIP84 (zpub) address: ${address} at index ${index}`);
       return address;
     }
     
-    // Handle xpub (Electrum BIP32)
+    // Handle xpub (Electrum BIP32 and other standards)
     if (xpub.startsWith('xpub')) {
       const bip32 = BIP32Factory(ecc);
       const node = bip32.fromBase58(xpub);
       
-      // Electrum exports xpub at account level (m/0h)
-      // For receiving addresses, derive directly from index (no additional /0 chain)
-      const child = node.derive(index);
+      // Normalize derivation path: m/0h → m/0'
+      const normalized = (derivationPath || 'm/0\'').replace(/(\d+)h/gi, '$1\'');
+      console.log(`📋 Normalized derivation path: ${normalized}`);
       
-      // Generate P2WPKH (native SegWit) address
-      const { address } = payments.p2wpkh({ 
-        pubkey: child.publicKey,
-        network: { // mainnet
-          messagePrefix: '\x18Bitcoin Signed Message:\n',
-          bech32: 'bc',
-          bip32: { public: 0x0488b21e, private: 0x0488ade4 },
-          pubKeyHash: 0x00,
-          scriptHash: 0x05,
-          wif: 0x80
-        }
-      });
+      // Determine script type from derivation path
+      let scriptType = 'p2pkh'; // Default for Electrum BIP32 (m/0' or m/44')
+      if (normalized.startsWith("m/84'")) {
+        scriptType = 'p2wpkh'; // BIP84: bc1... (SegWit native)
+      } else if (normalized.startsWith("m/49'")) {
+        scriptType = 'p2sh-p2wpkh'; // BIP49: 3... (SegWit wrapped)
+      }
+      // m/0' or m/44' → p2pkh (legacy 1... addresses)
+      
+      console.log(`📋 Script type: ${scriptType}`);
+      
+      // Electrum exports xpub at account level (m/0')
+      // Derive: chain 0 (receiving) → index
+      const child = node.derive(0).derive(index);
+      console.log(`📋 Derived child path: 0/${index}`);
+      
+      const network = {
+        messagePrefix: '\x18Bitcoin Signed Message:\n',
+        bech32: 'bc',
+        bip32: { public: 0x0488b21e, private: 0x0488ade4 },
+        pubKeyHash: 0x00,
+        scriptHash: 0x05,
+        wif: 0x80
+      };
+      
+      let address: string | undefined;
+      
+      if (scriptType === 'p2wpkh') {
+        // BIP84: Native SegWit (bc1...)
+        address = payments.p2wpkh({ pubkey: child.publicKey, network }).address;
+      } else if (scriptType === 'p2sh-p2wpkh') {
+        // BIP49: Wrapped SegWit (3...)
+        address = payments.p2sh({ 
+          redeem: payments.p2wpkh({ pubkey: child.publicKey, network }), 
+          network 
+        }).address;
+      } else {
+        // BIP32/BIP44: Legacy P2PKH (1...)
+        address = payments.p2pkh({ pubkey: child.publicKey, network }).address;
+      }
       
       if (!address) {
         throw new Error('Failed to generate address from xpub');
       }
       
-      console.log(`Derived Electrum BIP32 address: ${address} at index ${index}`);
+      console.log(`✅ Derived ${scriptType.toUpperCase()} (xpub) address: ${address} at index ${index}`);
       return address;
     }
     
     throw new Error('Unsupported extended public key format');
     
   } catch (error) {
-    console.error('Error deriving Bitcoin address:', error);
+    console.error('❌ Error deriving Bitcoin address:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     throw new Error(`Address derivation failed: ${errorMessage}`);
   }

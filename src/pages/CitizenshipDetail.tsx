@@ -39,7 +39,7 @@ const CitizenshipDetail = () => {
   const fetchWallet = async () => {
     const { data, error } = await supabase
       .from('btc_wallets')
-      .select('id, is_active, is_primary, xpub, derivation_path, next_index')
+      .select('id, xpub, name')
       .eq('is_active', true)
       .order('is_primary', { ascending: false })
       .order('created_at', { ascending: true })
@@ -47,11 +47,18 @@ const CitizenshipDetail = () => {
       .maybeSingle();
     
     if (error) {
-      console.error('Wallet fetch error:', error);
+      console.error('❌ Wallet fetch error:', error);
       return;
     }
     
-    if (data) setWalletId(data.id);
+    if (!data) {
+      console.warn('⚠️ No active Bitcoin wallet found');
+      return;
+    }
+    
+    const walletType = data.xpub.startsWith('zpub') ? 'zpub (BIP84)' : 'xpub (BIP32)';
+    console.log(`✅ Using wallet: ${data.id} (${walletType}) - ${data.name}`);
+    setWalletId(data.id);
   };
 
   const handleBuyNow = () => {
