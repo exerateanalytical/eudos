@@ -1,7 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
 import BIP32Factory from "https://esm.sh/bip32@4.0.0";
-import * as ecc from "https://esm.sh/tiny-secp256k1@2.2.3";
+import * as ecc from "https://esm.sh/tiny-secp256k1@2.2.3?target=deno";
 import { payments } from "https://esm.sh/bitcoinjs-lib@6.1.5";
 
 const corsHeaders = {
