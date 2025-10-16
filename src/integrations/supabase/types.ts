@@ -874,60 +874,6 @@ export type Database = {
           },
         ]
       }
-      landing_themes: {
-        Row: {
-          accent_color: string
-          background_gradient: string
-          config: Json | null
-          created_at: string | null
-          description: string | null
-          font_family: string | null
-          id: string
-          is_active: boolean | null
-          layout_style: string | null
-          name: string
-          primary_color: string
-          secondary_color: string
-          slug: string
-          thumbnail: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          accent_color: string
-          background_gradient: string
-          config?: Json | null
-          created_at?: string | null
-          description?: string | null
-          font_family?: string | null
-          id?: string
-          is_active?: boolean | null
-          layout_style?: string | null
-          name: string
-          primary_color: string
-          secondary_color: string
-          slug: string
-          thumbnail?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          accent_color?: string
-          background_gradient?: string
-          config?: Json | null
-          created_at?: string | null
-          description?: string | null
-          font_family?: string | null
-          id?: string
-          is_active?: boolean | null
-          layout_style?: string | null
-          name?: string
-          primary_color?: string
-          secondary_color?: string
-          slug?: string
-          thumbnail?: string | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
       loyalty_points: {
         Row: {
           created_at: string
