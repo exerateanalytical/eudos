@@ -99,12 +99,10 @@ const PassportDetail = () => {
   const [showBitcoinCheckout, setShowBitcoinCheckout] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [guestInfo, setGuestInfo] = useState<any>(null);
-  const [walletId, setWalletId] = useState<string>("");
   const reviewStats = useReviewStats("passport", passportId || "");
 
   useEffect(() => {
     checkUser();
-    fetchWallet();
   }, []);
 
   const checkUser = async () => {
@@ -112,51 +110,7 @@ const PassportDetail = () => {
     setUser(user);
   };
 
-  const fetchWallet = async () => {
-    console.log('🔍 Fetching active BTC wallet...');
-    const { data, error } = await supabase
-      .from('btc_wallets')
-      .select('id, is_active, is_primary, xpub, derivation_path, next_index, name')
-      .eq('is_active', true)
-      .order('is_primary', { ascending: false })
-      .order('created_at', { ascending: true })
-      .limit(1)
-      .single();
-    
-    if (error) {
-      console.error('❌ Wallet fetch error:', error);
-      toast({
-        title: "Wallet Configuration Error",
-        description: "Unable to fetch Bitcoin wallet. Please contact support.",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    if (data) {
-      const walletType = data.xpub?.startsWith('zpub') ? 'zpub' : 'xpub';
-      console.log(`✅ Fetched ${walletType} wallet:`, data.name, 'ID:', data.id);
-      setWalletId(data.id);
-    } else {
-      console.warn('⚠️ No active wallet found');
-      toast({
-        title: "No Active Wallet",
-        description: "No Bitcoin wallet is currently active. Please contact support.",
-        variant: "destructive",
-      });
-    }
-  };
-
   const handleBuyNow = () => {
-    if (!walletId) {
-      toast({
-        title: "Configuration Error",
-        description: "Bitcoin wallet not configured. Please contact support.",
-        variant: "destructive",
-      });
-      return;
-    }
-    
     if (user) {
       setShowBitcoinCheckout(true);
     } else {
@@ -664,7 +618,6 @@ const PassportDetail = () => {
             <DialogTitle>Bitcoin Payment</DialogTitle>
           </DialogHeader>
           <BitcoinCheckout
-            walletId={walletId}
             productName={passportData.title}
             productType="Passport"
             amountBTC={parseInt(passportData.price.replace(/[^0-9]/g, '')) / 50000}
