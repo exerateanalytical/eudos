@@ -56,7 +56,7 @@ export function BitcoinWalletManagement() {
   const [formData, setFormData] = useState({
     name: "",
     xpub: "",
-    derivation_path: "m/0h" // Default to Electrum BIP32
+    derivation_path: "m/84'/0'/0'/0" // Default to BIP84 for Exodus compatibility
   });
   const { toast } = useToast();
 
@@ -89,12 +89,12 @@ export function BitcoinWalletManagement() {
 
   const handleSaveWallet = async () => {
     try {
-      // Validate xpub/zpub format for mainnet
-      const isValidXpub = formData.xpub.startsWith('xpub') || formData.xpub.startsWith('zpub');
+      // Validate xpub format for mainnet (Exodus and other BIP32 wallets)
+      const isValidXpub = formData.xpub.startsWith('xpub');
       if (!isValidXpub) {
         toast({
-          title: "Invalid extended public key",
-          description: "Please enter a valid mainnet xpub (Electrum BIP32) or zpub (BIP84) key",
+          title: "Invalid Extended Public Key",
+          description: "Please enter a valid mainnet xpub key (must start with 'xpub')",
           variant: "destructive",
         });
         return;
@@ -103,7 +103,7 @@ export function BitcoinWalletManagement() {
       // Validate extended public key length
       if (formData.xpub.length < 100 || formData.xpub.length > 120) {
         toast({
-          title: "Invalid extended public key",
+          title: "Invalid Extended Public Key",
           description: "Extended public key length appears incorrect",
           variant: "destructive",
         });
@@ -111,24 +111,13 @@ export function BitcoinWalletManagement() {
       }
 
       // Validate derivation path format (accept both ' and h notation)
-      const isZpub = formData.xpub.startsWith('zpub');
-      const isXpub = formData.xpub.startsWith('xpub');
-      
-      if (isZpub) {
-        // zpub should use BIP84 path (informational - zpub handles derivation internally)
-        if (formData.derivation_path && !formData.derivation_path.startsWith("m/84'")) {
-          console.warn("zpub wallet has non-BIP84 derivation path, but BIP84 will handle derivation internally");
-        }
-      } else if (isXpub) {
-        // xpub can use various paths - validate format (accept both ' and h notation)
-        if (formData.derivation_path && !formData.derivation_path.match(/^m(\/\d+['h]?)+$/i)) {
-          toast({
-            title: "Invalid derivation path",
-            description: "Expected format like m/0h or m/84'/0'/0'",
-            variant: "destructive",
-          });
-          return;
-        }
+      if (formData.derivation_path && !formData.derivation_path.match(/^m(\/\d+['h]?)+$/i)) {
+        toast({
+          title: "Invalid Derivation Path",
+          description: "Expected format like m/0h, m/44'/0'/0', or m/84'/0'/0'/0",
+          variant: "destructive",
+        });
+        return;
       }
 
       if (!formData.name.trim()) {
@@ -178,11 +167,11 @@ export function BitcoinWalletManagement() {
 
       setDialogOpen(false);
       setEditingWallet(null);
-      setFormData({
-        name: "",
-        xpub: "",
-        derivation_path: "m/0h" // Default to Electrum BIP32
-      });
+    setFormData({
+      name: "",
+      xpub: "",
+      derivation_path: "m/84'/0'/0'/0" // Default to BIP84 for Exodus compatibility
+    });
       fetchData();
     } catch (error: any) {
       toast({
@@ -236,7 +225,7 @@ export function BitcoinWalletManagement() {
     setFormData({
       name: "",
       xpub: "",
-      derivation_path: "m/0h" // Default to Electrum BIP32
+      derivation_path: "m/84'/0'/0'/0" // Default to BIP84 for Exodus compatibility
     });
     setDialogOpen(true);
   };
@@ -390,7 +379,7 @@ export function BitcoinWalletManagement() {
             <DialogDescription>
               {editingWallet 
                 ? "Update your Bitcoin wallet details" 
-                : "Add a new Bitcoin wallet using an xpub key"}
+                : "Add your Exodus or other wallet using xpub key"}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
@@ -403,14 +392,15 @@ export function BitcoinWalletManagement() {
               />
             </div>
             <div>
-              <Label>Extended Public Key</Label>
+              <Label>Extended Public Key (xpub)</Label>
               <Input
                 value={formData.xpub}
                 onChange={(e) => setFormData({ ...formData, xpub: e.target.value })}
-                placeholder="xpub... or zpub..."
+                placeholder="xpub..."
+                className="font-mono text-sm"
               />
               <p className="text-xs text-muted-foreground mt-1">
-                Mainnet xpub (Electrum BIP32) or zpub (BIP84) extended public key
+                Mainnet xpub from Exodus, Electrum, or other BIP32-compatible wallets
               </p>
             </div>
             <div>
@@ -418,13 +408,13 @@ export function BitcoinWalletManagement() {
               <Input
                 value={formData.derivation_path}
                 onChange={(e) => setFormData({ ...formData, derivation_path: e.target.value })}
-                placeholder="m/0h or m/84'/0'/0'/0"
+                placeholder="m/84'/0'/0'/0"
               />
               <p className="text-xs text-muted-foreground mt-1">
-                Derivation path (accepts both ' and h notation):<br/>
-                • Electrum BIP32 (xpub): m/0h or m/0'/0 (P2PKH, 1... addresses)<br/>
-                • BIP49 (xpub): m/49'/0'/0'/0 (P2SH-P2WPKH, 3... addresses)<br/>
-                • BIP84/zpub: m/84'/0'/0'/0 (P2WPKH, bc1... addresses)
+                Standard derivation paths (accepts both ' and h notation):<br/>
+                • <strong>BIP84 (Recommended for Exodus):</strong> m/84'/0'/0'/0 → bc1... (Native SegWit)<br/>
+                • BIP49: m/49'/0'/0'/0 → 3... (Wrapped SegWit)<br/>
+                • BIP44/BIP32: m/0h or m/44'/0'/0'/0 → 1... (Legacy)
               </p>
             </div>
             <Button onClick={handleSaveWallet} className="w-full">

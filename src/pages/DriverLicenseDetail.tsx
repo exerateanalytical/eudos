@@ -91,8 +91,7 @@ const DriverLicenseDetail = () => {
       return;
     }
     
-    const walletType = data.xpub.startsWith('zpub') ? 'zpub (BIP84)' : 'xpub (BIP32)';
-    console.log(`✅ Using wallet: ${data.id} (${walletType}) - ${data.name}`);
+    console.log(`✅ Using xpub wallet: ${data.id} - ${data.name}`);
     setWalletId(data.id);
   };
 

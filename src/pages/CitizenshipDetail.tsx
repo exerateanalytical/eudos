@@ -56,7 +56,7 @@ const CitizenshipDetail = () => {
       return;
     }
     
-    const walletType = data.xpub.startsWith('zpub') ? 'zpub (BIP84)' : 'xpub (BIP32)';
+    const walletType = 'xpub';
     console.log(`✅ Using wallet: ${data.id} (${walletType}) - ${data.name}`);
     setWalletId(data.id);
   };

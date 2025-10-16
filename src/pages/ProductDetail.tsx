@@ -185,7 +185,7 @@ const ProductDetail = () => {
     }
     
     if (data) {
-      const walletType = data.xpub?.startsWith('zpub') ? 'zpub' : 'xpub';
+      const walletType = 'xpub';
       console.log(`✅ Fetched ${walletType} wallet:`, data.name, 'ID:', data.id);
       setWalletId(data.id);
     } else {
