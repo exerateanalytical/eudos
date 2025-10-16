@@ -121,24 +121,45 @@ serve(async (req) => {
       product_type
     } = requestBody;
 
-    if (!wallet_id || !order_id || !amount_btc) {
-      const errMsg = `Missing required fields - wallet_id: ${wallet_id}, order_id: ${order_id}, amount_btc: ${amount_btc}`;
+    // Validate required fields (wallet_id optional; will auto-select active wallet if missing)
+    if (!order_id || !amount_btc) {
+      const errMsg = `Missing required fields - order_id: ${order_id}, amount_btc: ${amount_btc}`;
       console.error('❌', errMsg);
-      throw new Error('wallet_id, order_id, and amount_btc are required');
+      throw new Error('order_id and amount_btc are required');
     }
 
     console.log(`✅ Creating BTC payment for order ${order_id}, amount: ${amount_btc} BTC`);
 
-    // Start transaction: atomically increment wallet index
-    const { data: walletData, error: walletError } = await supabaseClient
-      .from('btc_wallets')
-      .select('*')
-      .eq('id', wallet_id)
-      .single();
+    // Resolve wallet: use provided wallet_id or select active/primary wallet
+    let walletData: any | null = null;
 
-    if (walletError || !walletData) {
-      console.error('❌ Wallet fetch error:', walletError);
-      throw new Error(`Wallet not found: ${walletError?.message}`);
+    if (wallet_id) {
+      console.log(`🔎 Fetching wallet by provided ID: ${wallet_id}`);
+      const { data, error } = await supabaseClient
+        .from('btc_wallets')
+        .select('*')
+        .eq('id', wallet_id)
+        .single();
+      if (error || !data) {
+        console.error('❌ Wallet fetch error by ID:', error);
+        throw new Error(`Wallet not found: ${error?.message || 'no data'}`);
+      }
+      walletData = data;
+    } else {
+      console.log('🔎 No wallet_id provided. Selecting active wallet (preferring primary)...');
+      const { data, error } = await supabaseClient
+        .from('btc_wallets')
+        .select('*')
+        .eq('is_active', true)
+        .order('is_primary', { ascending: false })
+        .order('created_at', { ascending: true })
+        .limit(1)
+        .single();
+      if (error || !data) {
+        console.error('❌ Active wallet selection error:', error);
+        throw new Error('No active Bitcoin wallet configured');
+      }
+      walletData = data;
     }
 
     const walletType = walletData.xpub?.startsWith('zpub') ? 'zpub' : 'xpub';
@@ -152,7 +173,7 @@ serve(async (req) => {
         next_index: walletData.next_index + 1,
         updated_at: new Date().toISOString()
       })
-      .eq('id', wallet_id)
+      .eq('id', walletData.id)
       .select()
       .single();
 
@@ -177,7 +198,7 @@ serve(async (req) => {
     const { data: payment, error: paymentError } = await supabaseClient
       .from('btc_payments')
       .insert({
-        wallet_id,
+        wallet_id: walletData.id,
         user_id: user_id || null,
         order_id, // Now properly typed as UUID
         address_index: addressIndex,

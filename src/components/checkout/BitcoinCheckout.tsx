@@ -4,14 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Copy, ExternalLink, CheckCircle2, Clock, AlertCircle } from "lucide-react";
+import { Copy, ExternalLink, CheckCircle2, Clock } from "lucide-react";
 import QRCode from "qrcode";
 
 interface BitcoinCheckoutProps {
-  walletId: string;
+  walletId?: string;
   productName: string;
   productType: string;
   amountBTC: number;
@@ -41,12 +41,12 @@ export function BitcoinCheckout({
   const [payment, setPayment] = useState<any>(null);
   const [qrCodeUrl, setQrCodeUrl] = useState<string>("");
   const [polling, setPolling] = useState(false);
-  const [configError, setConfigError] = useState<string>("");
+  
 
-  // Verify wallet configuration
+  // Start payment creation on mount (wallet selection handled server-side)
   useEffect(() => {
-    verifyWalletConfig();
-  }, [walletId]);
+    createPaymentAndOrder();
+  }, []);
 
   useEffect(() => {
     if (payment && payment.status === "pending") {
@@ -56,81 +56,6 @@ export function BitcoinCheckout({
     }
   }, [payment]);
 
-  const verifyWalletConfig = async () => {
-    try {
-      console.log('🔍 Verifying wallet configuration for ID:', walletId);
-      
-      const { data: wallet, error } = await supabase
-        .from('btc_wallets')
-        .select('*')
-        .eq('id', walletId)
-        .single();
-
-      if (error || !wallet) {
-        console.error('❌ Wallet fetch error:', error);
-        setConfigError("Bitcoin wallet not configured. Please contact support.");
-        setLoading(false);
-        return;
-      }
-
-      // Enhanced validation checks
-      if (!wallet.is_active) {
-        console.error('❌ Wallet is not active');
-        setConfigError("Bitcoin wallet is currently disabled. Please contact support.");
-        setLoading(false);
-        return;
-      }
-
-      // Check for zpub or xpub
-      const isZpub = wallet.xpub?.startsWith('zpub');
-      const isXpub = wallet.xpub?.startsWith('xpub');
-
-      console.log(`📋 Wallet type: ${isZpub ? 'zpub (BIP84)' : isXpub ? 'xpub (BIP32)' : 'unknown'}`);
-      console.log(`📋 Wallet name: ${wallet.name}`);
-      console.log(`📋 Derivation path: ${wallet.derivation_path || 'N/A (zpub handles internally)'}`);
-
-      if (!wallet.xpub || (!isZpub && !isXpub)) {
-        console.error('❌ Invalid wallet type - must be zpub or xpub');
-        setConfigError("Invalid wallet configuration (missing zpub/xpub). Please contact support.");
-        setLoading(false);
-        return;
-      }
-
-      // Validate extended public key length (both zpub and xpub should be 111 characters)
-      if (wallet.xpub.length < 100) {
-        console.error('❌ Invalid extended public key length:', wallet.xpub.length);
-        setConfigError("Invalid wallet key format. Please contact support.");
-        setLoading(false);
-        return;
-      }
-
-      // For zpub: BIP84 derivation is handled internally by BIP84.fromZPub(), no path needed
-      // For xpub: Electrum format requires derivation path validation (accept both ' and h notation)
-      if (isXpub) {
-        if (!wallet.derivation_path) {
-          console.warn('⚠️ xpub wallet missing derivation path, will default to m/0\' (Electrum BIP32)');
-        } else if (!wallet.derivation_path.match(/^m(\/\d+['h]?)+$/i)) {
-          console.error('❌ xpub wallet has invalid derivation path:', wallet.derivation_path);
-          setConfigError("Invalid wallet derivation path format. Expected format like m/0h or m/0'/0. Please contact support.");
-          setLoading(false);
-          return;
-        }
-      }
-
-      // zpub wallets can have null derivation_path (it's handled by BIP84 library)
-      if (isZpub && wallet.derivation_path) {
-        console.log('⚠️ zpub wallet has derivation_path set, but BIP84 will handle derivation internally');
-      }
-
-      console.log(`✅ Wallet verified successfully: ${wallet.name} (${isZpub ? 'zpub' : 'xpub'})`);
-      // If wallet is valid, proceed with payment creation
-      createPaymentAndOrder();
-    } catch (error: any) {
-      console.error("❌ Wallet verification error:", error);
-      setConfigError("Failed to verify payment configuration.");
-      setLoading(false);
-    }
-  };
 
   const createPaymentAndOrder = async () => {
     try {
@@ -314,16 +239,6 @@ export function BitcoinCheckout({
     );
   }
 
-  if (configError) {
-    return (
-      <Alert variant="destructive">
-        <AlertCircle className="h-4 w-4" />
-        <AlertDescription>
-          {configError}
-        </AlertDescription>
-      </Alert>
-    );
-  }
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
