@@ -215,14 +215,153 @@ const Index = () => {
         canonicalUrl={baseUrl}
       />
 
-      {/* Themed Hero Section */}
-      <ThemedHero theme={activeTheme} />
+      {/* Hero Section - Mobile Optimized */}
+      <section className="relative py-12 md:py-20 lg:py-28 px-4 md:px-6 overflow-hidden bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10">
+        <div className="absolute inset-0 bg-grid-pattern opacity-5" />
+        <div className="container mx-auto relative z-10">
+          <div className="text-center max-w-4xl mx-auto">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 backdrop-blur-sm border border-primary/20 mb-6 animate-fade-in">
+              <Shield className="h-5 w-5 text-primary" />
+              <span className="text-sm font-medium">Licensed & Authorized</span>
+            </div>
+            
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight animate-slide-in-up">
+              Official Government Document
+              <span className="block mt-2 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-gradient">
+                Printing Services
+              </span>
+            </h1>
+            
+            <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: "0.2s" }}>
+              Licensed facility serving government agencies worldwide with registered documents
+            </p>
+            
+            <div className="flex gap-4 justify-center flex-wrap animate-fade-in" style={{ animationDelay: "0.3s" }}>
+              <Button size="lg" onClick={() => navigate("/apply")} className="touch-manipulation active:scale-95 transition-transform">
+                Apply Now
+              </Button>
+              <Button size="lg" variant="outline" onClick={() => navigate("/shop")} className="touch-manipulation active:scale-95 transition-transform">
+                Browse Products
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      {/* Themed Services Section */}
-      <ThemedServices theme={activeTheme} />
+      {/* Rotating Security Showcase - Desktop Only */}
+      {window.innerWidth >= 768 && (
+        <section className="py-12 md:py-16 lg:py-20 px-4 bg-gradient-to-b from-background to-accent/5 relative overflow-hidden">
+          <div className="container mx-auto relative z-10">
+            <div className="text-center mb-8 md:mb-12 lg:mb-16">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 text-foreground">Advanced Security Features</h2>
+              <p className="text-base md:text-lg lg:text-xl text-muted-foreground">Military-grade protection built into every document</p>
+            </div>
 
-      {/* Themed Features Section */}
-      <ThemedFeatures theme={activeTheme} />
+            <div className="max-w-5xl mx-auto">
+              <div className="relative min-h-[300px] md:min-h-[350px]">
+                {securityShowcase.map((feature, index) => (
+                  <div
+                    key={index}
+                    className={`absolute inset-0 transition-all duration-700 ${
+                      currentFeature === index ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'
+                    }`}
+                  >
+                    <Card className="border-0 bg-gradient-to-br from-card to-card/50 backdrop-blur-sm shadow-2xl overflow-hidden">
+                      <CardContent className="p-6 md:p-8 lg:p-12">
+                        <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8 lg:gap-12">
+                          <div className={`flex-shrink-0 p-6 md:p-8 rounded-2xl bg-gradient-to-br ${feature.gradient} shadow-lg`}>
+                            <feature.icon className="h-12 w-12 md:h-16 md:w-16 lg:h-20 lg:w-20 text-white" />
+                          </div>
+                          <div className="flex-1 text-center md:text-left">
+                            <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4 text-foreground">{feature.title}</h3>
+                            <p className="text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed">{feature.description}</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex justify-center gap-2 mt-6 md:mt-8">
+                {securityShowcase.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentFeature(index)}
+                    className={`h-2 md:h-2.5 rounded-full transition-all duration-300 ${
+                      currentFeature === index ? 'w-8 md:w-10 bg-primary' : 'w-2 md:w-2.5 bg-primary/30 hover:bg-primary/50'
+                    }`}
+                    aria-label={`View ${securityShowcase[index].title}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Services Section - Mobile Optimized */}
+      <section className="py-16 md:py-20 lg:py-28 px-4 bg-gradient-to-b from-background to-primary/5 relative overflow-hidden">
+        <div className="container mx-auto relative z-10">
+          <div className="text-center mb-8 md:mb-12 lg:mb-16 px-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 md:mb-4">Our Services</h2>
+            <p className="text-base md:text-lg lg:text-xl text-muted-foreground">Professional document services with advanced security</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
+            {services.map((service, index) => (
+              <Card 
+                key={index} 
+                className="group hover:shadow-2xl transition-all duration-300 border-border/50 bg-card/80 backdrop-blur-sm hover:bg-card cursor-pointer overflow-hidden animate-slide-in-up active:scale-95 touch-manipulation"
+                style={{ animationDelay: `${index * 0.1}s` }}
+                onClick={() => navigate(service.link)}
+              >
+                <CardHeader>
+                  <div className="flex items-center gap-3 md:gap-4 mb-2">
+                    <div className={`p-2.5 md:p-3 rounded-xl bg-gradient-to-br ${service.color} group-hover:scale-110 transition-transform duration-300`}>
+                      <service.icon className="h-5 w-5 md:h-6 md:w-6 text-white" />
+                    </div>
+                    <CardTitle className="text-lg md:text-xl">{service.title}</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-sm md:text-base leading-relaxed">{service.description}</CardDescription>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Security Features Grid - Mobile Optimized */}
+      <section className="py-16 md:py-20 lg:py-28 px-4 bg-gradient-to-b from-primary/5 to-background relative overflow-hidden">
+        <div className="container mx-auto relative z-10">
+          <div className="text-center mb-8 md:mb-12 lg:mb-16 px-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 md:mb-4">Security Technology</h2>
+            <p className="text-base md:text-lg lg:text-xl text-muted-foreground">Multi-layered protection in every document</p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
+            {securityFeatures.map((feature, index) => (
+              <div
+                key={index}
+                className="group p-4 md:p-6 rounded-xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/50 hover:bg-card transition-all duration-300 hover:shadow-lg animate-fade-in active:scale-95 touch-manipulation"
+                style={{ animationDelay: `${index * 0.05}s` }}
+              >
+                <div className="flex items-start gap-3 md:gap-4">
+                  <div className="p-2 md:p-2.5 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300 flex-shrink-0">
+                    <feature.icon className="h-5 w-5 md:h-6 md:w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-base md:text-lg mb-1.5 md:mb-2 text-foreground">{feature.title}</h3>
+                    <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{feature.description}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Stats Section - Mobile Optimized */}
       <section className="py-12 md:py-16 lg:py-20 px-4 bg-primary text-primary-foreground relative overflow-hidden">
