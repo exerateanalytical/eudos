@@ -7,7 +7,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { Layout } from "./components/Layout";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ScrollToTop } from "./components/ScrollToTop";
-import { ContentProtection } from "./components/ContentProtection";
+
 import { useEffect } from "react";
 import { performanceMonitor } from "./lib/performance";
 import Index from "./pages/Index";
@@ -55,7 +55,7 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <ContentProtection />
+            
             <ScrollToTop />
             <ErrorBoundary>
             <Layout>
