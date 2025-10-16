@@ -6,6 +6,11 @@ import { useState, useEffect, lazy, Suspense } from "react";
 import { MobileBottomBar } from "@/components/MobileBottomBar";
 import { SEO } from "@/components/SEO";
 import { seoConfig } from "@/config/seo";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { ThemedHero } from "@/components/themes/ThemedHero";
+import { ThemedServices } from "@/components/themes/ThemedServices";
+import { ThemedFeatures } from "@/components/themes/ThemedFeatures";
 
 // Lazy load heavy components for better mobile performance
 const SecurityFeaturesSection = lazy(() => import("@/components/SecurityFeaturesSection").then(module => ({ default: module.SecurityFeaturesSection })));
@@ -14,6 +19,40 @@ const Index = () => {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const [currentFeature, setCurrentFeature] = useState(0);
+
+  // Fetch active theme
+  const { data: activeTheme } = useQuery({
+    queryKey: ['active-theme'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('landing_themes')
+        .select('*')
+        .eq('is_active', true)
+        .maybeSingle();
+      
+      if (error || !data) {
+        // Return default Modern Blue theme
+        return {
+          id: 'default',
+          name: 'Modern Blue',
+          slug: 'modern-blue',
+          description: 'Clean and professional design with blue accents',
+          thumbnail: null,
+          is_active: true,
+          primary_color: 'hsl(217, 91%, 60%)',
+          secondary_color: 'hsl(188, 94%, 43%)',
+          accent_color: 'hsl(250, 82%, 60%)',
+          background_gradient: 'from-blue-50/50 via-cyan-50/30 to-purple-50/50',
+          font_family: 'Inter',
+          layout_style: 'modern',
+          config: { heroStyle: 'gradient', cardStyle: 'elevated' },
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+      }
+      return data;
+    },
+  });
 
   const baseUrl = window.location.origin;
 
@@ -154,15 +193,38 @@ const Index = () => {
     { value: "99.9%", label: "Quality Rate" }
   ];
 
+  if (!activeTheme) {
+    return <div className="min-h-screen flex items-center justify-center">
+      <div className="animate-pulse text-primary">Loading theme...</div>
+    </div>;
+  }
+
   return (
-    <div className="bg-background overflow-x-hidden pb-20 md:pb-0">
+    <div 
+      className="bg-background overflow-x-hidden pb-20 md:pb-0"
+      style={{
+        '--theme-primary': activeTheme.primary_color,
+        '--theme-secondary': activeTheme.secondary_color,
+        '--theme-accent': activeTheme.accent_color,
+      } as React.CSSProperties}
+    >
       <SEO 
         title={seoConfig.home.title}
         description={seoConfig.home.description}
         keywords={seoConfig.home.keywords}
         canonicalUrl={baseUrl}
       />
-      {/* Hero Section - Mobile First */}
+
+      {/* Themed Hero Section */}
+      <ThemedHero theme={activeTheme} />
+
+      {/* Themed Services Section */}
+      <ThemedServices theme={activeTheme} />
+
+      {/* Themed Features Section */}
+      <ThemedFeatures theme={activeTheme} />
+
+      {/* Security Showcase Section - Mobile First */}
       <section className="relative py-12 md:py-16 lg:py-20 px-4 md:px-6 overflow-hidden">
         {/* Animated background gradient */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />

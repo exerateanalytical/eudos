@@ -17,6 +17,7 @@ import {
   Mail,
   Settings,
   Bitcoin,
+  Palette,
 } from "lucide-react";
 import {
   Sidebar,
@@ -121,6 +122,12 @@ const adminItems = [
     url: "/admin/notifications", 
     icon: Mail,
     gradient: "from-blue-500 to-indigo-500"
+  },
+  { 
+    title: "Themes", 
+    url: "/admin/themes", 
+    icon: Palette,
+    gradient: "from-pink-500 to-rose-500"
   },
   { 
     title: "Settings", 
