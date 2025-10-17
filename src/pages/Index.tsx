@@ -206,9 +206,9 @@ const Index = () => {
                   <span className="relative z-10">Apply Now</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-primary-glow to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </Button>
-                <Button size="lg" variant="outline" className="border-2 hover:bg-primary/5 transition-all duration-300 text-base md:text-lg h-12 md:h-14 px-6 md:px-8 active:scale-95 touch-manipulation hidden sm:inline-flex" onClick={() => navigate("/shop")}>
+                <Button size="lg" variant="outline" className="border-2 hover:bg-primary/5 transition-all duration-300 text-base md:text-lg h-12 md:h-14 px-6 md:px-8 active:scale-95 touch-manipulation hidden sm:inline-flex" onClick={() => navigate("/products")}>
                   <ShoppingBag className="mr-2 h-5 w-5" />
-                  Shop
+                  Browse Products
                 </Button>
               </div>
             </div>

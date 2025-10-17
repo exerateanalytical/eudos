@@ -221,9 +221,9 @@ const ProductDetail = () => {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
         <h1 className="text-3xl font-bold mb-4">Product Not Found</h1>
-        <Button onClick={() => navigate("/shop")}>
+        <Button onClick={() => navigate("/products")}>
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Shop
+          Back to Products
         </Button>
       </div>
     );
@@ -271,11 +271,11 @@ const ProductDetail = () => {
         {/* Back Button */}
         <Button 
           variant="ghost" 
-          onClick={() => navigate("/shop")}
+          onClick={() => navigate("/products")}
           className="mb-6 touch-manipulation active:scale-95"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Shop
+          Back to Products
         </Button>
 
         {/* Product Hero Section */}
