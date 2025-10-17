@@ -89,12 +89,14 @@ export function BitcoinWalletManagement() {
 
   const handleSaveWallet = async () => {
     try {
-      // Validate xpub format for mainnet (Exodus and other BIP32 wallets)
-      const isValidXpub = formData.xpub.startsWith('xpub');
+      // Validate extended public key format for mainnet (Exodus and other BIP32 wallets)
+      const isValidXpub = formData.xpub.startsWith('xpub') || 
+                          formData.xpub.startsWith('ypub') || 
+                          formData.xpub.startsWith('zpub');
       if (!isValidXpub) {
         toast({
           title: "Invalid Extended Public Key",
-          description: "Please enter a valid mainnet xpub key (must start with 'xpub')",
+          description: "Please enter a valid mainnet extended public key (must start with xpub, ypub, or zpub)",
           variant: "destructive",
         });
         return;
@@ -392,15 +394,16 @@ export function BitcoinWalletManagement() {
               />
             </div>
             <div>
-              <Label>Extended Public Key (xpub)</Label>
+              <Label>Extended Public Key (Mainnet Only)</Label>
               <Input
                 value={formData.xpub}
                 onChange={(e) => setFormData({ ...formData, xpub: e.target.value })}
-                placeholder="xpub..."
+                placeholder="xpub... / ypub... / zpub..."
                 className="font-mono text-sm"
               />
               <p className="text-xs text-muted-foreground mt-1">
-                Mainnet xpub from Exodus, Electrum, or other BIP32-compatible wallets
+                Mainnet extended public key from Exodus, Electrum, or other BIP32-compatible wallets.<br/>
+                Accepts: <strong>xpub</strong> (legacy/BIP44), <strong>ypub</strong> (BIP49), or <strong>zpub</strong> (BIP84)
               </p>
             </div>
             <div>

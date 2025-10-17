@@ -17,12 +17,24 @@ function deriveAddressFromXpub(xpub: string, index: number, derivationPath: stri
   try {
     console.log(`Deriving address at index ${index} from xpub using path ${derivationPath}`);
     
-    if (!xpub.startsWith('xpub')) {
-      throw new Error('Invalid xpub format. Only xpub keys are supported.');
+    if (!xpub.startsWith('xpub') && !xpub.startsWith('ypub') && !xpub.startsWith('zpub')) {
+      throw new Error('Invalid extended public key format. Only mainnet extended public keys (xpub/ypub/zpub) are supported.');
+    }
+    
+    // Convert ypub and zpub to xpub format for processing
+    let processedXpub = xpub;
+    if (xpub.startsWith('ypub')) {
+      // ypub is BIP49 (P2SH-P2WPKH) - convert to xpub format
+      processedXpub = 'xpub' + xpub.substring(4);
+      console.log('📋 Converted ypub to xpub format for processing');
+    } else if (xpub.startsWith('zpub')) {
+      // zpub is BIP84 (P2WPKH) - convert to xpub format
+      processedXpub = 'xpub' + xpub.substring(4);
+      console.log('📋 Converted zpub to xpub format for processing');
     }
     
     const bip32 = BIP32Factory(ecc);
-    const node = bip32.fromBase58(xpub);
+    const node = bip32.fromBase58(processedXpub);
     
     // Normalize derivation path: m/0h → m/0'
     const normalized = (derivationPath || 'm/0\'').replace(/(\d+)h/gi, '$1\'');
