@@ -1,11 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Shield, Clock, CheckCircle, Printer, Building2, Award, Sparkles, CreditCard, GraduationCap, Fingerprint, Cpu, Eye, Radio, Lock, Scan, FileCheck, Database, BookOpen, ShoppingBag } from "lucide-react";
+import { FileText, Shield, Clock, CheckCircle, Printer, Building2, Award, Sparkles, CreditCard, GraduationCap, Fingerprint, Cpu, Eye, Radio, Lock, Scan, FileCheck, Database, BookOpen, ShoppingBag, ArrowRight, Phone, Mail, MapPin, HelpCircle } from "lucide-react";
 import { useState, useEffect, lazy, Suspense } from "react";
 import { MobileBottomBar } from "@/components/MobileBottomBar";
 import { SEO } from "@/components/SEO";
 import { seoConfig } from "@/config/seo";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 // Lazy load heavy components for better mobile performance
 const SecurityFeaturesSection = lazy(() => import("@/components/SecurityFeaturesSection").then(module => ({ default: module.SecurityFeaturesSection })));
@@ -234,10 +240,19 @@ const Index = () => {
                         {feature.description}
                       </p>
 
-                      {/* Security badge */}
+                      {/* Security badge - Unique per feature */}
                       <div className={`inline-flex items-center gap-2 px-5 sm:px-7 py-2.5 sm:py-3 rounded-full bg-gradient-to-r ${feature.gradient} text-white font-semibold shadow-lg text-sm sm:text-base active:scale-95 transition-transform touch-manipulation`}>
                         <Shield className="h-4 w-4 sm:h-5 sm:w-5" />
-                        <span>Military-Grade Security</span>
+                        <span>
+                          {index === 0 && "Certified Biometric"}
+                          {index === 1 && "Encrypted Technology"}
+                          {index === 2 && "Anti-Counterfeit"}
+                          {index === 3 && "Invisible Protection"}
+                          {index === 4 && "Microscopic Defense"}
+                          {index === 5 && "Permanent Security"}
+                          {index === 6 && "Self-Protecting"}
+                          {index === 7 && "Verified Authentic"}
+                        </span>
                       </div>
                     </CardContent>
                   </Card>
@@ -479,6 +494,285 @@ const Index = () => {
       }>
         <SecurityFeaturesSection />
       </Suspense>
+
+      {/* How It Works Section */}
+      <section className="py-16 md:py-20 lg:py-28 px-4 bg-gradient-to-b from-secondary/20 to-background relative overflow-hidden">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-10 md:mb-14 lg:mb-18">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 md:mb-6 px-4 leading-tight">How It Works</h2>
+            <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
+              Simple, secure process from application to delivery
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-4 relative">
+            {/* Connecting line - desktop only */}
+            <div className="hidden md:block absolute top-16 left-0 right-0 h-0.5 bg-gradient-to-r from-primary/20 via-primary to-primary/20" style={{ top: '4rem' }} />
+            
+            {[
+              {
+                step: "1",
+                title: "Submit Application",
+                description: "Complete our secure online application form with required documentation",
+                icon: FileText,
+                color: "from-blue-500 to-cyan-500"
+              },
+              {
+                step: "2",
+                title: "Verification",
+                description: "Our team verifies your credentials and authorizes your request",
+                icon: Shield,
+                color: "from-purple-500 to-pink-500"
+              },
+              {
+                step: "3",
+                title: "Production",
+                description: "Documents are produced with military-grade security features",
+                icon: Printer,
+                color: "from-orange-500 to-red-500"
+              },
+              {
+                step: "4",
+                title: "Delivery",
+                description: "Secure delivery with tracking to your verified address",
+                icon: CheckCircle,
+                color: "from-green-500 to-emerald-500"
+              }
+            ].map((item, index) => (
+              <Card 
+                key={index}
+                className="relative group hover:shadow-xl transition-all duration-300 border-border/50 bg-card hover:-translate-y-2 animate-fade-in"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <CardContent className="p-6 text-center">
+                  <div className="relative mb-6">
+                    <div className={`w-16 h-16 mx-auto rounded-full bg-gradient-to-br ${item.color} p-0.5 group-hover:scale-110 transition-transform duration-300 relative z-10`}>
+                      <div className="w-full h-full rounded-full bg-card flex items-center justify-center">
+                        <item.icon className="h-7 w-7 text-primary" />
+                      </div>
+                    </div>
+                    <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm z-20">
+                      {item.step}
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-bold mb-2 text-foreground">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground">{item.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Indicators Section */}
+      <section className="py-12 md:py-16 px-4 bg-background border-y border-border">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3">Trusted By Government Agencies Worldwide</h2>
+            <p className="text-base md:text-lg text-muted-foreground">Certified and compliant with international standards</p>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+            {[
+              { label: "ISO 9001", subtitle: "Quality Management" },
+              { label: "ISO 27001", subtitle: "Security Certified" },
+              { label: "ICAO", subtitle: "Compliant" },
+              { label: "Government", subtitle: "Authorized" }
+            ].map((cert, index) => (
+              <div 
+                key={index}
+                className="flex flex-col items-center justify-center p-6 rounded-xl border-2 border-border/50 bg-card/50 backdrop-blur-sm hover:border-primary/50 transition-all duration-300 animate-scale-in"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <Award className="h-10 w-10 md:h-12 md:w-12 text-primary mb-3" />
+                <div className="text-center">
+                  <div className="font-bold text-lg text-foreground">{cert.label}</div>
+                  <div className="text-sm text-muted-foreground">{cert.subtitle}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 md:py-20 lg:py-28 px-4 bg-gradient-to-b from-background to-secondary/20">
+        <div className="container mx-auto max-w-4xl">
+          <div className="text-center mb-10 md:mb-14">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
+              <HelpCircle className="h-5 w-5 text-primary" />
+              <span className="text-sm font-medium text-primary">Frequently Asked Questions</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">Common Questions</h2>
+            <p className="text-base md:text-lg text-muted-foreground">Everything you need to know about our services</p>
+          </div>
+
+          <Accordion type="single" collapsible className="space-y-4">
+            {[
+              {
+                question: "Who can use your services?",
+                answer: "Our services are exclusively available to government agencies, authorized organizations, and licensed entities. We require proper credentials and authorization before processing any requests."
+              },
+              {
+                question: "How long does the production process take?",
+                answer: "Standard production time is 24-48 hours after verification. Expedited services are available for urgent requests. Delivery time depends on your location and chosen shipping method."
+              },
+              {
+                question: "What security features are included?",
+                answer: "Every document includes multiple layers of security: biometric data, RFID/NFC chips, holograms, UV features, microtext, laser engraving, watermarks, and database registration. All features meet or exceed international standards."
+              },
+              {
+                question: "Are documents registered in government databases?",
+                answer: "Yes, all documents are registered in secure government databases with unique serial numbers. This enables real-time verification and authentication through multiple channels."
+              },
+              {
+                question: "What payment methods do you accept?",
+                answer: "We accept various payment methods including bank transfers, cryptocurrency (Bitcoin), and authorized government payment systems. All transactions are encrypted and secure."
+              },
+              {
+                question: "How do I verify a document's authenticity?",
+                answer: "Documents can be verified through RFID/NFC chip reading, database lookup using the serial number, UV light examination, and machine-readable zone scanning. We provide verification tools to authorized agencies."
+              }
+            ].map((faq, index) => (
+              <AccordionItem 
+                key={index} 
+                value={`item-${index}`}
+                className="border border-border/50 rounded-lg px-6 bg-card/50 backdrop-blur-sm hover:bg-card transition-colors"
+              >
+                <AccordionTrigger className="text-left text-base md:text-lg font-semibold hover:text-primary">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground text-sm md:text-base leading-relaxed pt-2">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-16 md:py-20 lg:py-28 px-4 bg-background">
+        <div className="container mx-auto max-w-6xl">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-start">
+            {/* Contact Info */}
+            <div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4 md:mb-6">Get In Touch</h2>
+              <p className="text-base md:text-lg text-muted-foreground mb-8 leading-relaxed">
+                For authorized agencies and organizations. Contact our team for inquiries, support, or to begin the application process.
+              </p>
+
+              <div className="space-y-6">
+                {[
+                  {
+                    icon: Phone,
+                    title: "Phone Support",
+                    content: "+1 (555) 123-4567",
+                    subtitle: "Mon-Fri, 9AM-6PM EST"
+                  },
+                  {
+                    icon: Mail,
+                    title: "Email",
+                    content: "info@eudocs.com",
+                    subtitle: "24-hour response time"
+                  },
+                  {
+                    icon: MapPin,
+                    title: "Secure Facility",
+                    content: "Licensed Production Center",
+                    subtitle: "Location disclosed to authorized clients"
+                  }
+                ].map((contact, index) => (
+                  <Card key={index} className="border-border/50 bg-card/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
+                    <CardContent className="p-6">
+                      <div className="flex items-start gap-4">
+                        <div className="p-3 rounded-lg bg-primary/10">
+                          <contact.icon className="h-6 w-6 text-primary" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-foreground mb-1">{contact.title}</h3>
+                          <p className="text-foreground font-medium">{contact.content}</p>
+                          <p className="text-sm text-muted-foreground mt-1">{contact.subtitle}</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* CTA Card */}
+            <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent backdrop-blur-sm">
+              <CardContent className="p-8 md:p-10">
+                <div className="mb-6">
+                  <Shield className="h-12 w-12 text-primary mb-4" />
+                  <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-3">Ready to Get Started?</h3>
+                  <p className="text-muted-foreground text-base leading-relaxed">
+                    Begin your secure application process today. Our team will verify your credentials and guide you through each step.
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <Button 
+                    size="lg" 
+                    className="w-full group bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 text-base h-14"
+                    onClick={() => navigate("/apply")}
+                  >
+                    <span className="flex items-center justify-center gap-2">
+                      Start Application
+                      <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </Button>
+                  
+                  <Button 
+                    size="lg" 
+                    variant="outline"
+                    className="w-full border-2 hover:bg-primary/5 transition-all duration-300 text-base h-14"
+                    onClick={() => navigate("/contact")}
+                  >
+                    Contact Our Team
+                  </Button>
+                </div>
+
+                <div className="mt-6 pt-6 border-t border-border/50">
+                  <p className="text-sm text-muted-foreground text-center">
+                    Authorized government agencies & organizations only
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA Banner */}
+      <section className="py-12 md:py-16 px-4 bg-primary text-primary-foreground relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-pattern opacity-10" />
+        <div className="container mx-auto max-w-4xl text-center relative z-10">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">Military-Grade Security You Can Trust</h2>
+          <p className="text-lg md:text-xl text-primary-foreground/90 mb-8 max-w-2xl mx-auto">
+            Join hundreds of government agencies worldwide who trust us for their secure document needs
+          </p>
+          <div className="flex gap-4 justify-center flex-wrap">
+            <Button 
+              size="lg" 
+              variant="secondary"
+              className="bg-background text-foreground hover:bg-background/90 shadow-lg h-14 px-8 text-base"
+              onClick={() => navigate("/apply")}
+            >
+              Get Started Now
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline"
+              className="border-2 border-primary-foreground/20 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 h-14 px-8 text-base"
+              onClick={() => navigate("/products")}
+            >
+              View All Services
+            </Button>
+          </div>
+        </div>
+      </section>
 
       {/* Mobile Bottom Action Bar */}
       <MobileBottomBar />
