@@ -187,10 +187,7 @@ const Index = () => {
               </div>
               
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground mb-4 md:mb-6 lg:mb-8 leading-[1.1] animate-fade-in-up">
-                Official Government Document
-                <span className="block bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent mt-2">
-                  Printing Services
-                </span>
+                Buy Passports, Driver's Licenses, Diplomas, Certificates, Citizenship
               </h1>
               
               <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground mb-6 md:mb-8 lg:mb-10 animate-fade-in-up leading-relaxed" style={{ animationDelay: '0.2s' }}>
