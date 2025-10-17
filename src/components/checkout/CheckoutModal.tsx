@@ -1,14 +1,16 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
+import { countryCodes } from "@/lib/countryCodes";
 
 const guestCheckoutSchema = z.object({
   name: z.string().trim().min(2, "Name must be at least 2 characters").max(100),
-  phone: z.string().trim().min(10, "Phone number must be at least 10 digits").max(20),
+  phone_e164: z.string().regex(/^\+[1-9]\d{6,14}$/, "Invalid phone number. Must be in E.164 format"),
   email: z.string().trim().email("Invalid email address").max(255).optional().or(z.literal("")),
 });
 
@@ -22,7 +24,8 @@ export function CheckoutModal({ open, onClose, onProceed }: CheckoutModalProps) 
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
-    phone: "",
+    countryCode: "+1",
+    phoneNumber: "",
     email: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -31,10 +34,16 @@ export function CheckoutModal({ open, onClose, onProceed }: CheckoutModalProps) 
     e.preventDefault();
     
     try {
-      const validated = guestCheckoutSchema.parse(formData);
+      const phone_e164 = `${formData.countryCode}${formData.phoneNumber}`;
+      const validated = guestCheckoutSchema.parse({
+        name: formData.name,
+        phone_e164,
+        email: formData.email,
+      });
+      
       onProceed({
         name: validated.name,
-        phone: validated.phone,
+        phone: validated.phone_e164,
         email: validated.email || undefined,
       });
       onClose();
@@ -58,9 +67,12 @@ export function CheckoutModal({ open, onClose, onProceed }: CheckoutModalProps) 
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md" aria-describedby="checkout-description">
         <DialogHeader>
           <DialogTitle>Complete Your Purchase</DialogTitle>
+          <DialogDescription id="checkout-description">
+            Enter your details to proceed with your order
+          </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -82,19 +94,41 @@ export function CheckoutModal({ open, onClose, onProceed }: CheckoutModalProps) 
 
           <div>
             <Label htmlFor="phone">Phone Number *</Label>
-            <Input
-              id="phone"
-              type="tel"
-              value={formData.phone}
-              onChange={(e) => {
-                setFormData({ ...formData, phone: e.target.value });
-                setErrors({ ...errors, phone: "" });
-              }}
-              placeholder="+1234567890"
-              required
-            />
-            {errors.phone && (
-              <p className="text-sm text-destructive mt-1">{errors.phone}</p>
+            <div className="flex gap-2">
+              <Select
+                value={formData.countryCode}
+                onValueChange={(value) => {
+                  setFormData({ ...formData, countryCode: value });
+                  setErrors({ ...errors, phone_e164: "" });
+                }}
+              >
+                <SelectTrigger className="w-32 bg-background z-50">
+                  <SelectValue placeholder="Code" />
+                </SelectTrigger>
+                <SelectContent className="bg-background z-50">
+                  {countryCodes.map((country) => (
+                    <SelectItem key={country.code} value={country.code}>
+                      {country.flag} {country.code}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Input
+                id="phone"
+                type="tel"
+                value={formData.phoneNumber}
+                onChange={(e) => {
+                  const value = e.target.value.replace(/\D/g, "");
+                  setFormData({ ...formData, phoneNumber: value });
+                  setErrors({ ...errors, phone_e164: "" });
+                }}
+                placeholder="1234567890"
+                required
+                className="flex-1"
+              />
+            </div>
+            {errors.phone_e164 && (
+              <p className="text-sm text-destructive mt-1">{errors.phone_e164}</p>
             )}
           </div>
 

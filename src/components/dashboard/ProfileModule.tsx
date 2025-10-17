@@ -1,12 +1,14 @@
 import { useEffect, useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Plus, Trash2, Upload, User } from "lucide-react";
+import { Plus, Trash2, Upload, User, Package, ArrowRight } from "lucide-react";
 import { z } from "zod";
 
 const profileUpdateSchema = z.object({
@@ -49,6 +51,7 @@ interface ProfileModuleProps {
 const ProfileModule = ({ userId }: ProfileModuleProps) => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [addresses, setAddresses] = useState<Address[]>([]);
+  const [recentOrders, setRecentOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -57,6 +60,7 @@ const ProfileModule = ({ userId }: ProfileModuleProps) => {
   useEffect(() => {
     fetchProfile();
     fetchAddresses();
+    fetchRecentOrders();
   }, [userId]);
 
   const fetchProfile = async () => {
@@ -89,6 +93,35 @@ const ProfileModule = ({ userId }: ProfileModuleProps) => {
     } catch (error: any) {
       toast.error("Error loading addresses");
       console.error(error);
+    }
+  };
+
+  const fetchRecentOrders = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("orders")
+        .select("*")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false })
+        .limit(5);
+
+      if (error) throw error;
+      setRecentOrders(data || []);
+    } catch (error: any) {
+      console.error("Error loading recent orders:", error);
+    }
+  };
+
+  const getStatusVariant = (status: string) => {
+    switch (status) {
+      case 'completed':
+        return 'default';
+      case 'pending':
+        return 'secondary';
+      case 'cancelled':
+        return 'destructive';
+      default:
+        return 'outline';
     }
   };
 
@@ -251,6 +284,50 @@ const ProfileModule = ({ userId }: ProfileModuleProps) => {
 
   return (
     <div className="space-y-6">
+      {/* Recent Orders Section */}
+      {recentOrders.length > 0 && (
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="flex items-center gap-2">
+                  <Package className="h-5 w-5" />
+                  Recent Orders
+                </CardTitle>
+                <CardDescription>Your latest orders</CardDescription>
+              </div>
+              <Button variant="outline" size="sm" asChild>
+                <Link to="/dashboard/orders">
+                  View All <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {recentOrders.map((order) => (
+                <Card key={order.id} className="p-3">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium">{order.product_name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        Order #{order.order_number}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {new Date(order.created_at).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <Badge variant={getStatusVariant(order.status)}>
+                      {order.status}
+                    </Badge>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       <Card>
         <CardHeader>
           <CardTitle>Profile Picture</CardTitle>

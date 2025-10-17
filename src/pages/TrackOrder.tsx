@@ -6,10 +6,13 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Package, ExternalLink, Clock, CheckCircle2 } from "lucide-react";
 import QRCode from "qrcode";
+import { countryCodes } from "@/lib/countryCodes";
 
 interface OrderData {
   id: string;
@@ -30,17 +33,31 @@ interface OrderData {
 
 export default function TrackOrder() {
   const [orderNumber, setOrderNumber] = useState("");
-  const [contactInfo, setContactInfo] = useState("");
+  const [contactType, setContactType] = useState<"email" | "phone">("email");
+  const [email, setEmail] = useState("");
+  const [countryCode, setCountryCode] = useState("+1");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [orderData, setOrderData] = useState<OrderData | null>(null);
   const [loading, setLoading] = useState(false);
   const [qrCode, setQrCode] = useState("");
   const { toast } = useToast();
 
   const handleTrackOrder = async () => {
-    if (!orderNumber.trim() || !contactInfo.trim()) {
+    if (!orderNumber.trim()) {
       toast({
         title: "Missing Information",
-        description: "Please enter both order number and email/phone",
+        description: "Please enter your order number",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const contact = contactType === "email" ? email : `${countryCode}${phoneNumber}`;
+    
+    if (!contact.trim()) {
+      toast({
+        title: "Missing Information",
+        description: `Please enter your ${contactType}`,
         variant: "destructive",
       });
       return;
@@ -48,43 +65,28 @@ export default function TrackOrder() {
 
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('orders')
-        .select(`
-          id,
-          order_number,
-          product_name,
-          product_type,
-          total_amount,
-          status,
-          created_at,
-          btc_payments (
-            address,
-            txid,
-            confirmations,
-            status,
-            amount_btc
-          )
-        `)
-        .eq('order_number', orderNumber)
-        .or(`guest_phone.eq.${contactInfo},guest_email.eq.${contactInfo}`)
-        .single();
+      const { data, error } = await supabase.functions.invoke('track-order-lookup', {
+        body: {
+          order_number: orderNumber,
+          contact,
+        },
+      });
 
-      if (error || !data) {
+      if (error || !data?.order) {
         toast({
           title: "Order Not Found",
-          description: "No order found with this order number and contact information.",
+          description: error?.message || "No order found with this order number and contact information.",
           variant: "destructive",
         });
         setOrderData(null);
         return;
       }
 
-      setOrderData(data as any);
+      setOrderData(data.order);
 
       // Generate QR code if payment is pending
-      if (data.btc_payments?.[0]?.address && data.btc_payments[0].status === 'pending') {
-        const btcUri = `bitcoin:${data.btc_payments[0].address}?amount=${data.btc_payments[0].amount_btc}`;
+      if (data.order.btc_payments?.[0]?.address && data.order.btc_payments[0].status === 'pending') {
+        const btcUri = `bitcoin:${data.order.btc_payments[0].address}?amount=${data.order.btc_payments[0].amount_btc}`;
         const qr = await QRCode.toDataURL(btcUri);
         setQrCode(qr);
       }
@@ -153,15 +155,60 @@ export default function TrackOrder() {
                     onChange={(e) => setOrderNumber(e.target.value)}
                   />
                 </div>
+                
                 <div>
-                  <Label htmlFor="contactInfo">Email or Phone Number</Label>
-                  <Input
-                    id="contactInfo"
-                    placeholder="email@example.com or +1234567890"
-                    value={contactInfo}
-                    onChange={(e) => setContactInfo(e.target.value)}
-                  />
+                  <Label>Contact Method</Label>
+                  <RadioGroup value={contactType} onValueChange={(v) => setContactType(v as "email" | "phone")}>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="email" id="email-radio" />
+                      <Label htmlFor="email-radio" className="font-normal">Email</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="phone" id="phone-radio" />
+                      <Label htmlFor="phone-radio" className="font-normal">Phone Number</Label>
+                    </div>
+                  </RadioGroup>
                 </div>
+
+                {contactType === "email" ? (
+                  <div>
+                    <Label htmlFor="email">Email Address</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="email@example.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    <Label htmlFor="phone">Phone Number</Label>
+                    <div className="flex gap-2">
+                      <Select value={countryCode} onValueChange={setCountryCode}>
+                        <SelectTrigger className="w-32 bg-background z-50">
+                          <SelectValue placeholder="Code" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background z-50">
+                          {countryCodes.map((country) => (
+                            <SelectItem key={country.code} value={country.code}>
+                              {country.flag} {country.code}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <Input
+                        id="phone"
+                        type="tel"
+                        placeholder="1234567890"
+                        value={phoneNumber}
+                        onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ""))}
+                        className="flex-1"
+                      />
+                    </div>
+                  </div>
+                )}
+                
                 <Button onClick={handleTrackOrder} disabled={loading} className="w-full">
                   {loading ? "Searching..." : "Track Order"}
                 </Button>

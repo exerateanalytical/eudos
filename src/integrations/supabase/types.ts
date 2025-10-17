@@ -874,6 +874,60 @@ export type Database = {
           },
         ]
       }
+      landing_themes: {
+        Row: {
+          accent_color: string
+          background_gradient: string
+          config: Json | null
+          created_at: string | null
+          description: string | null
+          font_family: string | null
+          id: string
+          is_active: boolean | null
+          layout_style: string | null
+          name: string
+          primary_color: string
+          secondary_color: string
+          slug: string
+          thumbnail: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          accent_color: string
+          background_gradient: string
+          config?: Json | null
+          created_at?: string | null
+          description?: string | null
+          font_family?: string | null
+          id?: string
+          is_active?: boolean | null
+          layout_style?: string | null
+          name: string
+          primary_color: string
+          secondary_color: string
+          slug: string
+          thumbnail?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          accent_color?: string
+          background_gradient?: string
+          config?: Json | null
+          created_at?: string | null
+          description?: string | null
+          font_family?: string | null
+          id?: string
+          is_active?: boolean | null
+          layout_style?: string | null
+          name?: string
+          primary_color?: string
+          secondary_color?: string
+          slug?: string
+          thumbnail?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       loyalty_points: {
         Row: {
           created_at: string
@@ -1030,7 +1084,7 @@ export type Database = {
           status_history: Json | null
           total_amount: number | null
           updated_at: string | null
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           btc_payment_id?: string | null
@@ -1049,7 +1103,7 @@ export type Database = {
           status_history?: Json | null
           total_amount?: number | null
           updated_at?: string | null
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           btc_payment_id?: string | null
@@ -1068,7 +1122,7 @@ export type Database = {
           status_history?: Json | null
           total_amount?: number | null
           updated_at?: string | null
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: [
           {

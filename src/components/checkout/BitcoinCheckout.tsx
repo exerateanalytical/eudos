@@ -89,12 +89,16 @@ export function BitcoinCheckout({
         payment_method: 'bitcoin',
       };
 
+      // CRITICAL: Set user_id for logged-in users, guest info for guests
       if (user) {
         orderData.user_id = user.id;
+        console.log("✅ Setting user_id for authenticated user:", user.id);
       } else if (guestInfo) {
+        // For guests, DO NOT set user_id - leave it null
         orderData.guest_name = guestInfo.name;
         orderData.guest_phone = guestInfo.phone;
         orderData.guest_email = guestInfo.email;
+        console.log("✅ Setting guest info for guest checkout");
       }
 
       console.log("📝 Creating order in database...");
