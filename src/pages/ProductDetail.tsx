@@ -18,6 +18,7 @@ import { CheckoutModal } from "@/components/checkout/CheckoutModal";
 import { BitcoinCheckout } from "@/components/checkout/BitcoinCheckout";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { useBitcoinWallet } from "@/hooks/useBitcoinWallet";
 
 // Product data (same as Shop page)
 const euCountries = [
@@ -151,11 +152,10 @@ const ProductDetail = () => {
   const [showBitcoinCheckout, setShowBitcoinCheckout] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [guestInfo, setGuestInfo] = useState<any>(null);
-  const [walletId, setWalletId] = useState<string>("");
+  const { walletId, verifyWallet } = useBitcoinWallet();
 
   useEffect(() => {
     checkUser();
-    fetchWallet();
   }, []);
 
   const checkUser = async () => {
@@ -163,43 +163,18 @@ const ProductDetail = () => {
     setUser(user);
   };
 
-  const fetchWallet = async () => {
-    console.log('🔍 Fetching active BTC wallet...');
-    const { data, error } = await supabase
-      .from('btc_wallets')
-      .select('id, is_primary, is_active, xpub, name')
-      .eq('is_active', true)
-      .order('is_primary', { ascending: false })
-      .order('created_at', { ascending: true })
-      .limit(1)
-      .single();
-    
-    if (error) {
-      console.error('❌ Wallet fetch error:', error);
+  const handleBuyNow = async () => {
+    if (!walletId || walletId === "") {
       toast({
-        title: "Wallet Error",
-        description: "Unable to load Bitcoin wallet configuration.",
+        title: "Configuration Required",
+        description: "Bitcoin wallet is not configured. Please contact administrator to set up Bitcoin payments.",
         variant: "destructive",
       });
       return;
     }
     
-    if (data) {
-      const walletType = 'xpub';
-      console.log(`✅ Fetched ${walletType} wallet:`, data.name, 'ID:', data.id);
-      setWalletId(data.id);
-    } else {
-      console.warn('⚠️ No active wallet found');
-    }
-  };
-
-  const handleBuyNow = () => {
-    if (!walletId) {
-      toast({
-        title: "Configuration Required",
-        description: "Bitcoin wallet is not configured. Please contact support or try again later.",
-        variant: "destructive",
-      });
+    const isValid = await verifyWallet();
+    if (!isValid) {
       return;
     }
     

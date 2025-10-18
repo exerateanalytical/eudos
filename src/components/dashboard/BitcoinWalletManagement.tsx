@@ -250,7 +250,7 @@ export function BitcoinWalletManagement() {
       key: "xpub",
       label: "XPub",
       render: (row: Wallet) => (
-        <code className="text-xs">{row.xpub.substring(0, 20)}...</code>
+        <code className="text-xs">...{row.xpub.slice(-8)}</code>
       ),
     },
     {

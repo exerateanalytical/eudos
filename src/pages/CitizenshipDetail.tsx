@@ -13,6 +13,7 @@ import { SEO } from "@/components/SEO";
 import { CheckoutModal } from "@/components/checkout/CheckoutModal";
 import { BitcoinCheckout } from "@/components/checkout/BitcoinCheckout";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useBitcoinWallet } from "@/hooks/useBitcoinWallet";
 
 
 const CitizenshipDetail = () => {
@@ -24,11 +25,10 @@ const CitizenshipDetail = () => {
   const [showBitcoinCheckout, setShowBitcoinCheckout] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [guestInfo, setGuestInfo] = useState<any>(null);
-  const [walletId, setWalletId] = useState<string>("");
+  const { walletId, verifyWallet } = useBitcoinWallet();
 
   useEffect(() => {
     checkUser();
-    fetchWallet();
   }, []);
 
   const checkUser = async () => {
@@ -36,38 +36,18 @@ const CitizenshipDetail = () => {
     setUser(user);
   };
 
-  const fetchWallet = async () => {
-    const { data, error } = await supabase
-      .from('btc_wallets')
-      .select('id, xpub, name')
-      .eq('is_active', true)
-      .order('is_primary', { ascending: false })
-      .order('created_at', { ascending: true })
-      .limit(1)
-      .maybeSingle();
-    
-    if (error) {
-      console.error('❌ Wallet fetch error:', error);
-      return;
-    }
-    
-    if (!data) {
-      console.warn('⚠️ No active Bitcoin wallet found');
-      return;
-    }
-    
-    const walletType = 'xpub';
-    console.log(`✅ Using wallet: ${data.id} (${walletType}) - ${data.name}`);
-    setWalletId(data.id);
-  };
-
-  const handleBuyNow = () => {
-    if (!walletId) {
+  const handleBuyNow = async () => {
+    if (!walletId || walletId === "") {
       toast({
-        title: "Configuration Error",
-        description: "Bitcoin wallet not configured. Please contact support.",
+        title: "Configuration Required",
+        description: "Bitcoin wallet is not configured. Please contact administrator.",
         variant: "destructive",
       });
+      return;
+    }
+    
+    const isValid = await verifyWallet();
+    if (!isValid) {
       return;
     }
     

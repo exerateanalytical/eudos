@@ -17,6 +17,7 @@ import { CheckoutModal } from "@/components/checkout/CheckoutModal";
 import { BitcoinCheckout } from "@/components/checkout/BitcoinCheckout";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
+import { useBitcoinWallet } from "@/hooks/useBitcoinWallet";
 
 // Import coat of arms images
 import austriaCoA from "@/assets/coat-of-arms/austria.png";
@@ -99,6 +100,7 @@ const PassportDetail = () => {
   const [showBitcoinCheckout, setShowBitcoinCheckout] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [guestInfo, setGuestInfo] = useState<any>(null);
+  const { walletId, verifyWallet } = useBitcoinWallet();
   const reviewStats = useReviewStats("passport", passportId || "");
 
   useEffect(() => {
@@ -110,7 +112,21 @@ const PassportDetail = () => {
     setUser(user);
   };
 
-  const handleBuyNow = () => {
+  const handleBuyNow = async () => {
+    if (!walletId || walletId === "") {
+      toast({
+        title: "Configuration Required",
+        description: "Bitcoin wallet is not configured. Please contact administrator.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    const isValid = await verifyWallet();
+    if (!isValid) {
+      return;
+    }
+    
     if (user) {
       setShowBitcoinCheckout(true);
     } else {

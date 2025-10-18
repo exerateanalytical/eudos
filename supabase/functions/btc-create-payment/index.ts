@@ -94,6 +94,30 @@ function deriveAddressFromXpub(xpub: string, index: number, derivationPath: stri
   }
 }
 
+// Validate that derived address matches expected format for derivation path
+function validateAddressFormat(address: string, derivationPath: string): void {
+  const normalized = derivationPath.replace(/(\d+)h/gi, "$1'");
+  
+  if (normalized.startsWith("m/84'")) {
+    // BIP84 = Native SegWit (bech32)
+    if (!address.startsWith('bc1')) {
+      throw new Error(`BIP84 address validation failed: expected bc1... but got ${address.substring(0, 10)}...`);
+    }
+  } else if (normalized.startsWith("m/49'")) {
+    // BIP49 = Nested SegWit (P2SH)
+    if (!address.startsWith('3')) {
+      throw new Error(`BIP49 address validation failed: expected 3... but got ${address.substring(0, 10)}...`);
+    }
+  } else if (normalized.startsWith("m/44'") || normalized.startsWith("m/0'")) {
+    // BIP44/32 = Legacy (P2PKH)
+    if (!address.startsWith('1')) {
+      throw new Error(`BIP44/32 address validation failed: expected 1... but got ${address.substring(0, 10)}...`);
+    }
+  }
+  
+  console.log(`✅ Address format validated: ${address} matches ${normalized}`);
+}
+
 serve(async (req) => {
   console.log('🚀 btc-create-payment function called');
   console.log(`📋 Request method: ${req.method}`);
@@ -132,6 +156,35 @@ serve(async (req) => {
       throw new Error('order_id and amount_btc are required');
     }
 
+    // Rate limiting: max 5 payment creations per minute per user/guest
+    const rateLimitKey = user_id || 'guest';
+    const oneMinuteAgo = new Date(Date.now() - 60000).toISOString();
+
+    const { data: recentPayments, error: rateLimitError } = await supabaseClient
+      .from('btc_payments')
+      .select('id, created_at')
+      .eq('user_id', user_id || null)
+      .gte('created_at', oneMinuteAgo)
+      .limit(10);
+
+    if (rateLimitError) {
+      console.error('⚠️ Rate limit check failed:', rateLimitError);
+    }
+
+    if (recentPayments && recentPayments.length >= 5) {
+      console.warn(`⚠️ Rate limit exceeded for ${rateLimitKey}: ${recentPayments.length} payments in last minute`);
+      return new Response(
+        JSON.stringify({ 
+          error: 'Rate limit exceeded. Please wait before creating another payment.' 
+        }),
+        { 
+          status: 429,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+
+    console.log(`✅ Rate limit check passed: ${recentPayments?.length || 0}/5 payments in last minute`);
     console.log(`✅ Creating BTC payment for order ${order_id}, amount: ${amount_btc} BTC`);
 
     // Resolve wallet: use provided wallet_id or select active/primary wallet
@@ -195,7 +248,10 @@ serve(async (req) => {
       walletData.derivation_path
     );
 
-    console.log(`✅ Successfully derived address: ${address} at index ${addressIndex} from wallet ${walletData.name}`);
+    // Validate address format matches derivation path
+    validateAddressFormat(address, walletData.derivation_path);
+
+    console.log(`✅ Successfully derived and validated address: ${address} at index ${addressIndex} from wallet ${walletData.name}`);
 
     // Insert payment record with proper UUID order_id
     const { data: payment, error: paymentError } = await supabaseClient

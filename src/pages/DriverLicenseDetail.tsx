@@ -17,6 +17,7 @@ import { CheckoutModal } from "@/components/checkout/CheckoutModal";
 import { BitcoinCheckout } from "@/components/checkout/BitcoinCheckout";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
+import { useBitcoinWallet } from "@/hooks/useBitcoinWallet";
 
 // Import EU logo images
 import euAT from "@/assets/drivers-license/eu-at.png";
@@ -58,12 +59,11 @@ const DriverLicenseDetail = () => {
   const [showBitcoinCheckout, setShowBitcoinCheckout] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [guestInfo, setGuestInfo] = useState<any>(null);
-  const [walletId, setWalletId] = useState<string>("");
+  const { walletId, verifyWallet } = useBitcoinWallet();
   const reviewStats = useReviewStats("license", licenseId || "");
 
   useEffect(() => {
     checkUser();
-    fetchWallet();
   }, []);
 
   const checkUser = async () => {
@@ -71,37 +71,18 @@ const DriverLicenseDetail = () => {
     setUser(user);
   };
 
-  const fetchWallet = async () => {
-    const { data, error } = await supabase
-      .from('btc_wallets')
-      .select('id, xpub, name')
-      .eq('is_active', true)
-      .order('is_primary', { ascending: false })
-      .order('created_at', { ascending: true })
-      .limit(1)
-      .maybeSingle();
-    
-    if (error) {
-      console.error('❌ Wallet fetch error:', error);
-      return;
-    }
-    
-    if (!data) {
-      console.warn('⚠️ No active Bitcoin wallet found');
-      return;
-    }
-    
-    console.log(`✅ Using xpub wallet: ${data.id} - ${data.name}`);
-    setWalletId(data.id);
-  };
-
-  const handleBuyNow = () => {
-    if (!walletId) {
+  const handleBuyNow = async () => {
+    if (!walletId || walletId === "") {
       toast({
-        title: "Configuration Error",
-        description: "Bitcoin wallet not configured. Please contact support.",
+        title: "Configuration Required",
+        description: "Bitcoin wallet is not configured. Please contact administrator.",
         variant: "destructive",
       });
+      return;
+    }
+    
+    const isValid = await verifyWallet();
+    if (!isValid) {
       return;
     }
     
