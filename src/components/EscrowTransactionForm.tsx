@@ -164,7 +164,7 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
           total_amount: total,
           escrow_fee: fee,
           payment_method: 'bitcoin',
-          status: 'pending_payment',
+          status: 'pending', // Fixed: using valid status value
           guest_name: formData.buyerName,
           guest_email: formData.buyerEmail,
           guest_phone: formData.buyerPhone,

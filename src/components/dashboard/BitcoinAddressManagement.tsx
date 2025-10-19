@@ -13,6 +13,8 @@ interface BitcoinAddress {
   is_used: boolean;
   assigned_to_order: string | null;
   assigned_at: string | null;
+  reserved_until: string | null;
+  payment_confirmed: boolean;
   created_at: string;
 }
 
@@ -45,8 +47,70 @@ export function BitcoinAddressManagement() {
     }
   };
 
+  const releaseAddress = async (addressId: string) => {
+    try {
+      const { error } = await supabase
+        .from("bitcoin_addresses")
+        .update({
+          is_used: false,
+          assigned_to_order: null,
+          assigned_at: null,
+          reserved_until: null,
+        })
+        .eq('id', addressId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Bitcoin address released back to pool",
+      });
+      
+      fetchAddresses();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const confirmPayment = async (addressId: string) => {
+    try {
+      const { error } = await supabase
+        .from("bitcoin_addresses")
+        .update({
+          payment_confirmed: true,
+        })
+        .eq('id', addressId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Payment marked as confirmed",
+      });
+      
+      fetchAddresses();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   const availableCount = addresses.filter(a => !a.is_used).length;
   const usedCount = addresses.filter(a => a.is_used).length;
+  const expiredCount = addresses.filter(a => 
+    a.is_used && 
+    a.reserved_until && 
+    new Date(a.reserved_until) < new Date() && 
+    !a.payment_confirmed
+  ).length;
+  const confirmedCount = addresses.filter(a => a.payment_confirmed).length;
 
   const columns = [
     {
@@ -59,11 +123,34 @@ export function BitcoinAddressManagement() {
     {
       key: "status",
       label: "Status",
-      render: (row: BitcoinAddress) => (
-        <Badge variant={row.is_used ? "secondary" : "default"}>
-          {row.is_used ? "Used" : "Available"}
-        </Badge>
-      ),
+      render: (row: BitcoinAddress) => {
+        const isExpired = row.reserved_until && new Date(row.reserved_until) < new Date();
+        
+        if (row.payment_confirmed) {
+          return <Badge className="bg-green-500">Confirmed</Badge>;
+        }
+        if (isExpired && !row.payment_confirmed) {
+          return <Badge variant="destructive">Expired</Badge>;
+        }
+        if (row.is_used && row.reserved_until) {
+          return <Badge className="bg-blue-500">Reserved</Badge>;
+        }
+        return <Badge variant="default">Available</Badge>;
+      },
+    },
+    {
+      key: "reserved_until",
+      label: "Reservation Expires",
+      render: (row: BitcoinAddress) => {
+        if (!row.reserved_until) return "-";
+        const expiry = new Date(row.reserved_until);
+        const isExpired = expiry < new Date();
+        return (
+          <span className={isExpired ? "text-red-500" : "text-muted-foreground"}>
+            {expiry.toLocaleString()}
+          </span>
+        );
+      },
     },
     {
       key: "assigned_at",
@@ -78,6 +165,32 @@ export function BitcoinAddressManagement() {
         row.assigned_to_order ? (
           <span className="font-mono text-xs">{row.assigned_to_order.slice(0, 8)}...</span>
         ) : "-",
+    },
+    {
+      key: "actions",
+      label: "Actions",
+      render: (row: BitcoinAddress) => (
+        <div className="flex gap-2">
+          {row.is_used && !row.payment_confirmed && (
+            <>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => releaseAddress(row.id)}
+              >
+                Release
+              </Button>
+              <Button
+                size="sm"
+                variant="default"
+                onClick={() => confirmPayment(row.id)}
+              >
+                Confirm Payment
+              </Button>
+            </>
+          )}
+        </div>
+      ),
     },
   ];
 
@@ -107,7 +220,7 @@ export function BitcoinAddressManagement() {
         </Button>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-5">
         <Card className="p-6">
           <p className="text-sm text-muted-foreground">Total Addresses</p>
           <p className="text-2xl font-bold">{addresses.length}</p>
@@ -117,8 +230,16 @@ export function BitcoinAddressManagement() {
           <p className="text-2xl font-bold text-green-500">{availableCount}</p>
         </Card>
         <Card className="p-6">
-          <p className="text-sm text-muted-foreground">Used</p>
-          <p className="text-2xl font-bold text-orange-500">{usedCount}</p>
+          <p className="text-sm text-muted-foreground">Reserved</p>
+          <p className="text-2xl font-bold text-blue-500">{usedCount - confirmedCount}</p>
+        </Card>
+        <Card className="p-6">
+          <p className="text-sm text-muted-foreground">Confirmed</p>
+          <p className="text-2xl font-bold text-green-600">{confirmedCount}</p>
+        </Card>
+        <Card className="p-6">
+          <p className="text-sm text-muted-foreground">Expired</p>
+          <p className="text-2xl font-bold text-red-500">{expiredCount}</p>
         </Card>
       </div>
 
@@ -126,6 +247,14 @@ export function BitcoinAddressManagement() {
         <Card className="p-4 border-orange-500 bg-orange-50 dark:bg-orange-950">
           <p className="text-sm font-medium text-orange-800 dark:text-orange-200">
             ⚠️ Low address pool! Only {availableCount} addresses remaining. Please add more addresses soon.
+          </p>
+        </Card>
+      )}
+
+      {expiredCount > 0 && (
+        <Card className="p-4 border-red-500 bg-red-50 dark:bg-red-950">
+          <p className="text-sm font-medium text-red-800 dark:text-red-200">
+            ⚠️ {expiredCount} expired reservations detected! These will be automatically released on next assignment.
           </p>
         </Card>
       )}
