@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { Check, Copy, Shield, ArrowRight, Search, CheckCircle, Info, Lock, AlertTriangle, Clock, FileCheck, Package, Headphones, Loader2, QrCode } from "lucide-react";
+import { Check, Copy, Shield, ArrowRight, Search, CheckCircle, Info, Lock, AlertTriangle, Clock, FileCheck, Package, Headphones, Loader2, QrCode, RefreshCw } from "lucide-react";
 import { generateBitcoinQR } from "@/lib/bitcoinUtils";
 import { escrowProducts, searchProducts, getProductById, type EscrowProduct } from "@/lib/escrowProducts";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
@@ -46,6 +46,12 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
   const [loadingAddress, setLoadingAddress] = useState(false);
   const [orderId, setOrderId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [verifyingPayment, setVerifyingPayment] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState<{
+    verified: boolean;
+    confirmations: number;
+    message: string;
+  } | null>(null);
   
   const [formData, setFormData] = useState({
     selectedProduct: null as EscrowProduct | null,
@@ -240,6 +246,39 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
       toast.error(errorMessage);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const verifyPayment = async () => {
+    if (!orderId) return;
+
+    setVerifyingPayment(true);
+    setError(null);
+    try {
+      const { data, error } = await supabase.functions.invoke('verify-bitcoin-payment', {
+        body: { orderId }
+      });
+
+      if (error) throw error;
+
+      setPaymentStatus(data);
+      
+      if (data.verified) {
+        toast.success("Payment verified! Your order is being processed.");
+        setTimeout(() => {
+          navigate('/dashboard');
+          onOpenChange(false);
+        }, 2000);
+      } else {
+        toast.info(data.message || "Payment not yet detected. Please wait a few moments after sending.");
+      }
+    } catch (error: any) {
+      console.error('Error verifying payment:', error);
+      const errorMessage = error.message || "Unable to verify payment. Please try again.";
+      setError(errorMessage);
+      toast.error(errorMessage);
+    } finally {
+      setVerifyingPayment(false);
     }
   };
 
@@ -1037,23 +1076,59 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
               </AlertDescription>
             </Alert>
 
-            <Button 
-              onClick={handleConfirmPayment} 
-              className="w-full gap-2 h-12 text-base font-semibold" 
-              disabled={loading || !assignedBtcAddress || loadingAddress || !!error}
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Confirming Payment...
-                </>
-              ) : (
+            {/* Payment Status Display */}
+            {paymentStatus && (
+              <Alert className={paymentStatus.verified ? "border-green-500 bg-green-50 dark:bg-green-950/20" : "border-blue-500 bg-blue-50 dark:bg-blue-950/20"}>
+                {paymentStatus.verified ? <CheckCircle className="h-4 w-4 text-green-600" /> : <Clock className="h-4 w-4 text-blue-600" />}
+                <AlertTitle className={paymentStatus.verified ? "text-green-700 dark:text-green-300" : "text-blue-700 dark:text-blue-300"}>
+                  {paymentStatus.message}
+                </AlertTitle>
+                <AlertDescription>
+                  <p className="text-sm mt-1">
+                    Confirmations: {paymentStatus.confirmations}/6 (1 required for processing)
+                  </p>
+                </AlertDescription>
+              </Alert>
+            )}
+
+            <div className="flex gap-3">
+              <Button 
+                onClick={verifyPayment} 
+                variant="outline"
+                className="flex-1 gap-2" 
+                disabled={verifyingPayment || loadingAddress || !!error}
+              >
+                {verifyingPayment ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Checking Blockchain...
+                  </>
+                ) : (
+                  <>
+                    <RefreshCw className="w-4 h-4" />
+                    Verify Payment
+                  </>
+                )}
+              </Button>
+              
+              <Button 
+                onClick={handleConfirmPayment} 
+                className="flex-1 gap-2" 
+                disabled={loading || !assignedBtcAddress || loadingAddress || !!error}
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Confirming Payment...
+                  </>
+                ) : (
                 <>
                   <CheckCircle className="w-5 h-5" />
-                  Confirm Payment Sent
+                  I've Sent the Payment
                 </>
               )}
             </Button>
+            </div>
 
             <p className="text-xs text-center text-muted-foreground">
               Your order will be tracked in your dashboard once payment is confirmed

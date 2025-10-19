@@ -136,6 +136,8 @@ export type Database = {
           created_at: string | null
           id: string
           is_used: boolean | null
+          payment_confirmed: boolean | null
+          reserved_until: string | null
         }
         Insert: {
           address: string
@@ -144,6 +146,8 @@ export type Database = {
           created_at?: string | null
           id?: string
           is_used?: boolean | null
+          payment_confirmed?: boolean | null
+          reserved_until?: string | null
         }
         Update: {
           address?: string
@@ -152,6 +156,8 @@ export type Database = {
           created_at?: string | null
           id?: string
           is_used?: boolean | null
+          payment_confirmed?: boolean | null
+          reserved_until?: string | null
         }
         Relationships: [
           {
@@ -1779,12 +1785,23 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      get_available_bitcoin_address: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          address: string
+          id: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      release_expired_bitcoin_addresses: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       verify_2fa_code: {
         Args: { p_code: string }

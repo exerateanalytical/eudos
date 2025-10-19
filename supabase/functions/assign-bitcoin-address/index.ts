@@ -28,16 +28,12 @@ Deno.serve(async (req) => {
 
     console.log('Assigning Bitcoin address for order:', orderId);
 
-    // Start a transaction by using a single query with row locking
-    const { data: availableAddress, error: fetchError } = await supabaseClient
-      .from('bitcoin_addresses')
-      .select('id, address')
-      .eq('is_used', false)
-      .is('assigned_to_order', null)
-      .limit(1)
-      .single();
+    // Use the database function to get an available address with automatic cleanup
+    const { data, error: fetchError } = await supabaseClient
+      .rpc('get_available_bitcoin_address')
+      .maybeSingle();
 
-    if (fetchError || !availableAddress) {
+    if (fetchError || !data) {
       console.error('No available Bitcoin addresses:', fetchError);
       return new Response(
         JSON.stringify({ error: 'No Bitcoin addresses available. Please contact support.' }),
@@ -45,29 +41,36 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Mark the address as used and assign to order
+    const addressId = (data as any).id;
+    const addressValue = (data as any).address;
+
+    // Reserve the address for 30 minutes
+    const reservationExpiry = new Date(Date.now() + 30 * 60 * 1000).toISOString();
+    
     const { error: updateError } = await supabaseClient
       .from('bitcoin_addresses')
       .update({
         is_used: true,
         assigned_to_order: orderId,
         assigned_at: new Date().toISOString(),
+        reserved_until: reservationExpiry,
+        payment_confirmed: false,
       })
-      .eq('id', availableAddress.id)
+      .eq('id', addressId)
       .eq('is_used', false); // Double-check it wasn't assigned by another request
 
     if (updateError) {
-      console.error('Error updating Bitcoin address:', updateError);
+      console.error('Error reserving Bitcoin address:', updateError);
       return new Response(
-        JSON.stringify({ error: 'Failed to assign Bitcoin address' }),
+        JSON.stringify({ error: 'Failed to reserve Bitcoin address' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    console.log('Successfully assigned address:', availableAddress.address);
+    console.log('Successfully reserved address:', addressValue, 'until', reservationExpiry);
 
     return new Response(
-      JSON.stringify({ address: availableAddress.address }),
+      JSON.stringify({ address: addressValue }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
