@@ -163,7 +163,7 @@ const Admin = () => {
                   <Route path="orders" element={<OrderManagement />} />
                   <Route path="applications" element={<ApplicationManagement />} />
                   <Route path="payments" element={<PaymentManagement />} />
-                  <Route path="bitcoin" element={<BitcoinWalletManagement />} />
+                  
                   <Route path="inquiries" element={<InquiryManagement />} />
                   <Route path="support" element={<SupportTicketManagement />} />
                   <Route 

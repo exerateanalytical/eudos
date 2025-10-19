@@ -20,7 +20,7 @@ import { GovernmentDocumentForm } from "@/components/apply/GovernmentDocumentFor
 import { VehicleDocumentForm } from "@/components/apply/VehicleDocumentForm";
 import { BusinessDocumentForm } from "@/components/apply/BusinessDocumentForm";
 import { TravelDocumentForm } from "@/components/apply/TravelDocumentForm";
-import { BitcoinCheckout } from "@/components/checkout/BitcoinCheckout";
+
 import { 
   FileText, 
   CreditCard, 
@@ -210,28 +210,6 @@ const Apply = () => {
     }
   }, [searchParams]);
 
-  // Fetch active wallet
-  useEffect(() => {
-    fetchWallet();
-  }, []);
-
-  const fetchWallet = async () => {
-    const { data, error } = await supabase
-      .from('btc_wallets')
-      .select('id')
-      .eq('is_active', true)
-      .order('is_primary', { ascending: false })
-      .order('created_at', { ascending: true })
-      .limit(1)
-      .maybeSingle();
-    
-    if (error) {
-      console.error('Wallet fetch error:', error);
-      return;
-    }
-    
-    if (data) setWalletId(data.id);
-  };
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -1042,27 +1020,11 @@ const Apply = () => {
 
                 <Separator />
 
-                {walletId ? (
-                  <BitcoinCheckout
-                    walletId={walletId}
-                    productName={`${documentCategories.find(d => d.id === selectedDocument)?.label || selectedDocument} - Application`}
-                  productType="application"
-                  amountBTC={parseFloat((total / 50000).toFixed(8))}
-                  amountFiat={total}
-                  guestInfo={{
-                    name: `${formData.firstName} ${formData.lastName}`.trim() || "Applicant",
-                    phone: formData.phone || "",
-                    email: formData.email || "",
-                  }}
-                    onPaymentComplete={handlePaymentComplete}
-                  />
-                ) : (
-                  <Alert variant="destructive">
-                    <AlertDescription>
-                      Bitcoin wallet not configured. Please contact support.
-                    </AlertDescription>
-                  </Alert>
-                )}
+                <Alert>
+                  <AlertDescription>
+                    Payment processing not configured. Please contact support to complete your application.
+                  </AlertDescription>
+                </Alert>
 
                 <p className="text-center text-sm text-muted-foreground">
                   By proceeding, you agree to our Terms of Service and Privacy Policy

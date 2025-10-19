@@ -18,18 +18,11 @@ interface Order {
   status: string;
   payment_method: string;
   created_at: string;
-  btc_payment_id: string | null;
   status_history: Array<{
     status: string;
     changed_at: string;
     previous_status: string;
   }> | null;
-  btc_payments?: {
-    address: string;
-    txid: string | null;
-    confirmations: number;
-    status: string;
-  };
 }
 
 export function UserOrders() {
@@ -56,15 +49,7 @@ export function UserOrders() {
 
       const { data, error } = await supabase
         .from('orders')
-        .select(`
-          *,
-          btc_payments (
-            address,
-            txid,
-            confirmations,
-            status
-          )
-        `)
+        .select("*")
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
@@ -171,48 +156,6 @@ export function UserOrders() {
                     </div>
                   </div>
 
-                  {order.btc_payments && (
-                    <div className="border-t pt-3 space-y-2">
-                      <p className="text-sm font-semibold">Bitcoin Payment Details</p>
-                      <div className="text-sm space-y-1">
-                        <div className="flex items-center justify-between">
-                          <span className="text-muted-foreground">Address:</span>
-                          <code className="text-xs bg-muted px-2 py-1 rounded">
-                            {order.btc_payments.address.substring(0, 20)}...
-                          </code>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-muted-foreground">Status:</span>
-                          <Badge variant={order.btc_payments.status === 'paid' ? 'default' : 'secondary'}>
-                            {order.btc_payments.status}
-                          </Badge>
-                        </div>
-                        {order.btc_payments.confirmations !== undefined && (
-                          <div className="flex items-center justify-between">
-                            <span className="text-muted-foreground">Confirmations:</span>
-                            <span>{order.btc_payments.confirmations}/1</span>
-                          </div>
-                        )}
-                        {order.btc_payments.txid && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="w-full mt-2"
-                            asChild
-                          >
-                            <a
-                              href={`https://blockstream.info/tx/${order.btc_payments.txid}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <ExternalLink className="h-4 w-4 mr-2" />
-                              View Transaction
-                            </a>
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  )}
                 </div>
 
                 {/* Order Timeline */}

@@ -33,7 +33,7 @@ interface EscrowTransactionFormProps {
 
 const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProps) => {
   const navigate = useNavigate();
-  const [step, setStep] = useState<"form" | "review" | "payment" | "bitcoin">("form");
+  const [step, setStep] = useState<"form" | "review" | "payment">("form");
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [userProfile, setUserProfile] = useState<any>(null);
@@ -60,36 +60,8 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
   useEffect(() => {
     if (open) {
       loadUserProfile();
-      fetchWallet();
     }
   }, [open]);
-
-  const fetchWallet = async () => {
-    const { data, error } = await supabase
-      .from('btc_wallets')
-      .select('id, xpub, name')
-      .eq('is_active', true)
-      .order('is_primary', { ascending: false })
-      .order('created_at', { ascending: true })
-      .limit(1)
-      .maybeSingle();
-    
-    if (error) {
-      console.error('❌ Error fetching wallet:', error);
-      toast.error('Failed to fetch Bitcoin wallet');
-      return;
-    }
-    
-    if (!data) {
-      console.error('❌ No active Bitcoin wallet found');
-      toast.error('No active Bitcoin wallet configured. Please set up a wallet first.');
-      return;
-    }
-    
-    const walletType = 'xpub';
-    console.log(`✅ Using wallet: ${data.id} (${walletType}) - ${data.name}`);
-    setWalletId(data.id);
-  };
 
   const loadUserProfile = async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -147,10 +119,9 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
   };
 
   const handleConfirmPayment = async () => {
-    console.log("Confirming payment, moving to bitcoin step");
-    console.log("Selected product:", formData.selectedProduct);
-    console.log("Total amount:", total);
-    setStep("bitcoin");
+    toast.success("Escrow order confirmed! Please contact support for payment instructions.");
+    onOpenChange(false);
+    setStep("form");
   };
 
   const copyToClipboard = () => {
@@ -177,13 +148,13 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
                 {step === "form" && "Create Secure Escrow"}
                 {step === "review" && "Review Escrow Details"}
                 {step === "payment" && "Payment Instructions"}
-                {step === "bitcoin" && "Bitcoin Payment"}
+                {step === "payment" && "Payment Instructions"}
               </span>
               <span className="text-xs font-normal text-muted-foreground">
                 {step === "form" && "Protected by blockchain escrow technology"}
                 {step === "review" && "Verify all details before proceeding"}
                 {step === "payment" && "Secure your funds in escrow"}
-                {step === "bitcoin" && "Complete your Bitcoin payment"}
+                {step === "payment" && "Secure your funds in escrow"}
               </span>
             </div>
           </DialogTitle>
@@ -203,21 +174,21 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
             <div className="flex items-center gap-2">
               <div className={cn(
                 "w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-all",
-                step === "review" ? "bg-primary text-primary-foreground shadow-lg shadow-primary/50" : (step === "payment" || step === "bitcoin") ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground"
+                step === "review" ? "bg-primary text-primary-foreground shadow-lg shadow-primary/50" : step === "payment" ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground"
               )}>
                 2
               </div>
               <span className={cn("text-xs font-medium", step === "review" ? "text-primary" : "text-muted-foreground")}>Review</span>
             </div>
-            <div className={cn("h-0.5 w-8 transition-all", (step === "payment" || step === "bitcoin") ? "bg-primary" : "bg-muted")} />
+            <div className={cn("h-0.5 w-8 transition-all", step === "payment" ? "bg-primary" : "bg-muted")} />
             <div className="flex items-center gap-2">
               <div className={cn(
                 "w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-all",
-                (step === "payment" || step === "bitcoin") ? "bg-primary text-primary-foreground shadow-lg shadow-primary/50" : "bg-muted text-muted-foreground"
+                step === "payment" ? "bg-primary text-primary-foreground shadow-lg shadow-primary/50" : "bg-muted text-muted-foreground"
               )}>
                 3
               </div>
-              <span className={cn("text-xs font-medium", (step === "payment" || step === "bitcoin") ? "text-primary" : "text-muted-foreground")}>Payment</span>
+              <span className={cn("text-xs font-medium", step === "payment" ? "text-primary" : "text-muted-foreground")}>Payment</span>
             </div>
           </div>
         </DialogHeader>
@@ -915,48 +886,6 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
           </div>
         )}
 
-        {step === "bitcoin" && formData.selectedProduct && (
-          <div className="py-4">
-            {walletId ? (
-              <BitcoinCheckout
-                walletId={walletId}
-                productName={`${formData.selectedProduct.name} (x${formData.quantity}) - ESCROW`}
-              productType={formData.selectedProduct.category}
-              amountBTC={parseFloat((total / 50000).toFixed(8))}
-              amountFiat={total}
-              guestInfo={userProfile ? undefined : {
-                name: formData.buyerName,
-                phone: formData.buyerPhone,
-                email: formData.buyerEmail,
-              }}
-              onPaymentComplete={() => {
-                toast.success("Escrow order created! Waiting for Bitcoin payment confirmation.");
-                onOpenChange(false);
-                setStep("form");
-                setFormData({
-                  selectedProduct: null,
-                  quantity: 1,
-                  specifications: "",
-                  escrowTerms: "standard",
-                  customTerms: "",
-                  deliveryAddress: "",
-                  additionalInstructions: "",
-                  buyerName: "",
-                  buyerEmail: "",
-                  buyerPhone: "",
-                });
-                navigate("/dashboard");
-              }}
-              />
-            ) : (
-              <Alert variant="destructive">
-                <AlertDescription>
-                  Bitcoin wallet not configured. Please contact support.
-                </AlertDescription>
-              </Alert>
-            )}
-          </div>
-        )}
       </DialogContent>
     </Dialog>
   );

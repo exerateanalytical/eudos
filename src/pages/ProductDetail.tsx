@@ -15,10 +15,8 @@ import {
 } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import { CheckoutModal } from "@/components/checkout/CheckoutModal";
-import { BitcoinCheckout } from "@/components/checkout/BitcoinCheckout";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { useBitcoinWallet } from "@/hooks/useBitcoinWallet";
 
 // Product data (same as Shop page)
 const euCountries = [
@@ -152,7 +150,6 @@ const ProductDetail = () => {
   const [showBitcoinCheckout, setShowBitcoinCheckout] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [guestInfo, setGuestInfo] = useState<any>(null);
-  const { walletId, verifyWallet } = useBitcoinWallet();
 
   useEffect(() => {
     checkUser();
@@ -570,25 +567,6 @@ const ProductDetail = () => {
         onProceed={handleGuestProceed}
       />
 
-      <Dialog open={showBitcoinCheckout} onOpenChange={setShowBitcoinCheckout}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Bitcoin Payment</DialogTitle>
-          </DialogHeader>
-          <BitcoinCheckout
-            walletId={walletId}
-            productName={product.title}
-            productType={product.category}
-            amountBTC={product.priceNumeric / 50000} // Example conversion
-            amountFiat={product.priceNumeric}
-            guestInfo={guestInfo}
-            onPaymentComplete={() => {
-              setShowBitcoinCheckout(false);
-              navigate('/dashboard/orders');
-            }}
-          />
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };

@@ -15,10 +15,8 @@ import { useReviewStats } from "@/hooks/useReviewStats";
 import { useState, useEffect } from "react";
 import { SEO } from "@/components/SEO";
 import { CheckoutModal } from "@/components/checkout/CheckoutModal";
-import { BitcoinCheckout } from "@/components/checkout/BitcoinCheckout";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
-import { useBitcoinWallet } from "@/hooks/useBitcoinWallet";
 
 const DiplomaDetail = () => {
   const { university } = useParams();
@@ -31,7 +29,6 @@ const DiplomaDetail = () => {
   const [showBitcoinCheckout, setShowBitcoinCheckout] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [guestInfo, setGuestInfo] = useState<any>(null);
-  const { walletId, verifyWallet } = useBitcoinWallet();
   
   const universityName = university?.replace(/-/g, ' ') || "Harvard University";
   const reviewStats = useReviewStats("diploma", university || "");
@@ -45,26 +42,8 @@ const DiplomaDetail = () => {
     setUser(user);
   };
 
-  const handleBuyNow = async () => {
-    if (!walletId || walletId === "") {
-      toast({
-        title: "Configuration Required",
-        description: "Bitcoin wallet is not configured. Please contact administrator.",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    const isValid = await verifyWallet();
-    if (!isValid) {
-      return;
-    }
-    
-    if (user) {
-      setShowBitcoinCheckout(true);
-    } else {
-      setShowCheckoutModal(true);
-    }
+  const handleBuyNow = () => {
+    setShowCheckoutModal(true);
   };
 
   const handleGuestProceed = (info: any) => {
@@ -580,25 +559,6 @@ const DiplomaDetail = () => {
         onProceed={handleGuestProceed}
       />
 
-      <Dialog open={showBitcoinCheckout} onOpenChange={setShowBitcoinCheckout}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Bitcoin Payment</DialogTitle>
-          </DialogHeader>
-          <BitcoinCheckout
-            walletId={walletId}
-            productName={`${diplomaData.universityName} Diploma`}
-            productType="Diploma"
-            amountBTC={parseInt(diplomaPrice.replace(/[^0-9]/g, '')) / 50000}
-            amountFiat={parseInt(diplomaPrice.replace(/[^0-9]/g, ''))}
-            guestInfo={guestInfo}
-            onPaymentComplete={() => {
-              setShowBitcoinCheckout(false);
-              navigate('/dashboard/orders');
-            }}
-          />
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
