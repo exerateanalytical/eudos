@@ -624,7 +624,7 @@ const Index = () => {
               },
               {
                 question: "What payment methods do you accept?",
-                answer: "We accept various payment methods including bank transfers, cryptocurrency (Bitcoin), and authorized government payment systems. All transactions are encrypted and secure."
+                answer: "We accept various payment methods including bank transfers, cryptocurrency, and authorized government payment systems. All transactions are encrypted and secure."
               },
               {
                 question: "How do I verify a document's authenticity?",

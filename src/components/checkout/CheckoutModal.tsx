@@ -17,7 +17,7 @@ const guestCheckoutSchema = z.object({
 interface CheckoutModalProps {
   open: boolean;
   onClose: () => void;
-  onProceed: (guestInfo: { name: string; phone: string; email?: string }) => void;
+  onProceed?: (guestInfo: { name: string; phone: string; email?: string }) => void;
 }
 
 export function CheckoutModal({ open, onClose, onProceed }: CheckoutModalProps) {
@@ -41,11 +41,13 @@ export function CheckoutModal({ open, onClose, onProceed }: CheckoutModalProps) 
         email: formData.email,
       });
       
-      onProceed({
-        name: validated.name,
-        phone: validated.phone_e164,
-        email: validated.email || undefined,
-      });
+      if (onProceed) {
+        onProceed({
+          name: validated.name,
+          phone: validated.phone_e164,
+          email: validated.email || undefined,
+        });
+      }
       onClose();
     } catch (error) {
       if (error instanceof z.ZodError) {

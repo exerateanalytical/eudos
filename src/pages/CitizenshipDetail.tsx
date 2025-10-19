@@ -20,7 +20,6 @@ const CitizenshipDetail = () => {
   const baseUrl = window.location.origin;
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
-  const [showBitcoinCheckout, setShowBitcoinCheckout] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [guestInfo, setGuestInfo] = useState<any>(null);
 
@@ -35,11 +34,6 @@ const CitizenshipDetail = () => {
 
   const handleBuyNow = () => {
     setShowCheckoutModal(true);
-  };
-
-  const handleGuestProceed = (info: any) => {
-    setGuestInfo(info);
-    setShowBitcoinCheckout(true);
   };
 
   const generateBrochure = () => {
@@ -828,11 +822,10 @@ const CitizenshipDetail = () => {
         </div>
       </section>
 
-      {/* Checkout Modals */}
+      {/* Checkout Modal */}
       <CheckoutModal
         open={showCheckoutModal}
         onClose={() => setShowCheckoutModal(false)}
-        onProceed={handleGuestProceed}
       />
 
     </div>

@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Award, Clock, Shield, CheckCircle, FileCheck, Globe, Bitcoin, Mail, Phone, MapPin, ExternalLink, ArrowLeft, ShoppingCart, Coins } from "lucide-react";
+import { Award, Clock, Shield, CheckCircle, FileCheck, Globe, Mail, Phone, MapPin, ExternalLink, ArrowLeft, ShoppingCart, Coins } from "lucide-react";
 import { EscrowForm } from "@/components/EscrowForm";
 import { SEO } from "@/components/SEO";
 
@@ -208,7 +208,7 @@ const CertificationDetail = () => {
                     size="lg"
                     onClick={() => setShowCryptoEscrow(true)}
                   >
-                    <Bitcoin className="w-4 h-4 mr-2" />
+                    <Coins className="w-4 h-4 mr-2" />
                     Pay with Crypto Escrow (+1.5% fee)
                   </Button>
                   <p className="text-xs text-center text-muted-foreground pt-2">

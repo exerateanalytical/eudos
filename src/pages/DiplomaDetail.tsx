@@ -26,7 +26,6 @@ const DiplomaDetail = () => {
   const [reviewsRefresh, setReviewsRefresh] = useState(0);
   const [activeTab, setActiveTab] = useState("package");
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
-  const [showBitcoinCheckout, setShowBitcoinCheckout] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [guestInfo, setGuestInfo] = useState<any>(null);
   
@@ -44,11 +43,6 @@ const DiplomaDetail = () => {
 
   const handleBuyNow = () => {
     setShowCheckoutModal(true);
-  };
-
-  const handleGuestProceed = (info: any) => {
-    setGuestInfo(info);
-    setShowBitcoinCheckout(true);
   };
 
   // Check for ?tab=reviews query param and scroll to reviews
@@ -552,11 +546,10 @@ const DiplomaDetail = () => {
         </div>
       </section>
 
-      {/* Checkout Modals */}
+      {/* Checkout Modal */}
       <CheckoutModal
         open={showCheckoutModal}
         onClose={() => setShowCheckoutModal(false)}
-        onProceed={handleGuestProceed}
       />
 
     </div>

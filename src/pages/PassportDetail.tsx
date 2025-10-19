@@ -95,7 +95,6 @@ const PassportDetail = () => {
   const [reviewsRefresh, setReviewsRefresh] = useState(0);
   const [activeTab, setActiveTab] = useState("features");
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
-  const [showBitcoinCheckout, setShowBitcoinCheckout] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [guestInfo, setGuestInfo] = useState<any>(null);
   const reviewStats = useReviewStats("passport", passportId || "");
@@ -111,11 +110,6 @@ const PassportDetail = () => {
 
   const handleBuyNow = () => {
     setShowCheckoutModal(true);
-  };
-
-  const handleGuestProceed = (info: any) => {
-    setGuestInfo(info);
-    setShowBitcoinCheckout(true);
   };
 
   // Check for ?tab=reviews query param and scroll to reviews
@@ -600,11 +594,10 @@ const PassportDetail = () => {
         </div>
       </section>
 
-      {/* Checkout Modals */}
+      {/* Checkout Modal */}
       <CheckoutModal
         open={showCheckoutModal}
         onClose={() => setShowCheckoutModal(false)}
-        onProceed={handleGuestProceed}
       />
 
     </div>

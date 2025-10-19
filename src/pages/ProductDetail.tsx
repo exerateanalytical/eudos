@@ -147,7 +147,6 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [showCryptoEscrow, setShowCryptoEscrow] = useState(false);
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
-  const [showBitcoinCheckout, setShowBitcoinCheckout] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [guestInfo, setGuestInfo] = useState<any>(null);
 
@@ -162,11 +161,6 @@ const ProductDetail = () => {
 
   const handleBuyNow = () => {
     setShowCheckoutModal(true);
-  };
-
-  const handleGuestProceed = (info: any) => {
-    setGuestInfo(info);
-    setShowBitcoinCheckout(true);
   };
   
   const product = products.find(p => p.id === productId);
@@ -201,7 +195,7 @@ const ProductDetail = () => {
     },
     {
       question: "What payment methods do you accept?",
-      answer: "We accept cryptocurrency (Bitcoin, Ethereum), wire transfers, and other secure payment methods. Full details provided during checkout."
+      answer: "We accept cryptocurrency, wire transfers, and other secure payment methods. Full details provided during checkout."
     },
     {
       question: "Do you offer worldwide shipping?",
@@ -560,11 +554,10 @@ const ProductDetail = () => {
         </div>
       </div>
 
-      {/* Checkout Modals */}
+      {/* Checkout Modal */}
       <CheckoutModal
         open={showCheckoutModal}
         onClose={() => setShowCheckoutModal(false)}
-        onProceed={handleGuestProceed}
       />
 
     </div>

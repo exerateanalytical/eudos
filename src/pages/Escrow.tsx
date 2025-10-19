@@ -177,7 +177,7 @@ const Escrow = () => {
               {
                 icon: Wallet,
                 title: "Crypto-Native",
-                description: "Supports BTC, ETH, USDT, USDC and other major cryptocurrencies",
+                description: "Supports major cryptocurrencies for secure transactions",
               },
             ].map((benefit, index) => (
               <Card key={index} className="animate-fade-in hover-scale">
@@ -332,7 +332,7 @@ const Escrow = () => {
             <AccordionItem value="item-3" className="border rounded-lg px-4">
               <AccordionTrigger className="text-left text-sm sm:text-base">What cryptocurrencies are supported?</AccordionTrigger>
               <AccordionContent className="text-sm sm:text-base text-muted-foreground">
-                We currently support Bitcoin (BTC), Ethereum (ETH), USDT (Tether), and USDC (USD Coin). More cryptocurrencies will be added based on demand.
+                We support major cryptocurrencies including Ethereum, USDT, and USDC. More cryptocurrencies will be added based on demand.
               </AccordionContent>
             </AccordionItem>
 
