@@ -44,6 +44,8 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
   const [assignedBtcAddress, setAssignedBtcAddress] = useState<string>("");
   const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>("");
   const [loadingAddress, setLoadingAddress] = useState(false);
+  const [orderId, setOrderId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   
   const [formData, setFormData] = useState({
     selectedProduct: null as EscrowProduct | null,
@@ -101,6 +103,7 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
 
   const assignBitcoinAddress = async (orderId: string) => {
     setLoadingAddress(true);
+    setError(null);
     try {
       const { data, error } = await supabase.functions.invoke('assign-bitcoin-address', {
         body: { orderId }
@@ -118,7 +121,10 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
       }
     } catch (error: any) {
       console.error('Error assigning Bitcoin address:', error);
-      toast.error(error.message || "Unable to assign Bitcoin address. Please contact support.");
+      const errorMessage = error.message || "Unable to assign Bitcoin address. Please contact support.";
+      setError(errorMessage);
+      toast.error(errorMessage);
+      throw error;
     } finally {
       setLoadingAddress(false);
     }
@@ -141,18 +147,100 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
     }
 
     if (step === "review") {
-      // Before moving to payment step, create a temporary order ID and assign Bitcoin address
-      const tempOrderId = crypto.randomUUID();
-      await assignBitcoinAddress(tempOrderId);
-      setStep("payment");
+      setLoading(true);
+      setError(null);
+      try {
+        // Step 1: Create order in database FIRST
+        const orderData = {
+          user_id: userProfile?.id,
+          product_type: 'escrow',
+          product_name: formData.selectedProduct.name,
+          total_amount: total,
+          escrow_fee: fee,
+          payment_method: 'bitcoin',
+          status: 'pending_payment',
+          guest_name: formData.buyerName,
+          guest_email: formData.buyerEmail,
+          guest_phone: formData.buyerPhone,
+        };
+        
+        const { data: order, error: orderError } = await supabase
+          .from('orders')
+          .insert(orderData)
+          .select()
+          .single();
+        
+        if (orderError) throw orderError;
+        
+        // Store the order ID
+        setOrderId(order.id);
+        
+        // Step 2: Assign Bitcoin address using real order ID
+        await assignBitcoinAddress(order.id);
+        
+        // Step 3: Move to payment step
+        setStep("payment");
+      } catch (error: any) {
+        console.error('Error creating order:', error);
+        const errorMessage = error.message || "Failed to create order. Please try again.";
+        setError(errorMessage);
+        toast.error(errorMessage);
+      } finally {
+        setLoading(false);
+      }
       return;
     }
   };
 
   const handleConfirmPayment = async () => {
-    toast.success("Escrow order confirmed! Please contact support for payment instructions.");
-    onOpenChange(false);
-    setStep("form");
+    if (!orderId) {
+      toast.error("Order ID not found. Please try again.");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    try {
+      // Create transaction record
+      const { error: txError } = await supabase
+        .from('transactions')
+        .insert({
+          user_id: userProfile?.id,
+          order_id: orderId,
+          amount: total,
+          transaction_type: 'escrow_payment',
+          status: 'pending',
+          currency: 'BTC',
+          description: `Escrow payment for ${formData.selectedProduct?.name}`,
+        });
+      
+      if (txError) throw txError;
+      
+      // Create escrow transaction record
+      const { error: escrowError } = await supabase
+        .from('escrow_transactions')
+        .insert({
+          user_id: userProfile?.id,
+          order_id: orderId,
+          amount: total,
+          status: 'held',
+          currency: 'USD',
+        });
+      
+      if (escrowError) throw escrowError;
+      
+      toast.success("Order created! Please send payment to the displayed address.");
+      navigate('/dashboard');
+      onOpenChange(false);
+      setStep("form");
+    } catch (error: any) {
+      console.error('Error confirming payment:', error);
+      const errorMessage = error.message || "Failed to confirm order. Please contact support.";
+      setError(errorMessage);
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const copyToClipboard = () => {
@@ -952,12 +1040,12 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
             <Button 
               onClick={handleConfirmPayment} 
               className="w-full gap-2 h-12 text-base font-semibold" 
-              disabled={loading || !assignedBtcAddress || loadingAddress}
+              disabled={loading || !assignedBtcAddress || loadingAddress || !!error}
             >
               {loading ? (
                 <>
-                  <Clock className="w-5 h-5 animate-spin" />
-                  Creating Escrow...
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Confirming Payment...
                 </>
               ) : (
                 <>
