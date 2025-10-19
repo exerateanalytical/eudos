@@ -294,7 +294,7 @@ const DiplomaDetail = () => {
                 onClick={handleBuyNow}
               >
                 <ShoppingCart className="h-4 w-4 mr-2" />
-                Buy Now with Bitcoin
+                Order Now
               </Button>
 
               <Button 

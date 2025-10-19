@@ -501,7 +501,7 @@ const CitizenshipDetail = () => {
                 onClick={handleBuyNow}
               >
                 <ShoppingCart className="h-4 w-4 mr-2" />
-                Buy Now with Bitcoin
+                Apply Now
               </Button>
 
               <Button 

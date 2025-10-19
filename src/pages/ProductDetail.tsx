@@ -333,7 +333,7 @@ const ProductDetail = () => {
                     onClick={handleBuyNow}
                   >
                     <ShoppingCart className="mr-2 h-5 w-5" />
-                    Buy Now with Bitcoin
+                    Order Now
                   </Button>
                   <Button 
                     size="lg" 

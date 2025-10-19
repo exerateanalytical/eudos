@@ -288,7 +288,7 @@ const DriverLicenseDetail = () => {
                     onClick={handleBuyNow}
                   >
                     <ShoppingCart className="w-4 h-4 mr-2" />
-                    Buy Now with Bitcoin
+                    Order Now
                   </Button>
                   <Button
                     variant="outline"

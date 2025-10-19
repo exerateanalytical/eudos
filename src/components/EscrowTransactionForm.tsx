@@ -54,7 +54,7 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
     buyerPhone: "",
   });
 
-  const escrowWalletAddress = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
+  const escrowWalletAddress = "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb";
   const escrowFeePercentage = 1.5;
 
   useEffect(() => {
@@ -739,7 +739,7 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
                   {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                 </Button>
               </div>
-              <p className="text-xs text-muted-foreground">Accepted: BTC, ETH, USDT, USDC</p>
+              <p className="text-xs text-muted-foreground">Accepted: ETH, USDT, USDC</p>
             </div>
 
             <Card>
@@ -750,7 +750,7 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
                 </p>
                 <ol className="text-sm space-y-2 list-decimal list-inside">
                   <li>Copy the escrow wallet address above</li>
-                  <li>Open your crypto wallet (BTC, ETH, USDT, or USDC)</li>
+                  <li>Open your crypto wallet (ETH, USDT, or USDC)</li>
                   <li>Send exactly <strong>${total.toFixed(2)}</strong> worth of crypto to the address</li>
                   <li>Click "Confirm Payment Sent" below</li>
                   <li>Wait for blockchain confirmation (5-30 minutes)</li>
