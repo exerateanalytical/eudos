@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ArrowLeft, CheckCircle, Clock, FileText, Users, TrendingUp, Shield, Award, Globe, Home, Download, Mail, Phone, MapPin, Building, ShoppingCart, Coins } from "lucide-react";
-import { EscrowForm } from "@/components/EscrowForm";
+import EscrowTransactionForm from "@/components/EscrowTransactionForm";
 import { toast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
 import { SEO } from "@/components/SEO";
@@ -513,12 +513,9 @@ const CitizenshipDetail = () => {
                 Pay with Crypto Escrow (+1.5% fee)
               </Button>
 
-              <EscrowForm
+              <EscrowTransactionForm
                 open={showCryptoEscrow}
                 onOpenChange={setShowCryptoEscrow}
-                productName={`${countryData.name} Citizenship`}
-                productPrice={programPrice}
-                deliveryTime="1 month"
               />
 
               <Button 

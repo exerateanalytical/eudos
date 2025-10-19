@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { FileText, Shield, Clock, CheckCircle, ArrowLeft, ShoppingCart, Coins, Mail, Globe } from "lucide-react";
-import { EscrowForm } from "@/components/EscrowForm";
+import EscrowTransactionForm from "@/components/EscrowTransactionForm";
 import { ReviewForm } from "@/components/reviews/ReviewForm";
 import { ReviewsList } from "@/components/reviews/ReviewsList";
 import { ReviewStatsCard } from "@/components/reviews/ReviewStatsCard";
@@ -348,12 +348,9 @@ const PassportDetail = () => {
       </section>
 
       {/* Crypto Escrow Form */}
-      <EscrowForm
+      <EscrowTransactionForm
         open={showCryptoEscrow}
         onOpenChange={setShowCryptoEscrow}
-        productName={passportData.title}
-        productPrice={passportData.price}
-        deliveryTime={passportData.processingTime}
       />
 
       {/* Detailed Information */}

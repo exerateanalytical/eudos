@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { FileText, Shield, Globe, Search, Filter, X } from "lucide-react";
-import { EscrowForm } from "@/components/EscrowForm";
+import EscrowTransactionForm from "@/components/EscrowTransactionForm";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -381,12 +381,9 @@ const Passports = () => {
       <SecurityFeaturesSection />
 
       {/* Crypto Escrow Dialog */}
-      <EscrowForm
+      <EscrowTransactionForm
         open={showCryptoEscrow}
         onOpenChange={setShowCryptoEscrow}
-        productName={selectedPassport?.title || ""}
-        productPrice={selectedPassport ? `$${selectedPassport.price}` : "$0"}
-        deliveryTime={selectedPassport?.processingTime || ""}
       />
     </div>
   );

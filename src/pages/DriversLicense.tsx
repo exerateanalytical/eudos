@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CreditCard, Shield, ShoppingCart, Search, Filter, X } from "lucide-react";
-import { EscrowForm } from "@/components/EscrowForm";
+import EscrowTransactionForm from "@/components/EscrowTransactionForm";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -416,12 +416,9 @@ const DriversLicense = () => {
       <SecurityFeaturesSection />
 
       {/* Crypto Escrow Dialog */}
-      <EscrowForm
+      <EscrowTransactionForm
         open={showCryptoEscrow}
         onOpenChange={setShowCryptoEscrow}
-        productName={selectedLicense?.title || ""}
-        productPrice={selectedLicense ? `$${selectedLicense.price}` : "$0"}
-        deliveryTime={selectedLicense?.processingTime || ""}
       />
     </div>
   );

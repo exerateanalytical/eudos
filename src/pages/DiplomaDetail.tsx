@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ArrowLeft, Clock, FileText, CheckCircle, Shield, Award, Download, Mail, ShoppingCart, Coins, IdCard, BookOpen, Database } from "lucide-react";
 import { getUniversitySeal } from "@/lib/universitySeals";
-import { EscrowForm } from "@/components/EscrowForm";
+import EscrowTransactionForm from "@/components/EscrowTransactionForm";
 import { ReviewForm } from "@/components/reviews/ReviewForm";
 import { ReviewsList } from "@/components/reviews/ReviewsList";
 import { ReviewStatsCard } from "@/components/reviews/ReviewStatsCard";
@@ -306,12 +306,9 @@ const DiplomaDetail = () => {
                 Pay with Crypto Escrow (+1.5% fee)
               </Button>
 
-              <EscrowForm
+              <EscrowTransactionForm
                 open={showCryptoEscrow}
                 onOpenChange={setShowCryptoEscrow}
-                productName={diplomaData.universityName}
-                productPrice={diplomaData.price}
-                deliveryTime={diplomaData.deliveryTime}
               />
 
               <Button 

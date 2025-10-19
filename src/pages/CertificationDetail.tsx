@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Award, Clock, Shield, CheckCircle, FileCheck, Globe, Mail, Phone, MapPin, ExternalLink, ArrowLeft, ShoppingCart, Coins } from "lucide-react";
-import { EscrowForm } from "@/components/EscrowForm";
+import EscrowTransactionForm from "@/components/EscrowTransactionForm";
 import { SEO } from "@/components/SEO";
 
 const CertificationDetail = () => {
@@ -222,12 +222,9 @@ const CertificationDetail = () => {
       </section>
 
       {/* Crypto Escrow Form */}
-      <EscrowForm
+      <EscrowTransactionForm
         open={showCryptoEscrow}
         onOpenChange={setShowCryptoEscrow}
-        productName={certificationData.name}
-        productPrice={certificationData.price}
-        deliveryTime={certificationData.deliveryTime}
       />
 
       {/* Detailed Information */}

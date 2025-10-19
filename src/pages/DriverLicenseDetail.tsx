@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { CreditCard, Shield, Clock, CheckCircle, ArrowLeft, ShoppingCart, Coins, Mail } from "lucide-react";
-import { EscrowForm } from "@/components/EscrowForm";
+import EscrowTransactionForm from "@/components/EscrowTransactionForm";
 import { ReviewForm } from "@/components/reviews/ReviewForm";
 import { ReviewsList } from "@/components/reviews/ReviewsList";
 import { ReviewStatsCard } from "@/components/reviews/ReviewStatsCard";
@@ -320,12 +320,9 @@ const DriverLicenseDetail = () => {
       </section>
 
       {/* Crypto Escrow Form */}
-      <EscrowForm
+      <EscrowTransactionForm
         open={showCryptoEscrow}
         onOpenChange={setShowCryptoEscrow}
-        productName={licenseData.title}
-        productPrice={licenseData.price}
-        deliveryTime={licenseData.processingTime}
       />
 
       {/* Detailed Information */}

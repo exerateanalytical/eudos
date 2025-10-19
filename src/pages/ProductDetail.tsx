@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { EscrowForm } from "@/components/EscrowForm";
+import EscrowTransactionForm from "@/components/EscrowTransactionForm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -346,12 +346,9 @@ const ProductDetail = () => {
                   </Button>
                 </div>
 
-                <EscrowForm
+                <EscrowTransactionForm
                   open={showCryptoEscrow}
                   onOpenChange={setShowCryptoEscrow}
-                  productName={product.title}
-                  productPrice={product.price}
-                  deliveryTime={product.specifications.find(s => s.label === "Processing Time")?.value}
                 />
 
                 <div className="pt-4 border-t border-border/50 grid grid-cols-3 gap-4 text-center">
