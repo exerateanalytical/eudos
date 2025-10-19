@@ -14,7 +14,8 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { Check, Copy, Shield, ArrowRight, Search, CheckCircle, Info, Lock, AlertTriangle, Clock, FileCheck, Package, Headphones } from "lucide-react";
+import { Check, Copy, Shield, ArrowRight, Search, CheckCircle, Info, Lock, AlertTriangle, Clock, FileCheck, Package, Headphones, Loader2, QrCode } from "lucide-react";
+import { generateBitcoinQR } from "@/lib/bitcoinUtils";
 import { escrowProducts, searchProducts, getProductById, type EscrowProduct } from "@/lib/escrowProducts";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -40,6 +41,9 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
   const [searchQuery, setSearchQuery] = useState("");
   const [comboboxOpen, setComboboxOpen] = useState(false);
   const [whyEscrowOpen, setWhyEscrowOpen] = useState(false);
+  const [assignedBtcAddress, setAssignedBtcAddress] = useState<string>("");
+  const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>("");
+  const [loadingAddress, setLoadingAddress] = useState(false);
   
   const [formData, setFormData] = useState({
     selectedProduct: null as EscrowProduct | null,
@@ -54,7 +58,6 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
     buyerPhone: "",
   });
 
-  const escrowWalletAddress = "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb";
   const escrowFeePercentage = 1.5;
 
   useEffect(() => {
@@ -96,6 +99,31 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
     return { subtotal, fee, total };
   };
 
+  const assignBitcoinAddress = async (orderId: string) => {
+    setLoadingAddress(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('assign-bitcoin-address', {
+        body: { orderId }
+      });
+
+      if (error) throw error;
+
+      if (data?.address) {
+        setAssignedBtcAddress(data.address);
+        // Generate QR code
+        const qrCode = await generateBitcoinQR(data.address);
+        setQrCodeDataUrl(qrCode);
+      } else {
+        throw new Error('No address returned');
+      }
+    } catch (error: any) {
+      console.error('Error assigning Bitcoin address:', error);
+      toast.error(error.message || "Unable to assign Bitcoin address. Please contact support.");
+    } finally {
+      setLoadingAddress(false);
+    }
+  };
+
   const handleSubmit = async () => {
     if (!formData.selectedProduct) {
       toast.error("Please select a product");
@@ -113,6 +141,9 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
     }
 
     if (step === "review") {
+      // Before moving to payment step, create a temporary order ID and assign Bitcoin address
+      const tempOrderId = crypto.randomUUID();
+      await assignBitcoinAddress(tempOrderId);
       setStep("payment");
       return;
     }
@@ -125,10 +156,12 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
   };
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(escrowWalletAddress);
-    setCopied(true);
-    toast.success("Wallet address copied!");
-    setTimeout(() => setCopied(false), 2000);
+    if (assignedBtcAddress) {
+      navigator.clipboard.writeText(assignedBtcAddress);
+      setCopied(true);
+      toast.success("Bitcoin address copied!");
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   const filteredProducts = searchQuery ? searchProducts(searchQuery) : [];
@@ -728,35 +761,85 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
               </CardContent>
             </Card>
 
-            <div className="space-y-2">
-              <Label className="flex items-center gap-2">
-                <Lock className="w-4 h-4 text-primary" />
-                Escrow Wallet Address
-              </Label>
-              <div className="flex gap-2">
-                <Input value={escrowWalletAddress} readOnly className="font-mono text-sm font-semibold" />
-                <Button variant="outline" size="icon" onClick={copyToClipboard}>
-                  {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                </Button>
-              </div>
-              <p className="text-xs text-muted-foreground">Accepted: ETH, USDT, USDC</p>
-            </div>
+            <div className="space-y-6">
+              {loadingAddress ? (
+                <div className="flex flex-col items-center justify-center py-12 space-y-4">
+                  <Loader2 className="w-12 h-12 animate-spin text-primary" />
+                  <p className="text-sm text-muted-foreground">Assigning your unique Bitcoin address...</p>
+                </div>
+              ) : assignedBtcAddress ? (
+                <>
+                  {/* QR Code Section */}
+                  <div className="flex flex-col items-center space-y-4 p-6 bg-muted/50 rounded-lg border-2 border-primary/20">
+                    <div className="flex items-center gap-2 text-sm font-medium text-primary">
+                      <Shield className="w-4 h-4" />
+                      <span>Unique Address Assigned</span>
+                    </div>
+                    {qrCodeDataUrl && (
+                      <div className="bg-white p-4 rounded-lg shadow-sm">
+                        <img 
+                          src={qrCodeDataUrl} 
+                          alt="Bitcoin Payment QR Code" 
+                          className="w-[200px] h-[200px] md:w-[250px] md:h-[250px]"
+                        />
+                      </div>
+                    )}
+                    <p className="text-xs text-center text-muted-foreground max-w-xs">
+                      Scan this QR code with your Bitcoin wallet to pay
+                    </p>
+                  </div>
 
-            <Card>
-              <CardContent className="p-4 space-y-3">
-                <p className="font-semibold flex items-center gap-2">
-                  <FileCheck className="w-4 h-4" />
-                  Payment Instructions:
-                </p>
-                <ol className="text-sm space-y-2 list-decimal list-inside">
-                  <li>Copy the escrow wallet address above</li>
-                  <li>Open your crypto wallet (ETH, USDT, or USDC)</li>
-                  <li>Send exactly <strong>${total.toFixed(2)}</strong> worth of crypto to the address</li>
-                  <li>Click "Confirm Payment Sent" below</li>
-                  <li>Wait for blockchain confirmation (5-30 minutes)</li>
-                </ol>
-              </CardContent>
-            </Card>
+                  {/* Bitcoin Address Section */}
+                  <div className="space-y-3">
+                    <Label className="flex items-center gap-2">
+                      <Lock className="w-4 h-4 text-primary" />
+                      Your Unique Bitcoin Address
+                    </Label>
+                    <div className="flex items-center justify-between p-4 bg-muted rounded-lg border">
+                      <div className="flex-1 min-w-0">
+                        <p className="font-mono text-xs md:text-sm break-all">{assignedBtcAddress}</p>
+                      </div>
+                      <Button 
+                        variant="outline" 
+                        size="icon" 
+                        onClick={copyToClipboard} 
+                        className="ml-2 shrink-0"
+                      >
+                        {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                      </Button>
+                    </div>
+                    <div className="flex items-center justify-center gap-2 text-sm">
+                      <QrCode className="w-4 h-4 text-primary" />
+                      <span className="font-medium">Amount to Send: ${total.toFixed(2)} USD in BTC</span>
+                    </div>
+                    <p className="text-xs text-center text-muted-foreground">
+                      Accepted: Bitcoin (BTC) only
+                    </p>
+                  </div>
+
+                  <Card>
+                    <CardContent className="p-4 space-y-3">
+                      <p className="font-semibold flex items-center gap-2">
+                        <FileCheck className="w-4 h-4" />
+                        Payment Instructions:
+                      </p>
+                      <ol className="text-sm space-y-2 list-decimal list-inside">
+                        <li>Scan the QR code above OR copy the Bitcoin address</li>
+                        <li>Open your Bitcoin wallet app</li>
+                        <li>Send exactly <strong>${total.toFixed(2)}</strong> worth of BTC to the address</li>
+                        <li>Click "I've Sent Payment" below</li>
+                        <li>Wait for blockchain confirmation (typically 10-60 minutes)</li>
+                        <li>You'll receive a confirmation email once verified</li>
+                      </ol>
+                    </CardContent>
+                  </Card>
+                </>
+              ) : (
+                <div className="text-center py-8 text-muted-foreground">
+                  <p>Unable to assign Bitcoin address. Please try again or contact support.</p>
+                </div>
+              )}
+            </div>
 
             {/* What Happens Next */}
             <Card className="border-blue-500/30 bg-blue-50 dark:bg-blue-950/20">
@@ -866,7 +949,11 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
               </AlertDescription>
             </Alert>
 
-            <Button onClick={handleConfirmPayment} className="w-full gap-2 h-12 text-base font-semibold" disabled={loading}>
+            <Button 
+              onClick={handleConfirmPayment} 
+              className="w-full gap-2 h-12 text-base font-semibold" 
+              disabled={loading || !assignedBtcAddress || loadingAddress}
+            >
               {loading ? (
                 <>
                   <Clock className="w-5 h-5 animate-spin" />

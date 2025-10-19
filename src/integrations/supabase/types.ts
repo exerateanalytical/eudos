@@ -128,6 +128,41 @@ export type Database = {
         }
         Relationships: []
       }
+      bitcoin_addresses: {
+        Row: {
+          address: string
+          assigned_at: string | null
+          assigned_to_order: string | null
+          created_at: string | null
+          id: string
+          is_used: boolean | null
+        }
+        Insert: {
+          address: string
+          assigned_at?: string | null
+          assigned_to_order?: string | null
+          created_at?: string | null
+          id?: string
+          is_used?: boolean | null
+        }
+        Update: {
+          address?: string
+          assigned_at?: string | null
+          assigned_to_order?: string | null
+          created_at?: string | null
+          id?: string
+          is_used?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bitcoin_addresses_assigned_to_order_fkey"
+            columns: ["assigned_to_order"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cms_blog_posts: {
         Row: {
           author_id: string | null
