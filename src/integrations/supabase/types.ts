@@ -128,111 +128,6 @@ export type Database = {
         }
         Relationships: []
       }
-      btc_payments: {
-        Row: {
-          address: string
-          address_index: number
-          amount_btc: number
-          amount_fiat: number | null
-          confirmations: number | null
-          created_at: string
-          id: string
-          metadata: Json | null
-          order_id: string
-          status: string
-          txid: string | null
-          updated_at: string
-          user_id: string | null
-          wallet_id: string
-        }
-        Insert: {
-          address: string
-          address_index: number
-          amount_btc: number
-          amount_fiat?: number | null
-          confirmations?: number | null
-          created_at?: string
-          id?: string
-          metadata?: Json | null
-          order_id: string
-          status?: string
-          txid?: string | null
-          updated_at?: string
-          user_id?: string | null
-          wallet_id: string
-        }
-        Update: {
-          address?: string
-          address_index?: number
-          amount_btc?: number
-          amount_fiat?: number | null
-          confirmations?: number | null
-          created_at?: string
-          id?: string
-          metadata?: Json | null
-          order_id?: string
-          status?: string
-          txid?: string | null
-          updated_at?: string
-          user_id?: string | null
-          wallet_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "btc_payments_wallet_id_fkey"
-            columns: ["wallet_id"]
-            isOneToOne: false
-            referencedRelation: "btc_wallets"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_btc_payments_order"
-            columns: ["order_id"]
-            isOneToOne: false
-            referencedRelation: "orders"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      btc_wallets: {
-        Row: {
-          created_at: string
-          derivation_path: string
-          id: string
-          is_active: boolean | null
-          is_primary: boolean | null
-          name: string
-          network: string
-          next_index: number
-          updated_at: string
-          xpub: string
-        }
-        Insert: {
-          created_at?: string
-          derivation_path?: string
-          id?: string
-          is_active?: boolean | null
-          is_primary?: boolean | null
-          name?: string
-          network?: string
-          next_index?: number
-          updated_at?: string
-          xpub: string
-        }
-        Update: {
-          created_at?: string
-          derivation_path?: string
-          id?: string
-          is_active?: boolean | null
-          is_primary?: boolean | null
-          name?: string
-          network?: string
-          next_index?: number
-          updated_at?: string
-          xpub?: string
-        }
-        Relationships: []
-      }
       cms_blog_posts: {
         Row: {
           author_id: string | null
@@ -1068,7 +963,6 @@ export type Database = {
       }
       orders: {
         Row: {
-          btc_payment_id: string | null
           country: string | null
           created_at: string | null
           escrow_fee: number | null
@@ -1087,7 +981,6 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
-          btc_payment_id?: string | null
           country?: string | null
           created_at?: string | null
           escrow_fee?: number | null
@@ -1106,7 +999,6 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
-          btc_payment_id?: string | null
           country?: string | null
           created_at?: string | null
           escrow_fee?: number | null
@@ -1125,13 +1017,6 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "orders_btc_payment_id_fkey"
-            columns: ["btc_payment_id"]
-            isOneToOne: false
-            referencedRelation: "btc_payments"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "orders_user_id_fkey"
             columns: ["user_id"]

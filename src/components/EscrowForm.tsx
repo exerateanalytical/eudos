@@ -8,7 +8,6 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Shield, CheckCircle, AlertCircle } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import { BitcoinCheckout } from "@/components/checkout/BitcoinCheckout";
 import { supabase } from "@/integrations/supabase/client";
 
 interface EscrowFormProps {
@@ -20,9 +19,7 @@ interface EscrowFormProps {
 }
 
 export const EscrowForm = ({ open, onOpenChange, productName, productPrice, deliveryTime }: EscrowFormProps) => {
-  const [step, setStep] = useState<'form' | 'bitcoin'>('form');
-  const [walletId, setWalletId] = useState<string>("");
-  const [walletError, setWalletError] = useState<string>("");
+  const [step, setStep] = useState<'form'>('form');
   
   // Form state
   const [buyerName, setBuyerName] = useState("");
@@ -38,27 +35,6 @@ export const EscrowForm = ({ open, onOpenChange, productName, productPrice, deli
 
   const sellerName = "SecurePrint Labs";
 
-  // Fetch active Bitcoin wallet on mount
-  useEffect(() => {
-    const fetchActiveWallet = async () => {
-      const { data, error } = await supabase
-        .from('btc_wallets')
-        .select('id')
-        .eq('is_active', true)
-        .maybeSingle();
-
-      if (error || !data) {
-        setWalletError("No active Bitcoin wallet configured. Please contact support.");
-        return;
-      }
-
-      setWalletId(data.id);
-    };
-
-    if (open) {
-      fetchActiveWallet();
-    }
-  }, [open]);
 
   const handleProceedToPayment = () => {
     if (!buyerName || !buyerEmail || !buyerPhone || !escrowTerms) {
@@ -70,20 +46,11 @@ export const EscrowForm = ({ open, onOpenChange, productName, productPrice, deli
       return;
     }
 
-    if (!walletId) {
-      toast({
-        title: "Configuration Error",
-        description: walletError || "Bitcoin wallet not configured",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setStep('bitcoin');
-  };
-
-  const handleBack = () => {
-    setStep('form');
+    toast({
+      title: "Escrow Setup Complete",
+      description: "Your escrow terms have been saved. Please contact support to proceed with payment.",
+    });
+    onOpenChange(false);
   };
 
   return (

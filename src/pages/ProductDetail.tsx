@@ -163,26 +163,8 @@ const ProductDetail = () => {
     setUser(user);
   };
 
-  const handleBuyNow = async () => {
-    if (!walletId || walletId === "") {
-      toast({
-        title: "Configuration Required",
-        description: "Bitcoin wallet is not configured. Please contact administrator to set up Bitcoin payments.",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    const isValid = await verifyWallet();
-    if (!isValid) {
-      return;
-    }
-    
-    if (user) {
-      setShowBitcoinCheckout(true);
-    } else {
-      setShowCheckoutModal(true);
-    }
+  const handleBuyNow = () => {
+    setShowCheckoutModal(true);
   };
 
   const handleGuestProceed = (info: any) => {

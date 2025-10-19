@@ -24,7 +24,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
-import { BitcoinCheckout } from "@/components/checkout/BitcoinCheckout";
+
 
 interface EscrowTransactionFormProps {
   open: boolean;
@@ -40,7 +40,6 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
   const [searchQuery, setSearchQuery] = useState("");
   const [comboboxOpen, setComboboxOpen] = useState(false);
   const [whyEscrowOpen, setWhyEscrowOpen] = useState(false);
-  const [walletId, setWalletId] = useState<string>("");
   
   const [formData, setFormData] = useState({
     selectedProduct: null as EscrowProduct | null,

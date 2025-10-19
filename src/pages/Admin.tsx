@@ -15,7 +15,7 @@ const CategoryManagement = lazy(() => import("@/components/dashboard/CategoryMan
 const OrderManagement = lazy(() => import("@/components/dashboard/OrderManagement").then(m => ({ default: m.OrderManagement })));
 const ApplicationManagement = lazy(() => import("@/components/dashboard/ApplicationManagement").then(m => ({ default: m.ApplicationManagement })));
 const PaymentManagement = lazy(() => import("@/components/dashboard/PaymentManagement").then(m => ({ default: m.PaymentManagement })));
-const BitcoinWalletManagement = lazy(() => import("@/components/dashboard/BitcoinWalletManagement").then(m => ({ default: m.BitcoinWalletManagement })));
+
 const InquiryManagement = lazy(() => import("@/components/dashboard/InquiryManagement").then(m => ({ default: m.InquiryManagement })));
 const BlogManagement = lazy(() => import("@/components/dashboard/BlogManagement").then(m => ({ default: m.BlogManagement })));
 const ReviewModerationModule = lazy(() => import("@/components/dashboard/ReviewModerationModule").then(m => ({ default: m.ReviewModerationModule })));
