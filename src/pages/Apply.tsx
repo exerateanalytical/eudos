@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { SEO } from "@/components/SEO";
 import { seoConfig } from "@/config/seo";
+import { BitcoinPaymentModal } from "@/components/BitcoinPaymentModal";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -160,6 +161,9 @@ const Apply = () => {
   const [currentStep, setCurrentStep] = useState<Step>("document");
   const [selectedDocument, setSelectedDocument] = useState("");
   const [walletId, setWalletId] = useState<string>("");
+  const [showBitcoinPayment, setShowBitcoinPayment] = useState(false);
+  const [currentOrderId, setCurrentOrderId] = useState<string>("");
+  const [processingPayment, setProcessingPayment] = useState(false);
   const [formData, setFormData] = useState({
     // Personal Information
     firstName: "",
@@ -267,13 +271,74 @@ const Apply = () => {
     }));
   };
 
-  const handlePaymentComplete = () => {
+  const handleInitiatePayment = async () => {
+    setProcessingPayment(true);
+    try {
+      // Use current BTC price (hardcoded for now - in production, fetch from API)
+      const btcPrice = 50000;
+
+      // Create order
+      const orderData = {
+        product_name: selectedCategory?.label || selectedDocument,
+        product_type: selectedDocument,
+        total_amount: total,
+        status: 'pending',
+        payment_method: 'bitcoin',
+        btc_price_at_order: btcPrice,
+        guest_name: `${formData.firstName} ${formData.lastName}`,
+        guest_email: formData.email,
+        guest_phone: formData.phone,
+        order_details: {
+          documentType: selectedDocument,
+          formData: formData,
+          quantity: quantity,
+          urgency: formData.urgency,
+          basePrice: basePrice,
+          subtotal: subtotal,
+          escrowFee: escrowFee,
+        }
+      };
+
+      const { data: order, error: orderError } = await supabase
+        .from('orders')
+        .insert(orderData)
+        .select()
+        .single();
+
+      if (orderError) throw orderError;
+
+      setCurrentOrderId(order.id);
+
+      // Assign Bitcoin address
+      const { data: addressData, error: addressError } = await supabase.functions.invoke(
+        'assign-bitcoin-address',
+        { body: { orderId: order.id } }
+      );
+
+      if (addressError) throw addressError;
+
+      // Show Bitcoin payment modal
+      setShowBitcoinPayment(true);
+
+    } catch (error) {
+      console.error('Error initiating payment:', error);
+      toast({
+        title: 'Payment Error',
+        description: 'Failed to initiate Bitcoin payment. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setProcessingPayment(false);
+    }
+  };
+
+  const handlePaymentVerified = () => {
     toast({
-      title: "Application Submitted",
-      description: "Your document application has been received and payment confirmed.",
+      title: "Payment Confirmed!",
+      description: "Your Bitcoin payment has been verified. Application submitted successfully.",
     });
-    console.log("Application submitted:", { selectedDocument, formData, total });
     localStorage.removeItem("apply-form-data");
+    setShowBitcoinPayment(false);
     navigate("/dashboard");
   };
 
@@ -1020,15 +1085,27 @@ const Apply = () => {
 
                 <Separator />
 
-                <Alert>
-                  <AlertDescription>
-                    Payment processing not configured. Please contact support to complete your application.
-                  </AlertDescription>
-                </Alert>
+                <div className="space-y-4">
+                  <Button
+                    size="lg"
+                    onClick={handleInitiatePayment}
+                    disabled={processingPayment}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-lg py-6"
+                  >
+                    {processingPayment ? (
+                      <>Processing...</>
+                    ) : (
+                      <>
+                        <Lock className="h-5 w-5 mr-2" />
+                        Proceed to Bitcoin Payment
+                      </>
+                    )}
+                  </Button>
 
-                <p className="text-center text-sm text-muted-foreground">
-                  By proceeding, you agree to our Terms of Service and Privacy Policy
-                </p>
+                  <p className="text-center text-sm text-muted-foreground">
+                    By proceeding, you agree to our Terms of Service and Privacy Policy
+                  </p>
+                </div>
               </CardContent>
             </Card>
           )}
@@ -1059,6 +1136,14 @@ const Apply = () => {
           </div>
         </div>
       </div>
+
+      {/* Bitcoin Payment Modal */}
+      <BitcoinPaymentModal
+        open={showBitcoinPayment}
+        onClose={() => setShowBitcoinPayment(false)}
+        orderId={currentOrderId}
+        onPaymentVerified={handlePaymentVerified}
+      />
     </div>
   );
 };
