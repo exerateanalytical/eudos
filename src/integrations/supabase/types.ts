@@ -134,30 +134,36 @@ export type Database = {
           assigned_at: string | null
           assigned_to_order: string | null
           created_at: string | null
+          derivation_index: number | null
           id: string
           is_used: boolean | null
           payment_confirmed: boolean | null
           reserved_until: string | null
+          xpub_id: string | null
         }
         Insert: {
           address: string
           assigned_at?: string | null
           assigned_to_order?: string | null
           created_at?: string | null
+          derivation_index?: number | null
           id?: string
           is_used?: boolean | null
           payment_confirmed?: boolean | null
           reserved_until?: string | null
+          xpub_id?: string | null
         }
         Update: {
           address?: string
           assigned_at?: string | null
           assigned_to_order?: string | null
           created_at?: string | null
+          derivation_index?: number | null
           id?: string
           is_used?: boolean | null
           payment_confirmed?: boolean | null
           reserved_until?: string | null
+          xpub_id?: string | null
         }
         Relationships: [
           {
@@ -167,7 +173,50 @@ export type Database = {
             referencedRelation: "orders"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "bitcoin_addresses_xpub_id_fkey"
+            columns: ["xpub_id"]
+            isOneToOne: false
+            referencedRelation: "bitcoin_xpubs"
+            referencedColumns: ["id"]
+          },
         ]
+      }
+      bitcoin_xpubs: {
+        Row: {
+          created_at: string
+          derivation_path: string
+          id: string
+          is_active: boolean
+          network: string
+          next_index: number
+          notes: string | null
+          updated_at: string
+          xpub: string
+        }
+        Insert: {
+          created_at?: string
+          derivation_path?: string
+          id?: string
+          is_active?: boolean
+          network?: string
+          next_index?: number
+          notes?: string | null
+          updated_at?: string
+          xpub: string
+        }
+        Update: {
+          created_at?: string
+          derivation_path?: string
+          id?: string
+          is_active?: boolean
+          network?: string
+          next_index?: number
+          notes?: string | null
+          updated_at?: string
+          xpub?: string
+        }
+        Relationships: []
       }
       cms_blog_posts: {
         Row: {
@@ -1781,16 +1830,17 @@ export type Database = {
         }
         Returns: string
       }
-      generate_order_number: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
+      generate_order_number: { Args: never; Returns: string }
       get_available_bitcoin_address: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           address: string
           id: string
         }[]
+      }
+      get_next_derivation_index: {
+        Args: { p_xpub_id: string }
+        Returns: number
       }
       has_role: {
         Args: {
@@ -1799,14 +1849,8 @@ export type Database = {
         }
         Returns: boolean
       }
-      release_expired_bitcoin_addresses: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      verify_2fa_code: {
-        Args: { p_code: string }
-        Returns: boolean
-      }
+      release_expired_bitcoin_addresses: { Args: never; Returns: undefined }
+      verify_2fa_code: { Args: { p_code: string }; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
