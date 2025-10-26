@@ -5,27 +5,35 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-interface HealthStatus {
-  status: 'healthy' | 'degraded' | 'unhealthy';
-  timestamp: string;
-  checks: {
-    database: HealthCheck;
-    blockcypher_api: HealthCheck;
-    address_pool: HealthCheck;
-    pending_payments: HealthCheck;
-    xpub_configured: HealthCheck;
-  };
-  summary: {
-    total_checks: number;
-    passed: number;
-    failed: number;
-  };
-}
-
 interface HealthCheck {
-  status: 'pass' | 'fail' | 'warn';
+  component: string;
+  status: 'healthy' | 'warning' | 'critical';
   message: string;
   details?: any;
+}
+
+async function createAlert(
+  supabaseClient: any,
+  alertType: string,
+  severity: 'info' | 'warning' | 'critical',
+  title: string,
+  message: string,
+  metadata: any = {}
+) {
+  try {
+    await supabaseClient
+      .from('admin_alerts')
+      .insert({
+        alert_type: alertType,
+        severity,
+        title,
+        message,
+        metadata,
+      });
+    console.log(`Created ${severity} alert: ${title}`);
+  } catch (error) {
+    console.error('Failed to create alert:', error);
+  }
 }
 
 Deno.serve(async (req) => {
@@ -39,184 +47,204 @@ Deno.serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
     );
 
-    const checks: HealthStatus['checks'] = {
-      database: { status: 'pass', message: 'Database connection successful' },
-      blockcypher_api: { status: 'pass', message: 'BlockCypher API accessible' },
-      address_pool: { status: 'pass', message: 'Address pool healthy' },
-      pending_payments: { status: 'pass', message: 'No stuck payments' },
-      xpub_configured: { status: 'pass', message: 'XPUB configured' },
-    };
+    console.log('Starting system health check...');
 
-    // Check 1: Database Connectivity
+    const healthChecks: HealthCheck[] = [];
+
+    // 1. Check database connectivity
     try {
-      const { error } = await supabaseClient
-        .from('bitcoin_addresses')
-        .select('id')
-        .limit(1);
-      
+      const { error } = await supabaseClient.from('orders').select('id').limit(1);
       if (error) throw error;
+      healthChecks.push({
+        component: 'database',
+        status: 'healthy',
+        message: 'Database connection successful',
+      });
     } catch (error: any) {
-      checks.database = {
-        status: 'fail',
+      healthChecks.push({
+        component: 'database',
+        status: 'critical',
         message: 'Database connection failed',
-        details: error.message
-      };
+        details: error.message,
+      });
+      await createAlert(
+        supabaseClient,
+        'database_error',
+        'critical',
+        'Database Connection Failed',
+        `Database connectivity check failed: ${error.message}`,
+        { error: error.message }
+      );
     }
 
-    // Check 2: BlockCypher API
+    // 2. Check BlockCypher API
+    const blockcypherToken = Deno.env.get('BLOCKCYPHER_API_TOKEN');
     try {
-      const blockcypherToken = Deno.env.get('BLOCKCYPHER_API_TOKEN');
-      const network = Deno.env.get('VITE_BITCOIN_NETWORK') || 'main';
-      const baseUrl = network === 'test3' 
-        ? 'https://api.blockcypher.com/v1/btc/test3' 
-        : 'https://api.blockcypher.com/v1/btc/main';
-      
-      const testUrl = blockcypherToken
-        ? `${baseUrl}/addrs/bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh?token=${blockcypherToken}`
-        : `${baseUrl}/addrs/bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh`;
-
-      const response = await fetch(testUrl);
-      
-      if (!response.ok) {
-        throw new Error(`API returned ${response.status}`);
-      }
-    } catch (error: any) {
-      checks.blockcypher_api = {
-        status: 'fail',
-        message: 'BlockCypher API not accessible',
-        details: error.message
-      };
-    }
-
-    // Check 3: Address Pool Size
-    try {
-      const { count, error } = await supabaseClient
-        .from('bitcoin_addresses')
-        .select('*', { count: 'exact', head: true })
-        .eq('is_used', false);
-
-      if (error) throw error;
-
-      if (count === null || count < 3) {
-        checks.address_pool = {
-          status: 'fail',
-          message: 'Critical: Address pool critically low',
-          details: { available: count, minimum: 3 }
-        };
-      } else if (count < 10) {
-        checks.address_pool = {
-          status: 'warn',
-          message: 'Warning: Address pool below recommended level',
-          details: { available: count, recommended: 50 }
-        };
+      const response = await fetch(
+        `https://api.blockcypher.com/v1/btc/main${blockcypherToken ? `?token=${blockcypherToken}` : ''}`
+      );
+      if (response.ok) {
+        healthChecks.push({
+          component: 'blockcypher_api',
+          status: 'healthy',
+          message: 'BlockCypher API accessible',
+        });
       } else {
-        checks.address_pool = {
-          status: 'pass',
-          message: 'Address pool healthy',
-          details: { available: count }
-        };
+        throw new Error(`HTTP ${response.status}`);
       }
     } catch (error: any) {
-      checks.address_pool = {
-        status: 'fail',
-        message: 'Failed to check address pool',
-        details: error.message
-      };
+      healthChecks.push({
+        component: 'blockcypher_api',
+        status: 'warning',
+        message: 'BlockCypher API check failed',
+        details: error.message,
+      });
+      await createAlert(
+        supabaseClient,
+        'api_error',
+        'warning',
+        'BlockCypher API Issue',
+        `Cannot connect to BlockCypher API: ${error.message}`,
+        { error: error.message }
+      );
     }
 
-    // Check 4: Stuck Payments (pending for >2 hours)
-    try {
-      const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString();
-      
-      const { count, error } = await supabaseClient
-        .from('orders')
-        .select('*', { count: 'exact', head: true })
-        .eq('payment_method', 'bitcoin')
-        .eq('status', 'pending')
-        .lt('created_at', twoHoursAgo);
+    // 3. Check Bitcoin address pool
+    const { count: availableAddresses } = await supabaseClient
+      .from('bitcoin_addresses')
+      .select('*', { count: 'exact', head: true })
+      .eq('is_used', false);
 
-      if (error) throw error;
-
-      if (count && count > 0) {
-        checks.pending_payments = {
-          status: 'warn',
-          message: `${count} payment(s) pending for >2 hours`,
-          details: { stuck_count: count }
-        };
+    if (availableAddresses !== null) {
+      if (availableAddresses < 10) {
+        healthChecks.push({
+          component: 'address_pool',
+          status: 'critical',
+          message: `Low address pool: ${availableAddresses} addresses remaining`,
+          details: { available: availableAddresses },
+        });
+        await createAlert(
+          supabaseClient,
+          'low_address_pool',
+          'critical',
+          'Bitcoin Address Pool Critical',
+          `Only ${availableAddresses} Bitcoin addresses remaining. Immediate action required!`,
+          { available: availableAddresses, threshold: 10 }
+        );
+      } else if (availableAddresses < 25) {
+        healthChecks.push({
+          component: 'address_pool',
+          status: 'warning',
+          message: `Address pool running low: ${availableAddresses} addresses`,
+          details: { available: availableAddresses },
+        });
+        await createAlert(
+          supabaseClient,
+          'low_address_pool',
+          'warning',
+          'Bitcoin Address Pool Low',
+          `Bitcoin address pool is running low with ${availableAddresses} addresses.`,
+          { available: availableAddresses, threshold: 25 }
+        );
+      } else {
+        healthChecks.push({
+          component: 'address_pool',
+          status: 'healthy',
+          message: `Address pool healthy: ${availableAddresses} addresses available`,
+          details: { available: availableAddresses },
+        });
       }
-    } catch (error: any) {
-      checks.pending_payments = {
-        status: 'fail',
-        message: 'Failed to check pending payments',
-        details: error.message
-      };
     }
 
-    // Check 5: XPUB Configuration
-    try {
-      const { data, error } = await supabaseClient
-        .from('bitcoin_xpubs')
-        .select('id')
-        .eq('is_active', true)
-        .maybeSingle();
+    // 4. Check pending payments
+    const { count: pendingPayments } = await supabaseClient
+      .from('orders')
+      .select('*', { count: 'exact', head: true })
+      .eq('payment_method', 'bitcoin')
+      .eq('status', 'pending');
 
-      if (error) throw error;
-
-      if (!data) {
-        checks.xpub_configured = {
-          status: 'warn',
-          message: 'No active XPUB configured (using pre-seeded addresses)',
-          details: { active_xpub: false }
-        };
-      }
-    } catch (error: any) {
-      checks.xpub_configured = {
-        status: 'fail',
-        message: 'Failed to check XPUB status',
-        details: error.message
-      };
+    if (pendingPayments !== null && pendingPayments > 50) {
+      healthChecks.push({
+        component: 'pending_payments',
+        status: 'warning',
+        message: `High number of pending payments: ${pendingPayments}`,
+        details: { count: pendingPayments },
+      });
+      await createAlert(
+        supabaseClient,
+        'high_pending_payments',
+        'warning',
+        'High Pending Payment Count',
+        `There are ${pendingPayments} pending Bitcoin payments that may need review.`,
+        { count: pendingPayments }
+      );
+    } else {
+      healthChecks.push({
+        component: 'pending_payments',
+        status: 'healthy',
+        message: `Pending payments: ${pendingPayments || 0}`,
+        details: { count: pendingPayments },
+      });
     }
 
-    // Calculate summary
-    const checkValues = Object.values(checks);
-    const passed = checkValues.filter(c => c.status === 'pass').length;
-    const failed = checkValues.filter(c => c.status === 'fail').length;
-    const warned = checkValues.filter(c => c.status === 'warn').length;
+    // 5. Check XPUB configuration
+    const { data: xpubs, count: xpubCount } = await supabaseClient
+      .from('bitcoin_xpubs')
+      .select('*', { count: 'exact' })
+      .eq('is_active', true);
 
-    const overallStatus: HealthStatus['status'] = 
-      failed > 0 ? 'unhealthy' :
-      warned > 0 ? 'degraded' :
-      'healthy';
+    if (xpubCount === 0) {
+      healthChecks.push({
+        component: 'xpub_config',
+        status: 'warning',
+        message: 'No active XPUB configured (using pre-seeded addresses)',
+      });
+      await createAlert(
+        supabaseClient,
+        'no_active_xpub',
+        'warning',
+        'No Active XPUB Configured',
+        'System is relying on pre-seeded addresses. Consider adding an active XPUB.',
+        { xpub_count: 0 }
+      );
+    } else {
+      healthChecks.push({
+        component: 'xpub_config',
+        status: 'healthy',
+        message: `${xpubCount} active XPUB(s) configured`,
+        details: { count: xpubCount },
+      });
+    }
 
-    const healthStatus: HealthStatus = {
-      status: overallStatus,
+    // Calculate overall health
+    const criticalIssues = healthChecks.filter(c => c.status === 'critical').length;
+    const warningIssues = healthChecks.filter(c => c.status === 'warning').length;
+
+    const overallStatus = criticalIssues > 0 ? 'critical' : warningIssues > 0 ? 'warning' : 'healthy';
+
+    const result = {
       timestamp: new Date().toISOString(),
-      checks,
+      overall_status: overallStatus,
+      checks: healthChecks,
       summary: {
-        total_checks: checkValues.length,
-        passed,
-        failed
-      }
+        total: healthChecks.length,
+        healthy: healthChecks.filter(c => c.status === 'healthy').length,
+        warning: warningIssues,
+        critical: criticalIssues,
+      },
     };
 
-    const statusCode = overallStatus === 'healthy' ? 200 : overallStatus === 'degraded' ? 207 : 503;
+    console.log('Health check complete:', result);
 
     return new Response(
-      JSON.stringify(healthStatus, null, 2),
-      { 
-        status: statusCode, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-      }
+      JSON.stringify(result),
+      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
   } catch (error: any) {
     console.error('Error in system-health:', error);
     return new Response(
-      JSON.stringify({ 
-        status: 'unhealthy',
-        error: error?.message || 'Internal server error',
-        timestamp: new Date().toISOString()
-      }),
+      JSON.stringify({ error: error?.message || 'Internal server error' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

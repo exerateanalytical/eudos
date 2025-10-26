@@ -71,7 +71,7 @@ const adminItems = [
   },
   { 
     title: "Payments", 
-    url: "/admin/payments", 
+    url: "/payment-analytics", 
     icon: DollarSign,
     gradient: "from-yellow-500 to-orange-500"
   },
