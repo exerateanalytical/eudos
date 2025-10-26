@@ -461,6 +461,45 @@ export type Database = {
         }
         Relationships: []
       }
+      blockchain_webhook_events: {
+        Row: {
+          address: string
+          confirmations: number | null
+          event_type: string
+          id: string
+          payload: Json
+          processed: boolean | null
+          processed_at: string | null
+          received_at: string
+          transaction_hash: string | null
+          webhook_id: string
+        }
+        Insert: {
+          address: string
+          confirmations?: number | null
+          event_type: string
+          id?: string
+          payload: Json
+          processed?: boolean | null
+          processed_at?: string | null
+          received_at?: string
+          transaction_hash?: string | null
+          webhook_id: string
+        }
+        Update: {
+          address?: string
+          confirmations?: number | null
+          event_type?: string
+          id?: string
+          payload?: Json
+          processed?: boolean | null
+          processed_at?: string | null
+          received_at?: string
+          transaction_hash?: string | null
+          webhook_id?: string
+        }
+        Relationships: []
+      }
       bulk_payment_operations: {
         Row: {
           completed_at: string | null
@@ -1153,6 +1192,50 @@ export type Database = {
           },
         ]
       }
+      job_execution_log: {
+        Row: {
+          completed_at: string | null
+          duration_ms: number | null
+          error_message: string | null
+          id: string
+          items_processed: number | null
+          job_id: string
+          result: Json | null
+          started_at: string
+          status: string
+        }
+        Insert: {
+          completed_at?: string | null
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          items_processed?: number | null
+          job_id: string
+          result?: Json | null
+          started_at?: string
+          status: string
+        }
+        Update: {
+          completed_at?: string | null
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          items_processed?: number | null
+          job_id?: string
+          result?: Json | null
+          started_at?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_execution_log_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "scheduled_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       landing_themes: {
         Row: {
           accent_color: string
@@ -1453,6 +1536,44 @@ export type Database = {
         }
         Relationships: []
       }
+      payment_reminders: {
+        Row: {
+          email_sent: boolean | null
+          id: string
+          metadata: Json | null
+          notification_sent: boolean | null
+          order_id: string
+          reminder_type: string
+          sent_at: string
+        }
+        Insert: {
+          email_sent?: boolean | null
+          id?: string
+          metadata?: Json | null
+          notification_sent?: boolean | null
+          order_id: string
+          reminder_type: string
+          sent_at?: string
+        }
+        Update: {
+          email_sent?: boolean | null
+          id?: string
+          metadata?: Json | null
+          notification_sent?: boolean | null
+          order_id?: string
+          reminder_type?: string
+          sent_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_reminders_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pgp_keys: {
         Row: {
           created_at: string | null
@@ -1718,6 +1839,51 @@ export type Database = {
           status?: string
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      scheduled_jobs: {
+        Row: {
+          config: Json | null
+          created_at: string
+          id: string
+          is_active: boolean
+          job_name: string
+          job_type: string
+          last_duration_ms: number | null
+          last_run_at: string | null
+          last_status: string | null
+          next_run_at: string | null
+          schedule_cron: string
+          updated_at: string
+        }
+        Insert: {
+          config?: Json | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          job_name: string
+          job_type: string
+          last_duration_ms?: number | null
+          last_run_at?: string | null
+          last_status?: string | null
+          next_run_at?: string | null
+          schedule_cron: string
+          updated_at?: string
+        }
+        Update: {
+          config?: Json | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          job_name?: string
+          job_type?: string
+          last_duration_ms?: number | null
+          last_run_at?: string | null
+          last_status?: string | null
+          next_run_at?: string | null
+          schedule_cron?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -2062,6 +2228,95 @@ export type Database = {
         }
         Relationships: []
       }
+      webhook_deliveries: {
+        Row: {
+          attempt_number: number
+          created_at: string
+          delivered_at: string | null
+          event_type: string
+          id: string
+          payload: Json
+          response_body: string | null
+          response_code: number | null
+          status: string
+          subscription_id: string
+        }
+        Insert: {
+          attempt_number?: number
+          created_at?: string
+          delivered_at?: string | null
+          event_type: string
+          id?: string
+          payload: Json
+          response_body?: string | null
+          response_code?: number | null
+          status?: string
+          subscription_id: string
+        }
+        Update: {
+          attempt_number?: number
+          created_at?: string
+          delivered_at?: string | null
+          event_type?: string
+          id?: string
+          payload?: Json
+          response_body?: string | null
+          response_code?: number | null
+          status?: string
+          subscription_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "webhook_deliveries_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "webhook_subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      webhook_subscriptions: {
+        Row: {
+          created_at: string
+          created_by: string
+          events: string[]
+          id: string
+          is_active: boolean
+          last_triggered_at: string | null
+          max_retries: number | null
+          retry_count: number | null
+          secret_key: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          events?: string[]
+          id?: string
+          is_active?: boolean
+          last_triggered_at?: string | null
+          max_retries?: number | null
+          retry_count?: number | null
+          secret_key: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          events?: string[]
+          id?: string
+          is_active?: boolean
+          last_triggered_at?: string | null
+          max_retries?: number | null
+          retry_count?: number | null
+          secret_key?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       public_profiles: {
@@ -2162,7 +2417,23 @@ export type Database = {
         Args: { p_event_type: string; p_metadata?: Json; p_order_id: string }
         Returns: string
       }
+      log_job_execution: {
+        Args: {
+          p_duration_ms?: number
+          p_error_message?: string
+          p_items_processed?: number
+          p_job_name: string
+          p_result?: Json
+          p_status: string
+        }
+        Returns: string
+      }
       release_expired_bitcoin_addresses: { Args: never; Returns: undefined }
+      should_run_scheduled_job: { Args: { p_job_id: string }; Returns: boolean }
+      trigger_webhook_notification: {
+        Args: { p_event_type: string; p_payload: Json }
+        Returns: number
+      }
       update_bitcoin_config: {
         Args: { p_config_key: string; p_config_value: Json; p_user_id?: string }
         Returns: boolean

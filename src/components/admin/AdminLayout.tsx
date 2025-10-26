@@ -15,6 +15,7 @@ import {
   ChevronDown,
   Bitcoin,
   Activity,
+  Webhook,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -95,6 +96,14 @@ const navItems: NavItem[] = [
       { title: "Analytics", href: "/admin/bitcoin-analytics" },
       { title: "Bulk Operations", href: "/admin/bulk-operations" },
       { title: "Address Management", href: "/admin/bitcoin-addresses" },
+    ],
+  },
+  {
+    title: "Automation",
+    href: "/admin/automation",
+    icon: Webhook,
+    children: [
+      { title: "Webhooks & Jobs", href: "/admin/webhooks-automation" },
     ],
   },
   {

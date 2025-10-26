@@ -1,8 +1,8 @@
 # Bitcoin Payment System - Complete Documentation
 
-## 🎉 System Status: Production Ready
+## 🎉 System Status: Production Ready - All 8 Phases Complete
 
-All 7 phases of the Bitcoin payment system have been successfully implemented and integrated.
+All 8 phases of the Bitcoin payment system have been successfully implemented and integrated.
 
 ---
 
@@ -46,6 +46,13 @@ All 7 phases of the Bitcoin payment system have been successfully implemented an
 - Automated alerts for critical issues
 - API status tracking
 - Performance metrics
+
+#### 7. **Webhooks & Automation** (`/admin/webhooks-automation`)
+- External webhook integrations
+- Scheduled job management
+- Automated payment reminders
+- Background task processing
+- BlockCypher webhook receiver
 
 ---
 
@@ -109,6 +116,9 @@ xpub (1) → (n) bitcoin_addresses
 4. **bulk-payment-operations** - Handles bulk processing
 5. **aggregate-bitcoin-analytics** - Computes daily metrics
 6. **monitor-bitcoin-system** - System health checks
+7. **webhook-delivery** - Sends webhooks to external systems
+8. **scheduled-jobs-runner** - Executes scheduled automation jobs
+9. **blockcypher-webhook-receiver** - Receives real-time blockchain events
 
 ### Function Flow
 
@@ -182,9 +192,106 @@ Order fulfilled → Escrow released
 - Clean up expired addresses
 - Update API configurations
 
+#### 3. Webhook Management
+- Review webhook delivery success rates
+- Update webhook endpoints if needed
+- Clean up old delivery logs
+
 ---
 
-## 🧪 Testing Checklist
+## 🤖 Automation & Webhooks
+
+### Scheduled Jobs
+
+The system includes 7 automated jobs running on schedule:
+
+| Job | Schedule | Purpose |
+|-----|----------|---------|
+| daily_analytics_aggregation | Daily at 1 AM | Aggregate daily payment analytics |
+| hourly_analytics_aggregation | Every hour | Aggregate hourly metrics |
+| address_pool_check | Every 15 minutes | Monitor address pool, alert if low |
+| payment_expiry_check | Every 5 minutes | Send reminders for expiring payments |
+| expired_address_cleanup | Every 6 hours | Release expired addresses |
+| old_data_archive | Weekly (Sunday 2 AM) | Archive old webhook/log data |
+| system_health_check | Every 10 minutes | Check API/database health |
+
+### Webhook Events
+
+External systems can subscribe to these events:
+
+| Event | Trigger |
+|-------|---------|
+| payment_confirmed | Payment receives required confirmations |
+| payment_expired | Payment address expires without payment |
+| payment_expiring_soon | Payment will expire in 10 minutes |
+| escrow_released | Escrow funds released to merchant |
+| escrow_refunded | Escrow funds refunded to customer |
+| blockchain_transaction_detected | New transaction seen on blockchain |
+| order_status_changed | Order status changes |
+
+### Webhook Security
+
+All webhooks include HMAC-SHA256 signature:
+```
+X-Webhook-Signature: t=1234567890,v1=abc123...
+X-Webhook-Event: payment_confirmed
+X-Webhook-Delivery-ID: uuid
+```
+
+Verify signatures using your secret key.
+
+### BlockCypher Integration
+
+Set up BlockCypher webhooks for real-time blockchain notifications:
+
+```bash
+curl -X POST https://api.blockcypher.com/v1/btc/main/hooks \
+  -d '{"event": "tx-confirmation", "address": "YOUR_ADDRESS", "url": "https://your-domain.com/functions/v1/blockcypher-webhook-receiver", "token": "YOUR_TOKEN"}'
+```
+
+---
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+#### Payments Not Detected
+1. Check BlockCypher API status
+2. Verify webhook configuration
+3. Check address correctness
+4. Review API rate limits
+
+#### Address Pool Empty
+1. Generate new addresses immediately
+2. Check XPUB configuration
+3. Verify address generation function
+4. Review address recycling settings
+
+#### High Failure Rate
+1. Review failed payment logs
+2. Check confirmation thresholds
+3. Verify blockchain connectivity
+4. Analyze user behavior patterns
+
+#### Escrow Issues
+1. Check escrow transaction status
+2. Verify RLS policies
+3. Review order status history
+4. Check admin permissions
+
+#### Webhook Failures
+1. Check webhook endpoint availability
+2. Verify SSL certificate on webhook URL
+3. Review webhook signature verification
+4. Check retry count and max retries
+
+#### Scheduled Job Not Running
+1. Verify job is marked as active
+2. Check job execution log for errors
+3. Review cron schedule syntax
+4. Test job manually with "Run Now"
+
+---
 
 ### Before Going Live
 
@@ -223,6 +330,18 @@ Order fulfilled → Escrow released
   - Simulate API failure
   - Verify alert creation
   - Test alert resolution
+
+- [ ] **Test Webhooks**
+  - Create webhook subscription
+  - Send test webhook
+  - Verify signature validation
+  - Check delivery logs
+
+- [ ] **Test Scheduled Jobs**
+  - Run each job manually
+  - Verify job execution logs
+  - Check job results
+  - Test job toggle (enable/disable)
 
 ---
 
@@ -346,6 +465,7 @@ SELECT * FROM bitcoin_payment_config;
 - Analytics: `/admin/bitcoin-analytics`
 - Bulk Operations: `/admin/bulk-operations`
 - API Settings: `/admin/api-settings`
+- Webhooks & Automation: `/admin/webhooks-automation`
 
 ---
 
@@ -371,13 +491,33 @@ Before going live with real Bitcoin:
 
 ## 🎊 Congratulations!
 
-Your Bitcoin payment system is fully operational and production-ready. The system includes:
+Your Bitcoin payment system is fully operational and production-ready with all 8 phases complete! The system includes:
 
-✅ Complete payment lifecycle management
-✅ Advanced security and compliance features
-✅ Comprehensive analytics and reporting
-✅ Efficient bulk operation tools
-✅ Real-time monitoring and alerts
-✅ Scalable architecture
+✅ Complete payment lifecycle management  
+✅ Advanced security and compliance features  
+✅ Comprehensive analytics and reporting  
+✅ Efficient bulk operation tools  
+✅ Real-time monitoring and alerts  
+✅ Scalable architecture  
+✅ **Automated webhooks and scheduled jobs**  
+✅ **Real-time blockchain event notifications**  
+✅ **External integration capabilities**  
 
-**You're ready to accept Bitcoin payments!** 🚀
+**You're ready to accept Bitcoin payments at scale!** 🚀
+
+## 📋 Phase Summary
+
+### Phase 1-7: Core Payment System ✅
+All fundamental Bitcoin payment features implemented
+
+### Phase 8: Automation & Webhooks ✅ (NEW)
+- Webhook subscription management
+- Automated webhook delivery with retry logic
+- 7 scheduled jobs for system maintenance
+- Real-time BlockCypher webhook integration
+- Payment reminder system
+- Automated cleanup and archival
+- Health check monitoring
+
+**Total:** 16 database tables, 9 edge functions, 8 admin interfaces, full automation
+
