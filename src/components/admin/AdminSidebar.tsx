@@ -131,6 +131,12 @@ const adminItems = [
     gradient: "from-gray-500 to-slate-500"
   },
   { 
+    title: "API Settings", 
+    url: "/admin/api-settings", 
+    icon: Key,
+    gradient: "from-indigo-500 to-purple-500"
+  },
+  { 
     title: "System Alerts", 
     url: "/admin/system-alerts", 
     icon: Bell,

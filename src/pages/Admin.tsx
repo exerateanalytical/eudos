@@ -28,6 +28,7 @@ const SystemSettings = lazy(() => import("@/components/dashboard/SystemSettings"
 const ContentList = lazy(() => import("@/components/admin/ContentList").then(m => ({ default: m.ContentList })));
 const XpubManagement = lazy(() => import("@/components/admin/XpubManagement").then(m => ({ default: m.XpubManagement })));
 const SystemAlerts = lazy(() => import("@/pages/admin/SystemAlerts"));
+const ApiSettings = lazy(() => import("@/pages/admin/ApiSettings"));
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -196,6 +197,7 @@ const Admin = () => {
                   <Route path="settings" element={<SystemSettings />} />
                   <Route path="bitcoin-addresses" element={<XpubManagement />} />
                   <Route path="system-alerts" element={<SystemAlerts />} />
+                  <Route path="api-settings" element={<ApiSettings />} />
                 </Routes>
               </div>
             </Suspense>
