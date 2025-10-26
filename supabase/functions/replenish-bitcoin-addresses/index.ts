@@ -6,8 +6,8 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const TARGET_POOL_SIZE = 50; // Target number of available addresses
-const BATCH_SIZE = 20; // Generate this many addresses per run
+const MIN_AVAILABLE_ADDRESSES = 20; // Alert threshold
+const REPLENISH_COUNT = 50; // How many to generate when replenishing
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -22,105 +22,149 @@ Deno.serve(async (req) => {
 
     console.log('Starting address pool replenishment check...');
 
-    // Check available address count
+    // Check available address count (including reserved but not expired)
     const { count: availableCount, error: countError } = await supabaseClient
       .from('bitcoin_addresses')
       .select('*', { count: 'exact', head: true })
-      .eq('is_used', false);
+      .eq('is_used', false)
+      .or('reserved_until.is.null,reserved_until.lt.now()');
 
     if (countError) {
       console.error('Error counting available addresses:', countError);
       throw countError;
     }
 
-    console.log(`Current available addresses: ${availableCount}`);
+    console.log(`Available addresses in pool: ${availableCount}`);
 
-    if (availableCount === null || availableCount >= TARGET_POOL_SIZE) {
-      console.log('Address pool is sufficient, no replenishment needed');
+    if ((availableCount ?? 0) >= MIN_AVAILABLE_ADDRESSES) {
+      console.log('Address pool is healthy, no replenishment needed');
       return new Response(
         JSON.stringify({ 
-          message: 'Address pool is sufficient',
+          success: true,
+          message: 'Pool is healthy',
           available: availableCount,
-          target: TARGET_POOL_SIZE
+          threshold: MIN_AVAILABLE_ADDRESSES
         }),
         { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
     // Get active XPUB
+    const network = Deno.env.get('VITE_BITCOIN_NETWORK') || 'main';
     const { data: xpubData, error: xpubError } = await supabaseClient
       .from('bitcoin_xpubs')
       .select('*')
       .eq('is_active', true)
+      .eq('network', network === 'test3' ? 'testnet' : 'mainnet')
       .maybeSingle();
 
     if (!xpubData || xpubError) {
-      console.error('No active XPUB found for replenishment');
+      const errorMsg = `No active XPUB found for network: ${network}`;
+      console.error(errorMsg);
       
       // Send admin alert
-      // TODO: Implement alert system
+      await supabaseClient
+        .from('admin_alerts')
+        .insert({
+          alert_type: 'bitcoin_pool_critical',
+          severity: 'critical',
+          title: 'Bitcoin Address Pool Critical',
+          message: `Address pool has ${availableCount} addresses (threshold: ${MIN_AVAILABLE_ADDRESSES}) but no active XPUB found to generate more.`,
+          metadata: { available_count: availableCount, network }
+        });
       
       return new Response(
         JSON.stringify({ 
-          error: 'No active XPUB available for address generation',
-          warning: 'Please add an active XPUB in admin panel'
+          error: errorMsg,
+          available: availableCount,
+          threshold: MIN_AVAILABLE_ADDRESSES
         }),
         { status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    console.log('Generating addresses from XPUB:', xpubData.id);
+    console.log(`Replenishing ${REPLENISH_COUNT} addresses from XPUB (current index: ${xpubData.next_index})`);
 
-    const addressesToGenerate = Math.min(BATCH_SIZE, TARGET_POOL_SIZE - availableCount);
     const generatedAddresses = [];
+    const startIndex = xpubData.next_index;
 
-    for (let i = 0; i < addressesToGenerate; i++) {
-      // Get next index
-      const { data: nextIndex, error: indexError } = await supabaseClient
-        .rpc('get_next_derivation_index', { p_xpub_id: xpubData.id });
+    for (let i = 0; i < REPLENISH_COUNT; i++) {
+      const index = startIndex + i;
+      
+      try {
+        // Derive address
+        const address = await deriveAddressFromXpub(
+          xpubData.xpub,
+          index,
+          xpubData.network
+        );
 
-      if (indexError || nextIndex === null) {
-        console.error('Failed to get derivation index:', indexError);
-        break;
-      }
-
-      // Derive address
-      const address = await deriveAddressFromXpub(
-        xpubData.xpub,
-        nextIndex,
-        xpubData.network
-      );
-
-      // Insert into database
-      const { error: insertError } = await supabaseClient
-        .from('bitcoin_addresses')
-        .insert({
+        generatedAddresses.push({
           address,
-          derivation_index: nextIndex,
+          derivation_index: index,
           xpub_id: xpubData.id,
+          network: xpubData.network,
           is_used: false,
         });
 
-      if (insertError) {
-        console.error('Failed to insert address:', insertError);
-        break;
+        console.log(`Derived address ${i + 1}/${REPLENISH_COUNT} at index ${index}`);
+      } catch (error) {
+        console.error(`Failed to derive address at index ${index}:`, error);
+        throw error;
       }
-
-      generatedAddresses.push(address);
-      console.log(`Generated address ${i + 1}/${addressesToGenerate}: ${address}`);
-
-      // Small delay to avoid overwhelming the database
-      await new Promise(resolve => setTimeout(resolve, 50));
     }
 
-    console.log(`Replenishment complete. Generated ${generatedAddresses.length} addresses`);
+    // Batch insert all addresses
+    const { error: insertError } = await supabaseClient
+      .from('bitcoin_addresses')
+      .insert(generatedAddresses);
+
+    if (insertError) {
+      console.error('Error inserting addresses:', insertError);
+      throw insertError;
+    }
+
+    // Update XPUB next_index
+    const { error: updateError } = await supabaseClient
+      .from('bitcoin_xpubs')
+      .update({ 
+        next_index: startIndex + REPLENISH_COUNT,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', xpubData.id);
+
+    if (updateError) {
+      console.error('Error updating XPUB index:', updateError);
+      throw updateError;
+    }
+
+    const newTotal = (availableCount ?? 0) + REPLENISH_COUNT;
+    console.log(`Successfully replenished ${REPLENISH_COUNT} addresses. New pool size: ${newTotal}`);
+
+    // Send notification if pool was critically low
+    if ((availableCount ?? 0) < 5) {
+      await supabaseClient
+        .from('admin_alerts')
+        .insert({
+          alert_type: 'bitcoin_pool_replenished',
+          severity: 'info',
+          title: 'Bitcoin Address Pool Replenished',
+          message: `Address pool was critically low (${availableCount}) and has been replenished with ${REPLENISH_COUNT} new addresses.`,
+          metadata: { 
+            previous_count: availableCount, 
+            new_count: newTotal,
+            network: xpubData.network 
+          }
+        });
+    }
 
     return new Response(
       JSON.stringify({ 
         success: true,
-        generated: generatedAddresses.length,
-        total_available: availableCount + generatedAddresses.length,
-        target: TARGET_POOL_SIZE
+        replenished: REPLENISH_COUNT,
+        previous_available: availableCount,
+        new_available: newTotal,
+        next_index: startIndex + REPLENISH_COUNT
       }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
