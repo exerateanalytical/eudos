@@ -27,6 +27,7 @@ const EmailNotificationSystem = lazy(() => import("@/components/dashboard/EmailN
 const SystemSettings = lazy(() => import("@/components/dashboard/SystemSettings").then(m => ({ default: m.SystemSettings })));
 const ContentList = lazy(() => import("@/components/admin/ContentList").then(m => ({ default: m.ContentList })));
 const XpubManagement = lazy(() => import("@/components/admin/XpubManagement").then(m => ({ default: m.XpubManagement })));
+const SystemAlerts = lazy(() => import("@/pages/admin/SystemAlerts"));
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -194,6 +195,7 @@ const Admin = () => {
                   <Route path="notifications" element={<EmailNotificationSystem />} />
                   <Route path="settings" element={<SystemSettings />} />
                   <Route path="bitcoin-addresses" element={<XpubManagement />} />
+                  <Route path="system-alerts" element={<SystemAlerts />} />
                 </Routes>
               </div>
             </Suspense>

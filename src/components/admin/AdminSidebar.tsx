@@ -18,6 +18,7 @@ import {
   Settings,
   Coins,
   Key,
+  Bell,
 } from "lucide-react";
 import {
   Sidebar,
@@ -128,6 +129,12 @@ const adminItems = [
     url: "/admin/settings", 
     icon: Settings,
     gradient: "from-gray-500 to-slate-500"
+  },
+  { 
+    title: "System Alerts", 
+    url: "/admin/system-alerts", 
+    icon: Bell,
+    gradient: "from-red-500 to-orange-500"
   },
 ];
 
