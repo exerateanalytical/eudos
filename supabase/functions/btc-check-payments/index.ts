@@ -138,32 +138,55 @@ Deno.serve(async (req) => {
 
             // Send payment confirmed email
             try {
-              // Get order and user details for email
-              const { data: orderDetails } = await supabaseClient
+              const { data: orderDetails, error: orderError } = await supabaseClient
                 .from('orders')
                 .select('order_number, user_id')
                 .eq('id', order.id)
                 .single();
 
-              if (orderDetails) {
+              if (orderError || !orderDetails) {
+                console.error('Order details not found for email notification:', orderError);
+              } else {
                 const { data: userProfile } = await supabaseClient
                   .from('profiles')
                   .select('full_name, email')
                   .eq('id', orderDetails.user_id)
                   .single();
 
-                if (userProfile) {
-                  await supabaseClient.functions.invoke('send-bitcoin-payment-email', {
+                let userEmail = userProfile?.email;
+                let userName = userProfile?.full_name || 'Customer';
+
+                if (!userEmail) {
+                  console.log('Profile email missing, fetching from auth.users');
+                  const { data: authUser } = await supabaseClient.auth.admin.getUserById(orderDetails.user_id);
+                  userEmail = authUser?.user?.email;
+                }
+
+                if (!userEmail) {
+                  console.error('No email found for user:', orderDetails.user_id);
+                } else {
+                  console.log('Sending payment_confirmed email for order:', {
+                    orderNumber: orderDetails.order_number,
+                    txHash: latestTx.tx_hash
+                  });
+
+                  const { error: emailError } = await supabaseClient.functions.invoke('send-bitcoin-payment-email', {
                     body: { 
                       orderId: order.id,
                       emailType: 'payment_confirmed',
-                      recipientEmail: userProfile.email,
-                      recipientName: userProfile.full_name || 'Customer',
+                      recipientEmail: userEmail,
+                      recipientName: userName,
                       orderNumber: orderDetails.order_number,
                       txHash: latestTx.tx_hash,
                       confirmations: latestTx.confirmations
                     }
                   });
+
+                  if (emailError) {
+                    console.error('Email function returned error:', emailError);
+                  } else {
+                    console.log('Payment confirmed email sent successfully');
+                  }
                 }
               }
             } catch (emailError) {

@@ -28,7 +28,28 @@ Deno.serve(async (req) => {
   try {
     const { orderId, emailType, recipientEmail, recipientName, orderNumber, btcAddress, btcAmount, confirmations, txHash }: EmailRequest = await req.json();
 
-    console.log('Sending email:', { emailType, recipientEmail, orderId });
+    console.log('Email request received:', {
+      orderId,
+      emailType,
+      recipientEmail: recipientEmail ? 'present' : 'MISSING',
+      recipientName: recipientName ? 'present' : 'MISSING',
+      orderNumber: orderNumber ? 'present' : 'MISSING'
+    });
+
+    if (!recipientEmail || !emailType || !recipientName) {
+      console.error('Missing required fields:', { recipientEmail, emailType, recipientName });
+      return new Response(
+        JSON.stringify({ 
+          error: 'Missing required fields',
+          missing: {
+            recipientEmail: !recipientEmail,
+            emailType: !emailType,
+            recipientName: !recipientName
+          }
+        }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
     let subject = '';
     let html = '';
