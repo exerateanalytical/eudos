@@ -136,6 +136,21 @@ Deno.serve(async (req) => {
               })
               .eq('order_id', order.id);
 
+            // Send payment confirmed email
+            try {
+              await supabaseClient.functions.invoke('send-bitcoin-payment-email', {
+                body: { 
+                  orderId: order.id,
+                  address: btcAddress.address,
+                  eventType: 'payment_confirmed',
+                  txHash: latestTx.tx_hash,
+                  confirmations: latestTx.confirmations
+                }
+              });
+            } catch (emailError) {
+              console.error('Failed to send payment confirmed email:', emailError);
+            }
+
             confirmedCount++;
           } else {
             console.log(`Payment detected for order ${order.order_number} but awaiting confirmations (${latestTx.confirmations}/1)`);

@@ -35,6 +35,7 @@ interface DashboardSidebarProps {
 const userItems = [
   { title: "Overview", url: "/dashboard", icon: Home, end: true },
   { title: "Orders", url: "/dashboard/orders", icon: Package },
+  { title: "My Payments", url: "/my-payments", icon: Wallet },
   { title: "Applications", url: "/dashboard/applications", icon: FileText },
   { title: "Wallet", url: "/dashboard/wallet", icon: Wallet },
   { title: "Documents", url: "/dashboard/documents", icon: FolderOpen },

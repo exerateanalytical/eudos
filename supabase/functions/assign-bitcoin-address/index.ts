@@ -93,8 +93,23 @@ Deno.serve(async (req) => {
           assignedAddress = derivedAddress;
           console.log('Successfully assigned derived address:', derivedAddress, 'until', reservationExpiry);
 
+          // Send email notification
+          try {
+            await supabaseClient.functions.invoke('send-bitcoin-payment-email', {
+              body: { 
+                orderId, 
+                address: derivedAddress,
+                eventType: 'address_assigned',
+                reservedUntil: reservationExpiry
+              }
+            });
+          } catch (emailError) {
+            console.error('Failed to send email notification:', emailError);
+            // Don't fail the request if email fails
+          }
+
           return new Response(
-            JSON.stringify({ address: derivedAddress }),
+            JSON.stringify({ address: derivedAddress, reservedUntil: reservationExpiry }),
             { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
           );
         }
@@ -168,8 +183,23 @@ Deno.serve(async (req) => {
         assignedAddress = addressValue;
         console.log('Successfully reserved pre-seeded address:', addressValue, 'until', reservationExpiry);
 
+        // Send email notification
+        try {
+          await supabaseClient.functions.invoke('send-bitcoin-payment-email', {
+            body: { 
+              orderId, 
+              address: addressValue,
+              eventType: 'address_assigned',
+              reservedUntil: reservationExpiry
+            }
+          });
+        } catch (emailError) {
+          console.error('Failed to send email notification:', emailError);
+          // Don't fail the request if email fails
+        }
+
         return new Response(
-          JSON.stringify({ address: addressValue }),
+          JSON.stringify({ address: addressValue, reservedUntil: reservationExpiry }),
           { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
 

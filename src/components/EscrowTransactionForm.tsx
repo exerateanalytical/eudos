@@ -59,6 +59,7 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
   const [loadingPrice, setLoadingPrice] = useState(false);
   const [pollingPayment, setPollingPayment] = useState(false);
   const [reservedUntil, setReservedUntil] = useState<string | null>(null);
+  const [autoPolling, setAutoPolling] = useState(false);
   
   const [formData, setFormData] = useState({
     selectedProduct: null as EscrowProduct | null,
@@ -80,6 +81,17 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
       loadUserProfile();
     }
   }, [open]);
+
+  // Auto-polling for payment verification
+  useEffect(() => {
+    if (autoPolling && orderId && step === "payment") {
+      const interval = setInterval(() => {
+        verifyPayment();
+      }, 30000); // Poll every 30 seconds
+      
+      return () => clearInterval(interval);
+    }
+  }, [autoPolling, orderId, step]);
 
   const loadUserProfile = async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -126,9 +138,12 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
 
       if (data?.address) {
         setAssignedBtcAddress(data.address);
+        setReservedUntil(data.reservedUntil);
         // Generate QR code
         const qrCode = await generateBitcoinQR(data.address);
         setQrCodeDataUrl(qrCode);
+        // Start auto-polling after address assigned
+        setAutoPolling(true);
       } else {
         throw new Error('No address returned');
       }
@@ -926,14 +941,39 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
                     <p className="text-xs text-center text-muted-foreground max-w-xs">
                       Scan this QR code with your Bitcoin wallet to pay
                     </p>
-                  </div>
+                   </div>
 
-                  {/* Bitcoin Address Section */}
-                  <div className="space-y-3">
-                    <Label className="flex items-center gap-2">
-                      <Lock className="w-4 h-4 text-primary" />
-                      Your Unique Bitcoin Address
-                    </Label>
+                   {/* Countdown Timer */}
+                   {reservedUntil && (
+                     <PaymentCountdown 
+                       reservedUntil={reservedUntil}
+                       onExpired={() => {
+                         toast.error("Address reservation expired. Please create a new order.");
+                         setAutoPolling(false);
+                         onOpenChange(false);
+                       }}
+                     />
+                   )}
+
+                   {/* Auto-polling indicator */}
+                   {autoPolling && (
+                     <Alert className="border-blue-500/30 bg-blue-50 dark:bg-blue-950/20">
+                       <RefreshCw className="h-4 w-4 text-blue-600 animate-spin" />
+                       <AlertTitle className="text-blue-700 dark:text-blue-300">
+                         Auto-checking payment status
+                       </AlertTitle>
+                       <AlertDescription className="text-sm text-blue-600 dark:text-blue-400">
+                         We'll automatically verify your payment every 30 seconds
+                       </AlertDescription>
+                     </Alert>
+                   )}
+
+                   {/* Bitcoin Address Section */}
+                   <div className="space-y-3">
+                     <Label className="flex items-center gap-2">
+                       <Lock className="w-4 h-4 text-primary" />
+                       Your Unique Bitcoin Address
+                     </Label>
                     <div className="flex items-center justify-between p-4 bg-muted rounded-lg border">
                       <div className="flex-1 min-w-0">
                         <p className="font-mono text-xs md:text-sm break-all">{assignedBtcAddress}</p>
