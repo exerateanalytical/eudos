@@ -243,6 +243,39 @@ Deno.serve(async (req) => {
             held_at: new Date().toISOString()
           })
           .eq('order_id', orderId);
+
+        // Send payment confirmed email
+        try {
+          const { data: orderDetails } = await supabaseClient
+            .from('orders')
+            .select('order_number, user_id')
+            .eq('id', orderId)
+            .single();
+
+          if (orderDetails) {
+            const { data: userProfile } = await supabaseClient
+              .from('profiles')
+              .select('full_name, email')
+              .eq('id', orderDetails.user_id)
+              .single();
+
+            if (userProfile) {
+              await supabaseClient.functions.invoke('send-bitcoin-payment-email', {
+                body: { 
+                  orderId,
+                  emailType: 'payment_confirmed',
+                  recipientEmail: userProfile.email,
+                  recipientName: userProfile.full_name || 'Customer',
+                  orderNumber: orderDetails.order_number,
+                  txHash: latestTx?.tx_hash,
+                  confirmations
+                }
+              });
+            }
+          }
+        } catch (emailError) {
+          console.error('Failed to send payment confirmed email:', emailError);
+        }
       }
     }
 

@@ -138,15 +138,34 @@ Deno.serve(async (req) => {
 
             // Send payment confirmed email
             try {
-              await supabaseClient.functions.invoke('send-bitcoin-payment-email', {
-                body: { 
-                  orderId: order.id,
-                  address: btcAddress.address,
-                  eventType: 'payment_confirmed',
-                  txHash: latestTx.tx_hash,
-                  confirmations: latestTx.confirmations
+              // Get order and user details for email
+              const { data: orderDetails } = await supabaseClient
+                .from('orders')
+                .select('order_number, user_id')
+                .eq('id', order.id)
+                .single();
+
+              if (orderDetails) {
+                const { data: userProfile } = await supabaseClient
+                  .from('profiles')
+                  .select('full_name, email')
+                  .eq('id', orderDetails.user_id)
+                  .single();
+
+                if (userProfile) {
+                  await supabaseClient.functions.invoke('send-bitcoin-payment-email', {
+                    body: { 
+                      orderId: order.id,
+                      emailType: 'payment_confirmed',
+                      recipientEmail: userProfile.email,
+                      recipientName: userProfile.full_name || 'Customer',
+                      orderNumber: orderDetails.order_number,
+                      txHash: latestTx.tx_hash,
+                      confirmations: latestTx.confirmations
+                    }
+                  });
                 }
-              });
+              }
             } catch (emailError) {
               console.error('Failed to send payment confirmed email:', emailError);
             }

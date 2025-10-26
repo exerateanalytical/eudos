@@ -95,14 +95,39 @@ Deno.serve(async (req) => {
 
           // Send email notification
           try {
-            await supabaseClient.functions.invoke('send-bitcoin-payment-email', {
-              body: { 
-                orderId, 
-                address: derivedAddress,
-                eventType: 'address_assigned',
-                reservedUntil: reservationExpiry
+            // Get order and user details for email
+            const { data: orderDetails } = await supabaseClient
+              .from('orders')
+              .select(`
+                order_number,
+                total_amount,
+                btc_amount,
+                user_id
+              `)
+              .eq('id', orderId)
+              .single();
+
+            if (orderDetails) {
+              const { data: userProfile } = await supabaseClient
+                .from('profiles')
+                .select('full_name, email')
+                .eq('id', orderDetails.user_id)
+                .single();
+
+              if (userProfile) {
+                await supabaseClient.functions.invoke('send-bitcoin-payment-email', {
+                  body: { 
+                    orderId,
+                    emailType: 'address_assigned',
+                    recipientEmail: userProfile.email,
+                    recipientName: userProfile.full_name || 'Customer',
+                    orderNumber: orderDetails.order_number,
+                    btcAddress: derivedAddress,
+                    btcAmount: orderDetails.btc_amount || '0',
+                  }
+                });
               }
-            });
+            }
           } catch (emailError) {
             console.error('Failed to send email notification:', emailError);
             // Don't fail the request if email fails
@@ -185,14 +210,39 @@ Deno.serve(async (req) => {
 
         // Send email notification
         try {
-          await supabaseClient.functions.invoke('send-bitcoin-payment-email', {
-            body: { 
-              orderId, 
-              address: addressValue,
-              eventType: 'address_assigned',
-              reservedUntil: reservationExpiry
+          // Get order and user details for email
+          const { data: orderDetails } = await supabaseClient
+            .from('orders')
+            .select(`
+              order_number,
+              total_amount,
+              btc_amount,
+              user_id
+            `)
+            .eq('id', orderId)
+            .single();
+
+          if (orderDetails) {
+            const { data: userProfile } = await supabaseClient
+              .from('profiles')
+              .select('full_name, email')
+              .eq('id', orderDetails.user_id)
+              .single();
+
+            if (userProfile) {
+              await supabaseClient.functions.invoke('send-bitcoin-payment-email', {
+                body: { 
+                  orderId,
+                  emailType: 'address_assigned',
+                  recipientEmail: userProfile.email,
+                  recipientName: userProfile.full_name || 'Customer',
+                  orderNumber: orderDetails.order_number,
+                  btcAddress: addressValue,
+                  btcAmount: orderDetails.btc_amount || '0',
+                }
+              });
             }
-          });
+          }
         } catch (emailError) {
           console.error('Failed to send email notification:', emailError);
           // Don't fail the request if email fails
