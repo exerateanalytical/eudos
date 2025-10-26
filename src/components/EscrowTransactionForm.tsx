@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Check, Copy, Shield, ArrowRight, Search, CheckCircle, Info, Lock, AlertTriangle, Clock, FileCheck, Package, Headphones, Loader2, QrCode, RefreshCw } from "lucide-react";
 import { generateBitcoinQR } from "@/lib/bitcoinUtils";
+import { getBtcPrice, usdToBtc, formatBtc, formatUsd } from "@/lib/btcPriceService";
 import { escrowProducts, searchProducts, getProductById, type EscrowProduct } from "@/lib/escrowProducts";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -52,6 +53,9 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
     confirmations: number;
     message: string;
   } | null>(null);
+  const [btcPrice, setBtcPrice] = useState<number>(0);
+  const [btcAmount, setBtcAmount] = useState<number>(0);
+  const [loadingPrice, setLoadingPrice] = useState(false);
   
   const [formData, setFormData] = useState({
     selectedProduct: null as EscrowProduct | null,
@@ -935,12 +939,50 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
                         {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                       </Button>
                     </div>
-                    <div className="flex items-center justify-center gap-2 text-sm">
-                      <QrCode className="w-4 h-4 text-primary" />
-                      <span className="font-medium">Amount to Send: ${total.toFixed(2)} USD in BTC</span>
+                    <div className="space-y-2 p-4 bg-primary/5 rounded-lg border border-primary/20">
+                      {loadingPrice ? (
+                        <div className="flex items-center justify-center gap-2">
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <span className="text-sm">Fetching BTC price...</span>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="flex items-center justify-center gap-2 text-lg font-bold text-primary">
+                            <QrCode className="w-5 h-5" />
+                            <span>Send: {formatBtc(btcAmount)}</span>
+                          </div>
+                          <div className="text-center space-y-1">
+                            <p className="text-sm text-muted-foreground">
+                              ≈ {formatUsd(total)} at {formatUsd(btcPrice)}/BTC
+                            </p>
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              onClick={async () => {
+                                setLoadingPrice(true);
+                                try {
+                                  const priceData = await getBtcPrice(true);
+                                  setBtcPrice(priceData.usd);
+                                  const newBtc = usdToBtc(total, priceData.usd);
+                                  setBtcAmount(newBtc);
+                                  toast.success("BTC price refreshed");
+                                } catch (error) {
+                                  toast.error("Failed to refresh price");
+                                } finally {
+                                  setLoadingPrice(false);
+                                }
+                              }}
+                              className="h-6 text-xs"
+                            >
+                              <RefreshCw className="w-3 h-3 mr-1" />
+                              Refresh Price
+                            </Button>
+                          </div>
+                        </>
+                      )}
                     </div>
                     <p className="text-xs text-center text-muted-foreground">
-                      Accepted: Bitcoin (BTC) only
+                      Accepted: Bitcoin (BTC) only • Testnet supported in development
                     </p>
                   </div>
 
@@ -950,14 +992,14 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
                         <FileCheck className="w-4 h-4" />
                         Payment Instructions:
                       </p>
-                      <ol className="text-sm space-y-2 list-decimal list-inside">
-                        <li>Scan the QR code above OR copy the Bitcoin address</li>
-                        <li>Open your Bitcoin wallet app</li>
-                        <li>Send exactly <strong>${total.toFixed(2)}</strong> worth of BTC to the address</li>
-                        <li>Click "I've Sent Payment" below</li>
-                        <li>Wait for blockchain confirmation (typically 10-60 minutes)</li>
-                        <li>You'll receive a confirmation email once verified</li>
-                      </ol>
+                       <ol className="text-sm space-y-2 list-decimal list-inside">
+                         <li>Scan the QR code above OR copy the Bitcoin address</li>
+                         <li>Open your Bitcoin wallet app</li>
+                         <li>Send exactly <strong>{formatBtc(btcAmount)}</strong> ({formatUsd(total)}) to the address</li>
+                         <li>Click "I've Sent Payment" below</li>
+                         <li>Wait for blockchain confirmation (typically 10-60 minutes)</li>
+                         <li>You'll receive a confirmation email once verified</li>
+                       </ol>
                     </CardContent>
                   </Card>
                 </>
@@ -979,8 +1021,8 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
                   <div className="flex items-start gap-3">
                     <div className="w-6 h-6 rounded-full bg-blue-600 dark:bg-blue-400 flex items-center justify-center text-white dark:text-black font-bold text-xs flex-shrink-0">1</div>
                     <div>
-                      <p className="text-sm font-medium text-blue-700 dark:text-blue-300">Blockchain Confirmation</p>
-                      <p className="text-xs text-blue-600 dark:text-blue-400">5-30 minutes</p>
+                       <p className="text-sm font-medium text-blue-700 dark:text-blue-300">Blockchain Confirmation</p>
+                       <p className="text-xs text-blue-600 dark:text-blue-400">10-60 minutes</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">

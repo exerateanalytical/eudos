@@ -38,6 +38,10 @@ Deno.serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
     );
 
+    const blockcypherToken = Deno.env.get('BLOCKCYPHER_API_TOKEN');
+    const network = Deno.env.get('VITE_BITCOIN_NETWORK') || 'main';
+    const baseUrl = network === 'test3' ? 'https://api.blockcypher.com/v1/btc/test3' : 'https://api.blockcypher.com/v1/btc/main';
+
     const { orderId } = await req.json();
 
     if (!orderId) {
@@ -52,7 +56,7 @@ Deno.serve(async (req) => {
     // Get the Bitcoin address assigned to this order
     const { data: addressData, error: addressError } = await supabaseClient
       .from('bitcoin_addresses')
-      .select('id, address, payment_confirmed')
+      .select('id, address, payment_confirmed, reserved_until')
       .eq('assigned_to_order', orderId)
       .single();
 
@@ -62,6 +66,24 @@ Deno.serve(async (req) => {
         JSON.stringify({ error: 'Bitcoin address not found for this order' }),
         { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
+    }
+
+    // Check if reservation expired
+    if (addressData.reserved_until) {
+      const expiryTime = new Date(addressData.reserved_until).getTime();
+      const now = Date.now();
+      
+      if (now > expiryTime) {
+        console.log('Payment address has expired');
+        return new Response(
+          JSON.stringify({ 
+            error: 'Payment address has expired. Please generate a new payment address.',
+            error_code: 'ADDRESS_EXPIRED',
+            expired_at: addressData.reserved_until
+          }),
+          { status: 410, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
     }
 
     // If already confirmed, return success
@@ -92,8 +114,9 @@ Deno.serve(async (req) => {
     }
 
     // Use BlockCypher API to check for payments
-    const blockCypherToken = Deno.env.get('BLOCKCYPHER_API_TOKEN') || '';
-    const apiUrl = `https://api.blockcypher.com/v1/btc/main/addrs/${addressData.address}/balance?token=${blockCypherToken}`;
+    const apiUrl = blockcypherToken
+      ? `${baseUrl}/addrs/${addressData.address}?token=${blockcypherToken}`
+      : `${baseUrl}/addrs/${addressData.address}`;
     
     console.log('Checking blockchain for address:', addressData.address);
     
@@ -134,9 +157,11 @@ Deno.serve(async (req) => {
     }
 
     // Get confirmation count from most recent transaction
-    const confirmations = blockchainData.txrefs?.[0]?.confirmations || 0;
+    const latestTx = blockchainData.txrefs?.[0];
+    const confirmations = latestTx?.confirmations || 0;
+    const receivedBtc = latestTx ? latestTx.value / 100000000 : 0; // Convert satoshis to BTC
     
-    console.log('Payment detected with confirmations:', confirmations);
+    console.log('Payment detected with confirmations:', confirmations, 'BTC:', receivedBtc);
 
     // If we have at least 1 confirmation, mark as confirmed
     if (confirmations >= 1) {
@@ -160,13 +185,25 @@ Deno.serve(async (req) => {
           .update({ status: 'processing' })
           .eq('id', orderId);
 
-        // Update transaction status
+        // Update transaction status with Bitcoin transaction details
         await supabaseClient
           .from('transactions')
           .update({ 
             status: 'completed',
-            completed_at: new Date().toISOString()
+            completed_at: new Date().toISOString(),
+            metadata: {
+              bitcoin_tx_hash: latestTx?.tx_hash,
+              confirmations: confirmations,
+              btc_amount: receivedBtc,
+              received_at: new Date().toISOString()
+            }
           })
+          .eq('order_id', orderId);
+
+        // Update escrow transaction status
+        await supabaseClient
+          .from('escrow_transactions')
+          .update({ status: 'held' })
           .eq('order_id', orderId);
       }
     }
