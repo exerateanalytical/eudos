@@ -26,6 +26,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
+import { PaymentCountdown } from "@/components/PaymentCountdown";
 
 
 interface EscrowTransactionFormProps {
@@ -56,6 +57,8 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
   const [btcPrice, setBtcPrice] = useState<number>(0);
   const [btcAmount, setBtcAmount] = useState<number>(0);
   const [loadingPrice, setLoadingPrice] = useState(false);
+  const [pollingPayment, setPollingPayment] = useState(false);
+  const [reservedUntil, setReservedUntil] = useState<string | null>(null);
   
   const [formData, setFormData] = useState({
     selectedProduct: null as EscrowProduct | null,
