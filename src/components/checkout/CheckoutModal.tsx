@@ -56,6 +56,7 @@ export function CheckoutModal({ open, onClose, productName, productType, amount 
       const { data: order, error: orderError } = await supabase
         .from('orders')
         .insert({
+          user_id: null,
           product_name: productName,
           product_type: productType,
           total_amount: amount,

@@ -279,6 +279,7 @@ const Apply = () => {
 
       // Create order
       const orderData = {
+        user_id: null,
         product_name: selectedCategory?.label || selectedDocument,
         product_type: selectedDocument,
         total_amount: total,
