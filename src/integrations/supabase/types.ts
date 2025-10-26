@@ -175,7 +175,9 @@ export type Database = {
           created_at: string | null
           derivation_index: number | null
           id: string
+          is_multisig: boolean | null
           is_used: boolean | null
+          multisig_wallet_id: string | null
           payment_confirmed: boolean | null
           reserved_until: string | null
           xpub_id: string | null
@@ -187,7 +189,9 @@ export type Database = {
           created_at?: string | null
           derivation_index?: number | null
           id?: string
+          is_multisig?: boolean | null
           is_used?: boolean | null
+          multisig_wallet_id?: string | null
           payment_confirmed?: boolean | null
           reserved_until?: string | null
           xpub_id?: string | null
@@ -199,7 +203,9 @@ export type Database = {
           created_at?: string | null
           derivation_index?: number | null
           id?: string
+          is_multisig?: boolean | null
           is_used?: boolean | null
+          multisig_wallet_id?: string | null
           payment_confirmed?: boolean | null
           reserved_until?: string | null
           xpub_id?: string | null
@@ -210,6 +216,13 @@ export type Database = {
             columns: ["assigned_to_order"]
             isOneToOne: false
             referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bitcoin_addresses_multisig_wallet_id_fkey"
+            columns: ["multisig_wallet_id"]
+            isOneToOne: false
+            referencedRelation: "bitcoin_multisig_wallets"
             referencedColumns: ["id"]
           },
           {
@@ -254,6 +267,51 @@ export type Database = {
           payments_failed?: number | null
           revenue_btc?: number | null
           revenue_usd?: number | null
+        }
+        Relationships: []
+      }
+      bitcoin_multisig_wallets: {
+        Row: {
+          created_at: string | null
+          derivation_path: string
+          id: string
+          is_active: boolean | null
+          name: string
+          network: string
+          next_index: number | null
+          notes: string | null
+          required_signatures: number
+          total_cosigners: number
+          updated_at: string | null
+          xpubs: Json
+        }
+        Insert: {
+          created_at?: string | null
+          derivation_path?: string
+          id?: string
+          is_active?: boolean | null
+          name: string
+          network?: string
+          next_index?: number | null
+          notes?: string | null
+          required_signatures?: number
+          total_cosigners?: number
+          updated_at?: string | null
+          xpubs?: Json
+        }
+        Update: {
+          created_at?: string | null
+          derivation_path?: string
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          network?: string
+          next_index?: number | null
+          notes?: string | null
+          required_signatures?: number
+          total_cosigners?: number
+          updated_at?: string | null
+          xpubs?: Json
         }
         Relationships: []
       }
@@ -302,6 +360,36 @@ export type Database = {
           total_revenue_usd?: number | null
           unique_users?: number | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      bitcoin_payment_config: {
+        Row: {
+          config_key: string
+          config_value: Json
+          created_at: string | null
+          description: string | null
+          id: string
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          config_key: string
+          config_value?: Json
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          config_key?: string
+          config_value?: Json
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          updated_at?: string | null
+          updated_by?: string | null
         }
         Relationships: []
       }
@@ -370,6 +458,57 @@ export type Database = {
           notes?: string | null
           updated_at?: string
           xpub?: string
+        }
+        Relationships: []
+      }
+      bulk_payment_operations: {
+        Row: {
+          completed_at: string | null
+          created_at: string | null
+          created_by: string
+          error_log: Json | null
+          failed_items: number | null
+          id: string
+          metadata: Json | null
+          operation_type: string
+          processed_items: number | null
+          started_at: string | null
+          status: string
+          successful_items: number | null
+          total_items: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string | null
+          created_by: string
+          error_log?: Json | null
+          failed_items?: number | null
+          id?: string
+          metadata?: Json | null
+          operation_type: string
+          processed_items?: number | null
+          started_at?: string | null
+          status?: string
+          successful_items?: number | null
+          total_items?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string | null
+          created_by?: string
+          error_log?: Json | null
+          failed_items?: number | null
+          id?: string
+          metadata?: Json | null
+          operation_type?: string
+          processed_items?: number | null
+          started_at?: string | null
+          status?: string
+          successful_items?: number | null
+          total_items?: number | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -1985,6 +2124,10 @@ export type Database = {
         Args: { target_date?: string }
         Returns: undefined
       }
+      bulk_verify_pending_payments: {
+        Args: { p_operation_id: string; p_order_ids?: string[] }
+        Returns: Json
+      }
       create_notification: {
         Args: {
           p_link?: string
@@ -2003,6 +2146,7 @@ export type Database = {
           id: string
         }[]
       }
+      get_bitcoin_config: { Args: { p_config_key: string }; Returns: Json }
       get_next_derivation_index: {
         Args: { p_xpub_id: string }
         Returns: number
@@ -2019,6 +2163,10 @@ export type Database = {
         Returns: string
       }
       release_expired_bitcoin_addresses: { Args: never; Returns: undefined }
+      update_bitcoin_config: {
+        Args: { p_config_key: string; p_config_value: Json; p_user_id?: string }
+        Returns: boolean
+      }
       verify_2fa_code: { Args: { p_code: string }; Returns: boolean }
     }
     Enums: {
