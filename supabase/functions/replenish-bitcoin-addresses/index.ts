@@ -1,5 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.58.0';
-import { deriveAddressFromXpub } from './derivation.ts';
+import { deriveAddressFromXpub } from '../_shared/bip32-derivation.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -50,28 +50,15 @@ Deno.serve(async (req) => {
     }
 
     // Get active XPUB
-    const network = Deno.env.get('VITE_BITCOIN_NETWORK') || 'main';
     const { data: xpubData, error: xpubError } = await supabaseClient
       .from('bitcoin_xpubs')
       .select('*')
       .eq('is_active', true)
-      .eq('network', network === 'test3' ? 'testnet' : 'mainnet')
       .maybeSingle();
 
     if (!xpubData || xpubError) {
-      const errorMsg = `No active XPUB found for network: ${network}`;
+      const errorMsg = 'No active XPUB found to generate addresses';
       console.error(errorMsg);
-      
-      // Send admin alert
-      await supabaseClient
-        .from('admin_alerts')
-        .insert({
-          alert_type: 'bitcoin_pool_critical',
-          severity: 'critical',
-          title: 'Bitcoin Address Pool Critical',
-          message: `Address pool has ${availableCount} addresses (threshold: ${MIN_AVAILABLE_ADDRESSES}) but no active XPUB found to generate more.`,
-          metadata: { available_count: availableCount, network }
-        });
       
       return new Response(
         JSON.stringify({ 
@@ -92,9 +79,9 @@ Deno.serve(async (req) => {
       const index = startIndex + i;
       
       try {
-        // Derive address
+        // Derive address using proper BIP32
         const address = await deriveAddressFromXpub(
-          xpubData.xpub,
+          xpubData.xpub_key,
           index,
           xpubData.network
         );
@@ -102,6 +89,7 @@ Deno.serve(async (req) => {
         generatedAddresses.push({
           address,
           derivation_index: index,
+          derivation_path: `m/84'/0'/0'/0/${index}`,
           xpub_id: xpubData.id,
           network: xpubData.network,
           is_used: false,
@@ -140,23 +128,6 @@ Deno.serve(async (req) => {
 
     const newTotal = (availableCount ?? 0) + REPLENISH_COUNT;
     console.log(`Successfully replenished ${REPLENISH_COUNT} addresses. New pool size: ${newTotal}`);
-
-    // Send notification if pool was critically low
-    if ((availableCount ?? 0) < 5) {
-      await supabaseClient
-        .from('admin_alerts')
-        .insert({
-          alert_type: 'bitcoin_pool_replenished',
-          severity: 'info',
-          title: 'Bitcoin Address Pool Replenished',
-          message: `Address pool was critically low (${availableCount}) and has been replenished with ${REPLENISH_COUNT} new addresses.`,
-          metadata: { 
-            previous_count: availableCount, 
-            new_count: newTotal,
-            network: xpubData.network 
-          }
-        });
-    }
 
     return new Response(
       JSON.stringify({ 

@@ -567,6 +567,9 @@ const DriverLicenseDetail = () => {
       <CheckoutModal
         open={showCheckoutModal}
         onClose={() => setShowCheckoutModal(false)}
+        productName={`${licenseId?.replace(/-/g, ' ')} Driver License`}
+        productType="license"
+        amount={999}
       />
 
     </div>

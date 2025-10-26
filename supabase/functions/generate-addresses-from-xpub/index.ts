@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.58.0';
+import { deriveAddressFromXpub } from '../_shared/bip32-derivation.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -69,23 +70,22 @@ Deno.serve(async (req) => {
           continue;
         }
 
-        // Import derivation logic (note: in edge functions, we need to use Deno-compatible imports)
-        // For now, we'll use a simpler approach with bitcoinjs-lib directly
-        const { deriveAddress } = await import('./derivation.ts');
-        
-        const derived = deriveAddress(
-          xpub.xpub,
+        // Derive address using proper BIP32
+        const address = await deriveAddressFromXpub(
+          xpub.xpub_key,
           nextIndex,
-          xpub.network === 'testnet' ? 'testnet' : 'mainnet'
+          xpub.network
         );
 
         // Insert address
         const { data: inserted, error: insertError } = await supabaseClient
           .from('bitcoin_addresses')
           .insert({
-            address: derived.address,
+            address: address,
             xpub_id: xpub.id,
             derivation_index: nextIndex,
+            derivation_path: `m/84'/0'/0'/0/${nextIndex}`,
+            network: xpub.network,
             is_used: false,
           })
           .select()

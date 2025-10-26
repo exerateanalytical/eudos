@@ -823,6 +823,9 @@ const CitizenshipDetail = () => {
       <CheckoutModal
         open={showCheckoutModal}
         onClose={() => setShowCheckoutModal(false)}
+        productName={`${country?.replace(/-/g, ' ')} Citizenship`}
+        productType="citizenship"
+        amount={2999}
       />
 
     </div>

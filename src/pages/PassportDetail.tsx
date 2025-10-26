@@ -595,6 +595,9 @@ const PassportDetail = () => {
       <CheckoutModal
         open={showCheckoutModal}
         onClose={() => setShowCheckoutModal(false)}
+        productName={`${country} Passport`}
+        productType="passport"
+        amount={1299}
       />
 
     </div>

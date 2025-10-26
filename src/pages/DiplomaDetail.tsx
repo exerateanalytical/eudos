@@ -547,6 +547,9 @@ const DiplomaDetail = () => {
       <CheckoutModal
         open={showCheckoutModal}
         onClose={() => setShowCheckoutModal(false)}
+        productName={`${universityName} Diploma`}
+        productType="diploma"
+        amount={1499}
       />
 
     </div>

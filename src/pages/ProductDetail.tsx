@@ -555,6 +555,9 @@ const ProductDetail = () => {
       <CheckoutModal
         open={showCheckoutModal}
         onClose={() => setShowCheckoutModal(false)}
+        productName={product?.name || 'Product'}
+        productType={product?.type || 'product'}
+        amount={product?.basePrice || 999}
       />
 
     </div>

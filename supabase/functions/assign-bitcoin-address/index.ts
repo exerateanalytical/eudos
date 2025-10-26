@@ -1,5 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.58.0';
-import { deriveAddressFromXpub } from './derivation.ts';
+import { deriveAddressFromXpub } from '../_shared/bip32-derivation.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -57,17 +57,17 @@ Deno.serve(async (req) => {
 
           console.log('Deriving address at index:', nextIndex);
 
-          // Derive the address
+          // Derive the address using proper BIP32
           const derivedAddress = await deriveAddressFromXpub(
-            xpubData.xpub,
+            xpubData.xpub_key,
             nextIndex,
             xpubData.network
           );
 
           console.log('Derived address:', derivedAddress);
 
-          // Reserve the address for 30 minutes
-          const reservationExpiry = new Date(Date.now() + 30 * 60 * 1000).toISOString();
+          // Reserve the address for 15 minutes
+          const reservationExpiry = new Date(Date.now() + 15 * 60 * 1000).toISOString();
 
           // Insert the derived address into bitcoin_addresses table
           const { data: insertedAddress, error: insertError } = await supabaseClient
@@ -75,7 +75,9 @@ Deno.serve(async (req) => {
             .insert({
               address: derivedAddress,
               derivation_index: nextIndex,
+              derivation_path: `m/84'/0'/0'/0/${nextIndex}`,
               xpub_id: xpubData.id,
+              network: xpubData.network,
               is_used: true,
               assigned_to_order: orderId,
               assigned_at: new Date().toISOString(),
@@ -92,46 +94,6 @@ Deno.serve(async (req) => {
 
           assignedAddress = derivedAddress;
           console.log('Successfully assigned derived address:', derivedAddress, 'until', reservationExpiry);
-
-          // Send email notification
-          try {
-            // Get order and user details for email
-            const { data: orderDetails } = await supabaseClient
-              .from('orders')
-              .select(`
-                order_number,
-                total_amount,
-                btc_amount,
-                user_id
-              `)
-              .eq('id', orderId)
-              .single();
-
-            if (orderDetails) {
-              const { data: userProfile } = await supabaseClient
-                .from('profiles')
-                .select('full_name, email')
-                .eq('id', orderDetails.user_id)
-                .single();
-
-              if (userProfile) {
-                await supabaseClient.functions.invoke('send-bitcoin-payment-email', {
-                  body: { 
-                    orderId,
-                    emailType: 'address_assigned',
-                    recipientEmail: userProfile.email,
-                    recipientName: userProfile.full_name || 'Customer',
-                    orderNumber: orderDetails.order_number,
-                    btcAddress: derivedAddress,
-                    btcAmount: orderDetails.btc_amount || '0',
-                  }
-                });
-              }
-            }
-          } catch (emailError) {
-            console.error('Failed to send email notification:', emailError);
-            // Don't fail the request if email fails
-          }
 
           return new Response(
             JSON.stringify({ address: derivedAddress, reservedUntil: reservationExpiry }),
@@ -170,8 +132,8 @@ Deno.serve(async (req) => {
         const addressId = (data as any).id;
         const addressValue = (data as any).address;
 
-        // Reserve the address for 30 minutes
-        const reservationExpiry = new Date(Date.now() + 30 * 60 * 1000).toISOString();
+        // Reserve the address for 15 minutes
+        const reservationExpiry = new Date(Date.now() + 15 * 60 * 1000).toISOString();
         
         const { error: updateError } = await supabaseClient
           .from('bitcoin_addresses')
@@ -207,69 +169,6 @@ Deno.serve(async (req) => {
 
         assignedAddress = addressValue;
         console.log('Successfully reserved pre-seeded address:', addressValue, 'until', reservationExpiry);
-
-        // Send email notification
-        try {
-          const { data: orderDetails, error: orderError } = await supabaseClient
-            .from('orders')
-            .select(`
-              order_number,
-              total_amount,
-              btc_amount,
-              user_id
-            `)
-            .eq('id', orderId)
-            .single();
-
-          if (orderError || !orderDetails) {
-            console.error('Order details not found for email notification:', orderError);
-          } else {
-            const { data: userProfile } = await supabaseClient
-              .from('profiles')
-              .select('full_name, email')
-              .eq('id', orderDetails.user_id)
-              .single();
-
-            let userEmail = userProfile?.email;
-            let userName = userProfile?.full_name || 'Customer';
-
-            if (!userEmail) {
-              console.log('Profile email missing, fetching from auth.users');
-              const { data: authUser } = await supabaseClient.auth.admin.getUserById(orderDetails.user_id);
-              userEmail = authUser?.user?.email;
-            }
-
-            if (!userEmail) {
-              console.error('No email found for user:', orderDetails.user_id);
-            } else {
-              console.log('Sending address_assigned email:', {
-                orderNumber: orderDetails.order_number,
-                recipientEmail: userEmail,
-                btcAddress: addressValue
-              });
-
-              const { error: emailError } = await supabaseClient.functions.invoke('send-bitcoin-payment-email', {
-                body: { 
-                  orderId,
-                  emailType: 'address_assigned',
-                  recipientEmail: userEmail,
-                  recipientName: userName,
-                  orderNumber: orderDetails.order_number,
-                  btcAddress: addressValue,
-                  btcAmount: orderDetails.btc_amount || '0',
-                }
-              });
-
-              if (emailError) {
-                console.error('Email function returned error:', emailError);
-              } else {
-                console.log('Address assigned email sent successfully');
-              }
-            }
-          }
-        } catch (emailError) {
-          console.error('Failed to send email notification:', emailError);
-        }
 
         return new Response(
           JSON.stringify({ address: addressValue, reservedUntil: reservationExpiry }),
