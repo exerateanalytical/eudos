@@ -31,7 +31,7 @@ export function deriveAddress(
   
   // Generate a bech32-like address (simplified)
   const prefix = network === 'testnet' ? 'tb1' : 'bc1';
-  const addressSuffix = hash.substring(0, 38);
+  const addressSuffix = hash.toString().substring(0, 38);
   const address = `${prefix}q${addressSuffix}`;
   
   return {

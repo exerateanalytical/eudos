@@ -101,7 +101,7 @@ Deno.serve(async (req) => {
     // Get the order details to check expected amount
     const { data: orderData, error: orderError } = await supabaseClient
       .from('orders')
-      .select('total_amount, status')
+      .select('total_amount, status, btc_price_at_order')
       .eq('id', orderId)
       .single();
 
@@ -163,6 +163,24 @@ Deno.serve(async (req) => {
     
     console.log('Payment detected with confirmations:', confirmations, 'BTC:', receivedBtc);
 
+    // Validate payment amount (if BTC price was stored with order)
+    if (orderData.btc_price_at_order && receivedBtc > 0) {
+      const expectedBtc = orderData.total_amount / orderData.btc_price_at_order;
+      const tolerance = 0.02; // 2% tolerance for network fees
+      const difference = Math.abs(receivedBtc - expectedBtc) / expectedBtc;
+      
+      console.log('Amount validation:', {
+        expected: expectedBtc,
+        received: receivedBtc,
+        difference: (difference * 100).toFixed(2) + '%'
+      });
+
+      if (difference > tolerance) {
+        console.warn(`Payment amount mismatch: expected ${expectedBtc} BTC, received ${receivedBtc} BTC`);
+        // Log but don't reject - admin can review
+      }
+    }
+
     // If we have at least 1 confirmation, mark as confirmed
     if (confirmations >= 1) {
       // Update Bitcoin address as confirmed
@@ -191,6 +209,7 @@ Deno.serve(async (req) => {
           .update({ 
             status: 'completed',
             completed_at: new Date().toISOString(),
+            bitcoin_tx_hash: latestTx?.tx_hash,
             metadata: {
               bitcoin_tx_hash: latestTx?.tx_hash,
               confirmations: confirmations,
@@ -203,7 +222,10 @@ Deno.serve(async (req) => {
         // Update escrow transaction status
         await supabaseClient
           .from('escrow_transactions')
-          .update({ status: 'held' })
+          .update({ 
+            status: 'held',
+            held_at: new Date().toISOString()
+          })
           .eq('order_id', orderId);
       }
     }

@@ -118,11 +118,21 @@ Deno.serve(async (req) => {
               .update({
                 status: 'completed',
                 completed_at: new Date().toISOString(),
+                bitcoin_tx_hash: latestTx.tx_hash,
                 metadata: {
                   bitcoin_tx_hash: latestTx.tx_hash,
                   confirmations: latestTx.confirmations,
                   btc_amount: latestTx.value / 100000000, // Convert satoshis to BTC
                 }
+              })
+              .eq('order_id', order.id);
+
+            // Update escrow transaction status
+            await supabaseClient
+              .from('escrow_transactions')
+              .update({ 
+                status: 'held',
+                held_at: new Date().toISOString()
               })
               .eq('order_id', order.id);
 

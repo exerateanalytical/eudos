@@ -160,7 +160,11 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
       setLoading(true);
       setError(null);
       try {
-        // Step 1: Create order in database FIRST
+        // Fetch current BTC price
+        const priceData = await getBtcPrice();
+        const currentBtcPrice = priceData.usd;
+
+        // Step 1: Create order in database FIRST with BTC price
         const orderData = {
           user_id: userProfile?.id,
           product_type: 'escrow',
@@ -168,7 +172,8 @@ const EscrowTransactionForm = ({ open, onOpenChange }: EscrowTransactionFormProp
           total_amount: total,
           escrow_fee: fee,
           payment_method: 'bitcoin',
-          status: 'pending', // Fixed: using valid status value
+          status: 'pending',
+          btc_price_at_order: currentBtcPrice, // Store BTC price for validation
           guest_name: formData.buyerName,
           guest_email: formData.buyerEmail,
           guest_phone: formData.buyerPhone,

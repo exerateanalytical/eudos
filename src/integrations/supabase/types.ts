@@ -1053,6 +1053,7 @@ export type Database = {
       }
       orders: {
         Row: {
+          btc_price_at_order: number | null
           country: string | null
           created_at: string | null
           escrow_fee: number | null
@@ -1071,6 +1072,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          btc_price_at_order?: number | null
           country?: string | null
           created_at?: string | null
           escrow_fee?: number | null
@@ -1089,6 +1091,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          btc_price_at_order?: number | null
           country?: string | null
           created_at?: string | null
           escrow_fee?: number | null
@@ -1552,6 +1555,7 @@ export type Database = {
       transactions: {
         Row: {
           amount: number
+          bitcoin_tx_hash: string | null
           completed_at: string | null
           created_at: string | null
           currency: string | null
@@ -1566,6 +1570,7 @@ export type Database = {
         }
         Insert: {
           amount: number
+          bitcoin_tx_hash?: string | null
           completed_at?: string | null
           created_at?: string | null
           currency?: string | null
@@ -1580,6 +1585,7 @@ export type Database = {
         }
         Update: {
           amount?: number
+          bitcoin_tx_hash?: string | null
           completed_at?: string | null
           created_at?: string | null
           currency?: string | null

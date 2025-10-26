@@ -17,6 +17,7 @@ import {
   Mail,
   Settings,
   Coins,
+  Key,
 } from "lucide-react";
 import {
   Sidebar,
@@ -79,6 +80,12 @@ const adminItems = [
     url: "/admin/inquiries", 
     icon: MessageSquare,
     gradient: "from-teal-500 to-cyan-500"
+  },
+  { 
+    title: "Bitcoin Addresses", 
+    url: "/admin/bitcoin-addresses", 
+    icon: Key,
+    gradient: "from-amber-500 to-yellow-500"
   },
   { 
     title: "Support Tickets", 
