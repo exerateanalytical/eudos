@@ -13,6 +13,8 @@ import {
   MessageSquare,
   BarChart,
   ChevronDown,
+  Bitcoin,
+  Activity,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -84,6 +86,25 @@ const navItems: NavItem[] = [
     title: "Users",
     href: "/admin/users",
     icon: Users,
+  },
+  {
+    title: "Bitcoin Payments",
+    href: "/admin/bitcoin",
+    icon: Bitcoin,
+    children: [
+      { title: "Analytics", href: "/admin/bitcoin-analytics" },
+      { title: "Bulk Operations", href: "/admin/bulk-operations" },
+      { title: "Address Management", href: "/admin/bitcoin-addresses" },
+    ],
+  },
+  {
+    title: "System",
+    href: "/admin/system",
+    icon: Activity,
+    children: [
+      { title: "Alerts", href: "/admin/system-alerts" },
+      { title: "API Settings", href: "/admin/api-settings" },
+    ],
   },
   {
     title: "Navigation",
