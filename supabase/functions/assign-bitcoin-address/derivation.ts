@@ -1,11 +1,11 @@
 // Simplified Bitcoin address derivation for Deno edge functions
 // This is a lightweight version that doesn't require full BIP32 libraries
 
-export function deriveAddressFromXpub(
+export async function deriveAddressFromXpub(
   xpub: string,
   index: number,
   network: string = 'mainnet'
-): string {
+): Promise<string> {
   // For production, this should use proper BIP32 derivation
   // For now, we'll create a deterministic address based on xpub + index
   // This is a placeholder - in production, use proper cryptographic derivation
@@ -14,7 +14,7 @@ export function deriveAddressFromXpub(
   const data = encoder.encode(`${xpub}-${index}`);
   
   // Create a simple hash-based address (NOT CRYPTOGRAPHICALLY SECURE - placeholder only)
-  const hashBuffer = crypto.subtle.digestSync('SHA-256', data);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
   

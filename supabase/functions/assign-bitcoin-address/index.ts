@@ -58,7 +58,7 @@ Deno.serve(async (req) => {
           console.log('Deriving address at index:', nextIndex);
 
           // Derive the address
-          const derivedAddress = deriveAddressFromXpub(
+          const derivedAddress = await deriveAddressFromXpub(
             xpubData.xpub,
             nextIndex,
             xpubData.network
