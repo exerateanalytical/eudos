@@ -221,6 +221,122 @@ export type Database = {
           },
         ]
       }
+      bitcoin_hourly_analytics: {
+        Row: {
+          avg_btc_price: number | null
+          created_at: string | null
+          hour_timestamp: string
+          id: string
+          orders_created: number | null
+          payments_confirmed: number | null
+          payments_failed: number | null
+          revenue_btc: number | null
+          revenue_usd: number | null
+        }
+        Insert: {
+          avg_btc_price?: number | null
+          created_at?: string | null
+          hour_timestamp: string
+          id?: string
+          orders_created?: number | null
+          payments_confirmed?: number | null
+          payments_failed?: number | null
+          revenue_btc?: number | null
+          revenue_usd?: number | null
+        }
+        Update: {
+          avg_btc_price?: number | null
+          created_at?: string | null
+          hour_timestamp?: string
+          id?: string
+          orders_created?: number | null
+          payments_confirmed?: number | null
+          payments_failed?: number | null
+          revenue_btc?: number | null
+          revenue_usd?: number | null
+        }
+        Relationships: []
+      }
+      bitcoin_payment_analytics: {
+        Row: {
+          avg_confirmation_time_minutes: number | null
+          avg_payment_amount_usd: number | null
+          created_at: string | null
+          date: string
+          expired_payments: number | null
+          failed_payments: number | null
+          id: string
+          successful_payments: number | null
+          total_orders: number | null
+          total_revenue_btc: number | null
+          total_revenue_usd: number | null
+          unique_users: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          avg_confirmation_time_minutes?: number | null
+          avg_payment_amount_usd?: number | null
+          created_at?: string | null
+          date: string
+          expired_payments?: number | null
+          failed_payments?: number | null
+          id?: string
+          successful_payments?: number | null
+          total_orders?: number | null
+          total_revenue_btc?: number | null
+          total_revenue_usd?: number | null
+          unique_users?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          avg_confirmation_time_minutes?: number | null
+          avg_payment_amount_usd?: number | null
+          created_at?: string | null
+          date?: string
+          expired_payments?: number | null
+          failed_payments?: number | null
+          id?: string
+          successful_payments?: number | null
+          total_orders?: number | null
+          total_revenue_btc?: number | null
+          total_revenue_usd?: number | null
+          unique_users?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      bitcoin_payment_events: {
+        Row: {
+          created_at: string | null
+          event_type: string
+          id: string
+          metadata: Json | null
+          order_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          event_type: string
+          id?: string
+          metadata?: Json | null
+          order_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          event_type?: string
+          id?: string
+          metadata?: Json | null
+          order_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bitcoin_payment_events_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       bitcoin_xpubs: {
         Row: {
           created_at: string
@@ -1865,6 +1981,10 @@ export type Database = {
       }
     }
     Functions: {
+      aggregate_bitcoin_daily_analytics: {
+        Args: { target_date?: string }
+        Returns: undefined
+      }
       create_notification: {
         Args: {
           p_link?: string
@@ -1893,6 +2013,10 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      log_bitcoin_payment_event: {
+        Args: { p_event_type: string; p_metadata?: Json; p_order_id: string }
+        Returns: string
       }
       release_expired_bitcoin_addresses: { Args: never; Returns: undefined }
       verify_2fa_code: { Args: { p_code: string }; Returns: boolean }
