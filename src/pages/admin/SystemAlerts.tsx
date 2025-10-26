@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
+import { SystemHealthDashboard } from "@/components/admin/SystemHealthDashboard";
 
 interface AdminAlert {
   id: string;
@@ -165,6 +166,9 @@ export default function SystemAlerts() {
           Refresh
         </Button>
       </div>
+
+      {/* Real-time Health Dashboard */}
+      <SystemHealthDashboard />
 
       {/* Summary Cards */}
       <div className="grid gap-4 md:grid-cols-3">
