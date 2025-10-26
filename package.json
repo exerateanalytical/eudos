@@ -84,6 +84,8 @@
     "tailwindcss-animate": "^1.0.7",
     "tiny-secp256k1": "^2.2.4",
     "vaul": "^0.9.9",
+    "vite-plugin-top-level-await": "^1.6.0",
+    "vite-plugin-wasm": "^3.5.0",
     "zod": "^4.1.11"
   },
   "devDependencies": {
