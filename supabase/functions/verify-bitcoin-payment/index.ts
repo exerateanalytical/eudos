@@ -176,8 +176,24 @@ Deno.serve(async (req) => {
       });
 
       if (difference > tolerance) {
-        console.warn(`Payment amount mismatch: expected ${expectedBtc} BTC, received ${receivedBtc} BTC`);
-        // Log but don't reject - admin can review
+        const shortfall = expectedBtc - receivedBtc;
+        console.error(`PAYMENT AMOUNT MISMATCH: Expected ${expectedBtc} BTC, received ${receivedBtc} BTC`);
+        
+        return new Response(
+          JSON.stringify({ 
+            verified: false,
+            error: 'Payment amount incorrect',
+            error_code: 'AMOUNT_MISMATCH',
+            expected_btc: expectedBtc.toFixed(8),
+            received_btc: receivedBtc.toFixed(8),
+            shortfall_btc: shortfall > 0 ? shortfall.toFixed(8) : null,
+            message: shortfall > 0 
+              ? `Underpayment detected. Please send an additional ${shortfall.toFixed(8)} BTC to complete the payment.`
+              : `Overpayment detected. Expected ${expectedBtc.toFixed(8)} BTC but received ${receivedBtc.toFixed(8)} BTC.`,
+            confirmations
+          }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
       }
     }
 

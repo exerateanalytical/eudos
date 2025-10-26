@@ -21,3 +21,10 @@ verify_jwt = false
 
 [functions.track-order-lookup]
 verify_jwt = false
+
+[functions.replenish-bitcoin-addresses]
+verify_jwt = false
+
+[functions.replenish-bitcoin-addresses.schedule]
+enabled = true
+cron = "0 */6 * * *"
