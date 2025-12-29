@@ -1,0 +1,1798 @@
+{
+  "metadata": {
+    "exported_at": "2024-12-29",
+    "total_categories": 13,
+    "total_products": 202,
+    "description": "Complete text export of all product detail pages - every section, every text element"
+  },
+  "static_page_elements": {
+    "badges": {
+      "in_stock": "In Stock",
+      "save_discount": "Save 29%"
+    },
+    "quick_stats": {
+      "security_label": "Security",
+      "validity_label": "Validity"
+    },
+    "purchase_section": {
+      "quantity_label": "Quantity:",
+      "order_button": "Order Now",
+      "crypto_button": "Pay with Crypto Escrow",
+      "features": [
+        "Free Shipping",
+        "Secure Payment",
+        "24/7 Support"
+      ]
+    },
+    "tabs": {
+      "features_tab": "Features",
+      "specs_tab": "Specifications",
+      "security_tab": "Security",
+      "features_heading": "Key Features",
+      "specs_heading": "Technical Specifications",
+      "security_heading": "Advanced Security Features"
+    },
+    "security_features": [
+      { "icon": "Fingerprint", "label": "Biometric Data" },
+      { "icon": "Cpu", "label": "RFID Chip" },
+      { "icon": "Sparkles", "label": "Hologram" },
+      { "icon": "Eye", "label": "UV Features" },
+      { "icon": "Scan", "label": "Microtext" },
+      { "icon": "Radio", "label": "Laser Engraved" },
+      { "icon": "FileCheck", "label": "Watermarks" },
+      { "icon": "Lock", "label": "Tamper-Proof" }
+    ],
+    "database_registration": {
+      "title": "Government Database Registration",
+      "description": "All documents are registered in official government databases and pass all verification systems including border control, airport security, and online verification portals."
+    },
+    "faq_section": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Get answers to common questions about this product",
+      "questions": [
+        {
+          "question": "How long does processing take?",
+          "answer_template": "Standard processing time is {processing_time}. Express options are available for urgent orders."
+        },
+        {
+          "question": "Is this document registered in government databases?",
+          "answer": "Yes, all our documents are fully registered in the respective government databases and pass all verification checks."
+        },
+        {
+          "question": "What payment methods do you accept?",
+          "answer": "We accept cryptocurrency, wire transfers, and other secure payment methods. Full details provided during checkout."
+        },
+        {
+          "question": "Do you offer worldwide shipping?",
+          "answer": "Yes, we ship worldwide using secure, tracked shipping methods. Delivery times vary by location."
+        },
+        {
+          "question": "What if my document is damaged during shipping?",
+          "answer": "All products are fully insured. We will replace any damaged items at no additional cost."
+        }
+      ]
+    },
+    "related_products_heading": "Related Products",
+    "trust_section": {
+      "worldwide_delivery": {
+        "title": "Worldwide Delivery",
+        "description": "We ship to over 180 countries worldwide using secure, tracked shipping methods. All packages are discreetly packaged and fully insured.",
+        "button": "Shipping Info"
+      },
+      "expert_support": {
+        "title": "Expert Support",
+        "description": "Our support team is available 24/7 to answer your questions and assist with your order. Contact us anytime via secure channels.",
+        "button": "Contact Support"
+      }
+    },
+    "navigation": {
+      "back_button": "Back to Products",
+      "not_found_title": "Product Not Found"
+    }
+  },
+  "categories": {
+    "passports": {
+      "category_name": "Travel Documents",
+      "security_level": "Military-grade",
+      "base_price": "$2,500",
+      "original_price": "$3,500",
+      "features": [
+        "Biometric data integration",
+        "RFID/NFC embedded chip",
+        "Multi-layer holograms",
+        "UV security features",
+        "Machine-readable zone (MRZ)",
+        "Laser engraved personalization",
+        "Watermarks & security threads",
+        "Government database registration"
+      ],
+      "specifications_template": {
+        "pages": "32 or 64 pages",
+        "validity": "5 or 10 years",
+        "chip_type": "RFID contactless",
+        "security_level": "Military-grade",
+        "material": "Polycarbonate data page",
+        "dimensions": "125mm × 88mm",
+        "processing_time": "7-14 business days"
+      },
+      "products": [
+        {
+          "id": "passport-austria",
+          "title": "Austria Passport",
+          "description": "Fully registered biometric Austria passport with embedded chips and advanced security features",
+          "country": "Austria",
+          "specifications": [
+            { "label": "Country", "value": "Austria" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-belgium",
+          "title": "Belgium Passport",
+          "description": "Fully registered biometric Belgium passport with embedded chips and advanced security features",
+          "country": "Belgium",
+          "specifications": [
+            { "label": "Country", "value": "Belgium" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-bulgaria",
+          "title": "Bulgaria Passport",
+          "description": "Fully registered biometric Bulgaria passport with embedded chips and advanced security features",
+          "country": "Bulgaria",
+          "specifications": [
+            { "label": "Country", "value": "Bulgaria" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-croatia",
+          "title": "Croatia Passport",
+          "description": "Fully registered biometric Croatia passport with embedded chips and advanced security features",
+          "country": "Croatia",
+          "specifications": [
+            { "label": "Country", "value": "Croatia" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-cyprus",
+          "title": "Cyprus Passport",
+          "description": "Fully registered biometric Cyprus passport with embedded chips and advanced security features",
+          "country": "Cyprus",
+          "specifications": [
+            { "label": "Country", "value": "Cyprus" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-czech-republic",
+          "title": "Czech Republic Passport",
+          "description": "Fully registered biometric Czech Republic passport with embedded chips and advanced security features",
+          "country": "Czech Republic",
+          "specifications": [
+            { "label": "Country", "value": "Czech Republic" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-denmark",
+          "title": "Denmark Passport",
+          "description": "Fully registered biometric Denmark passport with embedded chips and advanced security features",
+          "country": "Denmark",
+          "specifications": [
+            { "label": "Country", "value": "Denmark" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-estonia",
+          "title": "Estonia Passport",
+          "description": "Fully registered biometric Estonia passport with embedded chips and advanced security features",
+          "country": "Estonia",
+          "specifications": [
+            { "label": "Country", "value": "Estonia" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-finland",
+          "title": "Finland Passport",
+          "description": "Fully registered biometric Finland passport with embedded chips and advanced security features",
+          "country": "Finland",
+          "specifications": [
+            { "label": "Country", "value": "Finland" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-france",
+          "title": "France Passport",
+          "description": "Fully registered biometric France passport with embedded chips and advanced security features",
+          "country": "France",
+          "specifications": [
+            { "label": "Country", "value": "France" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-germany",
+          "title": "Germany Passport",
+          "description": "Fully registered biometric Germany passport with embedded chips and advanced security features",
+          "country": "Germany",
+          "specifications": [
+            { "label": "Country", "value": "Germany" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-greece",
+          "title": "Greece Passport",
+          "description": "Fully registered biometric Greece passport with embedded chips and advanced security features",
+          "country": "Greece",
+          "specifications": [
+            { "label": "Country", "value": "Greece" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-hungary",
+          "title": "Hungary Passport",
+          "description": "Fully registered biometric Hungary passport with embedded chips and advanced security features",
+          "country": "Hungary",
+          "specifications": [
+            { "label": "Country", "value": "Hungary" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-ireland",
+          "title": "Ireland Passport",
+          "description": "Fully registered biometric Ireland passport with embedded chips and advanced security features",
+          "country": "Ireland",
+          "specifications": [
+            { "label": "Country", "value": "Ireland" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-italy",
+          "title": "Italy Passport",
+          "description": "Fully registered biometric Italy passport with embedded chips and advanced security features",
+          "country": "Italy",
+          "specifications": [
+            { "label": "Country", "value": "Italy" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-latvia",
+          "title": "Latvia Passport",
+          "description": "Fully registered biometric Latvia passport with embedded chips and advanced security features",
+          "country": "Latvia",
+          "specifications": [
+            { "label": "Country", "value": "Latvia" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-lithuania",
+          "title": "Lithuania Passport",
+          "description": "Fully registered biometric Lithuania passport with embedded chips and advanced security features",
+          "country": "Lithuania",
+          "specifications": [
+            { "label": "Country", "value": "Lithuania" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-luxembourg",
+          "title": "Luxembourg Passport",
+          "description": "Fully registered biometric Luxembourg passport with embedded chips and advanced security features",
+          "country": "Luxembourg",
+          "specifications": [
+            { "label": "Country", "value": "Luxembourg" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-malta",
+          "title": "Malta Passport",
+          "description": "Fully registered biometric Malta passport with embedded chips and advanced security features",
+          "country": "Malta",
+          "specifications": [
+            { "label": "Country", "value": "Malta" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-netherlands",
+          "title": "Netherlands Passport",
+          "description": "Fully registered biometric Netherlands passport with embedded chips and advanced security features",
+          "country": "Netherlands",
+          "specifications": [
+            { "label": "Country", "value": "Netherlands" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-poland",
+          "title": "Poland Passport",
+          "description": "Fully registered biometric Poland passport with embedded chips and advanced security features",
+          "country": "Poland",
+          "specifications": [
+            { "label": "Country", "value": "Poland" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-portugal",
+          "title": "Portugal Passport",
+          "description": "Fully registered biometric Portugal passport with embedded chips and advanced security features",
+          "country": "Portugal",
+          "specifications": [
+            { "label": "Country", "value": "Portugal" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-romania",
+          "title": "Romania Passport",
+          "description": "Fully registered biometric Romania passport with embedded chips and advanced security features",
+          "country": "Romania",
+          "specifications": [
+            { "label": "Country", "value": "Romania" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-slovakia",
+          "title": "Slovakia Passport",
+          "description": "Fully registered biometric Slovakia passport with embedded chips and advanced security features",
+          "country": "Slovakia",
+          "specifications": [
+            { "label": "Country", "value": "Slovakia" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-slovenia",
+          "title": "Slovenia Passport",
+          "description": "Fully registered biometric Slovenia passport with embedded chips and advanced security features",
+          "country": "Slovenia",
+          "specifications": [
+            { "label": "Country", "value": "Slovenia" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-spain",
+          "title": "Spain Passport",
+          "description": "Fully registered biometric Spain passport with embedded chips and advanced security features",
+          "country": "Spain",
+          "specifications": [
+            { "label": "Country", "value": "Spain" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-sweden",
+          "title": "Sweden Passport",
+          "description": "Fully registered biometric Sweden passport with embedded chips and advanced security features",
+          "country": "Sweden",
+          "specifications": [
+            { "label": "Country", "value": "Sweden" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-united-states",
+          "title": "United States Passport",
+          "description": "Fully registered biometric United States passport with embedded chips and advanced security features",
+          "country": "United States",
+          "specifications": [
+            { "label": "Country", "value": "United States" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-united-kingdom",
+          "title": "United Kingdom Passport",
+          "description": "Fully registered biometric United Kingdom passport with embedded chips and advanced security features",
+          "country": "United Kingdom",
+          "specifications": [
+            { "label": "Country", "value": "United Kingdom" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-canada",
+          "title": "Canada Passport",
+          "description": "Fully registered biometric Canada passport with embedded chips and advanced security features",
+          "country": "Canada",
+          "specifications": [
+            { "label": "Country", "value": "Canada" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-australia",
+          "title": "Australia Passport",
+          "description": "Fully registered biometric Australia passport with embedded chips and advanced security features",
+          "country": "Australia",
+          "specifications": [
+            { "label": "Country", "value": "Australia" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        },
+        {
+          "id": "passport-switzerland",
+          "title": "Switzerland Passport",
+          "description": "Fully registered biometric Switzerland passport with embedded chips and advanced security features",
+          "country": "Switzerland",
+          "specifications": [
+            { "label": "Country", "value": "Switzerland" },
+            { "label": "Pages", "value": "32 or 64 pages" },
+            { "label": "Validity", "value": "5 or 10 years" },
+            { "label": "Chip Type", "value": "RFID contactless" },
+            { "label": "Security Level", "value": "Military-grade" },
+            { "label": "Material", "value": "Polycarbonate data page" },
+            { "label": "Dimensions", "value": "125mm × 88mm" },
+            { "label": "Processing Time", "value": "7-14 business days" }
+          ]
+        }
+      ]
+    },
+    "drivers_licenses": {
+      "category_name": "Identification Cards",
+      "security_level": "High-security",
+      "base_price": "$800",
+      "original_price": "$3,500",
+      "features": [
+        "Biometric photo & fingerprint",
+        "Ghost image technology",
+        "Microtext printing",
+        "UV ink patterns",
+        "Laser engraving",
+        "Barcode & magnetic stripe",
+        "Holographic overlay",
+        "Tamper-evident design"
+      ],
+      "specifications_template": {
+        "format": "ID-1 card (CR80)",
+        "validity": "3-10 years",
+        "material": "Polycarbonate",
+        "security_level": "High-security",
+        "dimensions": "85.6mm × 53.98mm",
+        "thickness": "0.76mm",
+        "processing_time": "5-10 business days"
+      },
+      "products": [
+        {
+          "id": "license-austria",
+          "title": "Austria Driver's License",
+          "description": "Secure Austria driver's license with biometric data and tamper-proof features",
+          "country": "Austria",
+          "specifications": [
+            { "label": "Country", "value": "Austria" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-belgium",
+          "title": "Belgium Driver's License",
+          "description": "Secure Belgium driver's license with biometric data and tamper-proof features",
+          "country": "Belgium",
+          "specifications": [
+            { "label": "Country", "value": "Belgium" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-bulgaria",
+          "title": "Bulgaria Driver's License",
+          "description": "Secure Bulgaria driver's license with biometric data and tamper-proof features",
+          "country": "Bulgaria",
+          "specifications": [
+            { "label": "Country", "value": "Bulgaria" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-croatia",
+          "title": "Croatia Driver's License",
+          "description": "Secure Croatia driver's license with biometric data and tamper-proof features",
+          "country": "Croatia",
+          "specifications": [
+            { "label": "Country", "value": "Croatia" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-cyprus",
+          "title": "Cyprus Driver's License",
+          "description": "Secure Cyprus driver's license with biometric data and tamper-proof features",
+          "country": "Cyprus",
+          "specifications": [
+            { "label": "Country", "value": "Cyprus" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-czech-republic",
+          "title": "Czech Republic Driver's License",
+          "description": "Secure Czech Republic driver's license with biometric data and tamper-proof features",
+          "country": "Czech Republic",
+          "specifications": [
+            { "label": "Country", "value": "Czech Republic" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-denmark",
+          "title": "Denmark Driver's License",
+          "description": "Secure Denmark driver's license with biometric data and tamper-proof features",
+          "country": "Denmark",
+          "specifications": [
+            { "label": "Country", "value": "Denmark" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-estonia",
+          "title": "Estonia Driver's License",
+          "description": "Secure Estonia driver's license with biometric data and tamper-proof features",
+          "country": "Estonia",
+          "specifications": [
+            { "label": "Country", "value": "Estonia" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-finland",
+          "title": "Finland Driver's License",
+          "description": "Secure Finland driver's license with biometric data and tamper-proof features",
+          "country": "Finland",
+          "specifications": [
+            { "label": "Country", "value": "Finland" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-france",
+          "title": "France Driver's License",
+          "description": "Secure France driver's license with biometric data and tamper-proof features",
+          "country": "France",
+          "specifications": [
+            { "label": "Country", "value": "France" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-germany",
+          "title": "Germany Driver's License",
+          "description": "Secure Germany driver's license with biometric data and tamper-proof features",
+          "country": "Germany",
+          "specifications": [
+            { "label": "Country", "value": "Germany" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-greece",
+          "title": "Greece Driver's License",
+          "description": "Secure Greece driver's license with biometric data and tamper-proof features",
+          "country": "Greece",
+          "specifications": [
+            { "label": "Country", "value": "Greece" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-hungary",
+          "title": "Hungary Driver's License",
+          "description": "Secure Hungary driver's license with biometric data and tamper-proof features",
+          "country": "Hungary",
+          "specifications": [
+            { "label": "Country", "value": "Hungary" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-ireland",
+          "title": "Ireland Driver's License",
+          "description": "Secure Ireland driver's license with biometric data and tamper-proof features",
+          "country": "Ireland",
+          "specifications": [
+            { "label": "Country", "value": "Ireland" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-italy",
+          "title": "Italy Driver's License",
+          "description": "Secure Italy driver's license with biometric data and tamper-proof features",
+          "country": "Italy",
+          "specifications": [
+            { "label": "Country", "value": "Italy" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-latvia",
+          "title": "Latvia Driver's License",
+          "description": "Secure Latvia driver's license with biometric data and tamper-proof features",
+          "country": "Latvia",
+          "specifications": [
+            { "label": "Country", "value": "Latvia" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-lithuania",
+          "title": "Lithuania Driver's License",
+          "description": "Secure Lithuania driver's license with biometric data and tamper-proof features",
+          "country": "Lithuania",
+          "specifications": [
+            { "label": "Country", "value": "Lithuania" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-luxembourg",
+          "title": "Luxembourg Driver's License",
+          "description": "Secure Luxembourg driver's license with biometric data and tamper-proof features",
+          "country": "Luxembourg",
+          "specifications": [
+            { "label": "Country", "value": "Luxembourg" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-malta",
+          "title": "Malta Driver's License",
+          "description": "Secure Malta driver's license with biometric data and tamper-proof features",
+          "country": "Malta",
+          "specifications": [
+            { "label": "Country", "value": "Malta" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-netherlands",
+          "title": "Netherlands Driver's License",
+          "description": "Secure Netherlands driver's license with biometric data and tamper-proof features",
+          "country": "Netherlands",
+          "specifications": [
+            { "label": "Country", "value": "Netherlands" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-poland",
+          "title": "Poland Driver's License",
+          "description": "Secure Poland driver's license with biometric data and tamper-proof features",
+          "country": "Poland",
+          "specifications": [
+            { "label": "Country", "value": "Poland" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-portugal",
+          "title": "Portugal Driver's License",
+          "description": "Secure Portugal driver's license with biometric data and tamper-proof features",
+          "country": "Portugal",
+          "specifications": [
+            { "label": "Country", "value": "Portugal" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-romania",
+          "title": "Romania Driver's License",
+          "description": "Secure Romania driver's license with biometric data and tamper-proof features",
+          "country": "Romania",
+          "specifications": [
+            { "label": "Country", "value": "Romania" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-slovakia",
+          "title": "Slovakia Driver's License",
+          "description": "Secure Slovakia driver's license with biometric data and tamper-proof features",
+          "country": "Slovakia",
+          "specifications": [
+            { "label": "Country", "value": "Slovakia" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-slovenia",
+          "title": "Slovenia Driver's License",
+          "description": "Secure Slovenia driver's license with biometric data and tamper-proof features",
+          "country": "Slovenia",
+          "specifications": [
+            { "label": "Country", "value": "Slovenia" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-spain",
+          "title": "Spain Driver's License",
+          "description": "Secure Spain driver's license with biometric data and tamper-proof features",
+          "country": "Spain",
+          "specifications": [
+            { "label": "Country", "value": "Spain" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-sweden",
+          "title": "Sweden Driver's License",
+          "description": "Secure Sweden driver's license with biometric data and tamper-proof features",
+          "country": "Sweden",
+          "specifications": [
+            { "label": "Country", "value": "Sweden" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-united-states",
+          "title": "United States Driver's License",
+          "description": "Secure United States driver's license with biometric data and tamper-proof features",
+          "country": "United States",
+          "specifications": [
+            { "label": "Country", "value": "United States" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-united-kingdom",
+          "title": "United Kingdom Driver's License",
+          "description": "Secure United Kingdom driver's license with biometric data and tamper-proof features",
+          "country": "United Kingdom",
+          "specifications": [
+            { "label": "Country", "value": "United Kingdom" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-canada",
+          "title": "Canada Driver's License",
+          "description": "Secure Canada driver's license with biometric data and tamper-proof features",
+          "country": "Canada",
+          "specifications": [
+            { "label": "Country", "value": "Canada" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-australia",
+          "title": "Australia Driver's License",
+          "description": "Secure Australia driver's license with biometric data and tamper-proof features",
+          "country": "Australia",
+          "specifications": [
+            { "label": "Country", "value": "Australia" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        },
+        {
+          "id": "license-switzerland",
+          "title": "Switzerland Driver's License",
+          "description": "Secure Switzerland driver's license with biometric data and tamper-proof features",
+          "country": "Switzerland",
+          "specifications": [
+            { "label": "Country", "value": "Switzerland" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "3-10 years" },
+            { "label": "Material", "value": "Polycarbonate" },
+            { "label": "Security Level", "value": "High-security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "5-10 business days" }
+          ]
+        }
+      ]
+    },
+    "national_ids": {
+      "category_name": "Identification Cards",
+      "security_level": "Maximum security",
+      "base_price": "$1,200",
+      "original_price": "$3,500",
+      "features": [
+        "RFID chip with encrypted data",
+        "Biometric facial recognition",
+        "Fingerprint storage",
+        "Holographic security overlay",
+        "Invisible UV features",
+        "Microtext & guilloche patterns",
+        "Laser-etched details",
+        "Database verification system"
+      ],
+      "specifications_template": {
+        "format": "ID-1 card (CR80)",
+        "validity": "5-15 years",
+        "chip_type": "Contactless smart chip",
+        "security_level": "Maximum security",
+        "dimensions": "85.6mm × 53.98mm",
+        "thickness": "0.76mm",
+        "processing_time": "10-15 business days"
+      },
+      "products": [
+        {
+          "id": "id-austria",
+          "title": "Austria National ID",
+          "description": "Government-issued Austria ID card with RFID technology and holographic security",
+          "country": "Austria",
+          "specifications": [
+            { "label": "Country", "value": "Austria" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-belgium",
+          "title": "Belgium National ID",
+          "description": "Government-issued Belgium ID card with RFID technology and holographic security",
+          "country": "Belgium",
+          "specifications": [
+            { "label": "Country", "value": "Belgium" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-bulgaria",
+          "title": "Bulgaria National ID",
+          "description": "Government-issued Bulgaria ID card with RFID technology and holographic security",
+          "country": "Bulgaria",
+          "specifications": [
+            { "label": "Country", "value": "Bulgaria" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-croatia",
+          "title": "Croatia National ID",
+          "description": "Government-issued Croatia ID card with RFID technology and holographic security",
+          "country": "Croatia",
+          "specifications": [
+            { "label": "Country", "value": "Croatia" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-cyprus",
+          "title": "Cyprus National ID",
+          "description": "Government-issued Cyprus ID card with RFID technology and holographic security",
+          "country": "Cyprus",
+          "specifications": [
+            { "label": "Country", "value": "Cyprus" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-czech-republic",
+          "title": "Czech Republic National ID",
+          "description": "Government-issued Czech Republic ID card with RFID technology and holographic security",
+          "country": "Czech Republic",
+          "specifications": [
+            { "label": "Country", "value": "Czech Republic" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-denmark",
+          "title": "Denmark National ID",
+          "description": "Government-issued Denmark ID card with RFID technology and holographic security",
+          "country": "Denmark",
+          "specifications": [
+            { "label": "Country", "value": "Denmark" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-estonia",
+          "title": "Estonia National ID",
+          "description": "Government-issued Estonia ID card with RFID technology and holographic security",
+          "country": "Estonia",
+          "specifications": [
+            { "label": "Country", "value": "Estonia" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-finland",
+          "title": "Finland National ID",
+          "description": "Government-issued Finland ID card with RFID technology and holographic security",
+          "country": "Finland",
+          "specifications": [
+            { "label": "Country", "value": "Finland" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-france",
+          "title": "France National ID",
+          "description": "Government-issued France ID card with RFID technology and holographic security",
+          "country": "France",
+          "specifications": [
+            { "label": "Country", "value": "France" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-germany",
+          "title": "Germany National ID",
+          "description": "Government-issued Germany ID card with RFID technology and holographic security",
+          "country": "Germany",
+          "specifications": [
+            { "label": "Country", "value": "Germany" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-greece",
+          "title": "Greece National ID",
+          "description": "Government-issued Greece ID card with RFID technology and holographic security",
+          "country": "Greece",
+          "specifications": [
+            { "label": "Country", "value": "Greece" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-hungary",
+          "title": "Hungary National ID",
+          "description": "Government-issued Hungary ID card with RFID technology and holographic security",
+          "country": "Hungary",
+          "specifications": [
+            { "label": "Country", "value": "Hungary" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-ireland",
+          "title": "Ireland National ID",
+          "description": "Government-issued Ireland ID card with RFID technology and holographic security",
+          "country": "Ireland",
+          "specifications": [
+            { "label": "Country", "value": "Ireland" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-italy",
+          "title": "Italy National ID",
+          "description": "Government-issued Italy ID card with RFID technology and holographic security",
+          "country": "Italy",
+          "specifications": [
+            { "label": "Country", "value": "Italy" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-latvia",
+          "title": "Latvia National ID",
+          "description": "Government-issued Latvia ID card with RFID technology and holographic security",
+          "country": "Latvia",
+          "specifications": [
+            { "label": "Country", "value": "Latvia" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-lithuania",
+          "title": "Lithuania National ID",
+          "description": "Government-issued Lithuania ID card with RFID technology and holographic security",
+          "country": "Lithuania",
+          "specifications": [
+            { "label": "Country", "value": "Lithuania" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-luxembourg",
+          "title": "Luxembourg National ID",
+          "description": "Government-issued Luxembourg ID card with RFID technology and holographic security",
+          "country": "Luxembourg",
+          "specifications": [
+            { "label": "Country", "value": "Luxembourg" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-malta",
+          "title": "Malta National ID",
+          "description": "Government-issued Malta ID card with RFID technology and holographic security",
+          "country": "Malta",
+          "specifications": [
+            { "label": "Country", "value": "Malta" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-netherlands",
+          "title": "Netherlands National ID",
+          "description": "Government-issued Netherlands ID card with RFID technology and holographic security",
+          "country": "Netherlands",
+          "specifications": [
+            { "label": "Country", "value": "Netherlands" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-poland",
+          "title": "Poland National ID",
+          "description": "Government-issued Poland ID card with RFID technology and holographic security",
+          "country": "Poland",
+          "specifications": [
+            { "label": "Country", "value": "Poland" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-portugal",
+          "title": "Portugal National ID",
+          "description": "Government-issued Portugal ID card with RFID technology and holographic security",
+          "country": "Portugal",
+          "specifications": [
+            { "label": "Country", "value": "Portugal" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-romania",
+          "title": "Romania National ID",
+          "description": "Government-issued Romania ID card with RFID technology and holographic security",
+          "country": "Romania",
+          "specifications": [
+            { "label": "Country", "value": "Romania" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-slovakia",
+          "title": "Slovakia National ID",
+          "description": "Government-issued Slovakia ID card with RFID technology and holographic security",
+          "country": "Slovakia",
+          "specifications": [
+            { "label": "Country", "value": "Slovakia" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-slovenia",
+          "title": "Slovenia National ID",
+          "description": "Government-issued Slovenia ID card with RFID technology and holographic security",
+          "country": "Slovenia",
+          "specifications": [
+            { "label": "Country", "value": "Slovenia" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-spain",
+          "title": "Spain National ID",
+          "description": "Government-issued Spain ID card with RFID technology and holographic security",
+          "country": "Spain",
+          "specifications": [
+            { "label": "Country", "value": "Spain" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-sweden",
+          "title": "Sweden National ID",
+          "description": "Government-issued Sweden ID card with RFID technology and holographic security",
+          "country": "Sweden",
+          "specifications": [
+            { "label": "Country", "value": "Sweden" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-united-states",
+          "title": "United States National ID",
+          "description": "Government-issued United States ID card with RFID technology and holographic security",
+          "country": "United States",
+          "specifications": [
+            { "label": "Country", "value": "United States" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-united-kingdom",
+          "title": "United Kingdom National ID",
+          "description": "Government-issued United Kingdom ID card with RFID technology and holographic security",
+          "country": "United Kingdom",
+          "specifications": [
+            { "label": "Country", "value": "United Kingdom" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-canada",
+          "title": "Canada National ID",
+          "description": "Government-issued Canada ID card with RFID technology and holographic security",
+          "country": "Canada",
+          "specifications": [
+            { "label": "Country", "value": "Canada" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-australia",
+          "title": "Australia National ID",
+          "description": "Government-issued Australia ID card with RFID technology and holographic security",
+          "country": "Australia",
+          "specifications": [
+            { "label": "Country", "value": "Australia" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        },
+        {
+          "id": "id-switzerland",
+          "title": "Switzerland National ID",
+          "description": "Government-issued Switzerland ID card with RFID technology and holographic security",
+          "country": "Switzerland",
+          "specifications": [
+            { "label": "Country", "value": "Switzerland" },
+            { "label": "Format", "value": "ID-1 card (CR80)" },
+            { "label": "Validity", "value": "5-15 years" },
+            { "label": "Chip Type", "value": "Contactless smart chip" },
+            { "label": "Security Level", "value": "Maximum security" },
+            { "label": "Dimensions", "value": "85.6mm × 53.98mm" },
+            { "label": "Thickness", "value": "0.76mm" },
+            { "label": "Processing Time", "value": "10-15 business days" }
+          ]
+        }
+      ]
+    },
+    "diplomas": {
+      "category_name": "Diplomas",
+      "products": [
+        { "id": "diploma-harvard", "name": "Harvard University Diploma", "price": 1500, "delivery": "3-4 weeks" },
+        { "id": "diploma-mit", "name": "MIT Diploma", "price": 1500, "delivery": "3-4 weeks" },
+        { "id": "diploma-stanford", "name": "Stanford University Diploma", "price": 1500, "delivery": "3-4 weeks" },
+        { "id": "diploma-oxford", "name": "Oxford University Diploma", "price": 1400, "delivery": "3-4 weeks" },
+        { "id": "diploma-cambridge", "name": "Cambridge University Diploma", "price": 1400, "delivery": "3-4 weeks" },
+        { "id": "diploma-yale", "name": "Yale University Diploma", "price": 1500, "delivery": "3-4 weeks" },
+        { "id": "diploma-princeton", "name": "Princeton University Diploma", "price": 1500, "delivery": "3-4 weeks" },
+        { "id": "diploma-columbia", "name": "Columbia University Diploma", "price": 1400, "delivery": "3-4 weeks" }
+      ]
+    },
+    "certifications": {
+      "category_name": "Certifications",
+      "products": [
+        { "id": "cert-pmp", "name": "PMP Certification", "price": 800, "delivery": "2-3 weeks" },
+        { "id": "cert-cpa", "name": "CPA Certificate", "price": 900, "delivery": "2-3 weeks" },
+        { "id": "cert-cisco", "name": "CISCO CCNA Certificate", "price": 700, "delivery": "2-3 weeks" },
+        { "id": "cert-aws", "name": "AWS Solutions Architect Certificate", "price": 750, "delivery": "2-3 weeks" },
+        { "id": "cert-comptia", "name": "CompTIA A+ Certificate", "price": 650, "delivery": "2-3 weeks" },
+        { "id": "cert-six-sigma", "name": "Six Sigma Black Belt Certificate", "price": 800, "delivery": "2-3 weeks" },
+        { "id": "cert-iso-9001", "name": "ISO 9001 Quality Management Certificate", "price": 1200, "delivery": "2-3 weeks" }
+      ]
+    },
+    "birth_certificates": {
+      "category_name": "Birth Certificates",
+      "products": [
+        { "id": "birth-usa", "name": "USA Birth Certificate", "price": 500, "delivery": "2-3 weeks" },
+        { "id": "birth-uk", "name": "UK Birth Certificate", "price": 480, "delivery": "2-3 weeks" },
+        { "id": "birth-canada", "name": "Canada Birth Certificate", "price": 480, "delivery": "2-3 weeks" },
+        { "id": "birth-australia", "name": "Australia Birth Certificate", "price": 480, "delivery": "2-3 weeks" },
+        { "id": "birth-germany", "name": "Germany Birth Certificate", "price": 450, "delivery": "2-3 weeks" },
+        { "id": "birth-france", "name": "France Birth Certificate", "price": 450, "delivery": "2-3 weeks" }
+      ]
+    },
+    "marriage_divorce_certificates": {
+      "category_name": "Marriage & Divorce Certificates",
+      "products": [
+        { "id": "marriage-usa", "name": "USA Marriage Certificate", "price": 550, "delivery": "2-3 weeks" },
+        { "id": "marriage-uk", "name": "UK Marriage Certificate", "price": 520, "delivery": "2-3 weeks" },
+        { "id": "marriage-canada", "name": "Canada Marriage Certificate", "price": 520, "delivery": "2-3 weeks" },
+        { "id": "divorce-usa", "name": "USA Divorce Certificate", "price": 600, "delivery": "2-3 weeks" },
+        { "id": "divorce-uk", "name": "UK Divorce Certificate", "price": 580, "delivery": "2-3 weeks" },
+        { "id": "divorce-canada", "name": "Canada Divorce Certificate", "price": 580, "delivery": "2-3 weeks" }
+      ]
+    },
+    "vehicle_documents": {
+      "category_name": "Vehicle Documents",
+      "products": [
+        { "id": "vehicle-registration-usa", "name": "USA Vehicle Registration", "price": 400, "delivery": "1-2 weeks" },
+        { "id": "vehicle-title-usa", "name": "USA Vehicle Title", "price": 500, "delivery": "1-2 weeks" },
+        { "id": "vehicle-insurance-usa", "name": "USA Vehicle Insurance Certificate", "price": 350, "delivery": "1-2 weeks" },
+        { "id": "vehicle-registration-uk", "name": "UK Vehicle Registration (V5C)", "price": 450, "delivery": "1-2 weeks" },
+        { "id": "vehicle-registration-canada", "name": "Canada Vehicle Registration", "price": 420, "delivery": "1-2 weeks" }
+      ]
+    },
+    "business_documents": {
+      "category_name": "Business Documents",
+      "products": [
+        { "id": "business-license-usa", "name": "USA Business License", "price": 800, "delivery": "2-3 weeks" },
+        { "id": "business-incorporation-usa", "name": "USA Certificate of Incorporation", "price": 1000, "delivery": "2-3 weeks" },
+        { "id": "business-ein-usa", "name": "USA Tax ID (EIN)", "price": 600, "delivery": "2-3 weeks" },
+        { "id": "business-license-uk", "name": "UK Business License", "price": 750, "delivery": "2-3 weeks" },
+        { "id": "business-vat-uk", "name": "UK VAT Registration Certificate", "price": 700, "delivery": "2-3 weeks" },
+        { "id": "business-incorporation-canada", "name": "Canada Certificate of Incorporation", "price": 950, "delivery": "2-3 weeks" }
+      ]
+    },
+    "travel_documents": {
+      "category_name": "Travel Documents",
+      "products": [
+        { "id": "visa-work-usa", "name": "USA Work Visa (H1-B)", "price": 1800, "delivery": "4-6 weeks" },
+        { "id": "visa-student-usa", "name": "USA Student Visa (F-1)", "price": 1600, "delivery": "4-6 weeks" },
+        { "id": "visa-tourist-usa", "name": "USA Tourist Visa (B-2)", "price": 1200, "delivery": "3-4 weeks" },
+        { "id": "visa-work-uk", "name": "UK Work Visa (Tier 2)", "price": 1700, "delivery": "4-6 weeks" },
+        { "id": "visa-student-uk", "name": "UK Student Visa (Tier 4)", "price": 1500, "delivery": "4-6 weeks" },
+        { "id": "work-permit-canada", "name": "Canada Work Permit", "price": 1600, "delivery": "4-6 weeks" },
+        { "id": "work-permit-australia", "name": "Australia Work Permit", "price": 1650, "delivery": "4-6 weeks" },
+        { "id": "visa-schengen", "name": "Schengen Visa", "price": 1100, "delivery": "3-4 weeks" }
+      ]
+    }
+  },
+  "seo_templates": {
+    "title_template": "{product_title} - {category} | SecureDoc Solutions",
+    "description_template": "{product_description} Professional document verification with advanced security. Price: {price}.",
+    "keywords_template": "{product_title}, {category}, document verification, security features"
+  }
+}
