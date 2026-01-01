@@ -1,0 +1,980 @@
+{
+  "design_system_export": {
+    "generated_at": "2026-01-01",
+    "description": "Complete design specifications for product cards across all categories",
+    "base_url": "https://preview--eudos.lovable.app"
+  },
+
+  "global_tokens": {
+    "colors": {
+      "semantic_tokens": {
+        "background": "hsl(0 0% 100%)",
+        "foreground": "hsl(222.2 84% 4.9%)",
+        "card": "hsl(0 0% 100%)",
+        "card_foreground": "hsl(222.2 84% 4.9%)",
+        "primary": "hsl(213 94% 40%)",
+        "primary_foreground": "hsl(0 0% 100%)",
+        "primary_glow": "hsl(213 94% 55%)",
+        "secondary": "hsl(213 27% 84%)",
+        "secondary_foreground": "hsl(222.2 47.4% 11.2%)",
+        "muted": "hsl(210 40% 96.1%)",
+        "muted_foreground": "hsl(215.4 16.3% 46.9%)",
+        "accent": "hsl(213 94% 40%)",
+        "accent_foreground": "hsl(0 0% 100%)",
+        "destructive": "hsl(0 84.2% 60.2%)",
+        "border": "hsl(214.3 31.8% 91.4%)",
+        "input": "hsl(214.3 31.8% 91.4%)",
+        "ring": "hsl(213 94% 40%)"
+      },
+      "dark_mode": {
+        "background": "hsl(222.2 84% 4.9%)",
+        "foreground": "hsl(210 40% 98%)",
+        "card": "hsl(222.2 84% 4.9%)",
+        "card_foreground": "hsl(210 40% 98%)",
+        "primary": "hsl(213 94% 50%)",
+        "primary_foreground": "hsl(0 0% 100%)",
+        "primary_glow": "hsl(213 94% 65%)",
+        "secondary": "hsl(217.2 32.6% 17.5%)",
+        "secondary_foreground": "hsl(210 40% 98%)",
+        "muted": "hsl(217.2 32.6% 17.5%)",
+        "muted_foreground": "hsl(215 20.2% 65.1%)",
+        "border": "hsl(217.2 32.6% 17.5%)"
+      }
+    },
+    "gradients": {
+      "primary": "linear-gradient(135deg, hsl(213 94% 40%) 0%, hsl(213 94% 55%) 100%)",
+      "hero": "linear-gradient(180deg, hsl(213 27% 96%) 0%, hsl(0 0% 100%) 100%)",
+      "card_image_bg": "linear-gradient(to bottom right, var(--background), var(--muted))"
+    },
+    "shadows": {
+      "elegant": "0 20px 60px -15px hsl(213 94% 40% / 0.3)",
+      "glow": "0 0 40px hsl(213 94% 55% / 0.4)",
+      "card_hover": "0 10px 40px -10px rgba(0,0,0,0.1)"
+    },
+    "border_radius": {
+      "lg": "0.75rem",
+      "md": "calc(0.75rem - 2px)",
+      "sm": "calc(0.75rem - 4px)",
+      "full": "9999px"
+    },
+    "typography": {
+      "font_family": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      "font_sizes": {
+        "xs": "0.75rem",
+        "sm": "0.875rem",
+        "base": "1rem",
+        "lg": "1.125rem",
+        "xl": "1.25rem",
+        "2xl": "1.5rem",
+        "3xl": "1.875rem",
+        "4xl": "2.25rem",
+        "5xl": "3rem",
+        "6xl": "3.75rem"
+      },
+      "font_weights": {
+        "normal": 400,
+        "medium": 500,
+        "semibold": 600,
+        "bold": 700
+      },
+      "line_heights": {
+        "none": 1,
+        "tight": 1.25,
+        "normal": 1.5,
+        "relaxed": 1.625
+      }
+    },
+    "spacing": {
+      "1": "0.25rem",
+      "2": "0.5rem",
+      "3": "0.75rem",
+      "4": "1rem",
+      "5": "1.25rem",
+      "6": "1.5rem",
+      "8": "2rem",
+      "10": "2.5rem",
+      "12": "3rem",
+      "16": "4rem"
+    },
+    "transitions": {
+      "smooth": "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+      "duration_300": "300ms"
+    }
+  },
+
+  "categories": {
+    "passports": {
+      "category_name": "Passports",
+      "card": {
+        "layout": {
+          "display": "flex",
+          "flex_direction": "column",
+          "min_height": "auto"
+        },
+        "dimensions": {
+          "width": "100%",
+          "grid_columns": {
+            "mobile": 1,
+            "tablet": 2,
+            "desktop_lg": 2,
+            "desktop_xl": 3
+          },
+          "gap": "1.5rem"
+        },
+        "styling": {
+          "background": "hsl(var(--card))",
+          "border": "1px solid hsl(var(--border) / 0.5)",
+          "border_radius": "0.75rem",
+          "backdrop_filter": "blur(4px)",
+          "transition": "all 0.3s ease",
+          "hover_border": "hsl(var(--primary) / 0.5)",
+          "hover_shadow": "0 10px 40px -10px rgba(0,0,0,0.1)"
+        },
+        "sections": {
+          "header": {
+            "padding": "1.5rem",
+            "image_container": {
+              "display": "flex",
+              "align_items": "center",
+              "justify_content": "center",
+              "margin_bottom": "1rem",
+              "padding": "1.5rem",
+              "background": "linear-gradient(to bottom right, hsl(var(--background)), hsl(var(--muted)))",
+              "border_radius": "0.5rem"
+            },
+            "image": {
+              "width": "8rem",
+              "height": "8rem",
+              "object_fit": "contain"
+            },
+            "title_badge_row": {
+              "display": "flex",
+              "align_items": "flex-start",
+              "justify_content": "space-between",
+              "margin_bottom": "0.5rem"
+            }
+          },
+          "content": {
+            "padding": "1.5rem",
+            "padding_top": "0",
+            "flex": 1,
+            "price_row": {
+              "display": "flex",
+              "justify_content": "space-between",
+              "align_items": "center",
+              "margin_bottom": "0.5rem"
+            },
+            "features_section": {
+              "padding_top": "1rem",
+              "border_top": "1px solid hsl(var(--border) / 0.5)"
+            }
+          },
+          "footer": {
+            "padding": "1.5rem",
+            "padding_top": "1rem",
+            "border_top": "1px solid hsl(var(--border) / 0.5)",
+            "flex_direction": "column",
+            "gap": "0.5rem"
+          }
+        }
+      },
+      "typography": {
+        "title": {
+          "font_size": "1.125rem",
+          "font_weight": 600,
+          "color": "hsl(var(--foreground))"
+        },
+        "description": {
+          "font_size": "0.875rem",
+          "color": "hsl(var(--muted-foreground))",
+          "line_clamp": 2
+        },
+        "price_label": {
+          "font_size": "0.875rem",
+          "color": "hsl(var(--muted-foreground))"
+        },
+        "price_value": {
+          "font_size": "1.5rem",
+          "font_weight": 700,
+          "color": "hsl(var(--primary))"
+        },
+        "processing_time_label": {
+          "font_size": "0.875rem",
+          "color": "hsl(var(--muted-foreground))"
+        },
+        "processing_time_value": {
+          "font_size": "0.875rem",
+          "font_weight": 500
+        },
+        "features_title": {
+          "font_size": "0.875rem",
+          "font_weight": 600,
+          "color": "hsl(var(--foreground))",
+          "margin_bottom": "0.5rem"
+        },
+        "feature_item": {
+          "font_size": "0.75rem",
+          "color": "hsl(var(--muted-foreground))"
+        },
+        "more_features": {
+          "font_size": "0.75rem",
+          "color": "hsl(var(--muted-foreground))",
+          "margin_top": "0.5rem"
+        },
+        "footer_note": {
+          "font_size": "0.75rem",
+          "color": "hsl(var(--muted-foreground))",
+          "text_align": "center"
+        }
+      },
+      "badge": {
+        "variant": "secondary",
+        "custom_classes": "bg-primary/10 text-primary border-primary/20",
+        "text": "Military-Grade",
+        "styling": {
+          "background": "hsl(var(--primary) / 0.1)",
+          "color": "hsl(var(--primary))",
+          "border": "1px solid hsl(var(--primary) / 0.2)",
+          "padding": "0.125rem 0.625rem",
+          "border_radius": "9999px",
+          "font_size": "0.75rem",
+          "font_weight": 600
+        }
+      },
+      "buttons": {
+        "primary": {
+          "variant": "default",
+          "size": "default",
+          "width": "100%",
+          "text": "View Details",
+          "styling": {
+            "height": "2.5rem",
+            "padding": "0 1rem",
+            "background": "hsl(var(--primary))",
+            "color": "hsl(var(--primary-foreground))",
+            "border_radius": "0.375rem",
+            "font_size": "0.875rem",
+            "font_weight": 500,
+            "hover_background": "hsl(var(--primary) / 0.9)"
+          }
+        },
+        "secondary_grid": {
+          "layout": "grid grid-cols-2 gap-2 w-full",
+          "buttons": [
+            {
+              "variant": "outline",
+              "size": "sm",
+              "text": "Buy Now",
+              "styling": {
+                "height": "2.25rem",
+                "padding": "0 0.75rem",
+                "background": "hsl(var(--background))",
+                "border": "1px solid hsl(var(--input))",
+                "color": "hsl(var(--foreground))",
+                "border_radius": "0.375rem",
+                "font_size": "0.875rem",
+                "font_weight": 500,
+                "hover_background": "hsl(var(--accent))",
+                "hover_color": "hsl(var(--accent-foreground))"
+              }
+            },
+            {
+              "variant": "outline",
+              "size": "sm",
+              "text": "See Reviews",
+              "styling": {
+                "height": "2.25rem",
+                "padding": "0 0.75rem",
+                "background": "hsl(var(--background))",
+                "border": "1px solid hsl(var(--input))",
+                "color": "hsl(var(--foreground))",
+                "border_radius": "0.375rem",
+                "font_size": "0.875rem",
+                "font_weight": 500
+              }
+            }
+          ]
+        }
+      },
+      "feature_bullet": {
+        "width": "0.25rem",
+        "height": "0.25rem",
+        "border_radius": "9999px",
+        "background": "hsl(var(--primary))"
+      }
+    },
+
+    "drivers_licenses": {
+      "category_name": "Driver's Licenses",
+      "card": {
+        "layout": {
+          "display": "flex",
+          "flex_direction": "column",
+          "min_height": "auto"
+        },
+        "dimensions": {
+          "width": "100%",
+          "grid_columns": {
+            "mobile": 1,
+            "tablet": 2,
+            "desktop_lg": 2,
+            "desktop_xl": 3
+          },
+          "gap": "1.5rem"
+        },
+        "styling": {
+          "background": "hsl(var(--card))",
+          "border": "1px solid hsl(var(--border) / 0.5)",
+          "border_radius": "0.75rem",
+          "backdrop_filter": "blur(4px)",
+          "transition": "all 0.3s ease",
+          "hover_border": "hsl(var(--primary) / 0.5)",
+          "hover_shadow": "0 10px 40px -10px rgba(0,0,0,0.1)"
+        },
+        "sections": {
+          "header": {
+            "padding": "1.5rem",
+            "image_container": {
+              "margin_bottom": "1rem",
+              "border_radius": "0.5rem",
+              "overflow": "hidden",
+              "background": "linear-gradient(to bottom right, #3b82f6, #1d4ed8)",
+              "padding": "1rem"
+            },
+            "image": {
+              "width": "100%",
+              "height": "8rem",
+              "object_fit": "contain"
+            },
+            "icon_badge_row": {
+              "display": "flex",
+              "align_items": "flex-start",
+              "justify_content": "space-between",
+              "margin_bottom": "0.5rem"
+            },
+            "icon_container": {
+              "padding": "0.75rem",
+              "border_radius": "0.5rem",
+              "background": "linear-gradient(to bottom right, #a855f7, #ec4899)",
+              "color": "#ffffff"
+            },
+            "icon_size": {
+              "width": "1.5rem",
+              "height": "1.5rem"
+            }
+          },
+          "content": {
+            "padding": "1.5rem",
+            "padding_top": "0",
+            "flex": 1
+          },
+          "footer": {
+            "padding": "1.5rem",
+            "padding_top": "1rem",
+            "border_top": "1px solid hsl(var(--border) / 0.5)",
+            "flex_direction": "column",
+            "gap": "0.5rem"
+          }
+        }
+      },
+      "typography": {
+        "title": {
+          "font_size": "1.125rem",
+          "font_weight": 600,
+          "color": "hsl(var(--foreground))"
+        },
+        "description": {
+          "font_size": "0.875rem",
+          "color": "hsl(var(--muted-foreground))",
+          "line_clamp": 2
+        },
+        "price_value": {
+          "font_size": "1.5rem",
+          "font_weight": 700,
+          "color": "hsl(var(--primary))"
+        }
+      },
+      "badge": {
+        "variant": "secondary",
+        "custom_classes": "bg-primary/10 text-primary border-primary/20",
+        "text": "High-Security",
+        "styling": {
+          "background": "hsl(var(--primary) / 0.1)",
+          "color": "hsl(var(--primary))",
+          "border": "1px solid hsl(var(--primary) / 0.2)"
+        }
+      },
+      "buttons": {
+        "primary": {
+          "variant": "default",
+          "size": "default",
+          "width": "100%",
+          "text": "View Details"
+        },
+        "secondary_grid": {
+          "layout": "grid grid-cols-2 gap-2 w-full",
+          "buttons": [
+            { "variant": "outline", "size": "sm", "text": "Buy Now" },
+            { "variant": "outline", "size": "sm", "text": "See Reviews" }
+          ]
+        }
+      }
+    },
+
+    "citizenship": {
+      "category_name": "Citizenship Programs",
+      "card": {
+        "layout": {
+          "display": "flex",
+          "flex_direction": "column",
+          "min_height": "auto"
+        },
+        "dimensions": {
+          "width": "100%",
+          "grid_columns": {
+            "mobile": 1,
+            "tablet": 2,
+            "desktop_lg": 2,
+            "desktop_xl": 3
+          },
+          "gap": "1.5rem"
+        },
+        "styling": {
+          "background": "hsl(var(--card))",
+          "border": "1px solid hsl(var(--border) / 0.5)",
+          "border_radius": "0.75rem",
+          "overflow": "hidden",
+          "transition": "transform 0.3s ease, box-shadow 0.3s ease",
+          "hover_transform": "translateY(-2px)",
+          "hover_shadow": "0 10px 40px -10px rgba(0,0,0,0.1)"
+        },
+        "sections": {
+          "header": {
+            "gradient_bar": {
+              "height": "0.5rem",
+              "background": "dynamic based on country gradient"
+            },
+            "padding": "1.5rem",
+            "flag_investment_row": {
+              "display": "flex",
+              "justify_content": "space-between",
+              "align_items": "flex-start"
+            },
+            "flag": {
+              "font_size": "2.5rem"
+            },
+            "investment_badge": {
+              "background": "hsl(var(--primary) / 0.1)",
+              "color": "hsl(var(--primary))",
+              "padding": "0.25rem 0.5rem",
+              "border_radius": "0.375rem",
+              "font_size": "0.75rem",
+              "font_weight": 600
+            }
+          },
+          "content": {
+            "padding": "0 1.5rem 1.5rem",
+            "benefits_list": {
+              "display": "flex",
+              "flex_wrap": "wrap",
+              "gap": "0.5rem",
+              "margin_top": "0.75rem"
+            }
+          }
+        }
+      },
+      "typography": {
+        "country_name": {
+          "font_size": "1.5rem",
+          "font_weight": 700,
+          "color": "hsl(var(--foreground))"
+        },
+        "description": {
+          "font_size": "0.875rem",
+          "color": "hsl(var(--muted-foreground))"
+        },
+        "benefit_badge": {
+          "font_size": "0.75rem",
+          "color": "hsl(var(--primary))",
+          "background": "hsl(var(--primary) / 0.1)"
+        }
+      },
+      "country_gradients": {
+        "note": "Each country has unique gradient colors based on flag",
+        "examples": {
+          "Australia": "from-yellow-500 to-red-500",
+          "Canada": "from-red-500 via-white to-red-500",
+          "Germany": "from-black via-red-500 to-yellow-400",
+          "Italy": "from-green-600 via-white to-red-600",
+          "United_Kingdom": "from-blue-700 via-white to-red-600",
+          "Switzerland": "from-red-600 via-white to-red-600"
+        }
+      },
+      "buttons": {
+        "primary": {
+          "variant": "default",
+          "width": "100%",
+          "text": "Explore Program",
+          "icon": "ArrowRight",
+          "icon_position": "right"
+        }
+      }
+    },
+
+    "diplomas": {
+      "category_name": "University Diplomas",
+      "card": {
+        "layout": {
+          "display": "flex",
+          "flex_direction": "column",
+          "height": "100%"
+        },
+        "dimensions": {
+          "width": "100%",
+          "grid_columns": {
+            "mobile": 1,
+            "tablet": 2,
+            "desktop_lg": 3,
+            "desktop_xl": 4
+          },
+          "gap": "1.5rem"
+        },
+        "styling": {
+          "background": "hsl(var(--card))",
+          "border": "1px solid hsl(var(--border) / 0.5)",
+          "border_radius": "0.75rem",
+          "transition": "border-color 0.3s ease, box-shadow 0.3s ease",
+          "hover_border": "hsl(var(--primary) / 0.5)",
+          "hover_shadow": "0 10px 40px -10px rgba(0,0,0,0.1)"
+        },
+        "sections": {
+          "header": {
+            "padding": "1rem",
+            "seal_container": {
+              "display": "flex",
+              "align_items": "center",
+              "justify_content": "center",
+              "height": "6rem",
+              "padding": "1rem",
+              "background": "linear-gradient(to bottom right, hsl(var(--muted) / 0.5), hsl(var(--muted)))",
+              "border_radius": "0.5rem",
+              "margin_bottom": "0.75rem"
+            },
+            "seal_image": {
+              "max_height": "4rem",
+              "max_width": "4rem",
+              "object_fit": "contain"
+            },
+            "fallback_icon": {
+              "width": "3rem",
+              "height": "3rem",
+              "color": "hsl(var(--primary))"
+            }
+          },
+          "content": {
+            "padding": "0 1rem 1rem",
+            "flex": 1
+          },
+          "footer": {
+            "padding": "1rem",
+            "padding_top": "0"
+          }
+        }
+      },
+      "typography": {
+        "university_name": {
+          "font_size": "0.875rem",
+          "font_weight": 600,
+          "color": "hsl(var(--foreground))",
+          "line_clamp": 2
+        },
+        "location": {
+          "font_size": "0.75rem",
+          "color": "hsl(var(--muted-foreground))"
+        },
+        "price": {
+          "font_size": "0.875rem",
+          "font_weight": 700,
+          "color": "hsl(var(--primary))"
+        }
+      },
+      "badge": {
+        "ranking_badge": {
+          "variant": "secondary",
+          "custom_classes": "bg-primary/10 text-primary",
+          "text_template": "Rank #{number}",
+          "styling": {
+            "background": "hsl(var(--primary) / 0.1)",
+            "color": "hsl(var(--primary))",
+            "font_size": "0.625rem",
+            "padding": "0.125rem 0.5rem"
+          }
+        }
+      },
+      "buttons": {
+        "primary": {
+          "variant": "default",
+          "size": "sm",
+          "width": "100%",
+          "text": "Order Now",
+          "icon": "ShoppingCart",
+          "icon_position": "left",
+          "styling": {
+            "height": "2.25rem",
+            "padding": "0 0.75rem",
+            "font_size": "0.875rem"
+          }
+        }
+      }
+    },
+
+    "certifications": {
+      "category_name": "Professional Certifications",
+      "card": {
+        "layout": {
+          "display": "flex",
+          "flex_direction": "column"
+        },
+        "dimensions": {
+          "width": "100%",
+          "grid_columns": {
+            "mobile": 1,
+            "tablet": 2,
+            "desktop_lg": 3,
+            "desktop_xl": 4
+          },
+          "gap": "1.5rem"
+        },
+        "styling": {
+          "background": "hsl(var(--card))",
+          "border": "1px solid hsl(var(--border) / 0.5)",
+          "border_radius": "0.75rem",
+          "transition": "border-color 0.3s ease, box-shadow 0.3s ease",
+          "hover_border": "hsl(var(--primary) / 0.5)",
+          "hover_shadow": "0 10px 40px -10px rgba(0,0,0,0.1)"
+        },
+        "sections": {
+          "header": {
+            "padding": "1rem",
+            "icon_price_row": {
+              "display": "flex",
+              "align_items": "center",
+              "justify_content": "space-between"
+            },
+            "icon_container": {
+              "padding": "0.5rem",
+              "background": "hsl(var(--primary) / 0.1)",
+              "border_radius": "0.5rem"
+            },
+            "icon": {
+              "width": "1.5rem",
+              "height": "1.5rem",
+              "color": "hsl(var(--primary))"
+            }
+          },
+          "content": {
+            "padding": "0 1rem 1rem"
+          }
+        }
+      },
+      "typography": {
+        "certification_name": {
+          "font_size": "0.875rem",
+          "font_weight": 600,
+          "color": "hsl(var(--foreground))",
+          "line_clamp": 2
+        },
+        "provider": {
+          "font_size": "0.75rem",
+          "color": "hsl(var(--muted-foreground))"
+        },
+        "price": {
+          "font_size": "0.875rem",
+          "font_weight": 700,
+          "color": "hsl(var(--primary))"
+        }
+      },
+      "badge": {
+        "category_badge": {
+          "variant": "secondary",
+          "custom_classes": "text-xs",
+          "text_template": "{{category}}",
+          "styling": {
+            "background": "hsl(var(--secondary))",
+            "color": "hsl(var(--secondary-foreground))",
+            "font_size": "0.625rem"
+          }
+        }
+      },
+      "buttons": {
+        "primary": {
+          "variant": "default",
+          "size": "sm",
+          "width": "100%",
+          "text": "Order Now",
+          "icon": "ShoppingCart",
+          "icon_position": "left"
+        }
+      }
+    }
+  },
+
+  "shared_components": {
+    "card_base": {
+      "component": "Card",
+      "base_classes": "border-border/50 bg-card backdrop-blur-sm hover:border-primary/50 transition-all duration-300 hover:shadow-lg flex flex-col",
+      "css": {
+        "border_radius": "var(--radius)",
+        "border": "1px solid hsl(var(--border))",
+        "background": "hsl(var(--card))",
+        "color": "hsl(var(--card-foreground))",
+        "box_shadow": "0 1px 3px 0 rgb(0 0 0 / 0.1)"
+      }
+    },
+    "card_header": {
+      "component": "CardHeader",
+      "base_classes": "flex flex-col space-y-1.5 p-6",
+      "css": {
+        "padding": "1.5rem"
+      }
+    },
+    "card_title": {
+      "component": "CardTitle",
+      "base_classes": "text-2xl font-semibold leading-none tracking-tight",
+      "custom_size": "text-lg",
+      "css": {
+        "font_size": "1.125rem",
+        "font_weight": 600,
+        "line_height": 1,
+        "letter_spacing": "-0.015em"
+      }
+    },
+    "card_description": {
+      "component": "CardDescription",
+      "base_classes": "text-sm text-muted-foreground",
+      "custom_classes": "line-clamp-2",
+      "css": {
+        "font_size": "0.875rem",
+        "color": "hsl(var(--muted-foreground))"
+      }
+    },
+    "card_content": {
+      "component": "CardContent",
+      "base_classes": "p-6 pt-0",
+      "custom_classes": "flex-1",
+      "css": {
+        "padding": "1.5rem",
+        "padding_top": "0",
+        "flex": 1
+      }
+    },
+    "card_footer": {
+      "component": "CardFooter",
+      "base_classes": "flex items-center p-6 pt-0",
+      "custom_classes": "pt-4 border-t border-border/50 flex-col gap-2",
+      "css": {
+        "display": "flex",
+        "align_items": "center",
+        "padding": "1.5rem",
+        "padding_top": "1rem",
+        "border_top": "1px solid hsl(var(--border) / 0.5)",
+        "flex_direction": "column",
+        "gap": "0.5rem"
+      }
+    },
+    "badge": {
+      "component": "Badge",
+      "variants": {
+        "default": {
+          "background": "hsl(var(--primary))",
+          "color": "hsl(var(--primary-foreground))"
+        },
+        "secondary": {
+          "background": "hsl(var(--secondary))",
+          "color": "hsl(var(--secondary-foreground))"
+        },
+        "outline": {
+          "background": "transparent",
+          "color": "hsl(var(--foreground))",
+          "border": "1px solid hsl(var(--border))"
+        },
+        "custom_primary": {
+          "classes": "bg-primary/10 text-primary border-primary/20",
+          "background": "hsl(var(--primary) / 0.1)",
+          "color": "hsl(var(--primary))",
+          "border": "1px solid hsl(var(--primary) / 0.2)"
+        }
+      },
+      "base_css": {
+        "display": "inline-flex",
+        "align_items": "center",
+        "border_radius": "9999px",
+        "border": "1px solid transparent",
+        "padding": "0.125rem 0.625rem",
+        "font_size": "0.75rem",
+        "font_weight": 600,
+        "transition": "colors 150ms"
+      }
+    },
+    "button": {
+      "component": "Button",
+      "variants": {
+        "default": {
+          "background": "hsl(var(--primary))",
+          "color": "hsl(var(--primary-foreground))",
+          "hover_background": "hsl(var(--primary) / 0.9)"
+        },
+        "outline": {
+          "background": "hsl(var(--background))",
+          "border": "1px solid hsl(var(--input))",
+          "hover_background": "hsl(var(--accent))",
+          "hover_color": "hsl(var(--accent-foreground))"
+        },
+        "secondary": {
+          "background": "hsl(var(--secondary))",
+          "color": "hsl(var(--secondary-foreground))",
+          "hover_background": "hsl(var(--secondary) / 0.8)"
+        },
+        "ghost": {
+          "background": "transparent",
+          "hover_background": "hsl(var(--accent))",
+          "hover_color": "hsl(var(--accent-foreground))"
+        },
+        "destructive": {
+          "background": "hsl(var(--destructive))",
+          "color": "hsl(var(--destructive-foreground))",
+          "hover_background": "hsl(var(--destructive) / 0.9)"
+        },
+        "link": {
+          "color": "hsl(var(--primary))",
+          "text_decoration": "underline",
+          "underline_offset": "4px"
+        }
+      },
+      "sizes": {
+        "default": {
+          "height": "2.5rem",
+          "padding": "0 1rem"
+        },
+        "sm": {
+          "height": "2.25rem",
+          "padding": "0 0.75rem",
+          "border_radius": "0.375rem"
+        },
+        "lg": {
+          "height": "2.75rem",
+          "padding": "0 2rem",
+          "border_radius": "0.375rem"
+        },
+        "icon": {
+          "height": "2.5rem",
+          "width": "2.5rem"
+        }
+      },
+      "base_css": {
+        "display": "inline-flex",
+        "align_items": "center",
+        "justify_content": "center",
+        "gap": "0.5rem",
+        "white_space": "nowrap",
+        "border_radius": "0.375rem",
+        "font_size": "0.875rem",
+        "font_weight": 500,
+        "transition": "colors 150ms",
+        "outline": "none",
+        "disabled_opacity": 0.5
+      }
+    }
+  },
+
+  "grid_layouts": {
+    "passports_drivers": {
+      "container": "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6",
+      "responsive": {
+        "default": "1 column",
+        "md_768px": "2 columns",
+        "lg_1024px": "2 columns",
+        "xl_1280px": "3 columns"
+      }
+    },
+    "citizenship": {
+      "container": "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6",
+      "responsive": {
+        "default": "1 column",
+        "md_768px": "2 columns",
+        "lg_1024px": "2 columns",
+        "xl_1280px": "3 columns"
+      }
+    },
+    "diplomas_certifications": {
+      "container": "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6",
+      "responsive": {
+        "default": "1 column",
+        "sm_640px": "2 columns",
+        "lg_1024px": "3 columns",
+        "xl_1280px": "4 columns"
+      }
+    }
+  },
+
+  "animations": {
+    "card_hover": {
+      "transition": "all 0.3s ease",
+      "effects": [
+        "border-color change to primary/50",
+        "box-shadow appears",
+        "optional translateY(-2px)"
+      ]
+    },
+    "fade_in": {
+      "keyframes": {
+        "0%": { "opacity": 0, "transform": "translateY(20px)" },
+        "100%": { "opacity": 1, "transform": "translateY(0)" }
+      },
+      "duration": "0.6s",
+      "timing": "ease-out"
+    },
+    "fade_in_up": {
+      "keyframes": {
+        "0%": { "opacity": 0, "transform": "translateY(30px)" },
+        "100%": { "opacity": 1, "transform": "translateY(0)" }
+      },
+      "duration": "0.8s",
+      "timing": "ease-out"
+    },
+    "scale_in": {
+      "keyframes": {
+        "0%": { "opacity": 0, "transform": "scale(0.9)" },
+        "100%": { "opacity": 1, "transform": "scale(1)" }
+      },
+      "duration": "0.5s",
+      "timing": "ease-out"
+    }
+  },
+
+  "icons_used": {
+    "passports": ["FileText", "Shield", "Globe"],
+    "drivers_licenses": ["CreditCard", "Shield", "ShoppingCart"],
+    "citizenship": ["Globe", "MapPin", "Users", "TrendingUp", "Home", "GraduationCap", "Building2", "Plane", "Shield", "Award", "CheckCircle", "ArrowRight", "Star"],
+    "diplomas": ["GraduationCap", "ShoppingCart"],
+    "certifications": ["Award", "ShoppingCart"],
+    "common": ["Search", "Filter", "X"]
+  },
+
+  "tailwind_classes_reference": {
+    "card": "border-border/50 bg-card backdrop-blur-sm hover:border-primary/50 transition-all duration-300 hover:shadow-lg flex flex-col",
+    "card_header": "flex flex-col space-y-1.5 p-6",
+    "card_title": "text-lg font-semibold leading-none tracking-tight",
+    "card_description": "text-sm text-muted-foreground line-clamp-2",
+    "card_content": "p-6 pt-0 flex-1",
+    "card_footer": "pt-4 border-t border-border/50 flex-col gap-2 p-6",
+    "image_container": "flex items-center justify-center mb-4 p-6 bg-gradient-to-br from-background to-muted rounded-lg",
+    "image": "w-32 h-32 object-contain",
+    "badge_primary": "bg-primary/10 text-primary border-primary/20",
+    "price": "text-2xl font-bold text-primary",
+    "button_full_width": "w-full",
+    "button_grid": "grid grid-cols-2 gap-2 w-full",
+    "feature_dot": "h-1 w-1 rounded-full bg-primary",
+    "feature_text": "text-xs text-muted-foreground flex items-center gap-2"
+  }
+}
