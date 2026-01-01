@@ -1,0 +1,413 @@
+{
+  "export_info": {
+    "generated_at": "2026-01-01",
+    "description": "Complete content and design specifications for ALL product cards across all categories with actual data",
+    "base_url": "https://preview--eudos.lovable.app"
+  },
+
+  "categories": {
+    "passports": {
+      "category_name": "Passports",
+      "page_route": "/passports",
+      "total_products": 32,
+      "hero_section": {
+        "badge": {
+          "icon": "FileText",
+          "text": "Registered Passports"
+        },
+        "title": "Biometric Passport Documents",
+        "subtitle": "Fully registered biometric passports from around the world with embedded RFID chips and military-grade security features",
+        "highlights": [
+          {"icon": "Shield", "text": "Military-Grade Security"},
+          {"icon": "Globe", "text": "32 or 64 Pages"},
+          {"icon": "FileText", "text": "$2,500 per Passport"}
+        ]
+      },
+      "card_design": {
+        "badge_text": "Military-Grade",
+        "badge_style": "bg-primary/10 text-primary border-primary/20",
+        "image_container_style": "bg-gradient-to-br from-background to-muted rounded-lg p-6",
+        "image_dimensions": "w-32 h-32 object-contain",
+        "buttons": {
+          "primary": {"text": "View Details", "variant": "default", "width": "w-full"},
+          "secondary": [
+            {"text": "Buy Now", "variant": "outline", "size": "sm"},
+            {"text": "See Reviews", "variant": "outline", "size": "sm"}
+          ]
+        },
+        "footer_note": "Click \"See Reviews\" to view customer feedback"
+      },
+      "products": [
+        {"country": "Austria", "title": "Austria Passport", "description": "Fully registered biometric Austria passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Belgium", "title": "Belgium Passport", "description": "Fully registered biometric Belgium passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Bulgaria", "title": "Bulgaria Passport", "description": "Fully registered biometric Bulgaria passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Croatia", "title": "Croatia Passport", "description": "Fully registered biometric Croatia passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Cyprus", "title": "Cyprus Passport", "description": "Fully registered biometric Cyprus passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Czech Republic", "title": "Czech Republic Passport", "description": "Fully registered biometric Czech Republic passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Denmark", "title": "Denmark Passport", "description": "Fully registered biometric Denmark passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Estonia", "title": "Estonia Passport", "description": "Fully registered biometric Estonia passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Finland", "title": "Finland Passport", "description": "Fully registered biometric Finland passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "France", "title": "France Passport", "description": "Fully registered biometric France passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Germany", "title": "Germany Passport", "description": "Fully registered biometric Germany passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Greece", "title": "Greece Passport", "description": "Fully registered biometric Greece passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Hungary", "title": "Hungary Passport", "description": "Fully registered biometric Hungary passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Ireland", "title": "Ireland Passport", "description": "Fully registered biometric Ireland passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Italy", "title": "Italy Passport", "description": "Fully registered biometric Italy passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Latvia", "title": "Latvia Passport", "description": "Fully registered biometric Latvia passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Lithuania", "title": "Lithuania Passport", "description": "Fully registered biometric Lithuania passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Luxembourg", "title": "Luxembourg Passport", "description": "Fully registered biometric Luxembourg passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Malta", "title": "Malta Passport", "description": "Fully registered biometric Malta passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Netherlands", "title": "Netherlands Passport", "description": "Fully registered biometric Netherlands passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Poland", "title": "Poland Passport", "description": "Fully registered biometric Poland passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Portugal", "title": "Portugal Passport", "description": "Fully registered biometric Portugal passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Romania", "title": "Romania Passport", "description": "Fully registered biometric Romania passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Slovakia", "title": "Slovakia Passport", "description": "Fully registered biometric Slovakia passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Slovenia", "title": "Slovenia Passport", "description": "Fully registered biometric Slovenia passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Spain", "title": "Spain Passport", "description": "Fully registered biometric Spain passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Sweden", "title": "Sweden Passport", "description": "Fully registered biometric Sweden passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "United States", "title": "United States Passport", "description": "Fully registered biometric United States passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "United Kingdom", "title": "United Kingdom Passport", "description": "Fully registered biometric United Kingdom passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Canada", "title": "Canada Passport", "description": "Fully registered biometric Canada passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Australia", "title": "Australia Passport", "description": "Fully registered biometric Australia passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"},
+        {"country": "Switzerland", "title": "Switzerland Passport", "description": "Fully registered biometric Switzerland passport with embedded chips and advanced security features", "price": "$2,500", "processing_time": "7-10 business days"}
+      ],
+      "security_features": [
+        "Biometric data integration",
+        "RFID/NFC embedded chip",
+        "Multi-layer holograms",
+        "UV security features",
+        "Machine-readable zone (MRZ)",
+        "Laser engraved personalization",
+        "Watermarks & security threads",
+        "Government database registration"
+      ],
+      "features_visible_count": 4,
+      "more_features_text_template": "+{count} more features"
+    },
+
+    "drivers_licenses": {
+      "category_name": "Driver's Licenses",
+      "page_route": "/drivers-license",
+      "total_products": 32,
+      "hero_section": {
+        "badge": {
+          "icon": "CreditCard",
+          "text": "Secure Driver's Licenses"
+        },
+        "title": "Driver's License Documents",
+        "subtitle": "Secure driver's licenses from around the world with advanced biometric data and tamper-proof security features",
+        "highlights": [
+          {"icon": "Shield", "text": "High-Security Features"},
+          {"icon": "CreditCard", "text": "Polycarbonate Material"},
+          {"icon": "ShoppingCart", "text": "$800 per License"}
+        ]
+      },
+      "card_design": {
+        "badge_text": "High-Security",
+        "badge_style": "bg-primary/10 text-primary border-primary/20",
+        "image_container_style": "rounded-lg overflow-hidden bg-gradient-to-br from-blue-500 to-blue-700 p-4",
+        "image_dimensions": "w-full h-32 object-contain",
+        "icon_container": "p-3 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 text-white",
+        "buttons": {
+          "primary": {"text": "View Details", "variant": "default", "width": "w-full"},
+          "secondary": [
+            {"text": "Buy Now", "variant": "outline", "size": "sm"},
+            {"text": "See Reviews", "variant": "outline", "size": "sm"}
+          ]
+        },
+        "footer_note": "Click \"See Reviews\" to view customer feedback"
+      },
+      "products": [
+        {"country": "Austria", "title": "Austria Driver's License", "description": "Secure Austria driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Belgium", "title": "Belgium Driver's License", "description": "Secure Belgium driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Bulgaria", "title": "Bulgaria Driver's License", "description": "Secure Bulgaria driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Croatia", "title": "Croatia Driver's License", "description": "Secure Croatia driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Cyprus", "title": "Cyprus Driver's License", "description": "Secure Cyprus driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Czech Republic", "title": "Czech Republic Driver's License", "description": "Secure Czech Republic driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Denmark", "title": "Denmark Driver's License", "description": "Secure Denmark driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Estonia", "title": "Estonia Driver's License", "description": "Secure Estonia driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Finland", "title": "Finland Driver's License", "description": "Secure Finland driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "France", "title": "France Driver's License", "description": "Secure France driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Germany", "title": "Germany Driver's License", "description": "Secure Germany driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Greece", "title": "Greece Driver's License", "description": "Secure Greece driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Hungary", "title": "Hungary Driver's License", "description": "Secure Hungary driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Ireland", "title": "Ireland Driver's License", "description": "Secure Ireland driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Italy", "title": "Italy Driver's License", "description": "Secure Italy driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Latvia", "title": "Latvia Driver's License", "description": "Secure Latvia driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Lithuania", "title": "Lithuania Driver's License", "description": "Secure Lithuania driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Luxembourg", "title": "Luxembourg Driver's License", "description": "Secure Luxembourg driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Malta", "title": "Malta Driver's License", "description": "Secure Malta driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Netherlands", "title": "Netherlands Driver's License", "description": "Secure Netherlands driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Poland", "title": "Poland Driver's License", "description": "Secure Poland driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Portugal", "title": "Portugal Driver's License", "description": "Secure Portugal driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Romania", "title": "Romania Driver's License", "description": "Secure Romania driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Slovakia", "title": "Slovakia Driver's License", "description": "Secure Slovakia driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Slovenia", "title": "Slovenia Driver's License", "description": "Secure Slovenia driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Spain", "title": "Spain Driver's License", "description": "Secure Spain driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Sweden", "title": "Sweden Driver's License", "description": "Secure Sweden driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "United States", "title": "United States Driver's License", "description": "Secure United States driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "United Kingdom", "title": "United Kingdom Driver's License", "description": "Secure United Kingdom driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Canada", "title": "Canada Driver's License", "description": "Secure Canada driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Australia", "title": "Australia Driver's License", "description": "Secure Australia driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"},
+        {"country": "Switzerland", "title": "Switzerland Driver's License", "description": "Secure Switzerland driver's license with biometric data and tamper-proof features", "price": "$800", "processing_time": "5-7 business days"}
+      ],
+      "security_features": [
+        "Biometric photo & fingerprint",
+        "Ghost image technology",
+        "Microtext printing",
+        "UV ink patterns",
+        "Laser engraving",
+        "Barcode & magnetic stripe",
+        "Holographic overlay",
+        "Tamper-evident design"
+      ],
+      "features_visible_count": 4,
+      "more_features_text_template": "+{count} more features"
+    },
+
+    "citizenship": {
+      "category_name": "Citizenship",
+      "page_route": "/citizenship",
+      "total_products": 32,
+      "hero_section": {
+        "badge": {
+          "icon": "Globe",
+          "text": "Full Citizenship Packages"
+        },
+        "title": "Global Citizenship Programs",
+        "subtitle": "Complete citizenship packages including passport, driver's license, and national ID with fast 1-month processing",
+        "stats": [
+          {"value": "32+", "label": "Countries Available"},
+          {"value": "1 Month", "label": "Processing Time"},
+          {"value": "100%", "label": "Success Rate"}
+        ]
+      },
+      "card_design": {
+        "no_badge": true,
+        "flag_display": true,
+        "gradient_background": true,
+        "price_label": "min_investment",
+        "buttons": {
+          "primary": {"text": "Explore Program", "variant": "default", "width": "w-full", "icon": "ArrowRight"}
+        }
+      },
+      "products": [
+        {"country": "Australia", "flag": "🇦🇺", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-yellow-500 to-red-500"},
+        {"country": "Austria", "flag": "🇦🇹", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-red-500 to-red-600"},
+        {"country": "Canada", "flag": "🇨🇦", "description": "Premium citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 50,000", "benefits": ["Complete documentation package", "Premium country", "1 month processing"], "gradient": "from-red-500 via-white to-red-500", "is_premium": true},
+        {"country": "Greece", "flag": "🇬🇷", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-blue-500 to-cyan-500"},
+        {"country": "Portugal", "flag": "🇵🇹", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-green-600 to-red-600"},
+        {"country": "Spain", "flag": "🇪🇸", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-red-600 via-yellow-400 to-red-600"},
+        {"country": "Malta", "flag": "🇲🇹", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-white via-red-600 to-white"},
+        {"country": "Monaco", "flag": "🇲🇨", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-red-600 to-white"},
+        {"country": "United Arab Emirates", "flag": "🇦🇪", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-green-600 via-white to-black"},
+        {"country": "Singapore", "flag": "🇸🇬", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-red-600 to-white"},
+        {"country": "Switzerland", "flag": "🇨🇭", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-red-600 via-white to-red-600"},
+        {"country": "Italy", "flag": "🇮🇹", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-green-600 via-white to-red-600"},
+        {"country": "United Kingdom", "flag": "🇬🇧", "description": "Premium citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 50,000", "benefits": ["Complete documentation package", "Premium country", "1 month processing"], "gradient": "from-blue-700 via-white to-red-600", "is_premium": true},
+        {"country": "New Zealand", "flag": "🇳🇿", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-blue-900 to-blue-700"},
+        {"country": "Latvia", "flag": "🇱🇻", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-red-700 via-white to-red-700"},
+        {"country": "Cyprus", "flag": "🇨🇾", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-orange-500 to-green-700"},
+        {"country": "Ireland", "flag": "🇮🇪", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-green-700 via-white to-orange-600"},
+        {"country": "Thailand", "flag": "🇹🇭", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-red-600 via-white to-blue-800"},
+        {"country": "Netherlands", "flag": "🇳🇱", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-red-600 via-white to-blue-700"},
+        {"country": "Turkey", "flag": "🇹🇷", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-red-700 to-red-600"},
+        {"country": "Brazil", "flag": "🇧🇷", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-green-600 via-yellow-400 to-blue-700"},
+        {"country": "Luxembourg", "flag": "🇱🇺", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-red-600 via-white to-blue-600"},
+        {"country": "Czech Republic", "flag": "🇨🇿", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-white via-blue-600 to-red-600"},
+        {"country": "Hungary", "flag": "🇭🇺", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-red-600 via-white to-green-700"},
+        {"country": "Bulgaria", "flag": "🇧🇬", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-white via-green-700 to-red-600"},
+        {"country": "Romania", "flag": "🇷🇴", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-blue-700 via-yellow-400 to-red-600"},
+        {"country": "Montenegro", "flag": "🇲🇪", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-red-700 via-yellow-400 to-red-700"},
+        {"country": "Panama", "flag": "🇵🇦", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-blue-600 via-white to-red-600"},
+        {"country": "Costa Rica", "flag": "🇨🇷", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-blue-600 via-white to-red-600"},
+        {"country": "Uruguay", "flag": "🇺🇾", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-blue-700 via-white to-blue-700"},
+        {"country": "Colombia", "flag": "🇨🇴", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-yellow-400 via-blue-700 to-red-600"},
+        {"country": "Argentina", "flag": "🇦🇷", "description": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.", "price": "USD 37,000", "benefits": ["Complete documentation package", "No investment required", "1 month processing"], "gradient": "from-blue-600 via-white to-blue-600"}
+      ],
+      "benefits_section": [
+        {"icon": "Globe", "title": "Global Mobility", "description": "Visa-free travel to multiple countries and unrestricted access to regional economic zones", "gradient": "from-blue-500 to-cyan-500"},
+        {"icon": "Shield", "title": "Security & Stability", "description": "Political and economic stability with strong legal frameworks protecting your rights", "gradient": "from-green-500 to-emerald-500"},
+        {"icon": "TrendingUp", "title": "Business Opportunities", "description": "Access to thriving markets, favorable tax structures, and international business networks", "gradient": "from-purple-500 to-pink-500"},
+        {"icon": "GraduationCap", "title": "World-Class Education", "description": "Top-tier educational institutions and universities for your family members", "gradient": "from-orange-500 to-red-500"},
+        {"icon": "Home", "title": "Quality of Life", "description": "Superior healthcare systems, infrastructure, and overall living standards", "gradient": "from-indigo-500 to-purple-500"},
+        {"icon": "Users", "title": "Family Inclusion", "description": "Most programs include spouse, children, and sometimes extended family members", "gradient": "from-pink-500 to-rose-500"}
+      ]
+    },
+
+    "diplomas": {
+      "category_name": "Diplomas",
+      "page_route": "/diplomas",
+      "total_products": 200,
+      "hero_section": {
+        "badge": {
+          "icon": "GraduationCap",
+          "text": "University Diplomas"
+        },
+        "title": "University Diplomas",
+        "subtitle": "Authentic university diplomas from top institutions worldwide",
+        "highlights": [
+          {"icon": "GraduationCap", "text": "500+ Universities"},
+          {"icon": "Shield", "text": "Authentic Quality"},
+          {"icon": "ShoppingCart", "text": "From $5,000"}
+        ]
+      },
+      "card_design": {
+        "badge_text_template": "Rank #{ranking}",
+        "badge_style": "bg-primary/10 text-primary",
+        "icon_container": "p-3 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 text-white",
+        "buttons": {
+          "primary": {"text": "Order Now", "variant": "default", "width": "w-full", "icon": "ShoppingCart"}
+        }
+      },
+      "products": [
+        {"id": 1, "name": "Harvard University", "location": "Cambridge, MA", "ranking": 1, "price": "$15,000"},
+        {"id": 2, "name": "Stanford University", "location": "Stanford, CA", "ranking": 2, "price": "$15,000"},
+        {"id": 3, "name": "Massachusetts Institute of Technology (MIT)", "location": "Cambridge, MA", "ranking": 3, "price": "$15,000"},
+        {"id": 4, "name": "University of California, Berkeley", "location": "Berkeley, CA", "ranking": 4, "price": "$12,000"},
+        {"id": 5, "name": "Princeton University", "location": "Princeton, NJ", "ranking": 5, "price": "$15,000"},
+        {"id": 6, "name": "Yale University", "location": "New Haven, CT", "ranking": 6, "price": "$15,000"},
+        {"id": 7, "name": "Columbia University", "location": "New York, NY", "ranking": 7, "price": "$15,000"},
+        {"id": 8, "name": "University of Chicago", "location": "Chicago, IL", "ranking": 8, "price": "$14,000"},
+        {"id": 9, "name": "California Institute of Technology (Caltech)", "location": "Pasadena, CA", "ranking": 9, "price": "$15,000"},
+        {"id": 10, "name": "Johns Hopkins University", "location": "Baltimore, MD", "ranking": 10, "price": "$14,000"},
+        {"id": 11, "name": "University of Pennsylvania", "location": "Philadelphia, PA", "ranking": 11, "price": "$14,000"},
+        {"id": 12, "name": "Cornell University", "location": "Ithaca, NY", "ranking": 12, "price": "$14,000"},
+        {"id": 13, "name": "University of Michigan", "location": "Ann Arbor, MI", "ranking": 13, "price": "$12,000"},
+        {"id": 14, "name": "Northwestern University", "location": "Evanston, IL", "ranking": 14, "price": "$14,000"},
+        {"id": 15, "name": "Duke University", "location": "Durham, NC", "ranking": 15, "price": "$14,000"},
+        {"id": 16, "name": "University of California, Los Angeles (UCLA)", "location": "Los Angeles, CA", "ranking": 16, "price": "$12,000"},
+        {"id": 17, "name": "Brown University", "location": "Providence, RI", "ranking": 17, "price": "$14,000"},
+        {"id": 18, "name": "Dartmouth College", "location": "Hanover, NH", "ranking": 18, "price": "$14,000"},
+        {"id": 19, "name": "Vanderbilt University", "location": "Nashville, TN", "ranking": 19, "price": "$13,000"},
+        {"id": 20, "name": "Rice University", "location": "Houston, TX", "ranking": 20, "price": "$13,000"},
+        {"id": 21, "name": "Washington University in St. Louis", "location": "St. Louis, MO", "ranking": 21, "price": "$13,000"},
+        {"id": 22, "name": "University of Notre Dame", "location": "Notre Dame, IN", "ranking": 22, "price": "$13,000"},
+        {"id": 23, "name": "University of California, San Diego", "location": "San Diego, CA", "ranking": 23, "price": "$12,000"},
+        {"id": 24, "name": "Emory University", "location": "Atlanta, GA", "ranking": 24, "price": "$13,000"},
+        {"id": 25, "name": "Georgetown University", "location": "Washington, DC", "ranking": 25, "price": "$13,000"},
+        {"id": 26, "name": "Carnegie Mellon University", "location": "Pittsburgh, PA", "ranking": 26, "price": "$14,000"},
+        {"id": 27, "name": "University of Southern California", "location": "Los Angeles, CA", "ranking": 27, "price": "$13,000"},
+        {"id": 28, "name": "University of Virginia", "location": "Charlottesville, VA", "ranking": 28, "price": "$12,000"},
+        {"id": 29, "name": "New York University", "location": "New York, NY", "ranking": 29, "price": "$13,000"},
+        {"id": 30, "name": "Tufts University", "location": "Medford, MA", "ranking": 30, "price": "$13,000"},
+        {"id": 101, "name": "University of Toronto", "location": "Toronto, ON, Canada", "ranking": 1, "price": "$14,000", "country": "Canada"},
+        {"id": 102, "name": "McGill University", "location": "Montreal, QC, Canada", "ranking": 2, "price": "$14,000", "country": "Canada"},
+        {"id": 103, "name": "University of British Columbia", "location": "Vancouver, BC, Canada", "ranking": 3, "price": "$13,000", "country": "Canada"},
+        {"id": 153, "name": "Santa Monica College", "location": "Santa Monica, CA", "ranking": 1, "price": "$5,500", "type": "Community College"},
+        {"id": 154, "name": "Miami Dade College", "location": "Miami, FL", "ranking": 2, "price": "$5,500", "type": "Community College"}
+      ],
+      "note": "Full list contains 200+ universities including US universities (rankings 1-100), Canadian universities (25), and Community Colleges (50+)"
+    },
+
+    "certifications": {
+      "category_name": "Certifications",
+      "page_route": "/certifications",
+      "total_products": 190,
+      "hero_section": {
+        "badge": {
+          "icon": "Award",
+          "text": "Professional Certifications"
+        },
+        "title": "Professional Certifications",
+        "subtitle": "Industry-recognized certifications from top providers worldwide",
+        "highlights": [
+          {"icon": "Award", "text": "190+ Certifications"},
+          {"icon": "Shield", "text": "Verified Quality"},
+          {"icon": "ShoppingCart", "text": "From $1,500"}
+        ]
+      },
+      "card_design": {
+        "badge_text_from_category": true,
+        "badge_style": "bg-primary/10 text-primary",
+        "icon_container": "p-3 rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 text-white",
+        "buttons": {
+          "primary": {"text": "Order Now", "variant": "default", "width": "w-full", "icon": "ShoppingCart"}
+        }
+      },
+      "categories_list": [
+        "Project Management & Business",
+        "IT & Cloud Computing",
+        "Healthcare & Medical",
+        "Finance & Accounting",
+        "Language & Communication",
+        "Emerging Tech & AI",
+        "Legal & Compliance",
+        "HR & Training",
+        "Engineering & Technical",
+        "Marketing & Sales"
+      ],
+      "products": [
+        {"id": 1, "name": "PMP – Project Management Professional", "provider": "PMI", "category": "Project Management & Business", "price": "$3,500"},
+        {"id": 2, "name": "PRINCE2 Foundation & Practitioner", "provider": "AXELOS", "category": "Project Management & Business", "price": "$3,200"},
+        {"id": 3, "name": "CAPM – Certified Associate in Project Management", "provider": "PMI", "category": "Project Management & Business", "price": "$2,800"},
+        {"id": 4, "name": "PMI-ACP – Agile Certified Practitioner", "provider": "PMI", "category": "Project Management & Business", "price": "$3,300"},
+        {"id": 5, "name": "Certified ScrumMaster (CSM)", "provider": "Scrum Alliance", "category": "Project Management & Business", "price": "$2,500"},
+        {"id": 6, "name": "Scrum Product Owner / Professional Scrum", "provider": "Scrum.org", "category": "Project Management & Business", "price": "$2,500"},
+        {"id": 7, "name": "Lean Six Sigma Green Belt", "provider": "ASQ/IASSC", "category": "Project Management & Business", "price": "$2,800"},
+        {"id": 8, "name": "Lean Six Sigma Black Belt", "provider": "ASQ/IASSC", "category": "Project Management & Business", "price": "$4,200"},
+        {"id": 9, "name": "Lean Six Sigma Master Black Belt", "provider": "ASQ/IASSC", "category": "Project Management & Business", "price": "$5,500"},
+        {"id": 10, "name": "Certified Business Analysis Professional (CBAP)", "provider": "IIBA", "category": "Project Management & Business", "price": "$3,200"},
+        {"id": 21, "name": "AWS Certified Solutions Architect – Professional", "provider": "Amazon", "category": "IT & Cloud Computing", "price": "$3,800"},
+        {"id": 22, "name": "AWS Certified Developer – Associate", "provider": "Amazon", "category": "IT & Cloud Computing", "price": "$2,800"},
+        {"id": 29, "name": "Cisco Certified Network Associate (CCNA)", "provider": "Cisco", "category": "IT & Cloud Computing", "price": "$3,200"},
+        {"id": 39, "name": "Certified Information Systems Security Professional (CISSP)", "provider": "ISC2", "category": "IT & Cloud Computing", "price": "$4,500"},
+        {"id": 51, "name": "NCLEX-RN / NCLEX-PN", "provider": "NCSBN", "category": "Healthcare & Medical", "price": "$4,500"},
+        {"id": 52, "name": "USMLE Step 1 / 2 / 3", "provider": "NBME", "category": "Healthcare & Medical", "price": "$5,500"},
+        {"id": 76, "name": "CFA – Chartered Financial Analyst", "provider": "CFA Institute", "category": "Finance & Accounting", "price": "$6,500"},
+        {"id": 77, "name": "CPA – Certified Public Accountant", "provider": "AICPA", "category": "Finance & Accounting", "price": "$5,500"},
+        {"id": 101, "name": "IELTS – International English Language Testing System", "provider": "British Council", "category": "Language & Communication", "price": "$2,200"},
+        {"id": 102, "name": "TOEFL – Test of English as a Foreign Language", "provider": "ETS", "category": "Language & Communication", "price": "$2,200"},
+        {"id": 116, "name": "Certified Data Scientist", "provider": "DASCA", "category": "Emerging Tech & AI", "price": "$4,200"},
+        {"id": 124, "name": "Certified Blockchain Professional (CBP)", "provider": "Blockchain Council", "category": "Emerging Tech & AI", "price": "$3,500"}
+      ],
+      "note": "Full list contains 190 certifications across 10 categories"
+    }
+  },
+
+  "design_tokens": {
+    "colors": {
+      "primary": "hsl(213 94% 40%)",
+      "primary_foreground": "hsl(0 0% 100%)",
+      "primary_glow": "hsl(213 94% 55%)",
+      "background": "hsl(0 0% 100%)",
+      "foreground": "hsl(222.2 84% 4.9%)",
+      "card": "hsl(0 0% 100%)",
+      "card_foreground": "hsl(222.2 84% 4.9%)",
+      "muted": "hsl(210 40% 96.1%)",
+      "muted_foreground": "hsl(215.4 16.3% 46.9%)",
+      "border": "hsl(214.3 31.8% 91.4%)"
+    },
+    "typography": {
+      "title": {"size": "1.125rem", "weight": 600, "color": "foreground"},
+      "description": {"size": "0.875rem", "color": "muted-foreground", "line_clamp": 2},
+      "price": {"size": "1.5rem", "weight": 700, "color": "primary"},
+      "label": {"size": "0.875rem", "color": "muted-foreground"},
+      "feature": {"size": "0.75rem", "color": "muted-foreground"}
+    },
+    "card_styling": {
+      "border": "border-border/50",
+      "background": "bg-card",
+      "backdrop": "backdrop-blur-sm",
+      "hover_border": "hover:border-primary/50",
+      "transition": "transition-all duration-300",
+      "hover_shadow": "hover:shadow-lg"
+    },
+    "badge_styling": {
+      "background": "bg-primary/10",
+      "text": "text-primary",
+      "border": "border-primary/20"
+    },
+    "button_variants": {
+      "primary": {"background": "bg-primary", "text": "text-primary-foreground"},
+      "outline": {"border": "border-input", "background": "bg-background"}
+    },
+    "grid_layout": {
+      "mobile": "grid-cols-1",
+      "tablet": "md:grid-cols-2",
+      "desktop": "lg:grid-cols-2",
+      "large_desktop": "xl:grid-cols-3",
+      "gap": "gap-6"
+    }
+  }
+}
