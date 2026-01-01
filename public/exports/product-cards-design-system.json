@@ -1,8 +1,187 @@
 {
   "design_system_export": {
     "generated_at": "2026-01-01",
-    "description": "Complete design specifications for product cards across all categories",
+    "description": "Complete design specifications AND content for product cards across all categories",
     "base_url": "https://preview--eudos.lovable.app"
+  },
+
+  "card_content_templates": {
+    "passports": {
+      "title_template": "{Country} Passport",
+      "badge_text": "Military-Grade",
+      "description_template": "Fully registered biometric {Country} passport with embedded chips and advanced security features",
+      "price": "$2,500",
+      "processing_time": "7-10 business days",
+      "features_section_title": "Security Features:",
+      "features": [
+        "Biometric data integration",
+        "RFID/NFC embedded chip",
+        "Multi-layer holograms",
+        "UV security features",
+        "Machine-readable zone (MRZ)",
+        "Laser engraved personalization",
+        "Watermarks & security threads",
+        "Government database registration"
+      ],
+      "features_visible": 4,
+      "more_features_text": "+4 more features",
+      "buttons": {
+        "primary": "View Details",
+        "secondary": ["Buy Now", "See Reviews"]
+      },
+      "footer_note": "Click \"See Reviews\" to view customer feedback",
+      "countries": [
+        "Austria", "Belgium", "Bulgaria", "Croatia", "Cyprus", "Czech Republic",
+        "Denmark", "Estonia", "Finland", "France", "Germany", "Greece",
+        "Hungary", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg",
+        "Malta", "Netherlands", "Poland", "Portugal", "Romania", "Slovakia",
+        "Slovenia", "Spain", "Sweden", "United States", "United Kingdom", 
+        "Canada", "Australia", "Switzerland"
+      ]
+    },
+    "drivers_licenses": {
+      "title_template": "{Country} Driver's License",
+      "badge_text": "High-Security",
+      "description_template": "Secure {Country} driver's license with biometric data and tamper-proof features",
+      "price": "$800",
+      "processing_time": "5-7 business days",
+      "features_section_title": "Security Features:",
+      "features": [
+        "Biometric photo & fingerprint",
+        "Ghost image technology",
+        "Microtext printing",
+        "UV ink patterns",
+        "Laser engraving",
+        "Barcode & magnetic stripe",
+        "Holographic overlay",
+        "Tamper-evident design"
+      ],
+      "features_visible": 4,
+      "more_features_text": "+4 more features",
+      "buttons": {
+        "primary": "View Details",
+        "secondary": ["Buy Now", "See Reviews"]
+      },
+      "footer_note": "Click \"See Reviews\" to view customer feedback",
+      "countries": [
+        "Austria", "Belgium", "Bulgaria", "Croatia", "Cyprus", "Czech Republic",
+        "Denmark", "Estonia", "Finland", "France", "Germany", "Greece",
+        "Hungary", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg",
+        "Malta", "Netherlands", "Poland", "Portugal", "Romania", "Slovakia",
+        "Slovenia", "Spain", "Sweden", "United States", "United Kingdom", 
+        "Canada", "Australia", "Switzerland"
+      ]
+    },
+    "citizenship": {
+      "title_template": "{Country}",
+      "description_template": "Full citizenship package with passport, driver's license, and national ID. Fast 1-month processing.",
+      "price_label": "min_investment",
+      "standard_price": "USD 37,000",
+      "premium_price": "USD 50,000",
+      "premium_countries": ["Canada", "United Kingdom"],
+      "benefits": [
+        "Complete documentation package",
+        "No investment required",
+        "1 month processing"
+      ],
+      "premium_benefits": [
+        "Complete documentation package",
+        "Premium country",
+        "1 month processing"
+      ],
+      "buttons": {
+        "primary": "Explore Program"
+      },
+      "countries_with_flags": {
+        "Australia": "🇦🇺",
+        "Austria": "🇦🇹",
+        "Canada": "🇨🇦",
+        "Greece": "🇬🇷",
+        "Portugal": "🇵🇹",
+        "Spain": "🇪🇸",
+        "Malta": "🇲🇹",
+        "Monaco": "🇲🇨",
+        "United Arab Emirates": "🇦🇪",
+        "Singapore": "🇸🇬",
+        "Switzerland": "🇨🇭",
+        "Italy": "🇮🇹",
+        "United Kingdom": "🇬🇧",
+        "New Zealand": "🇳🇿",
+        "Latvia": "🇱🇻",
+        "Cyprus": "🇨🇾",
+        "Ireland": "🇮🇪",
+        "Thailand": "🇹🇭",
+        "Netherlands": "🇳🇱",
+        "Turkey": "🇹🇷",
+        "Brazil": "🇧🇷",
+        "Luxembourg": "🇱🇺",
+        "Czech Republic": "🇨🇿",
+        "Hungary": "🇭🇺",
+        "Bulgaria": "🇧🇬",
+        "Romania": "🇷🇴",
+        "Montenegro": "🇲🇪",
+        "Panama": "🇵🇦",
+        "Costa Rica": "🇨🇷",
+        "Uruguay": "🇺🇾",
+        "Colombia": "🇨🇴",
+        "Argentina": "🇦🇷"
+      }
+    },
+    "diplomas": {
+      "title_template": "{University Name}",
+      "location_text": "{Location}",
+      "badge_text": "Rank #{Ranking}",
+      "price_range": "$5,000 - $15,000",
+      "buttons": {
+        "primary": "Order Now"
+      },
+      "sample_universities": [
+        {"name": "Harvard University", "location": "Cambridge, MA", "ranking": 1, "price": "$15,000"},
+        {"name": "Stanford University", "location": "Stanford, CA", "ranking": 2, "price": "$15,000"},
+        {"name": "MIT", "location": "Cambridge, MA", "ranking": 3, "price": "$15,000"},
+        {"name": "UC Berkeley", "location": "Berkeley, CA", "ranking": 4, "price": "$12,000"},
+        {"name": "Princeton University", "location": "Princeton, NJ", "ranking": 5, "price": "$15,000"},
+        {"name": "Yale University", "location": "New Haven, CT", "ranking": 6, "price": "$15,000"},
+        {"name": "Columbia University", "location": "New York, NY", "ranking": 7, "price": "$15,000"},
+        {"name": "University of Chicago", "location": "Chicago, IL", "ranking": 8, "price": "$14,000"},
+        {"name": "Caltech", "location": "Pasadena, CA", "ranking": 9, "price": "$15,000"},
+        {"name": "Johns Hopkins University", "location": "Baltimore, MD", "ranking": 10, "price": "$14,000"}
+      ],
+      "total_universities": 500,
+      "includes_community_colleges": true
+    },
+    "certifications": {
+      "title_template": "{Certification Name}",
+      "provider_text": "{Provider}",
+      "badge_text": "{Category}",
+      "price_range": "$1,500 - $8,500",
+      "buttons": {
+        "primary": "Order Now"
+      },
+      "categories": [
+        "Project Management & Business",
+        "IT & Cloud Computing",
+        "Healthcare & Medical",
+        "Finance & Accounting",
+        "Language & Communication",
+        "Emerging Tech & AI",
+        "Legal & Compliance",
+        "HR & Training",
+        "Engineering & Technical",
+        "Marketing & Sales"
+      ],
+      "sample_certifications": [
+        {"name": "PMP – Project Management Professional", "provider": "PMI", "category": "Project Management & Business", "price": "$3,500"},
+        {"name": "AWS Certified Solutions Architect – Professional", "provider": "Amazon", "category": "IT & Cloud Computing", "price": "$3,800"},
+        {"name": "NCLEX-RN / NCLEX-PN", "provider": "NCSBN", "category": "Healthcare & Medical", "price": "$4,500"},
+        {"name": "CFA – Chartered Financial Analyst", "provider": "CFA Institute", "category": "Finance & Accounting", "price": "$6,500"},
+        {"name": "IELTS", "provider": "British Council", "category": "Language & Communication", "price": "$2,200"},
+        {"name": "Certified Data Scientist", "provider": "DASCA", "category": "Emerging Tech & AI", "price": "$4,200"},
+        {"name": "CISSP", "provider": "ISC2", "category": "IT & Cloud Computing", "price": "$4,500"},
+        {"name": "CPA – Certified Public Accountant", "provider": "AICPA", "category": "Finance & Accounting", "price": "$5,500"}
+      ],
+      "total_certifications": 190
+    }
   },
 
   "global_tokens": {
